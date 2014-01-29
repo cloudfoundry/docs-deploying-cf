@@ -215,7 +215,7 @@ VOLUME_BACKING_FILE_SIZE=70000M
 
 ## <a id="cloud-image"></a> Can you upload and deploy an Ubuntu 10.04 64-bit Server Cloud Image? ##
 
-BOSH uses [Stemcells](/docs/running/bosh/components/stemcell.html) as the basis for virtual machine instances that it deploys to various cloud providers. For the OpenStack cloud provider, the BOSH stemcell is based on Ubuntu 10.04 64-bit Server. If you cannot upload this image to the Glance Image Service in your instance of OpenStack, the BOSH director will also have trouble when it tries to upload the stemcell. Similarly, if you cannot boot a virtual machine from this instance and connect to it via SSH, BOSH will also have trouble doing the same.  Additionally, you will want to check that the underlying hardware that runs your OpenStack is compatible with running a 64-bit operating system.
+BOSH uses [Stemcells](http://docs.cloudfoundry.com/docs/running/bosh/components/stemcell.html) as the basis for virtual machine instances that it deploys to various cloud providers. For the OpenStack cloud provider, the BOSH stemcell is based on Ubuntu 10.04 64-bit Server. If you cannot upload this image to the Glance Image Service in your instance of OpenStack, the BOSH director will also have trouble when it tries to upload the stemcell. Similarly, if you cannot boot a virtual machine from this instance and connect to it via SSH, BOSH will also have trouble doing the same.  Additionally, you will want to check that the underlying hardware that runs your OpenStack is compatible with running a 64-bit operating system.
 
 To check that your OpenStack is compatible with Ubuntu 10.04 64-bit Server, you will need to download the image to your Glance Image Service, then separately boot the image as an instance in OpenStack.
 

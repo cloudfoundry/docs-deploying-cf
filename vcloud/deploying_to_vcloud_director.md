@@ -10,7 +10,7 @@ To get started with BOSH on vCloud you need:
 1. An account in a [vCloud organization](http://pubs.vmware.com/vcd-51/topic/com.vmware.vcloud.users.doc_51/GUID-B2D21D95-B37F-4339-9887-F7788D397FD8.html) with [organization administrator](http://pubs.vmware.com/vcd-51/topic/com.vmware.vcloud.users.doc_51/GUID-5B60A9C0-612A-4A3A-9ECE-694C40272505.html) credentials
 2. A vCloud virtual datacenter with an Internet routable network and a block of assigned IP addresses
 3. A Mac or *NIX computer
-4. The [BOSH CLI](../../bosh/setup/index.html)
+4. The [BOSH CLI](http://docs.cloudfoundry.com/docs/running/bosh/setup/index.html)
 
 ## Installing Micro Bosh
 
@@ -151,7 +151,7 @@ Now we download the latest stem cellto upload to our micro BOSH instance.
 
 		bosh status
 
-   2. Copy the file [wordpress-vcloud.yml](../wordpress-vcloud.yml) in the bosh-sample-release directory and update it to suit your network.
+   2. Copy the file [wordpress-vcloud.yml](wordpress-vcloud.yml) in the bosh-sample-release directory and update it to suit your network.
 
 
 ##Deploy##

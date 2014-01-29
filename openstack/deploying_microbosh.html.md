@@ -2,7 +2,7 @@
 title: Deploying Micro BOSH
 ---
 
-Installation of BOSH is done using micro BOSH, which is a single VM that includes all of the [BOSH components](/docs/running/bosh/components/index.html). If you want to play around with BOSH, or create a simple development setup, you can install micro BOSH using the BOSH Deployer. If you would like to use BOSH in production to manage a distributed system, you also use the BOSH Deployer, install micro BOSH, and then use it as a means to deploy the final distributed system on multiple VMs.
+Installation of BOSH is done using micro BOSH, which is a single VM that includes all of the [BOSH components](http://docs.cloudfoundry.com/docs/running/bosh/components/index.html). If you want to play around with BOSH, or create a simple development setup, you can install micro BOSH using the BOSH Deployer. If you would like to use BOSH in production to manage a distributed system, you also use the BOSH Deployer, install micro BOSH, and then use it as a means to deploy the final distributed system on multiple VMs.
 
 A good way to think about this two step process is to consider that BOSH is a distributed system in itself. Since BOSH's core purpose is to deploy and manage distributed systems, it makes sense that we would use it to deploy itself. On the BOSH team, we gleefully refer to this as [Inception](http://en.wikipedia.org/wiki/Inception).
 
@@ -10,7 +10,7 @@ A good way to think about this two step process is to consider that BOSH is a di
 
 ### <a id="bosh_cli"></a>BOSH CLI ###
 
-Install the [BOSH CLI](/docs/running/bosh/setup/index.html).
+Install the [BOSH CLI](http://docs.cloudfoundry.com/docs/running/bosh/setup/index.html).
 
 ### <a id="openstack_services"></a>OpenStack Services ###
 
@@ -20,23 +20,23 @@ You will need access to these OpenStack services:
 
 * [Identity](http://www.openstack.org/software/openstack-shared-services/): Micro BOSH will authenticate your credentials trought the identity server and get the endpoint URLs for other OpenStack services.
 * [Compute](http://www.openstack.org/software/openstack-compute/): Micro BOSH will boot new vms, assign floating IPs to vm, and create and attach volumes to vms.
-* [Image](http://www.openstack.org/software/openstack-shared-services/): Micro BOSH will update new images (called [BOSH Stemcells](/docs/running/bosh/components/stemcell.html) in BOSH terminology).
+* [Image](http://www.openstack.org/software/openstack-shared-services/): Micro BOSH will update new images (called [BOSH Stemcells](http://docs.cloudfoundry.com/docs/running/bosh/components/stemcell.html) in BOSH terminology).
 
 Although the new [OpenStack Networking](http://www.openstack.org/software/openstack-networking/) service is not required, it is recommended if you want to deploy complex distributed systems.
 
 ### <a id="openstack_security_groups"></a>OpenStack Security Groups ###
 
-Ensure that you have created the [Security Groups required](/docs/running/deploying-cf/common/security_groups.html).
+Ensure that you have created the [Security Groups required](../common/security_groups.html).
 
 The ports required for bosh are:
 
 * All ports (from `1` to `65535`) where the source group is the current security group
 * Port `22` from source 0.0.0.0/0 (CIDR): Used for inbound SSH access
 * Port `53` from source 0.0.0.0/0 (CIDR): Used for inbound DNS requests
-* Port `4222` from source 0.0.0.0/0 (CIDR): Used by [NATS](/docs/running/bosh/components/messaging.html)
-* Port `6868` from source 0.0.0.0/0 (CIDR): Used by [BOSH Agent](/docs/running/bosh/components/agent.html)
-* Port `25250` from source 0.0.0.0/0 (CIDR): Used by [BOSH Blobstore](/docs/running/bosh/components/blobstore.html)
-* Port `25555` from source 0.0.0.0/0 (CIDR): Used by [BOSH Director](/docs/running/bosh/components/director.html)
+* Port `4222` from source 0.0.0.0/0 (CIDR): Used by NATS
+* Port `6868` from source 0.0.0.0/0 (CIDR): Used by BOSH Agent
+* Port `25250` from source 0.0.0.0/0 (CIDR): Used by BOSH Blobstore
+* Port `25555` from source 0.0.0.0/0 (CIDR): Used by BOSH Director
 * Port `25777` from source 0.0.0.0/0 (CIDR): Used by BOSH Registry
 
 ### <a id="openstack_keypairs"></a>OpenStack Key pairs ###
@@ -208,8 +208,8 @@ apply_spec:
 
 In this example we add/override several properties:
 
-* `director.max_threads` sets the number of concurrent threads Micro BOSH [director](/docs/running/bosh/components/director.html) will use to perform some actions (ie: the number of parallel `create vm` tasks), so set this option according to your OpenStack environment (if not set, the default is 32 concurrent threads).
-* `hm.resurrector_enabled` enables the [BOSH Health Monitor](/docs/running/bosh/components/health-monitor.html) resurrector plugin. This plugin will lookup for jobs in a down state, and will try to resurrect (bring up) them.
+* `director.max_threads` sets the number of concurrent threads Micro BOSH [director](http://docs.cloudfoundry.com/docs/running/bosh/components/director.html) will use to perform some actions (ie: the number of parallel `create vm` tasks), so set this option according to your OpenStack environment (if not set, the default is 32 concurrent threads).
+* `hm.resurrector_enabled` enables the [BOSH Health Monitor](http://docs.cloudfoundry.com/docs/running/bosh/components/health-monitor.html) resurrector plugin. This plugin will lookup for jobs in a down state, and will try to resurrect (bring up) them.
 * `ntp` sets the [Internet Time Servers](http://www.ntp.org/) to be used to synchronize the clocks of new vms.
 
 ### <a id="download_stemcell"></a>Download Micro BOSH stemcell ###

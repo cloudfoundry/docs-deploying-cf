@@ -7,22 +7,22 @@ Before starting a Cloud Foundry deployment, a vSphere cluster must be set up. Th
 1. 2 servers to install ESXi (x core processor , y GB Ram : x and y depend on the hardware config chosen)
 2. 1 server to install vCenter (this can also be a VM in any of the ESXi servers)
 3. Storage server (SAN is recommended but you can also use other storages like openfiler)
-4. Switch 
+4. Switch
 5. Network: IP ranges at least 100 IPs
 
 ## <a id="install"></a>Install ESXi and vCenter ##
 
 Follow the standard ESXi and vCenter installation process. After installation your ESXi will look like the image below:
 
-![esxi](/images/running/deploying-cf/vsphere/esxi5.png)
+![esxi](/images/esxi5.png)
 
 ## <a id="prepare"></a>Prepare vCenter for Cloud Foundry Deployment ##
 
 ### <a id="prepare-datacenter"></a>Create a Datacenter ###
 
-In vCenter, go to `Hosts and Clusters` then click on `Create a Datacenter`. A new datacenter will be created in the left panel. Give a suitable name and press the Enter key. 
+In vCenter, go to `Hosts and Clusters` then click on `Create a Datacenter`. A new datacenter will be created in the left panel. Give a suitable name and press the Enter key.
 
-![datacenter](/images/running/deploying-cf/vsphere/datacenter.png)
+![datacenter](/images/datacenter.png)
 
 ### <a id="prepare-cluster"></a>Create a Cluster ###
 
@@ -34,7 +34,7 @@ Next, create a cluster and add ESXi hosts to the cluster.
 
 Once finished, you can see the new cluster created in the left panel.
 
-![cluster1](/images/running/deploying-cf/vsphere/cluster1.png)
+![cluster1](/images/cluster1.png)
 
 ### <a id="prepare-pool"></a>Create a Resource Pool ###
 
@@ -48,7 +48,7 @@ Create a resource pool.
 
 Once you finish you can see the newly added host in the left panel.
 
-![host1](/images/running/deploying-cf/vsphere/add_host.png)
+![host1](/images/add_host.png)
 
 ## <a id="folders"></a>Create the Folders for VMs, Templates and Disk Path ##
 
@@ -63,7 +63,7 @@ Micro BOSH and BOSH use predefined locations for VMs, templates and disk path th
    * `MicroBOSH\_VMs` and `MicroBOSH\_Templates` (for Micro BOSH)
    * `CF\_VMs` and `CF\_Templates` (for BOSH)
 
-![vms_and_folders](/images/running/deploying-cf/vsphere/vms_templates.png)
+![vms_and_folders](/images/vms_templates.png)
 
 ### <a id="folders-disk"></a>Create the Disk Path ###
 
@@ -74,7 +74,7 @@ Micro BOSH and BOSH use predefined locations for VMs, templates and disk path th
    * `MicroBOSH\_Disks` (for Micro BOSH)
    * `CF\_Disks` (for BOSH)
 
-![datastore1](/images/running/deploying-cf/vsphere/datastore.png)
+![datastore1](/images/datastore.png)
 
 ## <a id="summary"></a>Summary ##
 

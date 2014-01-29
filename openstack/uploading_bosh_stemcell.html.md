@@ -2,7 +2,7 @@
 title: Uploading a BOSH Stemcell
 ---
 
-This guide describes the process for uploading a [BOSH Stemcell](/docs/running/bosh/components/stemcell.html) to your [BOSH Director](/docs/running/bosh/components/director.html).
+This guide describes the process for uploading a [BOSH Stemcell](http://docs.cloudfoundry.com/docs/running/bosh/components/stemcell.html) to your [BOSH Director](http://docs.cloudfoundry.com/docs/running/bosh/components/director.html).
 
 ## <a id="prerequisites"></a>Prerequisites ##
 

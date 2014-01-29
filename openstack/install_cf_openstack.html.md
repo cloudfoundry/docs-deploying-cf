@@ -86,7 +86,7 @@ $ bosh releases
 
 ## Upload a base stemcell ##
 
-A cloud provider needs a base image to provision VMs/servers. Bosh explicitly requires that the base image includes the [Agent](../../bosh/components/agent.html). Therefore, we use specific base images which are known to have a bosh agent installed. These base images are called `bosh stemcells`.
+A cloud provider needs a base image to provision VMs/servers. Bosh explicitly requires that the base image includes the [Agent](http://docs.cloudfoundry.com/docs/running/bosh/components/agent.html). Therefore, we use specific base images which are known to have a bosh agent installed. These base images are called `bosh stemcells`.
 
 To upload the latest bosh stemcell to your bosh:
 
@@ -95,7 +95,7 @@ $ wget http://bosh-jenkins-artifacts.s3.amazonaws.com/bosh-stemcell/openstack/bo
 $ bosh upload stemcell bosh-stemcell-latest-openstack-kvm-ubuntu.tgz
 </pre>
 
-*Note* There has been [a report on the vcap-dev mailing list](https://www.pivotaltracker.com/story/show/62108468) that cf-release v147 and other releases through v150 are incompatible with some latest verisons of openstack-kvm-ubuntu stemcell. The one that works for the user reporting the issue is [1256](https://bosh-jenkins-artifacts.s3.amazonaws.com/bosh-stemcell/openstack/bosh-stemcell-1256-openstack-kvm-ubuntu.tgz).
+*Note* There has been [a report on the vcap-dev mailing list](https://www.pivotaltracker.com/story/show/62108468) that cf-release v147 and other releases through v150 are incompatible with some latest versions of openstack-kvm-ubuntu stemcell. The one that works for the user reporting the issue is [1256](https://bosh-jenkins-artifacts.s3.amazonaws.com/bosh-stemcell/openstack/bosh-stemcell-1256-openstack-kvm-ubuntu.tgz).
 
 Confirm that you have at least one bosh stemcell loaded into your bosh:
 
@@ -159,7 +159,7 @@ TODO, change the following at the top of the file:
 * replace `root_domain` value with a DNS, say `mycloud.com` that has `*.mycloud.com` mapped to your IP; defaults to using http://xip.io service for DNS
 * replace the `common_password`; even better is to put in lots of different passwords and tokens throughout the deployment file
 
-Further, note that you need to have configured the "cf-public" and "cf-private" security groups as outlined in [these instructions](../common/security-groups.html).
+Further, note that you need to have configured the "cf-public" and "cf-private" security groups as outlined in [these instructions](../common/security_groups.html).
 
 ~~~
 ---
@@ -306,7 +306,7 @@ jobs:
         default: [dns, gateway]
 
   - name: dea
-    template: 
+    template:
      - dea_next
     instances: 1
     resource_pool: large
@@ -445,7 +445,7 @@ properties:
 
   login:
     enabled: false
-  
+
   uaa:
     url: <%= protocol %>://uaa.<%= root_domain %>
     no_ssl: <%= protocol == "http" %>

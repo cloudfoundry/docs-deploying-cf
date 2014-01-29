@@ -32,7 +32,7 @@ You'll need around 3 GB free disk space in /tmp
 $ sudo apt-get -y install libsqlite3-dev genisoimage
 </pre>
 
-* Install Ruby and RubyGems. Refer to the [Installing Ruby](/docs/common/install_ruby.html) page for help with Ruby installation.
+* Install Ruby and RubyGems. Refer to the [Installing Ruby](../common/install_ruby_rbenv.html) page for help with Ruby installation.
 
 * Install the BOSH Deployer Ruby gem.
 
