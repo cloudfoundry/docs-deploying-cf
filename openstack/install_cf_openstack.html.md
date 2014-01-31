@@ -86,7 +86,7 @@ $ bosh releases
 
 ## Upload a base stemcell ##
 
-A cloud provider needs a base image to provision VMs/servers. Bosh explicitly requires that the base image includes the [Agent](http://docs.cloudfoundry.com/docs/running/bosh/components/agent.html). Therefore, we use specific base images which are known to have a bosh agent installed. These base images are called `bosh stemcells`.
+A cloud provider needs a base image to provision VMs/servers. Bosh explicitly requires that the base image includes the [Agent](/bosh/components/agent.html). Therefore, we use specific base images which are known to have a bosh agent installed. These base images are called `bosh stemcells`.
 
 To upload the latest bosh stemcell to your bosh:
 
