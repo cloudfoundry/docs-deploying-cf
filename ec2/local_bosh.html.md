@@ -22,19 +22,16 @@ if you are, you know which steps you can skip):
 
 ### Install Ruby
 
-Ruby 1.9.3 or 2.0.0 must be installed locally on your computer. We
-recommend doing this with [RVM](https://rvm.io/rvm/install), from a
-terminal window:
+You need either Ruby 1.9.3 or 2.0.0 installed locally on your computer.
+We recommend
+using either [rvm](https://rvm.io/rvm/install) or
+[rbenv](https://github.com/sstephenson/rbenv) to manage
+your Ruby environment.
 
-<pre class="terminal">
-   curl -L https://get.rvm.io | bash -s stable
-   exec $SHELL -l # re-execute your login shell so that the rvm command will be found.
-   rvm install 2.0.0
-   rvm use 2.0.0
-</pre>
+For instructions on installing Ruby, see these pages:
 
-There are alternate methodologies mentioned here ([Install Ruby and RubyGems](http://docs.cloudfoundry.com/docs/common/install_ruby.html)) if the above does not work or you want to install Ruby with tools
-other than RVM.
+* [Ruby with rbenv](../common/install_ruby_rbenv.html)
+* [Ruby with rvm](../common/install_ruby_rvm.html)
 
 ### Install the Git command line tool
 
