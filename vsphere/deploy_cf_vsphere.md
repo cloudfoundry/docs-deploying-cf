@@ -85,7 +85,7 @@ You'll see a flurry of output as BOSH configures and uploads release components.
 
 ## <a id="create-manifest"></a>Create a Cloud Deployment Manifest ##
 
-For the purpose of this tutorial, we'll use a sample [deployment manifest](http://docs.cloudfoundry.com/docs/running/deploying-cf/vsphere/cloud-foundry-example-manifest.html).
+For the purpose of this tutorial, we'll use a sample [deployment manifest](cloud-foundry-example-manifest.html).
 
 Keep in mind that a manifest of this size requires significant virtual hardware resources to run. According to the manifest file, you ideally need 72 vCPUs, 200GB of RAM, and 1 TB of storage. The more IOPS you can throw at the deployment, the better.
 
@@ -195,4 +195,6 @@ Task 30 done
 VMs total: 50
 </pre>
 
-The Cloud Foundry deployment should now be ready to use. You can now follow the instructions in the [Using](http://docs.cloudfoundry.com/docs/using/index.html) section of these docs to install the [cf](http://docs.cloudfoundry.com/docs/using/managing-apps/cf/index.html) command-line tool and push an application.
+The Cloud Foundry deployment should now be ready to use. You can now install
+the [cf](/devguide/installcf/) command-line tool and
+[push an application](/devguide/deploy-apps/getting-started.html).
