@@ -6,7 +6,7 @@ title: Using the latest CF-Release
 
 [CF-Release](https://github.com/cloudfoundry/cf-release) is the BOSH [release](/bosh/reference/index.html#bosh-release) repository for Cloud Foundry. Use this with a custom manifest for your environment to deploy Cloud Foundry.
 
-This short guide shows how to, after bootstrapping BOSH, create a Cloud Foundry release ready to deploy to your environment.
+This short guide shows how to, after [bootstrapping BOSH](/deploying/), create a Cloud Foundry release ready to deploy to your environment.
 
 NOTE: These instructions are for v145 release of Cloud Foundry. We strongly recommend using the [highest final version tag of cf-release](https://github.com/cloudfoundry/cf-release/releases).
 
