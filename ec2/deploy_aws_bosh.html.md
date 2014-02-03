@@ -9,9 +9,9 @@ This step leverages the new Elastic IP created in [Configuring AWS for BOSH](./c
 
 1. Create Directory Structure
 
-2. Create Micro BOSH Deployment Manifest
+2. Create BOSH Deployment Manifest
 
-3. Locate the correct Micro BOSH Stemcell
+3. Locate the correct BOSH Stemcell
 
 4. Deploy Manifest
 
@@ -218,7 +218,7 @@ Save your changes to the file.
 
 ### Deploy Manifest
 
-Everything is now in place to use the deployment manifest you have created and deploy Micro BOSH to AWS (the first inception). Let’s now do this.
+Everything is now in place to use the deployment manifest you have created and deploy BOSH to AWS (the first inception). Let’s now do this.
 
 Enter the deployments folder you created earlier:
 
@@ -277,5 +277,5 @@ Note a few things in this image:
 
 5. **23.21.249.15**- The Elastic IP address that we created, which is also the external IP address for the BOSH server
 
-###Go on to [Example apps deployed on CF](./example_apps.html) or [Return to Index](./index.html)
+###Go on to [Configuring AWS for CF](./configure_aws_cf.html) or [Return to Index](./index.html)
 

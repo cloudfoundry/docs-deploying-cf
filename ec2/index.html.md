@@ -1,5 +1,5 @@
 ---
-title: Installing Micro BOSH, BOSH, and Cloud Foundry on AWS
+title: Deploying to AWS
 ---
 
 The purpose of this document is to guide someone with minimal experience through an end-to-end Cloud Foundry (CF) deployment running on AWS EC2.
@@ -10,7 +10,7 @@ This includes installing CLI tools locally, installing micro BOSH, deploying BOS
 Without a reliable DNS situation, you should use static IPs to communicate between internal VMs.
 That situation is not detailed here, since the scope of this document is to get you up and running as quickly as is currently possible.
 
-
+###Installing Micro BOSH, BOSH, and Cloud Foundry on AWS
 
 In order to set up and deploy a full CF release via BOSH, complete the following nine major steps:
 
@@ -38,3 +38,6 @@ In order to set up and deploy a full CF release via BOSH, complete the following
 For advanced or support topics:
 
 * [Destroying a deployment](./destroying_deployments.html)
+* [Deploying CF Using BOSH AWS bootstrap commands](./bootstrap-aws-vpc.html) This is
+alternative documentation that includes some bootstrap shortcuts not
+discussed in the main tutorial.

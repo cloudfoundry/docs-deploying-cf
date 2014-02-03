@@ -133,8 +133,8 @@ Deploy the Micro BOSH AMI using the AMI we retrieved from the stem cell config:
 bosh micro deploy ami-979dc6fe
 </pre>
 
-If the deployment fails, clean it up before trying again. If you get
-errors regarding your access key signature, double check your keys in
+If the deployment fails, clean it up using the command below before
+trying again. Otherwise, do not run the command below. If you get errors regarding your access key signature, double check your keys in
 `microbosh.yml` and try again. Many of the errors encountered at this
 stage will likely be related to having missed a step in configuring AWS or an error in `microbosh.yml`.
 
