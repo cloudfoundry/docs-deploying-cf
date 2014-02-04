@@ -1,43 +1,57 @@
 ---
-title: Deploying to AWS
+title: Deploying Cloud Foundry on AWS
 ---
 
-The purpose of this document is to guide someone with minimal experience through an end-to-end Cloud Foundry (CF) deployment running on AWS EC2.
-This includes installing CLI tools locally, installing micro BOSH, deploying BOSH from micro BOSH on AWS, and deploying CF from BOSH on AWS.
+There are several paths you can choose to deploy Cloud Foundry with BOSH on AWS.
 
-  **WARNING**:  About production use: Currently on AWS we must use BOSH DNS, which requires a single-VM implementation of PostgreSQL.
-  This results in a non-fault-tolerant DNS situation.
-Without a reliable DNS situation, you should use static IPs to communicate between internal VMs.
-That situation is not detailed here, since the scope of this document is to get you up and running as quickly as is currently possible.
+## <a id='bootstrap-vpc'></a>Bootstrap on AWS VPC ##
 
-###Installing Micro BOSH, BOSH, and Cloud Foundry on AWS
+The BOSH and Cloud Foundry Runtime teams maintain a bootstrapping tool to deploy
+Cloud Foundry within AWS VPC.
 
-In order to set up and deploy a full CF release via BOSH, complete the following nine major steps:
+**Note**: This tutorial deploys Cloud Foundry to the VPC flavor of AWS, rather than
+the explicit EC2 flavor of AWS.
+This is the production choice for running Cloud Foundry currently.
+There are two reasons:
 
-**Note**: Review the [Glossary](./glossary.html) for any unfamiliar terms.
+* Additional security offered by network isolation
+* Static IPs are used for service discovery
 
-1. [Create an AWS Account](http://goo.gl/MaAybK) This step is only necessary if you do not already have an AWS account.
+Follow the [tutorial](./bootstrap-aws-vpc.html).
 
-1. [Local preparation for Micro BOSH deployment](./local_bosh.html)
+This is the solution Pivotal uses to deploy and operate the [hosted Cloud
+Foundry solution](http://run.pivotal.io).
 
-1. [Configuring AWS for Micro BOSH](./configure_aws_micro_bosh.html)
+## <a id='low-level-ec2'></a>Step-by-step on AWS EC2 ##
 
-1. [Deployment of Micro BOSH on AWS](./deploy_aws_micro_bosh.html)
+To learn many of the steps of deploying Cloud Foundry on BOSH by
+following this
+low-level, step-by-step tutorial for AWS EC2.
 
-1. [Configuring AWS for BOSH](./configure_aws_bosh.html)
+Follow the [tutorial](./aws_steps.html).
 
-1. [Deployment of BOSH on AWS](./deploy_aws_bosh.html)
+**Note**: This tutorial deploys Cloud Foundry to the EC2 flavor of
+AWS, rather than the explicit VPC flavor of AWS.
+This is not a production choice for running Cloud Foundry currently
+due to:
 
-1. [Configuring AWS for CF](./configure_aws_cf.html)
+* Use of BOSH's internal PowerDNS for service discover, which has a
+single point of failure in its backend PostgreSQL server.
 
-1. [Deployment of CF on AWS](./deploy_aws_cf.html)
+AWS EC2 VMs cannot have a pre-allocated IP address (called a static IP).
+Unless a BOSH deployment manages its own service discovery solution, for example
+with ETCD, a BOSH deployment must explicitly document in advance where each
+service (a BOSH job) is running.
+One option is to use AWS Elastic IPs.
+Another is to use the BOSH internal DNS feature.
+The latter is the method documented in this tutorial.
 
-1. [Example apps deployed on CF](./example_apps.html)
+The PowerDNS implemented in BOSH is backed by PostgreSQL.
+If the PostgreSQL server stops operating, then PowerDNS stops operating, and
+jobs within each BOSH deployment become unable to discover each other.
+This may not happen very often and thus may be a satisfactory risk for you.
 
+## <a id='low-level-ec2'></a>Bootstrap on AWS EC2 ##
 
-For advanced or support topics:
-
-* [Destroying a deployment](./destroying_deployments.html)
-* [Deploying CF Using BOSH AWS bootstrap commands](./bootstrap-aws-vpc.html) This is
-alternative documentation that includes some bootstrap shortcuts not
-discussed in the main tutorial.
+There is a community tool,  [bosh-bootstrap](https://github.com/cloudfoundry-community/bosh-bootstrap "cloudfoundry-community/bosh-bootstrap · GitHub"), that automates most of the
+steps in the "Step-by-step on AWS EC2" tutorial above.
