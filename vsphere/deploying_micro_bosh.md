@@ -125,6 +125,12 @@ apply_spec:
         # The BOSH powerDNS contacts the following DNS server for serving DNS entries from other domains.
         recursor: <ip_for_dns>
 
+logging:
+  # If needed increase the default logging level to trace REST traffic with IaaS providers. Default is info
+  level: info
+  # Default location is <deployment_dir>/bosh_micro_deploy.log
+  # file :
+
 
 ~~~
 
