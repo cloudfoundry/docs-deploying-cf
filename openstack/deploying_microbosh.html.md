@@ -312,6 +312,14 @@ If for some reason the deploy process gets stucked or fails, you can check the l
     I, [2013-06-14T13:07:36.171820 #13692] [0x366ff0]  INFO -- : Director is ready: {"name"=>"microbosh-openstack", "uuid"=>"fd581363-02cd-41c6-8bed-87780391cff7", "version"=>"1.5.0.pre.3 (release:bef17df0 bosh:bef17df0)", "user"=>nil, "cpi"=>"openstack", "features"=>{"dns"=>
     {"status"=>true, "extras"=>{"domain_name"=>"microbosh"}}, "compiled_package_cache"=>{"status"=>false, "extras"=>{"provider"=>nil}}}
 
+Note that you can control the logging debug level in the manifest:
+
+```
+logging:
+  # If needed increase the default logging level to trace REST traffic with IaaS providers
+  level: debug
+```
+
 ## <a id="test_microbosh"></a>Testing your Micro BOSH ##
 
 ### <a id="microbosh_target"></a>Set target ###
