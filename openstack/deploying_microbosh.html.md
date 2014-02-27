@@ -18,7 +18,7 @@ Micro BOSH needs a running OpenStack environment. Only [Folsom](https://wiki.ope
 
 You will need access to these OpenStack services:
 
-* [Identity](http://www.openstack.org/software/openstack-shared-services/): Micro BOSH will authenticate your credentials trought the identity server and get the endpoint URLs for other OpenStack services.
+* [Identity](http://www.openstack.org/software/openstack-shared-services/): Micro BOSH will authenticate your credentials through the identity server and get the endpoint URLs for other OpenStack services.
 * [Compute](http://www.openstack.org/software/openstack-compute/): Micro BOSH will boot new vms, assign floating IPs to vm, and create and attach volumes to vms.
 * [Image](http://www.openstack.org/software/openstack-shared-services/): Micro BOSH will update new images (called [BOSH Stemcells](/bosh/components/stemcell.html) in BOSH terminology).
 
@@ -117,7 +117,7 @@ network:
   vip: <allocated_floating_ip> # Optional
 ~~~
 
-* The `vip` option is optional, and allows you to associate a floating IP adress to the Micro Bosh vm in case you want to access it from outside of the vm network. If set, `allocated_floating_ip` **must** be a previously allocated floating ip.
+* The `vip` option is optional, and allows you to associate a floating IP address to the Micro Bosh vm in case you want to access it from outside of the vm network. If set, `allocated_floating_ip` **must** be a previously allocated floating ip.
 
 If you are using the new [OpenStack Networking](http://www.openstack.org/software/openstack-networking/) component, adapt the network section with below settings:
 
@@ -131,7 +131,7 @@ network:
     net_id: <network_uuid>
 ~~~
 
-* The `vip` option is optional, and allows you to associate a floating IP adress to the Micro Bosh vm in case you want to access it from outside of the vm network. If set, `allocated_floating_ip` **must** be a previously allocated floating ip.
+* The `vip` option is optional, and allows you to associate a floating IP address to the Micro Bosh vm in case you want to access it from outside of the vm network. If set, `allocated_floating_ip` **must** be a previously allocated floating ip.
 * The `net_id` option sets the OpenStack network to use. `network_uuid` **must** be an existing Network UUID (you can list your OpenStack networks using the command `quantum net-list`).
 
 1. If you want to set the Micro Bosh IP address manually:
@@ -145,8 +145,8 @@ network:
     net_id: <network_uuid>
 ~~~
 
-* The `vip` option is optional, and allows you to associate a floating IP adress to the Micro Bosh vm in case you want to access it from outside of the vm network. If set, `allocated_floating_ip` **must** be a previously allocated floating ip.
-* The `ip` option sets the IP address to assign to the Micro BOSH vm. `static_ip` **must** be an IP address belowing to the IP range of one of the network subnets set in `net_id`.
+* The `vip` option is optional, and allows you to associate a floating IP address to the Micro Bosh vm in case you want to access it from outside of the vm network. If set, `allocated_floating_ip` **must** be a previously allocated floating ip.
+* The `ip` option sets the IP address to assign to the Micro BOSH vm. `static_ip` **must** be an IP address belonging to the IP range of one of the network subnets set in `net_id`.
 * The `net_id` option sets the OpenStack network to use. `network_uuid` **must** be an existing Network UUID (you can list your OpenStack networks using the command `quantum net-list`).
 
 #### <a id="resources_properties"></a>Resources properties ####
@@ -161,7 +161,7 @@ resources:
 ~~~
 
 * The `persistent_disk` indicates that a new 16Gb volume will be created and attached to the Micro BOSH vm. On this disk, Micro BOSH will store the data, so in case you reboot or when upgrading the Micro BOSH vm, no data will be lost.
-* The `instance_type` set the OpenStack flavor used for the Micro BOSH vm. The `flavor_name` **must** have ephemeral disk (check the [validate your OpenStack](validate_openstack.html#ephemeral) guide)
+* The `instance_type` set the OpenStack flavor used for the Micro BOSH vm. The `flavor_name` **must** have ephemeral disk (check the [validate your OpenStack](validate_openstack.html) guide)
 
 #### <a id="cloud_properties"></a>Cloud properties ####
 
@@ -296,7 +296,7 @@ This command will output:
 
 ### <a id="troubleshooting"></a>Troubleshooting ###
 
-If for some reason the deploy process gets stucked or fails, you can check the log file located at `~/bosh-workspace/deployments/microbosh-openstack/bosh_micro_deploy.log`:
+If for some reason the deploy process gets stuck or fails, you can check the log file located at `~/bosh-workspace/deployments/microbosh-openstack/bosh_micro_deploy.log`:
 
     # Logfile created on 2013-06-14 13:02:00 +0200 by logger.rb/31641
     I, [2013-06-14T13:02:00.661999 #11533] [0x12b6ff0]  INFO -- : No existing deployments found (will save to /Users/frodenas/deployments/bosh-deployments.yml)
