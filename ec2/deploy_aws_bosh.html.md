@@ -42,8 +42,7 @@ local computer. You should still be targeting the Micro BOSH server:
 
 It is important to deploy the correct AWS image that is compatible with the version of BOSH you will be installing.
 
-To find and obtain the current BOSH stemcell, navigate to [http://bosh_artifacts.cfapps.io](http://bosh_artifacts.cfapps.io),
-right click **Download**, and copy the link for the “bosh (aws xen ubuntu)” tarball file (.tar.gz).  An example of the link URL is:
+To find and obtain the current BOSH stemcell, navigate to `http://bosh_artifacts.cfapps.io`, right click **Download**, and copy the link for the “bosh (aws xen ubuntu)” tarball file (.tar.gz).  An example of the link URL is:
 
 [https://s3.amazonaws.com/bosh-jenkins-artifacts/bosh-stemcell/aws/bosh-stemcell-1274-aws-xen-ubuntu.tgz](https://s3.amazonaws.com/bosh-jenkins-artifacts/bosh-stemcell/aws/bosh-stemcell-1274-aws-xen-ubuntu.tgz)
 
