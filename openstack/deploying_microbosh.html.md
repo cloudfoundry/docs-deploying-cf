@@ -2,7 +2,9 @@
 title: Deploying Micro BOSH
 ---
 
-Installation of BOSH is done using micro BOSH, which is a single VM that includes all of the [BOSH components](/bosh/components/index.html). If you want to play around with BOSH, or create a simple development setup, you can install micro BOSH using the BOSH Deployer. If you would like to use BOSH in production to manage a distributed system, you also use the BOSH Deployer, install micro BOSH, and then use it as a means to deploy the final distributed system on multiple VMs.
+Installation of BOSH is done using micro BOSH, which is a single VM that includes all of the BOSH components. See [How Bosh Works](/bosh/how-bosh-works.html) for more information.
+
+If you want to play around with BOSH, or create a simple development setup, you can install micro BOSH using the BOSH Deployer. If you would like to use BOSH in production to manage a distributed system, you also use the BOSH Deployer, install micro BOSH, and then use it as a means to deploy the final distributed system on multiple VMs.
 
 A good way to think about this two step process is to consider that BOSH is a distributed system in itself. Since BOSH's core purpose is to deploy and manage distributed systems, it makes sense that we would use it to deploy itself. On the BOSH team, we gleefully refer to this as [Inception](http://en.wikipedia.org/wiki/Inception).
 
@@ -20,7 +22,7 @@ You will need access to these OpenStack services:
 
 * [Identity](http://www.openstack.org/software/openstack-shared-services/): Micro BOSH will authenticate your credentials through the identity server and get the endpoint URLs for other OpenStack services.
 * [Compute](http://www.openstack.org/software/openstack-compute/): Micro BOSH will boot new vms, assign floating IPs to vm, and create and attach volumes to vms.
-* [Image](http://www.openstack.org/software/openstack-shared-services/): Micro BOSH will update new images (called [BOSH Stemcells](/bosh/components/stemcell.html) in BOSH terminology).
+* [Image](http://www.openstack.org/software/openstack-shared-services/): Micro BOSH will update new images (called [BOSH Stemcells](/bosh/glossary.html#stemcell) in BOSH terminology).
 
 Although the new [OpenStack Networking](http://www.openstack.org/software/openstack-networking/) service is not required, it is recommended if you want to deploy complex distributed systems.
 
@@ -41,7 +43,7 @@ The ports required for bosh are:
 
 ### <a id="openstack_keypairs"></a>OpenStack Key pairs ###
 
-Create or import a new OpenStack keypair, name it ie `microbosh`. Store the private key in a well know location, as we will need it to deploy Micro BOSH.
+Create or import a new OpenStack keypair, name it (e.g. `microbosh`). Store the private key in a well know location, as we will need it to deploy Micro BOSH.
 
 ### <a id="openstack_validate"></a>Validate your OpenStack ###
 
@@ -208,8 +210,8 @@ apply_spec:
 
 In this example we add/override several properties:
 
-* `director.max_threads` sets the number of concurrent threads Micro BOSH [director](/bosh/components/director.html) will use to perform some actions (ie: the number of parallel `create vm` tasks), so set this option according to your OpenStack environment (if not set, the default is 32 concurrent threads).
-* `hm.resurrector_enabled` enables the [BOSH Health Monitor](/bosh/components/health-monitor.html) resurrector plugin. This plugin will lookup for jobs in a down state, and will try to resurrect (bring up) them.
+* `director.max_threads` sets the number of concurrent threads Micro BOSH [director](/bosh/how-bosh-works.html#director) will use to perform some actions (i.e. the number of parallel `create vm` tasks), so set this option according to your OpenStack environment (if not set, the default is 32 concurrent threads).
+* `hm.resurrector_enabled` enables the [BOSH Health Monitor](/bosh/how-bosh-works.html#hm) resurrector plugin. This plugin will lookup for jobs in a down state, and will try to resurrect (bring up) them.
 * `ntp` sets the [Internet Time Servers](http://www.ntp.org/) to be used to synchronize the clocks of new vms.
 
 ### <a id="download_stemcell"></a>Download Micro BOSH stemcell ###
