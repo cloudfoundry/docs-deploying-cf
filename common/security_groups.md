@@ -12,7 +12,7 @@ NOTE: In OpenStack Grizzly, there is now a setting for both INGRESS and EGRESS c
 
 ## <a id="security-group-bosh"></a> "ssh"
 
-All servers deployed by bosh, including bosh itself, need to expose TCP port 22 for ssh and IMCP -1 to allow ping.
+All servers deployed by bosh, including bosh itself, need to expose TCP port 22 for ssh and ICMP -1 to allow ping.
 
 ![ssh ports](https://www.evernote.com/shard/s3/sh/8200eb5c-4d36-40f9-b9c4-c9ad76e3a12c/35022d3f4a233c2322c0a8604662248c/deep/0/Access%20&%20Security%20-%20OpenStack%20Dashboard.png)
 
