@@ -25,16 +25,16 @@ You'll need around 3 GB free disk space in /tmp
 * Install some core packages on Ubuntu  that the BOSH deployer depends on.
 
 <pre class="terminal">
-$ sudo apt-get -y install libsqlite3-dev genisoimage
+$ sudo apt-get -y install libsqlite3-dev genisoimage libxslt-dev libxml2-dev
 </pre>
 
-* Install Ruby and RubyGems. Refer to the [Installing Ruby](/docs/common/install_ruby.html) page for help with Ruby installation.
+* Install Ruby and RubyGems. Refer to the [Installing Ruby](/docs/common/install_ruby.html) page for help with Ruby installation. We recommend using rbenv to install a recent version of ruby 1.9.3 as we have found the versions available using apt-get on Ubuntu are out of date and don't work well.
 
 * Install the BOSH deployer Ruby gem.
 
 <pre class="terminal">
-$ gem install bosh_cli --pre
-$ gem install bosh_cli_plugin_micro --pre
+$ gem install bosh_cli --pre --no-ri --no-rdoc
+$ gem install bosh_cli_plugin_micro --pre --no-ri --no-rdoc
 </pre>
 
 Once you have installed the deployer, you will be able to use `bosh micro`
