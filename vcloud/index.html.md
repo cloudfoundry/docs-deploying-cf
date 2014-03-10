@@ -25,7 +25,7 @@ The following steps and sections provide more detail on installing Cloud Foundry
 
 [Deploy BOSH using Micro BOSH](deploying_bosh_with_micro_bosh.html)
 
-[Deploy Cloud Foundry using BOSH](deploy_cf_vsphere.html)
+[Deploy Cloud Foundry using BOSH](deploy_cf.html)
 
 The following pages show example manifests for deploying MICRO_BOSH, BOSH and Cloud Foundry.
 
