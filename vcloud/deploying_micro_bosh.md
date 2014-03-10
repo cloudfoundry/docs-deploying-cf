@@ -25,7 +25,7 @@ BOSH needs a deployment manifest for MicroBOSH.
 It must be named `micro_bosh.yml`.
 Create one in your new directory following the example [Micro BOSH example manifest](micro-bosh-example-manifest.html)
 
-You will need to edit this file putting in various parameters like IP addresses, storage profile and network names, login credentials, the API URL and more.
+You will need to edit this file putting in various parameters like IP addresses, storage profile and network names, login credentials, the API URL and more. The example manifest above provides comments and examples to help this process.
 
 ## <a id="download"></a>Download a BOSH Stemcell for vCloud deployment ###
 
@@ -147,5 +147,5 @@ $ bosh micro agent ping
 
 
 ## <a id="next-step"></a> Next Step ##
-When you're finished setting up, move on to the next step. You can either move to [deploying BOSH](deploying_bosh.html) or skip it and go straight to [deploying Cloud Foundry](deploying_cf.html)
+When you're finished setting up, move on to the next step. You can either move to [deploying BOSH](deploying_bosh_with_micro_bosh.html) or skip it and go straight to [deploying Cloud Foundry](deploy_cf.html)
 
