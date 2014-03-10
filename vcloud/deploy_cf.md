@@ -1,16 +1,16 @@
 ---
-title: Deploying Cloud Foundry with BOSH
+title: Deploying Cloud Foundry with Micro BOSH or BOSH
 ---
 
-This guide describes the process for deploying Cloud Foundry to a vcloud environment using BOSH.
+This guide describes the process for deploying Cloud Foundry to a vCloud environment using Micro BOSH or distributed BOSH. To keep it simple, the rest of this document will simply call it BOSH.
 
 ## <a id="prerequisites"></a>Prerequisites ##
 
-* BOSH should be deployed. See the steps in the [previous section](deploying_bosh_with_micro_bosh.html).
+BOSH should be deployed. See the steps in the [previous](deploying_micro_bosh.html) [sections](deploying_bosh_with_micro_bosh.html).
 
 ## <a id="target"></a>Target New BOSH Director ##
 
-Target the Director of the deployed BOSH using `bosh target` and the IP address of the Director.
+Target the Director of the deployed BOSH using `bosh target` and the IP address of the Director. Login with admin/admin or the userid and password you set after installation.
 
 <pre class='terminal'>
 $ bosh target 10.146.21.153
@@ -32,7 +32,7 @@ Deployment
 
 ## <a id="upload-stemcell"></a>Upload a Stemcell ##
 
-The Director needs a stemcell in order to deploy Cloud Foundry. If you follow the doc, you should already have vcloud stemcell downloaded in the step of deploying micro_bosh/bosh. Please upload that stemcell.
+The Director needs a stemcell in order to deploy Cloud Foundry. If you followed the installation documentation, you should already have vcloud stemcell downloaded previously when you deployed Micro BOSH or BOSH. Please upload that stemcell.
 
 <pre class="terminal">
 $ bosh upload stemcell ~/stemcells/bosh-stemcell-xxxx-vcloud-esxi-ubuntu.tgz
@@ -71,21 +71,19 @@ Stemcell uploaded and created
 
 ## <a id="get-release"></a>Get a Cloud Release ##
 
-For this exercise, we'll use a release from the public repository:
+For this exercise, we'll use a release from the public repository. Clone this repo in the `deployments` directory.
 
 <pre class="terminal">
-$ git clone git@github.com:cloudfoundry/cf-release.git
+$ git clone https://github.com/cloudfoundry/cf-release.git
 $ cd cf-release
-$ bosh upload release releases/appcloud-xxx.yml # use the highest number available - inspecting the files in this directory
+$ bosh upload release releases/cf-xxx.yml # use the highest number available - e.g. cf-161.yml
 </pre>
 
 You'll see a flurry of output as BOSH configures and uploads release components.
 
-<!---  Gabi and Matt stopped here until Monday :) -->
-
 ## <a id="create-manifest"></a>Create a Cloud Deployment Manifest ##
 
-For the purpose of this tutorial, we'll use a sample [deployment manifest](http://docs.cloudfoundry.com/docs/running/deploying-cf/vcloud/cloud-foundry-example-manifest.html). 
+For the purpose of this tutorial, we'll use a sample [deployment manifest](cloud-foundry-example-manifest.html). 
 
 Use the BOSH CLI to set the deployment manifest file. 
 
