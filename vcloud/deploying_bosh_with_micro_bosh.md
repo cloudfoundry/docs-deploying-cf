@@ -22,6 +22,7 @@ Target set to 'your-micro-BOSH'
 Your username: admin
 Enter password: admin
 Logged in as 'admin'
+</pre>
 
 *Note*: Create a new user using `bosh create user` which overrides the default username and password.
 
