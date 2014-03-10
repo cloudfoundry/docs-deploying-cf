@@ -2,8 +2,8 @@
 title: Deploying Micro BOSH
 ---
 
-BOSH is a system used to deploy and manage a Cloud Foundry installation. Like Cloud Foundry, BOSH itself is a distributed system. Micro BOSH is a single VM that contains all BOSH components. For most installation purposes, micro BOSH can be used to install Cloud Foundry.
-If you are deploying a large, production instance of Cloud Foundry you may prefer to use a multi-VM deployment of BOSH for scale or resiliency purposes. To deploy this, you deploy micro BOSH and then use micro BOSH to deploy BOSH.
+BOSH is a system used to deploy and manage a Cloud Foundry installation. Like Cloud Foundry, BOSH itself is a distributed system. Micro BOSH is a single VM that contains all BOSH components. For most installation purposes, Micro BOSH can be used to install Cloud Foundry.
+If you are deploying a large, production instance of Cloud Foundry you may prefer to use a multi-VM deployment of BOSH for scale or resiliency purposes. To deploy this, you deploy Micro BOSH and then use Micro BOSH to deploy BOSH.
 
 A good way to think about this two step process is to consider that BOSH is a
 distributed system in itself.
@@ -16,21 +16,20 @@ On the BOSH team, we gleefully refer to this as [Inception](http://en.wikipedia.
 
 ### <a id="prerequisites"></a>Prerequisites ###
 
-We recommend that you run the BOSH bootstrap from Ubuntu since it is the
-distribution used by the BOSH team, and has been thoroughly tested. It's simplest if you use the Ubuntu jump box VM created earlier in the installation process.
+We recommend that you use the Ubuntu jump box VM created earlier in the installation process.
 
-Plan to have around 8 GB of free disk space for the bosh_cli if you plan to use it to deploy CF releases.
+You will need to have around 8 GB of free disk space for the bosh_cli if you plan to use it to deploy CF releases.
 You'll need around 3 GB free disk space in /tmp
 
-* Install some core packages on Ubuntu  that the BOSH deployer depends on.
+1. Install some core packages on Ubuntu  that the BOSH deployer depends on.
 
 <pre class="terminal">
 $ sudo apt-get -y install libsqlite3-dev genisoimage libxslt-dev libxml2-dev
 </pre>
 
-* Install Ruby and RubyGems. Refer to the [Installing Ruby](/docs/common/install_ruby.html) page for help with Ruby installation. We recommend using rbenv to install a recent version of ruby 1.9.3 as we have found the versions available using apt-get on Ubuntu are out of date and don't work well.
+2. Install Ruby and RubyGems. Refer to the [Installing Ruby](/docs/common/install_ruby.html) page for help with Ruby installation. We recommend using rbenv to install a recent version of ruby 1.9.3 as we have found the versions available using apt-get on Ubuntu are out of date and don't work well.
 
-* Install the BOSH deployer Ruby gem.
+3. Install the BOSH deployer Ruby gem.
 
 <pre class="terminal">
 $ gem install bosh_cli --pre --no-ri --no-rdoc
@@ -44,8 +43,7 @@ To see help on these type `bosh help micro`
 ### <a id="config"></a>Configuration ###
 
 BOSH deploys things from a subdirectory under a deployments directory.
-So create both and name it appropriately.
-In our example we named it micro01.
+Here we create both and name them appropriately. (In our example we named the subdirectory micro01).
 
 <pre class="terminal">
 	mkdir deployments
@@ -55,7 +53,7 @@ In our example we named it micro01.
 
 BOSH needs a deployment manifest for MicroBOSH.
 It must be named `micro_bosh.yml`.
-Create one in your new directory following the example [MICRO_BOSH example manifest](micro-bosh-example-manifest.html)
+Create one in your new directory following the example [Micro BOSH example manifest](micro-bosh-example-manifest.html)
 
 ## <a id="deploy"></a>Deployment ##
 
@@ -94,7 +92,7 @@ $ bosh micro deployment micro01
 Deployment set to '/var/vcap/deployments/micro01/micro_bosh.yml'
 </pre>
 
-Deploy a stemcell for MicroBOSH.
+Deploy a stemcell for Micro BOSH.
 
 <pre class="terminal">
 $ bosh micro deploy bosh-stemcell-XXXX-vcloud-esxi-ubuntu.tgz
@@ -103,15 +101,17 @@ $ bosh micro deploy bosh-stemcell-XXXX-vcloud-esxi-ubuntu.tgz
 
 ### <a id="verify"></a>Checking Status of a Micro BOSH Deploy ###
 
-Target the Microbosh
+To check the status of the Micro BOSH:
+
+1. Target the Micro BOSH
 
 <pre class="terminal">
 bosh target &lt;ip_address_from_your_micro_bosh_manifest:25555&gt;
 </pre>
 
-Login with admin/admin.
+2. Login with admin/admin.
 
-If you'd like to change the user id and password, use the `create user` command:
+To change the user id and password, use the `create user` command:
 
 <pre class="terminal">
 bosh create user
@@ -123,7 +123,7 @@ User `killian' has been created
 
 After creating this user the admin user is deleted.
 
-The `status` command will show the persisted state for a given micro BOSH
+3. The `status` command will show the persisted state for a given Micro BOSH
 instance.
 
 <pre class="terminal">
@@ -146,7 +146,7 @@ $ bosh micro deployments
 </pre>
 
 The files in your current directory need to be saved if you later want to be
-able to update your micro BOSH instance.
+able to update your Micro BOSH instance.
 They are all text files, so you can commit them to a git repository to make
 sure they are safe in case your bootstrap VM goes away.
 
