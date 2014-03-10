@@ -106,10 +106,22 @@ $ bosh micro deploy bosh-stemcell-XXXX-vcloud-esxi-ubuntu.tgz
 Target the Microbosh
 
 <pre class="terminal">
-bosh target <ip_address_from_your_micro_bosh_manifest:25555>
+bosh target &lt;ip_address_from_your_micro_bosh_manifest:25555&gt;
 </pre>
 
 Login with admin/admin.
+
+If you'd like to change the user id and password, use the `create user` command:
+
+<pre class="terminal">
+bosh create user
+Enter new username: killian
+Enter new password: ********
+Verify new password: ********
+User `killian' has been created
+</pre>
+
+After creating this user the admin user is deleted.
 
 The `status` command will show the persisted state for a given micro BOSH
 instance.
