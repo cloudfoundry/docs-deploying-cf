@@ -12,52 +12,22 @@ sense that we would use it to deploy itself.
 On the BOSH team, we gleefully refer to this as [Inception](http://en.wikipedia.org/wiki/Inception).
 
 
-## <a id="bootstrap"></a>BOSH Bootstrap ##
+## <a id="bosh"></a>BOSH Configuration ##
 
-### <a id="prerequisites"></a>Prerequisites ###
-
-We recommend that you use the Ubuntu jump box VM created earlier in the installation process.
-
-You will need to have around 8 GB of free disk space for the bosh_cli if you plan to use it to deploy CF releases.
-You'll need around 3 GB free disk space in /tmp
-
-1. Install some core packages on Ubuntu  that the BOSH deployer depends on.
-
-<pre class="terminal">
-$ sudo apt-get -y install libsqlite3-dev genisoimage libxslt-dev libxml2-dev
-</pre>
-
-2. Install Ruby and RubyGems. Refer to the [Installing Ruby](/docs/common/install_ruby.html) page for help with Ruby installation. We recommend using rbenv to install a recent version of ruby 1.9.3 as we have found the versions available using apt-get on Ubuntu are out of date and don't work well.
-
-3. Install the BOSH deployer Ruby gem.
-
-<pre class="terminal">
-$ gem install bosh_cli --pre --no-ri --no-rdoc
-$ gem install bosh_cli_plugin_micro --pre --no-ri --no-rdoc
-</pre>
-
-Once you have installed the deployer, you will be able to use `bosh micro`
-commands.
-To see help on these type `bosh help micro`
-
-### <a id="config"></a>Configuration ###
-
-BOSH deploys things from a subdirectory under a deployments directory.
+BOSH deploys software from a subdirectory under a deployments directory.
 Here we create both and name them appropriately. (In our example we named the subdirectory micro01).
 
-<pre class="terminal">
 	mkdir deployments
 	cd deployments
 	mkdir micro01
-</pre>
 
 BOSH needs a deployment manifest for MicroBOSH.
 It must be named `micro_bosh.yml`.
 Create one in your new directory following the example [Micro BOSH example manifest](micro-bosh-example-manifest.html)
 
-## <a id="deploy"></a>Deployment ##
+You will need to edit this file putting in various parameters like IP addresses, storage profile and network names, login credentials, the API URL and more.
 
-Download a BOSH Stemcell for vCloud deployment:
+## <a id="download"></a>Download a BOSH Stemcell for vCloud deployment ###
 
 You will need Internet access for the bosh\_cli to download the stemcells.
 You may need to temporarily set the http\_proxy and https\_proxy variables if
@@ -65,10 +35,17 @@ you are behind a corporate firewall.
 If so, remember to unset it before completing the following steps if your proxy
 won't allow contacting the newly micro_bosh vm.
 
+The commands used are as follows:
+
+	bosh public stemcells
+	bosh download public stemcell <stemcell name>
+
+For example:
+
 <pre class="terminal">
 $ bosh public stemcells
 +---------------------------------------------+
-| Name                                        |
+| Name 	|
 +---------------------------------------------+
 | bosh-stemcell-xxxx-aws-xen-ubuntu.tgz       |
 | bosh-stemcell-xxxx-aws-xen-centos.tgz       |
@@ -78,13 +55,19 @@ $ bosh public stemcells
 | bosh-stemcell-xxxx-vsphere-esxi-ubuntu.tgz  |
 | bosh-stemcell-xxxx-vsphere-esxi-centos.tgz  |
 | bosh-stemcell-xxxx-vcloud-esxi-ubuntu.tgz   |
-| bosh-stemcell-xxxx-vcloud-esxi-centos.tgz   |
+| bosh-stemcell-xxxx-vcloud-esxi-centos.tgz 	|
 +---------------------------------------------+
 $ bosh download public stemcell bosh-stemcell-XXXX-vcloud-esxi-ubuntu.tgz
 </pre>
 
-CD to the deployments directory and set the deployment.
-This assumes you named the directory micro01.
+## <a id="deploy-stemcell"></a> Deploy a stemcell ###
+
+Change to the deployments directory and set the deployment. This assumes you named the directory micro01.
+
+	cd deployments
+	bosh micro deployment micro01
+
+This should give you output as follows:
 
 <pre class="terminal">
 $ cd deployments
@@ -92,29 +75,28 @@ $ bosh micro deployment micro01
 Deployment set to '/var/vcap/deployments/micro01/micro_bosh.yml'
 </pre>
 
-Deploy a stemcell for Micro BOSH.
+Next, deploy a stemcell for Micro BOSH.
 
-<pre class="terminal">
-$ bosh micro deploy bosh-stemcell-XXXX-vcloud-esxi-ubuntu.tgz
-</pre>
+	bosh micro deploy bosh-stemcell-XXXX-vcloud-esxi-ubuntu.tgz
 
 
-### <a id="verify"></a>Checking Status of a Micro BOSH Deploy ###
+## <a id="verify"></a>Checking Status of a Micro BOSH Deploy ##
 
-To check the status of the Micro BOSH:
+To check the status of the Micro BOSH, first **target** the Micro BOSH (specifically, the Director process)
 
-1. Target the Micro BOSH
+	bosh target <ip_address_from_your_micro_bosh_manifest:25555>
 
-<pre class="terminal">
-bosh target &lt;ip_address_from_your_micro_bosh_manifest:25555&gt;
-</pre>
 
-2. Login with admin/admin.
+Next **login** with admin/admin.
 
 To change the user id and password, use the `create user` command:
 
+	bosh create user
+
+Here's an example:
+
 <pre class="terminal">
-bosh create user
+$ bosh create user
 Enter new username: killian
 Enter new password: ********
 Verify new password: ********
@@ -123,9 +105,13 @@ User `killian' has been created
 
 After creating this user the admin user is deleted.
 
-3. The `status` command will show the persisted state for a given Micro BOSH
-instance.
 
+The `status` command will show the persisted state for a given Micro BOSH
+instance. 
+
+	bosh micro status
+
+Here's an example:
 <pre class="terminal">
 $ bosh micro status
 Stemcell CID   sc-1744775e-869d-4f72-ace0-6303385ef25a
@@ -137,27 +123,29 @@ Deployment     /home/user/cloudfoundry/bosh/deployments/micro_bosh/micro_bosh.ym
 Target         https://10.146.21.150:25555 #IP Address of the Director
 </pre>
 
-### <a id="listing"></a>Listing Deployments ###
+## <a id="listing"></a>Listing Deployments ##
 
 The `deployments` command prints a table view of `bosh-deployments.yml`:
 
-<pre class="terminal">
-$ bosh micro deployments
-</pre>
+	bosh micro deployments
 
-The files in your current directory need to be saved if you later want to be
-able to update your Micro BOSH instance.
-They are all text files, so you can commit them to a git repository to make
-sure they are safe in case your bootstrap VM goes away.
+The files in your current directory need to be saved if you later want to be able to update your Micro BOSH instance. They are all text files, so you can commit them to a git repository to make sure they are safe in case your bootstrap VM goes away.
 
-
-### <a id="send-message"></a>Sending Messages to the Micro BOSH Agent ###
+## <a id="send-message"></a>Sending Messages to the Micro BOSH Agent ##
 
 The `bosh` CLI can send messages over HTTP to the agent using the `agent`
 command.
+
+	bosh micro agent ping
+
+For example:
 
 <pre class="terminal">
 $ bosh micro agent ping
 "pong"
 </pre>
+
+
+## <a id="next-step"></a> Next Step ##
+When you're finished setting up, move on to the next step. You can either move to [deploying BOSH](deploying_bosh.html) or skip it and go straight to [deploying Cloud Foundry](deploying_cf.html)
 
