@@ -18,14 +18,14 @@ Cloud Foundry to Amazon Web Services.
 ## <a id='domain-prep'></a> Prepare a Domain ##
 
 First, pick a DNS domain name for your Cloud Foundry instance. If you
-pick *cloud.mydomain.com*, your applications will be available as
-*app-name.cloud.mydomain.com*.
+pick *cloud.example.com*, your applications will be available as
+*app-name.cloud.example.com*.
 
 Create an AWS Route 53 Hosted Zone for your domain at the [Route 53 control panel](https://console.aws.amazon.com/route53). The control
 panel shows you a "delegation set", or a list of addresses to which
 you must delegate DNS authority for your domain. If your domain is
-*cloud.mydomain.com*, each address in the delegation set should
-become an NS record in the DNS server for *mydomain.com*.
+*cloud.example.com*, each address in the delegation set should
+become an NS record in the DNS server for *example.com*.
 
 <%= image_tag("hostedzone.png") %>
 
@@ -60,7 +60,7 @@ a file called `bosh_environment` and add the following, changing the
 value for each line to suit your configuration:
 
 ~~~
-export BOSH_VPC_DOMAIN=mydomain.com
+export BOSH_VPC_DOMAIN=example.com
 export BOSH_VPC_SUBDOMAIN=cloud # Pick something more unique than 'cloud' to work around a temporary shortcoming of the tool
 export BOSH_AWS_ACCESS_KEY_ID=AWS_ACCESS_KEY_ID
 export BOSH_AWS_SECRET_ACCESS_KEY=AWS_SECRET_ACCESS_KEY
@@ -72,7 +72,7 @@ export BOSH_VPC_PRIMARY_AZ=us-east-1d   # see note below
 *Note:* `BOSH_VPC_DOMAIN` and `BOSH_VPC_SUBDOMAIN` must correspond to
 the DNS domain name you set up when configuring Route 53. The values
 shown above correspond to the earlier Route 53 example of
-*cloud.mydomain.com*.
+*cloud.example.com*.
 
 *Note:* Now only deployment to `us-east-1` region is supported by the next
 steps. For MicroBOSH deploy please review [following guide](https://gist.github.com/danhigham/5804252).
