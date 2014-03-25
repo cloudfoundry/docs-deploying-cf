@@ -84,7 +84,7 @@ The following steps will help you to install the BOSH command line interface (CL
 
 1. Install some core Ubuntu packages that the BOSH deployer depends on.
 
-        sudo apt-get -y install libsqlite3-dev genisoimage libxslt-dev libxml2-dev
+        sudo apt-get -y install libsqlite3-dev genisoimage libxslt-dev libxml2-dev whois
 
 2. Install Ruby and RubyGems. Refer to the [Installing Ruby](/docs/common/install_ruby.html) page for help with Ruby installation. We recommend using rbenv to install a recent version of ruby 1.9.3 (e.g. 1.9.3-p545) as we have found the versions available using apt-get on Ubuntu are out of date and don't work well. 
 
