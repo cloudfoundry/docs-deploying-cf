@@ -87,9 +87,18 @@ To check the status of the Micro BOSH, first **target** the Micro BOSH (specific
 	bosh target <ip_address_from_your_micro_bosh_manifest:25555>
 
 
-Next **login** with admin/admin.
+Next **login** with user `admin` and password `admin` as follows:
 
-To change the user id and password, use the `create user` command:
+	bosh login admin
+
+Here's how it looks:
+<pre class="terminal">
+$ bosh login admin
+Enter password: *****
+Logged in as `admin'
+</pre>
+
+If you want to change the user id and password, use the `create user` command:
 
 	bosh create user
 
@@ -103,8 +112,7 @@ Verify new password: ********
 User `killian' has been created
 </pre>
 
-After creating this user the admin user is deleted.
-
+After creating this user the original `admin` user is deleted and you can no longer login with admin / admin
 
 The `status` command will show the persisted state for a given Micro BOSH
 instance. 
@@ -143,6 +151,18 @@ For example:
 <pre class="terminal">
 $ bosh micro agent ping
 "pong"
+</pre>
+
+## <a id="ssh"></a>SSHing to the Micro BOSH ##
+
+If you want to SSH to the Micro BOSH you can do so using the default login credentials `vcap`, `c1oudc0w`
+
+You can change the default userid & password by specifying it in the deployment manifest, as follows:
+
+<pre class="terminal">
+env:
+  bosh:
+    password: < hashed password - Generate SHA hash using mkpasswd -m sha-512 >
 </pre>
 
 
