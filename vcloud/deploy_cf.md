@@ -30,6 +30,8 @@ Deployment
   not set
 </pre>
 
+You will need the UUID of the BOSH Director in your Cloud Foundry deployment file later. It is provided in the above list of information also.
+
 ## <a id="upload-stemcell"></a>Upload a Stemcell ##
 
 The Director needs a stemcell in order to deploy Cloud Foundry. If you followed the installation documentation, you should already have vcloud stemcell downloaded previously when you deployed Micro BOSH or BOSH. Please upload that stemcell.
@@ -69,6 +71,23 @@ Duration	00:01:14
 Stemcell uploaded and created
 </pre>
 
+After uploading you should be able to see the stem cell when you run `bosh stemcells`
+
+<pre class="terminal">
+$ bosh stemcells
+
++-------------------------+---------+-------------------------------------------------------------+
+| Name                    | Version | CID                                                         |
++-------------------------+---------+-------------------------------------------------------------+
+| bosh-vcloud-esxi-ubuntu | 0000    | urn:vcloud:catalogitem:dd470e53-dbe4-4ad8-9257-4ac76bce273f |
++-------------------------+---------+-------------------------------------------------------------+
+
+(*) Currently in-use
+
+Stemcells total: 1
+</pre>
+
+
 ## <a id="get-release"></a>Get a Cloud Release ##
 
 For this exercise, we'll use a release from the public repository. Clone this repo in the `deployments` directory.
@@ -76,10 +95,52 @@ For this exercise, we'll use a release from the public repository. Clone this re
 <pre class="terminal">
 $ git clone https://github.com/cloudfoundry/cf-release.git
 $ cd cf-release
-$ bosh upload release releases/cf-xxx.yml # use the highest number available - e.g. cf-161.yml
+$ bosh upload release releases/cf-xxx.yml # These docs have been tested with cf-147.yml
 </pre>
 
-You'll see a flurry of output as BOSH configures and uploads release components.
+You'll see a flurry of output as BOSH configures and uploads release components. Here's a shortened version:
+
+<pre class="terminal">
+$ bosh upload release releases/cf-147.yml 
+
+Copying packages
+----------------
+rootfs_lucid64 (2)            FOUND LOCAL
+saml_login (14)               FOUND LOCAL
+haproxy (1)                   FOUND LOCAL
+loggregator_trafficcontroller (3) FOUND LOCAL
+
+[… Lots of output …]
+
+
+Release has been created
+  cf/147 (00:00:00)                                                                                 
+Done                    1/1 00:00:00                                                                
+
+Task 11 done
+
+Started		2014-03-22 00:40:06 UTC
+Finished	2014-03-22 00:40:38 UTC
+Duration	00:00:32
+
+Release uploaded
+</pre>
+
+After finishing you should be able to see the release when you run `bosh releases`
+
+<pre class="terminal">
+$ bosh releases
+
++------+----------+-------------+
+| Name | Versions | Commit Hash |
++------+----------+-------------+
+| cf   | 147      | 07e0aa91+   |
++------+----------+-------------+
+(+) Uncommitted changes
+
+Releases total: 1
+</pre>
+
 
 ## <a id="create-manifest"></a>Create a Cloud Deployment Manifest ##
 
