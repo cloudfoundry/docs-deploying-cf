@@ -4,7 +4,7 @@ title: Deploying Cloud Foundry on OpenStack
 
 Follow these steps to install Cloud Foundry on OpenStack using BOSH.
 
-1. [Install the BOSH CLI](/bosh/setup/index.html)
+1. [Install the BOSH CLI](http://docs.cloudfoundry.org/bosh/deploy-microbosh.html#cli)
 
 1. [Validate your OpenStack](validate_openstack.html)
 

@@ -12,7 +12,7 @@ A good way to think about this two step process is to consider that BOSH is a di
 
 ### <a id="bosh_cli"></a>BOSH CLI ###
 
-Install the [BOSH CLI](/bosh/setup/index.html).
+Install the [BOSH CLI](http://docs.cloudfoundry.org/bosh/deploy-microbosh.html#cli).
 
 ### <a id="openstack_services"></a>OpenStack Services ###
 
