@@ -5,7 +5,7 @@ This document describes how to install Ruby using rbenv
 1. Bosh is written in Ruby. Let's install Ruby's dependencies
 
 		sudo apt-get install git-core build-essential libsqlite3-dev curl \
-	    libmysqlclient-dev libxml2-dev libxslt-dev libpq-dev
+	    libmysqlclient-dev libxml2-dev libxslt-dev libpq-dev zlib1g-dev openssl libssl-dev
 
 1. Get the latest version of rbenv
 
