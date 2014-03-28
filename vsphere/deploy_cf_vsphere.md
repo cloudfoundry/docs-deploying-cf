@@ -197,4 +197,4 @@ VMs total: 50
 
 The Cloud Foundry deployment should now be ready to use. You can now install
 the [cf](/devguide/installcf/) command-line tool and
-[push an application](/devguide/deploy-apps/getting-started.html).
+[push an application](/devguide/deploy-apps/deploy-app.html).
