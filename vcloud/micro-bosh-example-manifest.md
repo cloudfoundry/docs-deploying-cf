@@ -2,7 +2,7 @@
 title: BOSH Example Manifest
 ---
 
-This is an example manifest for deploying Micro BOSH on vCloud. 
+Here is an example manifest for deploying Micro BOSH on vCloud. 
 
     name: bosh_micro_vcloud
 
@@ -42,8 +42,12 @@ This is an example manifest for deploying Micro BOSH on vCloud.
               vm_metadata_key: <Metadata associated with Cloud Foundry VMs>
               description: <Text associated with Cloud Foundry VMs> 
     
-    env: 
+    env:
       vapp: micro_bosh_vapp
+      # By default you can ssh into the micro bosh using vcap / c1oudc0w
+      # If you want to change this default password specify the hashed password below
+      bosh:
+      	password: # <password SHA hash generated using mkpasswd -m sha-512>
 
     logging:
       # If needed increase the default logging level to trace REST traffic with IaaS providers. Default is info
