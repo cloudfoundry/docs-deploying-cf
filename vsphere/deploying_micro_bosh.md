@@ -37,8 +37,8 @@ $ sudo apt-get -y install libsqlite3-dev genisoimage
 * Install the BOSH Deployer Ruby gem.
 
 <pre class="terminal">
-$ gem install bosh_cli --pre
-$ gem install bosh_cli_plugin_micro --pre
+$ gem install bosh_cli
+$ gem install bosh_cli_plugin_micro
 </pre>
 
 Once you have installed the deployer, you will be able to use `bosh micro`
