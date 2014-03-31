@@ -88,21 +88,21 @@ cloud:
       ntp:
         - <ntp_host_1>
         - <ntp_host_2>
-     vcenters:
-       - host: <vcenter_ip>
-         user: <vcenter_userid>
-         password: <vcenter_password>
-         datacenters:
-           - name: <datacenter_name>
-             vm_folder: <vm_folder_name>
-             template_folder: <template_folder_name>
-             disk_path: <subdir_to_store_disks>
-             datastore_pattern: <data_store_pattern>
-             persistent_datastore_pattern: <persistent_datastore_pattern>
-             allow_mixed_datastores: <true_if_persistent_datastores_and_datastore_patterns_are_the_same>
-             clusters:
-             - <cluster_name>:
-                 resource_pool: <resource_pool_name_optional>
+    vcenters:
+      - host: <vcenter_ip>
+        user: <vcenter_userid>
+        password: <vcenter_password>
+        datacenters:
+          - name: <datacenter_name>
+            vm_folder: <vm_folder_name>
+            template_folder: <template_folder_name>
+            disk_path: <subdir_to_store_disks>
+            datastore_pattern: <data_store_pattern>
+            persistent_datastore_pattern: <persistent_datastore_pattern>
+            allow_mixed_datastores: <true_if_persistent_datastores_and_datastore_patterns_are_the_same>
+            clusters:
+            - <cluster_name>:
+              resource_pool: <resource_pool_name_optional>
 
 apply_spec:
   properties:
@@ -120,7 +120,7 @@ apply_spec:
           allow_mixed_datastores: <true_if_persistent_datastores_and_datastore_patterns_are_the_same>
           clusters:
           - <cluster_name>:
-              resource_pool: <resource_pool_name_optional>
+            resource_pool: <resource_pool_name_optional>
     dns:
       # The BOSH powerDNS contacts the following DNS server for serving DNS entries from other domains.
       recursor: <ip_for_dns>
@@ -130,8 +130,6 @@ logging:
   level: debug
   # Default location is <deployment_dir>/bosh_micro_deploy.log
   # file :
-
-
 ~~~
 
 The `apply_spec` provides Micro BOSH with the vCenter settings in order for it
