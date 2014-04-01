@@ -1,5 +1,5 @@
 ---
-title: Deploying Micro BOSH
+title: Deploying MicroBOSH
 ---
 
 Installation of BOSH is done using micro BOSH, which is a single VM that
@@ -52,12 +52,12 @@ So create both and name it appropriately.
 In our example we named it micro01.
 
 <pre class="terminal">
-$ mkdir deployments
-$ cd deployments
-$ mkdir micro01
+  mkdir deployments
+  cd deployments
+  mkdir micro01
 </pre>
 
-BOSH needs a deployment manifest for Micro BOSH.
+BOSH needs a deployment manifest for MicroBOSH.
 It must be named `micro_bosh.yml`.
 Create one in your new directory following the example below:
 
@@ -132,10 +132,10 @@ logging:
   # file :
 ~~~
 
-The `apply_spec` provides Micro BOSH with the vCenter settings in order for it
+The `apply_spec` provides MicroBOSH with the vCenter settings in order for it
 to deploy Cloud Foundry.
-It is different than the vCenter you are using to deploy Micro BOSH because
-Micro BOSH can deploy to a different vCenter than the one it was deployed to.
+It is different than the vCenter you are using to deploy MicroBOSH because
+MicroBOSH can deploy to a different vCenter than the one it was deployed to.
 
 If you want to create a role for the BOSH user in vCenter, the privileges are
 defined [here](./vcenter_user_privileges.html).
@@ -143,10 +143,15 @@ defined [here](./vcenter_user_privileges.html).
 Before you can run micro BOSH deployer, you have to create folders according to
 the values in your manifest.
 
-In the example below, the vm_folder will contain the running virtual machine instance of Micro BOSH.
-The template_folder will store the BOSH Stemcells that are used to create the virtual machine instances.
-The disk_path is the destination datastore that Micro BOSH will be deployed to.
-The resource_pool is the optional pool of resources that Micro BOSH will use.
+In the example below, the vm_folder contains the running virtual machine
+instance of MicroBOSH.
+The template_folder stores the BOSH Stemcells that are used to create the
+virtual machine instances.
+The disk_path is the destination datastore for the MicroBOSH deployment.
+The resource_pool defines the VMs for MicroBOSH to use as collections of VMs
+which are on the
+same network, are the same kind of VM from the IaaS’s perspective, and are
+built from the same stemcell.
 
 1. Create the vm_folder
 1. Create the template_folder
@@ -195,9 +200,11 @@ this:
 
 Download a BOSH Stemcell:
 
-BOSH Stemcells are virtual machine templates that are cloned to create virtual machine instances.
-After cloning, a BOSH Stemcell will apply the specifications outlined for it in the deployment manifest.
-A BOSH Stemcell is usually over 500MB in size.
+BOSH Stemcells are virtual machine templates that BOSH clones to create virtual
+machine instances.
+After cloning, a BOSH Stemcell applies the specifications outlined for it in
+the deployment manifest.
+A BOSH vSphere Stemcell usually exceeds 500MB in size.
 
 You will need Internet access for the bosh\_cli to download the stemcells.
 You may need to temporarily set the http\_proxy and https\_proxy variables if
@@ -230,16 +237,16 @@ $ bosh micro deployment micro01
 Deployment set to '/var/vcap/deployments/micro01/micro_bosh.yml'
 </pre>
 
-Deploy a stemcell for Micro BOSH.
+Deploy a stemcell for MicroBOSH.
 
 <pre class="terminal">
 $ bosh micro deploy bosh-stemcell-XXXX-vsphere-esxi-ubuntu.tgz
 </pre>
 
 
-### <a id="verify"></a>Checking Status of a Micro BOSH Deploy ###
+### <a id="verify"></a>Checking Status of a MicroBOSH Deploy ###
 
-Target the Micro BOSH
+Target the MicroBOSH
 
 <pre class="terminal">
 bosh target <ip_address_from_your_micro_bosh_manifest:25555>
@@ -256,7 +263,7 @@ Stemcell CID   sc-1744775e-869d-4f72-ace0-6303385ef25a
 Stemcell name  bosh-stemcell-1341-vsphere-esxi-ubuntu
 VM CID         vm-ef943451-b46d-437f-b5a5-debbe6a305b3
 Disk CID       disk-5aefc4b4-1a22-4fb5-bd33-1c3cdb5da16f
-Micro BOSH CID bm-fa74d53a-1032-4c40-a262-9c8a437ee6e6
+MicroBOSH CID bm-fa74d53a-1032-4c40-a262-9c8a437ee6e6
 Deployment     /home/user/cloudfoundry/bosh/deployments/micro_bosh/micro_bosh.yml
 Target         https://192.168.9.20:25555 #IP Address of the Director
 </pre>
@@ -275,7 +282,7 @@ They are all text files, so you can commit them to a git repository to make
 sure they are safe in case your bootstrap VM goes away.
 
 
-### <a id="send-message"></a>Sending Messages to the Micro BOSH Agent ###
+### <a id="send-message"></a>Sending Messages to the MicroBOSH Agent ###
 
 The `bosh` CLI can send messages over HTTP to the agent using the `agent`
 command.

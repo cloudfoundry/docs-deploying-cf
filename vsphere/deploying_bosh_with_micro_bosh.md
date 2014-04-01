@@ -1,16 +1,16 @@
 ---
-title: Deploying BOSH with Micro BOSH
+title: Deploying BOSH with MicroBOSH
 ---
 
-This guide describes the process for deploying BOSH as an application using Micro BOSH. 
+This guide describes the process for deploying BOSH as an application using MicroBOSH. 
 
 ## <a id="prerequisites"></a>Prerequisites ##
 
-* Micro BOSH should be deployed. See the steps in the [previous section](deploying_micro_bosh.html)
+* MicroBOSH should be deployed. See the steps in the [previous section](deploying_micro_bosh.html)
 
-## <a id="target"></a>Target Micro BOSH ##
+## <a id="target"></a>Target MicroBOSH ##
 
-Once your Micro BOSH instance is deployed, you can target its Director:
+Once your MicroBOSH instance is deployed, you can target its Director:
 
 <pre class="terminal">
 $ bosh micro status
@@ -67,19 +67,19 @@ To download use `bosh download public stemcell <stemcell_name>'. For full url us
 Alternatively, download the latest stemcells from the web: http://bosh_artifacts.cfapps.io/
 </pre>
 
-Download a public stemcell. *Note*: if you have already downloaded a stemcell to deploy your Micro BOSH, you can use that one.
+Download a public stemcell. *Note*: if you have already downloaded a stemcell to deploy your MicroBOSH, you can use that one.
 
 <pre class="terminal">
 $ bosh download public stemcell bosh-stemcell-XXXX-vsphere-esxi-ubuntu.tgz
 </pre>
 
-Upload the downloaded stemcell to Micro BOSH.
+Upload the downloaded stemcell to MicroBOSH.
 
 <pre class="terminal">
 $ bosh upload stemcell bosh-stemcell-XXXX-vsphere-esxi-ubuntu.tgz
 </pre>
 
-You can see the uploaded stemcells (on your Micro BOSH) by using `bosh stemcells`:
+You can see the uploaded stemcells (on your MicroBOSH) by using `bosh stemcells`:
 
 <pre class="terminal">
 $ bosh stemcells

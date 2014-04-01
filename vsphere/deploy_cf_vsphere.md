@@ -80,10 +80,8 @@ $ bosh upload release releases/appcloud-129.yml # use the highest number availab
 </pre>
 
 You'll see a flurry of output as BOSH configures and uploads release components.
-The necessary components will be downloaded to your local machine, and then uploaded to the BOSH deployment.
-If components are found locally, they will not be downloaded.
-
-<!---  Gabi and Matt stopped here until Monday :) -->
+The necessary components are downloaded to your local machine, and then uploaded to the BOSH deployment.
+If components are found locally, they are not downloaded.
 
 ## <a id="create-manifest"></a>Create a Cloud Deployment Manifest ##
 
@@ -125,7 +123,13 @@ $ bosh deploy
     Done                    1/1 00:00:00
 </pre>
 
-During the deploy process, many virtual machines will be created by cloning the uploaded stemcell. After cloning, each VM will power up, and request it's specifications from BOSH. BOSH will then tell each VM which job it is supposed to run. The VM will apply the job specifications based on the deployment manifest, and reboot. After the reboot, the VM will contact the BOSH deployment to verify that it was successful.
+During the deploy process, BOSH clones the uploaded stemcell to create virtual
+machines.
+Each VM powers up and requests its specifications from BOSH.
+BOSH then tells each VM which job to run.
+The VM applies the job specifications based on the deployment manifest
+and reboots.
+After rebooting, the VM reports its status to the BOSH Director.
 
 ## <a id="verfy"></a>Verify the Deployment ##
 
