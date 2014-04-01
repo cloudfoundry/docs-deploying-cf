@@ -29,7 +29,7 @@ You'll need around 3 GB free disk space in /tmp
 * Install some core packages on Ubuntu that the BOSH deployer depends on.
 
 <pre class="terminal">
-$ sudo apt-get -y install libsqlite3-dev genisoimage
+$ sudo apt-get -y install libsqlite3-dev genisoimage libxml2-dev libxslt-dev
 </pre>
 
 * Install Ruby and RubyGems. Refer to the [Installing Ruby](../common/install_ruby_rbenv.html) page for help with Ruby installation.
@@ -52,12 +52,12 @@ So create both and name it appropriately.
 In our example we named it micro01.
 
 <pre class="terminal">
-	mkdir deployments
-	cd deployments
-	mkdir micro01
+$ mkdir deployments
+$ cd deployments
+$ mkdir micro01
 </pre>
 
-BOSH needs a deployment manifest for MicroBOSH.
+BOSH needs a deployment manifest for Micro BOSH.
 It must be named `micro_bosh.yml`.
 Create one in your new directory following the example below:
 
@@ -134,14 +134,19 @@ logging:
 
 The `apply_spec` provides Micro BOSH with the vCenter settings in order for it
 to deploy Cloud Foundry.
-It is different than the vCenter you are using to deploy MicroBOSH because
-MicroBOSH can deploy to a different vCenter than the one it was deployed to.
+It is different than the vCenter you are using to deploy Micro BOSH because
+Micro BOSH can deploy to a different vCenter than the one it was deployed to.
 
 If you want to create a role for the BOSH user in vCenter, the privileges are
 defined [here](./vcenter_user_privileges.html).
 
 Before you can run micro BOSH deployer, you have to create folders according to
 the values in your manifest.
+
+In the example below, the vm_folder will contain the running virtual machine instance of Micro BOSH.
+The template_folder will store the BOSH Stemcells that are used to create the virtual machine instances.
+The disk_path is the destination datastore that Micro BOSH will be deployed to.
+The resource_pool is the optional pool of resources that Micro BOSH will use.
 
 1. Create the vm_folder
 1. Create the template_folder
@@ -190,6 +195,10 @@ this:
 
 Download a BOSH Stemcell:
 
+BOSH Stemcells are virtual machine templates that are cloned to create virtual machine instances.
+After cloning, a BOSH Stemcell will apply the specifications outlined for it in the deployment manifest.
+A BOSH Stemcell is usually over 500MB in size.
+
 You will need Internet access for the bosh\_cli to download the stemcells.
 You may need to temporarily set the http\_proxy and https\_proxy variables if
 you are behind a corporate firewall.
@@ -221,7 +230,7 @@ $ bosh micro deployment micro01
 Deployment set to '/var/vcap/deployments/micro01/micro_bosh.yml'
 </pre>
 
-Deploy a stemcell for MicroBOSH.
+Deploy a stemcell for Micro BOSH.
 
 <pre class="terminal">
 $ bosh micro deploy bosh-stemcell-XXXX-vsphere-esxi-ubuntu.tgz
@@ -230,7 +239,7 @@ $ bosh micro deploy bosh-stemcell-XXXX-vsphere-esxi-ubuntu.tgz
 
 ### <a id="verify"></a>Checking Status of a Micro BOSH Deploy ###
 
-Target the Microbosh
+Target the Micro BOSH
 
 <pre class="terminal">
 bosh target <ip_address_from_your_micro_bosh_manifest:25555>
