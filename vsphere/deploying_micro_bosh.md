@@ -23,8 +23,8 @@ On the BOSH team, we gleefully refer to this as [Inception](http://en.wikipedia.
 We recommend that you run the BOSH bootstrap from Ubuntu since it is the
 distribution used by the BOSH team, and has been thoroughly tested.
 
-Plan to have around 8 GB of free disk space for the bosh_cli if you plan to use it to deploy CF releases.
-You'll need around 3 GB free disk space in /tmp
+Plan to have around 8 GB of free disk space for the `bosh_cli` if you plan to use it to deploy CF releases.
+You'll need around 3 GB free disk space in `/tmp`.
 
 * Install some core packages on Ubuntu that the BOSH deployer depends on.
 
@@ -132,7 +132,7 @@ logging:
   # file :
 ~~~
 
-The `apply_spec` provides MicroBOSH with the vCenter settings in order for it
+The `apply_spec` block provides MicroBOSH with the vCenter settings in order for it
 to deploy Cloud Foundry.
 It is different than the vCenter you are using to deploy MicroBOSH because
 MicroBOSH can deploy to a different vCenter than the one it was deployed to.
@@ -143,22 +143,25 @@ defined [here](./vcenter_user_privileges.html).
 Before you can run micro BOSH deployer, you have to create folders according to
 the values in your manifest.
 
-In the example below, the vm_folder contains the running virtual machine
+In the example below, `vm_folder` contains the running virtual machine
 instance of MicroBOSH.
-The template_folder stores the BOSH Stemcells that are used to create the
+`template_folder` stores the BOSH Stemcells that are used to create the
 virtual machine instances.
-The disk_path is the destination datastore for the MicroBOSH deployment.
-The resource_pool defines the VMs for MicroBOSH to use as collections of VMs
+`disk_path` is the destination datastore for the MicroBOSH deployment.
+`resource_pool` defines the VMs for MicroBOSH to use as collections of VMs
 which are on the
 same network, are the same kind of VM from the IaaS’s perspective, and are
 built from the same stemcell.
 
-1. Create the vm_folder
-1. Create the template_folder
-1. Create the disk_path in the appropriate datastores
-1. Create the resource_pool (optional)
+1. Create `vm_folder`
+1. Create `template_folder`
+1. Create `disk_path` in the appropriate datastores
+1. Create the `resource_pool` (optional)
 
 ![vcenter-folders](/images/vcenter-folders.png)
+
+<br>
+
 ![vcenter-disk-path](/images/vcenter-disk-path.png)
 
 * Datastore Patterns
@@ -204,13 +207,14 @@ BOSH Stemcells are virtual machine templates that BOSH clones to create virtual
 machine instances.
 After cloning, a BOSH Stemcell applies the specifications outlined for it in
 the deployment manifest.
-A BOSH vSphere Stemcell usually exceeds 500MB in size.
+A BOSH vSphere Stemcell usually exceeds 500MB in size,
+except for the `light` Stemcells.
 
-You will need Internet access for the bosh\_cli to download the stemcells.
-You may need to temporarily set the http\_proxy and https\_proxy variables if
+You need Internet access for `bosh_cli` to download the stemcells.
+You may need to temporarily set `http_proxy` and `https_proxy` if
 you are behind a corporate firewall.
 If so, remember to unset it before completing the following steps if your proxy
-won't allow contacting the newly micro_bosh vm.
+won't allow the newly-created `micro_bosh` VM to be contacted.
 
 <pre class="terminal">
 $ bosh public stemcells
