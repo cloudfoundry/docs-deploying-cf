@@ -2,12 +2,12 @@
 title: Deploying MicroBOSH
 ---
 
-Installation of BOSH is done using micro BOSH, which is a single VM that
+Installation of BOSH is done using MicroBOSH, which is a single VM that
 includes all of the BOSH components.
 If you want to play around with BOSH, or create a simple development setup, you
-can install micro BOSH using the BOSH Deployer.
+can install MicroBOSH using the BOSH Deployer.
 If you would like to use BOSH in production to manage a distributed system, you
-also use the BOSH Deployer, install micro BOSH, and then use it as a means to
+also use the BOSH Deployer, install MicroBOSH, and then use it as a means to
 deploy the final distributed system on multiple VMs.
 
 A good way to think about this two step process is to consider that BOSH is a
@@ -140,7 +140,7 @@ MicroBOSH can deploy to a different vCenter than the one it was deployed to.
 If you want to create a role for the BOSH user in vCenter, the privileges are
 defined [here](./vcenter_user_privileges.html).
 
-Before you can run micro BOSH deployer, you have to create folders according to
+Before you can run MicroBOSH deployer, you have to create folders according to
 the values in your manifest.
 
 In the example below, `vm_folder` contains the running virtual machine
@@ -258,7 +258,7 @@ bosh target <ip_address_from_your_micro_bosh_manifest:25555>
 
 Login with admin/admin.
 
-The `status` command will show the persisted state for a given micro BOSH
+The `status` command will show the persisted state for a given MicroBOSH
 instance.
 
 <pre class="terminal">
@@ -281,7 +281,7 @@ $ bosh micro deployments
 </pre>
 
 The files in your current directory need to be saved if you later want to be
-able to update your micro BOSH instance.
+able to update your MicroBOSH instance.
 They are all text files, so you can commit them to a git repository to make
 sure they are safe in case your bootstrap VM goes away.
 
