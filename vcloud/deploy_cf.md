@@ -4,6 +4,8 @@ title: Deploying Cloud Foundry with Micro BOSH or BOSH
 
 This guide describes the process for deploying Cloud Foundry to a vCloud environment using Micro BOSH or distributed BOSH. To keep it simple, the rest of this document will simply call it BOSH.
 
+All of the commands below should be run from the jump box, in the `~/deployments` directory we created earlier.
+
 ## <a id="prerequisites"></a>Prerequisites ##
 
 BOSH should be deployed. See the steps in the [previous](deploying_micro_bosh.html) [sections](deploying_bosh_with_micro_bosh.html).
@@ -13,18 +15,22 @@ BOSH should be deployed. See the steps in the [previous](deploying_micro_bosh.ht
 Target the Director of the deployed BOSH using `bosh target` and the IP address of the Director. Login with admin/admin or the userid and password you set after installation.
 
 <pre class='terminal'>
-$ bosh target 10.146.21.153
+$ bosh target https://192.168.109.81:25555
+Target already set to `bosh_micro_vchs'
 $ bosh status
-Updating director data... done
+Config
+             /home/killian/.bosh_config
 
 Director
-  Name      bosh director
-  URL       http://10.146.21.153:25555
-  Version   0.7 (release:fb1aebb0 bosh:20f2ca20)
-  User      admin
-  UUID      2250612f-f0e4-41b3-b1b2-3d730e9011a7
-  CPI       vcloud
-  dns       disabled
+  Name       bosh_micro_vchs
+  URL        https://192.168.109.81:25555
+  Version    1.0000.0 (release:125d9104 bosh:125d9104)
+  User       admin
+  UUID       566c47b3-ca85-47e2-95f6-32d095747acf
+  CPI        vcloud
+  dns        enabled (domain_name: microbosh)
+  compiled_package_cache disabled
+  snapshots  disabled
 
 Deployment
   not set
@@ -34,7 +40,7 @@ You will need the UUID of the BOSH Director in your Cloud Foundry deployment fil
 
 ## <a id="upload-stemcell"></a>Upload a Stemcell ##
 
-The Director needs a stemcell in order to deploy Cloud Foundry. If you followed the installation documentation, you should already have vcloud stemcell downloaded previously when you deployed Micro BOSH or BOSH. Please upload that stemcell.
+The Director needs a stemcell in order to deploy Cloud Foundry. If you followed the installation documentation, you should already have vcloud stemcell downloaded previously when you deployed Micro BOSH or BOSH. Please upload the same stemcell.
 
 <pre class="terminal">
 $ bosh upload stemcell ~/stemcells/bosh-stemcell-xxxx-vcloud-esxi-ubuntu.tgz
@@ -142,15 +148,29 @@ Releases total: 1
 </pre>
 
 
-## <a id="create-manifest"></a>Create a Cloud Deployment Manifest ##
+## <a id="create-manifest"></a>Create a Cloud Foundry deployment manifest file ##
 
-For the purpose of this tutorial, we'll use a sample [deployment manifest](cloud-foundry-example-manifest.html). 
+For the purpose of this tutorial, we'll use a sample [deployment manifest template](cloud-foundry-example-manifest.html). Copy this file to the `~/deployments` directory on the jump box, with the name `cf.yml.erb` indicating that it's a YAML file written using erb, the ruby templating engine. It allows us to fill in a set of properties at the beginning of the file and then run `erb cf.yml.erb > cf.yml` to generate a suitable manifest file in `cf.yml`. There are significant comments within this template file, in the first section with all the user defined variables. You should fill out all of the variables provided.
 
-Use the BOSH CLI to set the deployment manifest file. 
+Please note that the goal of this example is to get an instance running **as simply as possible**. A production deployment of Cloud Foundry will likely make **significant changes** to network topology, security settings / certs, scale, etc. etc.
+
+To address some of the properties in the manifest template:
+
+* `director_uuid` - this should be set to the UUID of the Micro BOSH / BOSH being used. You can get this using bosh status.
+* `cf_release_name` / `cf_release_version` - these instructions have been tested with the Cloud Foundry release cf-147.
+* `vapp_name` - if you include a name all VMs will be created within a single vApp, which allows much simpler cleanup.
+* `IP addresses` - in general, you provide a complete range in ip_range, you exclude some of these (reserved_ip_range), assign some statically to particular VMs and leave some dynamic IPs for assignment to other VMs (in this case the DEAs are dynamic. Typically compilation VMs created by BOSH during deployments are also dynamic).
+* `network_name` - If using vCHS, this is lower case despite how it's presented in the UI
+* `uaa_login_http_s` - a secure deployment requires the UAA and login server to communicate over https. However, this requires trust between the two endpoints. Since we're using self-signed certs this is a little tricky to set up, so this deployment simply uses http. A production deployment should do this using https.
+* `wildcard_domain_name` - this deployment assumes a single (wildcard) domain name for both apps and system. Production deployments would typically use different domains.
+* **Cert / private key and public / private key pairs** - there are instructions to generate these in the template file. You can run these instructions on the jump box VM (that's why we installed the `openssl` package when setting up the jump box)
+
+Once you have filled in all the properties at the top of the templated manifest file run `erb` to generate the final manifest file `cf.yml`. Then use the BOSH CLI to set the deployment manifest file:
 
 <pre class="terminal">
-$ bosh deployment ~/deployments/cloudfoundry.yml
-Deployment set to '/home/user/deployments/cloudfoundry.yml'
+$ erb ~/deployments/cf.yml.erb > ~/deployments/cf.yml
+$ bosh deployment ~/deployments/cf.yml
+Deployment set to '/home/user/deployments/cf.yml'
 </pre>
 
 ## <a id="deploy"></a>Deploy Cloud Foundry ##
@@ -180,7 +200,9 @@ $ bosh deploy
     Done                    1/1 00:00:00
 </pre>
 
-## <a id="verfy"></a>Verify the Deployment ##
+If you run into issues, the Troubleshooting section may be of help.
+
+## <a id="verify"></a>Verify the Deployment ##
 
 Execute the `bosh vms` command to see all the vas deployed.
 
@@ -213,4 +235,18 @@ Task 30 done
 +-----------------------------+---------+------------------+---------------+
 </pre>
 
-The Cloud Foundry deployment should now be ready to use. You can now follow the instructions in the [Using](/docs/using/index.html) section of these docs to install the [cf](/docs/using/managing-apps/cf/index.html) command-line tool and push an application.
+
+## <a id="login"></a>Log In ##
+
+From your laptop try to target and log into your Cloud Foundry instance. You can now follow the instructions in the [Using](/docs/using/index.html) section of these docs to install the [cf](/docs/using/managing-apps/cf/index.html) command-line tool and push an application.
+
+To log in, the manifest file includes a pre-defined account, user id `admin` and password `cdd0549963e8749b4a04` . You can modify or add to the list of pre-provisioned accounts in the generated manifest. In the jobs section look for uaa -> properties -> uaa -> 
+
+## <a id="fin"></a>Finishing up ##
+
+If you run into issues the Troubleshooting section may be of some help.
+
+We hope these instructions have been helpful. If you find errors, want to make updates or have suggestions for further enhancement we would greatly appreciate it. Please follow the standard processes on github (i.e. send pull requests and file issues), along with the bosh-users email list. You can learn more at [cloudfoundry.org](http://www.cloudfoundry.org)
+
+Good luck with your Cloud Foundry deployments!
+
