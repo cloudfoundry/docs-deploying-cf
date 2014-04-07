@@ -45,9 +45,11 @@ Here is an example manifest for deploying Micro BOSH on vCloud.
     env:
       vapp: micro_bosh_vapp
       # By default you can ssh into the micro bosh using vcap / c1oudc0w
-      # If you want to change this default password specify the hashed password below
-      bosh:
-      	password: # <password SHA hash generated using mkpasswd -m sha-512>
+      # If you want to change this default password uncomment the following lines and
+      # specify the hashed password
+      #
+      #bosh:
+      	#password: # <password SHA hash generated using mkpasswd -m sha-512>
 
     logging:
       # If needed increase the default logging level to trace REST traffic with IaaS providers. Default is info
