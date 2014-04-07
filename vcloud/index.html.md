@@ -1,10 +1,10 @@
 ---
-title: Deploying Cloud Foundry on vCloud Hybrid Service or vCloud Director
+title: Deploying Cloud Foundry to vCloud Hybrid Service or vCloud Director
 ---
 
 ## Overview ##
 
-The goal of these instructions is to help you install open source Cloud Foundry on vCloud Hybrid Service or on a supported vCloud Director deployment (5.1+). Please note that security, scale and other production considerations are outside the scope of these instructions - we have instead emphasized simplicity in getting someone off the ground with Cloud Foundry.
+The goal of these instructions is to help you install open source Cloud Foundry on vCloud Hybrid Service (vCHS) or on a supported vCloud Director (vCD) deployment (5.1+). Please note that security, scale and other production considerations are outside the scope of these instructions. Instead we have emphasized simplicity in getting off the ground with Cloud Foundry.
 
 To install open source Cloud Foundry on vCloud Hybrid Service (vCHS) or vCloud Director, please follow the following steps:
 
@@ -18,6 +18,9 @@ Deploy **Micro BOSH** from the jump box. Micro BOSH is a single VM version of BO
 If you need production level resilience and/or large scale, install **BOSH** using Micro BOSH. Most installations of Cloud Foundry can be done without this step by using Micro BOSH installed in step 3. Since it adds some complexity we suggest avoiding this step if possible.
 
 4. [Deploy Cloud Foundry using Micro BOSH or BOSH](deploy_cf.html)
+
+
+If you're having issues the [Troubleshooting](troubleshooting.html) page should help.
 
 
 ## Sample manifest files ##
