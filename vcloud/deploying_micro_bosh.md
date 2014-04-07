@@ -157,7 +157,7 @@ $ bosh micro agent ping
 
 If you want to SSH to the Micro BOSH you can do so using the default login credentials `vcap`, `c1oudc0w`
 
-You can change the default userid & password by specifying it in the deployment manifest, as follows:
+You can change the default userid & password by specifying it in the deployment manifest, as follows (we installed the `whois` package on the jump box earlier in order to get these tools):
 
 <pre class="terminal">
 env:
