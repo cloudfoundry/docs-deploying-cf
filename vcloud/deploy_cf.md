@@ -159,7 +159,7 @@ To address some of the properties in the manifest template:
 * `director_uuid` - this should be set to the UUID of the Micro BOSH / BOSH being used. You can get this using bosh status.
 * `cf_release_name` / `cf_release_version` - these instructions have been tested with the Cloud Foundry release cf-147.
 * `vapp_name` - if you include a name all VMs will be created within a single vApp, which allows much simpler cleanup.
-* `IP addresses` - in general, you provide a complete range in ip_range, you exclude some of these (reserved_ip_range), assign some statically to particular VMs and leave some dynamic IPs for assignment to other VMs (in this case the DEAs are dynamic. Typically compilation VMs created by BOSH during deployments are also dynamic).
+* `IP addresses` - in general, you provide a complete range in `ip_range`, you exclude some of these (`reserved_ip_range`), assign some statically to particular VMs and leave some dynamic IPs for assignment to other VMs (in this case the DEAs are dynamic. Typically compilation VMs created by BOSH during deployments are also dynamic).
 * `network_name` - If using vCHS, this is lower case despite how it's presented in the UI
 * `uaa_login_http_s` - a secure deployment requires the UAA and login server to communicate over https. However, this requires trust between the two endpoints. Since we're using self-signed certs this is a little tricky to set up, so this deployment simply uses http. A production deployment should do this using https.
 * `wildcard_domain_name` - this deployment assumes a single (wildcard) domain name for both apps and system. Production deployments would typically use different domains.
