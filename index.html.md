@@ -17,7 +17,7 @@ title: Deploying Cloud Foundry with BOSH
  * [Example Apps Deployed on CF](ec2/example_apps.html)
 * [Deploying to OpenStack](openstack/index.html)
 * [Deploying to vSphere](vsphere/index.html)
-* [Deploying to vCloud Director](vcloud/deploying_to_vcloud_director.html)
+* [Deploying to vCloud Hybrid Service and vCloud Director](vcloud/index.html)
 * [Using the latest CF-Release](common/cf-release.html)
 
 
