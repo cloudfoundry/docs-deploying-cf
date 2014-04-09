@@ -20,13 +20,13 @@ Next click on  "Manage Catalogs in vCloud Director" to open the vCloud Director 
 
 
 ### vCloud Director ###
-To get started with Cloud Foundry on **vCloud Director** you will need an **account** in a [vCloud organization](http://pubs.vmware.com/vcd-51/topic/com.vmware.vcloud.users.doc_51/GUID-B2D21D95-B37F-4339-9887-F7788D397FD8.html) and a vCloud **virtual datacenter** with an Internet routable network and a block of assigned IP addresses. The recommended resources for a full CF deployment introduced in this doc is to have 28 CPU cores, 39 GB Memory, 120 GB disk, 23 IPs to assign. 
+To get started with Cloud Foundry on **vCloud Director** you will need an **account** in a [vCloud organization](http://pubs.vmware.com/vcd-51/topic/com.vmware.vcloud.users.doc_51/GUID-B2D21D95-B37F-4339-9887-F7788D397FD8.html) and a vCloud **virtual datacenter** with an Internet routable network and a block of assigned IP addresses. The recommended resources for a full CF deployment introduced in this doc is to have 28 CPU cores, 39 GB Memory, 120 GB disk, 23 IPs to assign.
 
 Your user account will need [organization administrator](http://pubs.vmware.com/vcd-51/topic/com.vmware.vcloud.users.doc_51/GUID-5B60A9C0-612A-4A3A-9ECE-694C40272505.html) privileges for this virtual datacenter.
 
 ## <a id="catalog"></a>Add a catalog ##
 
-In the vCloud Director UI, choose "Catalogs" on the top row of buttons, then "My Organization's Catalogs". 
+In the vCloud Director UI, choose "Catalogs" on the top row of buttons, then "My Organization's Catalogs".
 
 Add a catalog in vCloud Director where stemcells and media (ISOs) for BOSH will be stored.
 Next click on  "Manage Catalogs in vCloud Director" to open the vCloud Director UI.
@@ -46,7 +46,7 @@ If you want to add a network in vCHS, or if you need to in vCloud Director, here
 1. Click the Manage & Monitor tab and click Organization vDCs in the left pane.
 2. Double-click the organization vDC name to open the organization vDC.
 3. Click the Org vDC Networks tab and click Add Network.
-4. Then choose to add an external direct network or an external routed network. For security and better usage of IP resources, the external routed network is recommended. For adding routed network detailed steps, please refer this link: 
+4. Then choose to add an external direct network or an external routed network. For security and better usage of IP resources, the external routed network is recommended. For adding routed network detailed steps, please refer this link:
  [Create an External Routed Organization vDC Network](http://pubs.vmware.com/vcd-51/index.jsp#com.vmware.vcloud.admin.doc_51/GUID-6E69AF88-31E0-4DD8-A79E-E8E4B6F68878.html).
 
 
@@ -54,10 +54,10 @@ If you want to add a network in vCHS, or if you need to in vCloud Director, here
 
 You will be using the private network created above for your deployment. You should plan the use of your **private IP addresses** as follows:
 * Assign a private IP for the jump box
-* Assign a second IP for Micro BOSH 
+* Assign a second IP for Micro BOSH
 * Assign a range of at least 20 IPs use for static IP assignments to VMs in the Cloud Foundry deployment
 * Assign one of the IPs in this static range for HA Proxy
-* Allocate the same number again to be used dynamically during deployment. 
+* Allocate the same number again to be used dynamically during deployment.
 
 The exact number of addresses needed for the static and dynamic ranges will depend on the size of your deployment. The basic deployment described in this documentation will use 1 jump box VM, 1 micro BOSH VM and ~16 Cloud Foundry VMs.
 
@@ -111,9 +111,9 @@ The rest of this documentation assumes you have created this machine in the targ
 
 The following steps will help you to install the BOSH command line interface (CLI) on the jump box VM:
 
-1. Make sure you have installed the core Ubuntu packages that the BOSH deployer depends on - see the [section above] (#jumpbox)
+1. Make sure you have installed the core Ubuntu packages that the BOSH deployer depends on - see the [section above](#jumpbox)
 
-2. Install Ruby and RubyGems. Refer to the [Installing Ruby](/docs/common/install_ruby.html) page for help with Ruby installation. We recommend using rbenv to install a recent version of ruby 1.9.3 (e.g. 1.9.3-p545) as we have found the versions available using apt-get on Ubuntu are out of date and don't work well. 
+2. Install Ruby and RubyGems. We recommend using rbenv to install a recent version of ruby 1.9.3 (e.g. 1.9.3-p545) as we have found the versions available using apt-get on Ubuntu are out of date and don't work well.
 
 3. Install the BOSH deployer Ruby gem.
 
@@ -141,7 +141,7 @@ These instructions explain a deployment using a single wildcard domain for both 
 
 ### Private network deployments and DNS
 
-When the internal components of Cloud Foundry talk to each other over http (e.g. login server to the UAA) they use the same wildcard DNS name to resolve host names to IPs as external applications, as described above. As a result, when `login.mycf.com` wants to connect to `uaa.mycf.com` and does a DNS lookup, it will receive the public IP address of the deployed HA Proxy in this deployment. Since the public IP is simply NAT'd to a private IP in this deployment, this requires the network setup to allow for NATing from the private network IP to a public IP and then back to a private IP. In carrying out this deployment we have found this both tricky and inefficient. 
+When the internal components of Cloud Foundry talk to each other over http (e.g. login server to the UAA) they use the same wildcard DNS name to resolve host names to IPs as external applications, as described above. As a result, when `login.mycf.com` wants to connect to `uaa.mycf.com` and does a DNS lookup, it will receive the public IP address of the deployed HA Proxy in this deployment. Since the public IP is simply NAT'd to a private IP in this deployment, this requires the network setup to allow for NATing from the private network IP to a public IP and then back to a private IP. In carrying out this deployment we have found this both tricky and inefficient.
 
 To simplify this we recommend that, when deploying a CF instance to a private network, VMs on this network resolve host names for other internal services to private IP addresses rather than public IPs. In the example above, when the login server tries to connect to the UAA service on `uaa.mycf.com` it will get the private network IP address for HA Proxy rather than the public IP.
 
@@ -155,25 +155,25 @@ In /etc/bind, modify the file `named.conf.options` to include `forwarders`. For 
 
 	options {
 	        directory "/var/cache/bind";
-	
+
 	        forwarders {
 	        8.8.8.8;
 	        8.8.4.4;
 	        };
-	
+
 	        dnssec-validation auto;
-	
+
 	        auth-nxdomain no;    # conform to RFC1035
 	        listen-on-v6 { any; };
 	};
-	
+
 Modify the file `named.conf.local` to pull in a zone configuration file. Replace <public IP> below with the public IP address being used to access your deployment.
 
 	zone "<public IP>.xip.io" IN {
 	 type master;
 	 file "/etc/bind/zones/<public IP>.xip.io.db";
 	};
-		
+
 Finally, create a file in `/etc/bind/zones/<public IP>.xip.io"` as follows
 
 	<public IP>.xip.io. 3600 IN SOA ns.<public IP>.xip.io. hostmaster.<public IP>.xip.io. (
@@ -183,17 +183,17 @@ Finally, create a file in `/etc/bind/zones/<public IP>.xip.io"` as follows
 	 4W ; expire
 	 1D ; minimum
 	)
-	
+
 	$ORIGIN <public IP>.xip.io.  ; Set the $ORIGIN domain
-	
+
 	@ IN NS ns.<public IP>.xip.io. ; Set the nameserver to this machine
 	ns IN A 192.168.109.15
-	
+
 	* IN A 192.168.109.119           ; Set the wildcard domain to the HA Proxy internal IP
 
 Once you create / change these files you will need to restart the DNS server. This can be done with the command `service bind9 restart`.
 
-*Thanks to [Bobby Allen's blog] (http://blog.bobbyallen.me/2013/09/19/setting-up-internal-dns-on-ubuntu-server-12-04-lts/) for the help in figuring this out.*
+*Thanks to [Bobby Allen's blog](http://blog.bobbyallen.me/2013/09/19/setting-up-internal-dns-on-ubuntu-server-12-04-lts/) for the help in figuring this out.*
 
 
 ## <a id="next-step"></a> Next Step ##

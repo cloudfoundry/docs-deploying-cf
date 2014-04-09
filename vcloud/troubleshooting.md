@@ -5,7 +5,7 @@ title: Troubleshooting
 
 ## <a id="ssh_to_vms"></a> SSHing to BOSH created VMS
 
-If you need to debug a Cloud Foundry deployment you will probably need to log into one or more of the deployed VMs at some point. You can get the IP address using `bosh vms` . Then use `ssh` to connect to the VM. By default you can use the userid `vcap` with the password `c1oudc0w` . You can change the default password in the manifest file as described in the [micro BOSH deployment instructions](deploying_micro_bosh.md)
+If you need to debug a Cloud Foundry deployment you will probably need to log into one or more of the deployed VMs at some point. You can get the IP address using `bosh vms` . Then use `ssh` to connect to the VM. By default you can use the userid `vcap` with the password `c1oudc0w` . You can change the default password in the manifest file as described in the [micro BOSH deployment instructions](./deploying_micro_bosh.html)
 
 Once you are logged into the target machine the Cloud Foundry components are typically deployed in `/var/vcap`. The following session demonstrates getting the VM IPs, logging into the UAA and showing the log.
 
@@ -41,7 +41,7 @@ Task 15 done
 
 VMs total: 16
 killian@ubuntu:~$ ssh vcap@192.168.109.91
-vcap@192.168.109.91's password: 
+vcap@192.168.109.91's password:
 Linux 2c2112c9-4966-4f34-9f1d-4c18cf0517f1 3.0.0-32-virtual #51~lucid1-Ubuntu SMP Fri Mar 22 18:13:07 UTC 2013 x86_64 GNU/Linux
 Ubuntu 10.04.4 LTS
 
@@ -192,14 +192,14 @@ Director task 14
      Done deleting instances: nfs_server/0 (00:11:21)
 
 Removing deployment artifacts
-  detach stemcells (00:00:00)                                                                       
-  detaching releases (00:00:00)                                                                     
-Done                    3/3 00:00:00                                                                
+  detach stemcells (00:00:00)
+  detaching releases (00:00:00)
+Done                    3/3 00:00:00
 
 Deleting properties
-  delete DNS records (00:00:00)                                                                     
-  destroy deployment (00:00:00)                                                                     
-Done                    0/0 00:00:00                                                                
+  delete DNS records (00:00:00)
+  destroy deployment (00:00:00)
+Done                    0/0 00:00:00
 
 Task 14 done
 
@@ -208,8 +208,8 @@ Finished	2014-03-27 19:30:52 UTC
 Duration	00:11:21
 
 Deleted deployment `cf_oss'
-killian@ubuntu:~/deployments$ 
-killian@ubuntu:~/deployments$ 
+killian@ubuntu:~/deployments$
+killian@ubuntu:~/deployments$
 killian@ubuntu:~/deployments$ bosh micro delete
 
 You are going to delete micro BOSH deployment `bosh_micro_vchs'.
@@ -219,13 +219,13 @@ THIS IS A VERY DESTRUCTIVE OPERATION AND IT CANNOT BE UNDONE!
 Are you sure? (type 'yes' to continue): yes
 
 Delete micro BOSH
-  stopping agent services (00:00:01)                                                                
-  unmount disk (00:00:11)                                                                           
-  detach disk (00:01:00)                                                                            
-  delete disk (00:00:05)                                                                            
-  delete VM (00:00:25)                                                                              
-  delete stemcell (00:00:02)                                                                        
-Done                    7/7 00:01:47                                                                
+  stopping agent services (00:00:01)
+  unmount disk (00:00:11)
+  detach disk (00:01:00)
+  delete disk (00:00:05)
+  delete VM (00:00:25)
+  delete stemcell (00:00:02)
+Done                    7/7 00:01:47
 Deleted deployment 'bosh_micro_vchs', took 00:01:47 to complete
 
 </pre>
