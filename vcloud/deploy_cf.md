@@ -107,7 +107,7 @@ $ bosh upload release releases/cf-xxx.yml # These docs have been tested with cf-
 You'll see a flurry of output as BOSH configures and uploads release components. Here's a shortened version:
 
 <pre class="terminal">
-$ bosh upload release releases/cf-147.yml 
+$ bosh upload release releases/cf-147.yml
 
 Copying packages
 ----------------
@@ -120,8 +120,8 @@ loggregator_trafficcontroller (3) FOUND LOCAL
 
 
 Release has been created
-  cf/147 (00:00:00)                                                                                 
-Done                    1/1 00:00:00                                                                
+  cf/147 (00:00:00)
+Done                    1/1 00:00:00
 
 Task 11 done
 
@@ -238,9 +238,9 @@ Task 30 done
 
 ## <a id="login"></a>Log In ##
 
-From your laptop try to target and log into your Cloud Foundry instance. You can now follow the instructions in the [Using](/docs/using/index.html) section of these docs to install the [cf](/docs/using/managing-apps/cf/index.html) command-line tool and push an application.
+From your laptop try to target and log into your Cloud Foundry instance. You can now follow the instructions in the [cf](/devguide/index.html#cf) section of the Developer Guide to [install the cf](/devguide/installcf/install-go-cli.html) command-line tool and push an application.
 
-To log in, the manifest file includes a pre-defined account, user id `admin` and password `cdd0549963e8749b4a04` . You can modify or add to the list of pre-provisioned accounts in the generated manifest. In the jobs section look for uaa -> properties -> uaa -> 
+To log in, the manifest file includes a pre-defined account, user id `admin` and password `cdd0549963e8749b4a04` . You can modify or add to the list of pre-provisioned accounts in the generated manifest. In the jobs section look for uaa -> properties -> uaa ->
 
 ## <a id="fin"></a>Finishing up ##
 

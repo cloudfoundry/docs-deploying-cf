@@ -2,7 +2,7 @@
 title: Deploying BOSH with Micro BOSH
 ---
 
-This guide describes the process for deploying BOSH as an application using micro BOSH. 
+This guide describes the process for deploying BOSH as an application using micro BOSH.
 
 ## <a id="prerequisites"></a>Prerequisites ##
 
@@ -15,7 +15,7 @@ Once your micro BOSH instance is deployed, you can target its Director:
 <pre class="terminal">
 $ bosh micro status
 ...
-Target         micro (http://10.146.21.150:25555) 
+Target         micro (http://10.146.21.150:25555)
 
 $ bosh target 10.146.21.150
 Target set to 'your-micro-BOSH'
@@ -77,7 +77,7 @@ $ bosh stemcells
 
 ## <a id="upload-release"></a>Upload a BOSH release ##
 
-You can find and download the latest bosh release file from [here](http://bosh_artifacts.cfapps.io/file_collections?type=releases) 
+You can find and download the latest bosh release file from [here](https://bosh-artifacts.cfapps.io/file_collections?type=releases)
 
 <pre class="terminal">
 $ bosh upload release bosh-XXXX.tgz
@@ -85,14 +85,14 @@ $ bosh upload release bosh-XXXX.tgz
 
 ## <a id="deploy"></a>Setup a BOSH Deployment Manifest and Deploy ##
 
-Create and setup a BOSH deployment manifest. Look at the [BOSH example manifest](./bosh-example-manifest.html). 
+Create and setup a BOSH deployment manifest. Look at the [BOSH example manifest](./bosh-example-manifest.html).
 
 Deploy BOSH. (the following assumes your manifest is named `bosh.yml` in `/home/bosh_user`).
 
 <pre class="terminal">
 $ cd /home/bosh_user
 $ bosh deployment bosh.yml
-		
+
 Deployment set to `/home/bosh_user/bosh.yml'
 
 $ bosh deploy
@@ -107,31 +107,31 @@ Deploying `bosh.yml' to `your-micro-BOSH' (type 'yes' to continue): yes
 Director task 5
 
 Preparing deployment
-  binding deployment (00:00:00)                                                                     
-  binding releases (00:00:00)                                                                       
-  binding existing deployment (00:00:00)                                                            
-  binding resource pools (00:00:00)                                                                 
-  binding stemcells (00:00:00)                                                                      
-  binding templates (00:00:00)                                                                      
-  binding unallocated VMs (00:00:00)                                                                
-  binding instance networks (00:00:00)                                                              
-Done                    8/8 00:00:00                                                                
+  binding deployment (00:00:00)
+  binding releases (00:00:00)
+  binding existing deployment (00:00:00)
+  binding resource pools (00:00:00)
+  binding stemcells (00:00:00)
+  binding templates (00:00:00)
+  binding unallocated VMs (00:00:00)
+  binding instance networks (00:00:00)
+Done                    8/8 00:00:00
 
 Preparing package compilation
-  finding packages to compile (00:00:00)                                                            
-Done                    1/1 00:00:00                                                                
+  finding packages to compile (00:00:00)
+Done                    1/1 00:00:00
 
 Preparing DNS
-  binding DNS (00:00:00)                                                                            
-Done                    1/1 00:00:00                                                                
+  binding DNS (00:00:00)
+Done                    1/1 00:00:00
 
 Creating bound missing VMs
-  small/0 (00:00:50)                                                                                
-  small/4 (00:01:02)                                                                                
-  small/1 (00:01:19)                                                                                
-  small/2 (00:01:22)                                                                                
-  small/3 (00:01:24)                                                                                
-  director/0 (00:01:26)                                                                             
+  small/0 (00:00:50)
+  small/4 (00:01:02)
+  small/1 (00:01:19)
+  small/2 (00:01:22)
+  small/3 (00:01:24)
+  director/0 (00:01:26)
 Done                    6/6 00:01:26
 </pre>
 
@@ -144,7 +144,7 @@ The example BOSH director has the IP address `10.146.21.153`. Targeting this dir
 <pre class="terminal">
 $ bosh target 10.146.21.153
 Target set to 'your-director'
-Your username: admin	
+Your username: admin
 Enter password: admin
 Logged in as `admin'
 </pre>
