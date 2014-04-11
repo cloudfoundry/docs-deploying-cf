@@ -2,7 +2,7 @@
 title: Deploying Micro BOSH
 ---
 
-Installation of BOSH is done using micro BOSH, which is a single VM that includes all of the BOSH components. See [How Bosh Works](/bosh/how-bosh-works.html) for more information.
+Installation of BOSH is done using micro BOSH, which is a single VM that includes all of the BOSH components. See [BOSH Components](/bosh/bosh-components.html) for more information.
 
 If you want to play around with BOSH, or create a simple development setup, you can install micro BOSH using the BOSH Deployer. If you would like to use BOSH in production to manage a distributed system, you also use the BOSH Deployer, install micro BOSH, and then use it as a means to deploy the final distributed system on multiple VMs.
 
@@ -210,8 +210,8 @@ apply_spec:
 
 In this example we add/override several properties:
 
-* `director.max_threads` sets the number of concurrent threads Micro BOSH [director](/bosh/how-bosh-works.html#director) will use to perform some actions (i.e. the number of parallel `create vm` tasks), so set this option according to your OpenStack environment (if not set, the default is 32 concurrent threads).
-* `hm.resurrector_enabled` enables the [BOSH Health Monitor](/bosh/how-bosh-works.html#hm) resurrector plugin. This plugin will lookup for jobs in a down state, and will try to resurrect (bring up) them.
+* `director.max_threads` sets the number of concurrent threads Micro BOSH [director](/bosh/bosh-components.html#director) will use to perform some actions (i.e. the number of parallel `create vm` tasks), so set this option according to your OpenStack environment (if not set, the default is 32 concurrent threads).
+* `hm.resurrector_enabled` enables the BOSH Health Monitor [Resurrector](/bosh/bosh-components.html#resurrector)  plugin. This plugin will lookup for jobs in a down state, and will try to resurrect (bring up) them.
 * `ntp` sets the [Internet Time Servers](http://www.ntp.org/) to be used to synchronize the clocks of new vms.
 
 ### <a id="download_stemcell"></a>Download Micro BOSH stemcell ###

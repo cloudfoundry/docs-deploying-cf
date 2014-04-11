@@ -2,7 +2,7 @@
 title: Uploading a BOSH Stemcell
 ---
 
-This guide describes the process for uploading a [BOSH Stemcell](/bosh/glossary.html#stemcell) to your [BOSH Director](/bosh/how-bosh-works.html#director).
+This guide describes the process for uploading a [BOSH Stemcell](/bosh/glossary.html#stemcell) to your [BOSH Director](/bosh/bosh-components.html#director).
 
 ## <a id="prerequisites"></a>Prerequisites ##
 
