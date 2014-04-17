@@ -12,7 +12,7 @@ We will leverage the Elastic IP, Security Group and Key Pair file that we create
 
 4. Deploy Manifest
 
-Much of this is borrowed from [here](http://blog.cloudfoundry.com/2012/09/06/deploying-to-aws-using-cloud-foundry-bosh/).
+Much of this is borrowed from the blog post that originally announced support for [deploying BOSH to AWS](http://blog.cloudfoundry.com/2012/09/06/deploying-to-aws-using-cloud-foundry-bosh/).
 
 ### Create Directory Structure
 
@@ -30,8 +30,12 @@ touch microbosh.yml
 
 Now let’s review what the contents of the `microbosh.yml` deployment
 manifest file should include. If you did not use the us-east-1a
-availability zone, you will need to adjust that. We are using a small instance type for the Micro BOSH. Be sure to replace "x.x.x.x" with
-the IP address you created in [Configuring AWS for Micro BOSH](./configure_aws_micro_bosh.html) and make sure to replace the AWS access credentials with your own.
+availability zone, you will need to adjust that. We are using a small instance type for the Micro BOSH.
+
+**Note**: Replace all instances of "x.x.x.x" with
+the IP address you created in [Configuring AWS for Micro BOSH](./configure_aws_micro_bosh.html). Because MicroBOSH deploys to a single VM,
+all the IP addresses in the manifest are the same. Also ensure that you replace
+the AWS access credentials with your own.
 
 ~~~yaml
 name: microbosh
@@ -41,7 +45,7 @@ logging:
 
 network:
   type: dynamic
-  vip: x.x.x.x    #Change this to the allocated IP address from Step 2
+  vip: x.x.x.x    #Change this to the MicroBOSH IP address
 
 resources:
   persistent_disk: 20000
@@ -53,8 +57,8 @@ cloud:
   plugin: aws
   properties:
     aws:
-      access_key_id: AKIAIYJWVDUP4KRESQ
-      secret_access_key: EVGFswlmOvA33ZrU1ViFEtXC5Sugc19yPzoWRf
+      access_key_id: xxxxxxxxxxxx	#Change this to your key
+      secret_access_key: xxxxxxxxxxx	#Change this to your key
       default_key_name: bosh
       default_security_groups: ["bosh"]
       ec2_private_key: ~/.ssh/bosh
@@ -64,12 +68,12 @@ cloud:
 apply_spec:
   agent:
     blobstore:
-      address: x.x.x.x    #Change this to the allocated IP address from Step 2
+      address: x.x.x.x    #Change this to the MicroBOSH IP address
     nats:
-      address: x.x.x.x    #Change this to the allocated IP address from Step 2
+      address: x.x.x.x    #Change this to the MicroBOSH IP address
   properties:
     aws_registry:
-      address: x.x.x.x    #Change this to the allocated IP address from Step 2
+      address: x.x.x.x    #Change this to the MicroBOSH IP address
 ~~~
 
 If you are using the sample manifest provided, confirm the following:
@@ -141,16 +145,18 @@ stage will likely be related to having missed a step in configuring AWS or an er
 bosh micro delete
 </pre>
 
-Log into the new Micro BOSH server:
+Log into the new Micro BOSH server using the commands below. The default username and password are admin/admin.
 
 <pre class="terminal">
-bosh target 54.204.16.249
-bosh login
+$ bosh target 54.204.16.249
+Current target is https://54.204.16.249:25555 (Bosh Lite Director)
+$ bosh login
+Your username: admin
+Enter password: *****
+Logged in as `admin'
 </pre>
 
-The default username and password are "admin" and “admin”.
-
-If the deployment runs successfully, you will have a Micro BOSH VM deployed onto AWS.
+If the deployment runs successfully, you have a Micro BOSH VM deployed onto AWS.
 
 ![image alt text](ec2/image_17.png)
 
