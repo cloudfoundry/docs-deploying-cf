@@ -239,20 +239,14 @@ Deploy the BOSH:
   bosh deploy
 </pre>
 
-If the deployment fails, clean it up before trying again. This
-command takes some time. You will also have several instances running
+The deploy command takes some time. You will also have several instances running
 in EC2 while this happens. These extra instances are used to
 distribute the compilation of packages needed for your BOSH virtual
 machine. You can control the number of compilation workers in the
 bosh.yml file we created above.
 
-<pre class="terminal">
-bosh delete deployment bosh
-</pre>
-
-
-Log into the new BOSH server and replace the IP address you created
-in Step 4 with the one below:
+When the deploy command finishes, log into the new BOSH server and replace 
+the IP address you created in Step 4 with the one below:
 
 <pre class="terminal">
 bosh target 23.21.249.15
@@ -275,6 +269,14 @@ Note a few things in this image:
 4. **bosh** - The name of the Security Group
 
 5. **23.21.249.15**- The Elastic IP address that we created, which is also the external IP address for the BOSH server
+
+**BOSH Deployment Failures**
+
+If the deployment fails, run the following command to clean it up before trying again:
+
+<pre class="terminal">
+bosh delete deployment bosh
+</pre>
 
 ###Go on to [Configuring AWS for CF](./configure_aws_cf.html) or [Return to Index](./index.html)
 
