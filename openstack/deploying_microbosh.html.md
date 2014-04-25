@@ -22,7 +22,7 @@ You will need access to these OpenStack services:
 
 * [Identity](http://www.openstack.org/software/openstack-shared-services/): Micro BOSH will authenticate your credentials through the identity server and get the endpoint URLs for other OpenStack services.
 * [Compute](http://www.openstack.org/software/openstack-compute/): Micro BOSH will boot new vms, assign floating IPs to vm, and create and attach volumes to vms.
-* [Image](http://www.openstack.org/software/openstack-shared-services/): Micro BOSH will update new images (called [BOSH Stemcells](/bosh/glossary.html#stemcell) in BOSH terminology).
+* [Image](http://www.openstack.org/software/openstack-shared-services/): Micro BOSH will update new images (called [BOSH Stemcells](/bosh/terminology.html#stemcell) in BOSH terminology).
 
 Although the new [OpenStack Networking](http://www.openstack.org/software/openstack-networking/) service is not required, it is recommended if you want to deploy complex distributed systems.
 
