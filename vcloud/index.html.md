@@ -6,8 +6,12 @@ title: Deploying Cloud Foundry to vCloud Hybrid Service or vCloud Director
 
 The goal of these instructions is to help you install open source Cloud Foundry on vCloud Hybrid Service (vCHS) or on a supported vCloud Director (vCD) deployment (5.1+). Please note that security, scale and other production considerations are outside the scope of these instructions. Instead we have emphasized simplicity in getting off the ground with Cloud Foundry.
 
-The goal of these instructions is to deploy an environment that looks something like the following diagram. Specifically, we deploy all VMs to a private network. We provide access to two of these VMs from the public internet, and allow all internal VMs to connect to external IPs.
+The goal of these instructions is to deploy an environment that looks like the following diagram. Specifically:
 
+* We deploy to a private network.
+* We deploy a jump box VM in that private network from which all other deployment is carried out
+* We provide outbound connectivity for all VMs from the private network to the public network
+* We provide inbound access to the jump box and to the Cloud Foundry instance from the public network
 
 ![vCHS / vCloud Director Cloud Foundry deployment](/vcloud_images/vcloud_cf_deployment_vms.png)
 
