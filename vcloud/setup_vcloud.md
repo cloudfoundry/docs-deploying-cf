@@ -5,18 +5,18 @@ title: Set up vCHS or vCloud Virtual Data Center Resources
 ## <a id="prerequisites"></a>Prerequisites ##
 
 ### vCloud Hybrid Service ###
-To get started with Cloud Foundry on **vCloud Hybrid Service** you will need a 
-**vCloud Hybrid Service account** and a **virtual datacenter** (vDC) with at 
-least 60GB memory, 120GB disk, and 28 vCPU cores. 
-You will need at least two public IP addresses: one to connect to the jump box 
+To get started with Cloud Foundry on **vCloud Hybrid Service** you will need a
+**vCloud Hybrid Service account** and a **virtual datacenter** (vDC) with at
+least 60GB memory, 120GB disk, and 28 vCPU cores.
+You will need at least two public IP addresses: one to connect to the jump box
 VM and one for Cloud Foundry.
 
-Your user account will need Virtual Infrastructure Administrator and Network 
+Your user account will need Virtual Infrastructure Administrator and Network
 Administrator privileges for this virtual datacenter.
 
-Many of the actions we take during this installation will be carried out in the 
-vCloud Director UI. 
-When using vCHS, you can open the **vCloud Director UI** for your virtual 
+Many of the actions we take during this installation will be carried out in the
+vCloud Director UI.
+When using vCHS, you can open the **vCloud Director UI** for your virtual
 datacenter as follows:
 
 Click on your virtual datacenter to open the virtual datacenter details.
@@ -41,7 +41,7 @@ Next, click **Manage Catalogs in vCloud Director** to open the vCloud Director U
 
 ## <a id="network"></a>Set up networking ##
 
-Please note that the following instructions are **optimized for simplicity rather than security**. 
+Please note that the following instructions are **optimized for simplicity rather than security**.
 When planning a production deployment of Cloud Foundry, you will need to modify these instructions to meet the needs of your service.
 
 ### Create a network ###
@@ -185,83 +185,6 @@ The following steps will help you to install the BOSH command line interface (CL
         gem install bosh\_cli\_plugin\_micro --pre --no-ri --no-rdoc
 
 Once you have installed the deployer, you will be able to use `bosh micro` commands. To see help on these type `bosh help micro`
-
-<<<<<<< HEAD
-## <a id="dns"></a> DNS and public IPs
-
-### Public IPs
-
-This deployment makes use of two public IP addresses, used as follows:
-
-* One to access the jump box
-* One for all access to the Cloud Foundry instance
-
-### Wildcard domains
-
-In general we use a wildcard domain to map all apps and services running on a Cloud Foundry instance to its public IP address (i.e. the public IP address of HA Proxy in the deployment described in this documentation, or the IP address of a load balancer if that's being used). For example, if a Cloud Foundry instance is using the wildcard domain `*.mycf.com`, and the application foo is deployed to it, the URL `foo.mycf.com` can be used to access the foo application.
-
-The system services are made available in the same way - `api.mycf.com`, `console.mycf.com` etc may all be used. This can lead to some phishing opportunities, however. For example, someone could pretend to be a legitimate system service and create `change_your_password.mycf.com` or `sign_up_with_credit_card.mycf.com`. To avoid this, Cloud Foundry supports two domains, one for system applications and one for general applications. Only administrators of the system can deploy applications to the system domain.
-
-These instructions explain a deployment using a single wildcard domain for both applications and system services. It is straightforward to use separate domains if you wish, by modifying the Cloud Foundry manifest file used in [Deploying Cloud Foundry](deploy_cf.html).
-
-### Private network deployments and DNS
-
-When the internal components of Cloud Foundry talk to each other over http (e.g. login server to the UAA) they use the same wildcard DNS name to resolve host names to IPs as external applications, as described above. As a result, when `login.mycf.com` wants to connect to `uaa.mycf.com` and does a DNS lookup, it will receive the public IP address of the deployed HA Proxy in this deployment. Since the public IP is simply NATed to a private IP in this deployment, this requires the network setup to allow for NATing from the private network IP to a public IP and then back to a private IP. In carrying out this deployment we have found this both tricky and inefficient.
-
-To simplify this we recommend that, when deploying a CF instance to a private network, VMs on this network resolve host names for other internal services to private IP addresses rather than public IPs. In the example above, when the login server tries to connect to the UAA service on `uaa.mycf.com` it will get the private network IP address for HA Proxy rather than the public IP.
-
-Doing this requires setting up a **private DNS server** within the private network for VMs on that network.
-
-For this deployment, we suggest using the jump box to support this DNS Server. We installed the `bind2` package on the jump box earlier to provide internal DNS support.
-
-You can configure the package as follows:
-
-In /etc/bind, modify the file `named.conf.options` to include `forwarders`. For example, the version of the file used in developing these docs looks as follows:
-
-	options {
-	        directory "/var/cache/bind";
-
-	        forwarders {
-	        8.8.8.8;
-	        8.8.4.4;
-	        };
-
-	        dnssec-validation auto;
-
-	        auth-nxdomain no;    # conform to RFC1035
-	        listen-on-v6 { any; };
-	};
-
-Modify the file `named.conf.local` to pull in a zone configuration file. Replace <public IP> below with the public IP address being used to access your deployment.
-
-	zone "<public IP>.xip.io" IN {
-	 type master;
-	 file "/etc/bind/zones/<public IP>.xip.io.db";
-	};
-
-Finally, create a file in `/etc/bind/zones/<public IP>.xip.io"` as follows
-
-	<public IP>.xip.io. 3600 IN SOA ns.<public IP>.xip.io. hostmaster.<public IP>.xip.io. (
-	 2014032701 ; serial
-	 8H ; refresh
-	 4H ; retry
-	 4W ; expire
-	 1D ; minimum
-	)
-
-	$ORIGIN <public IP>.xip.io.  ; Set the $ORIGIN domain
-
-	@ IN NS ns.<public IP>.xip.io. ; Set the nameserver to this machine
-	ns IN A 192.168.109.15
-
-	* IN A 192.168.109.119           ; Set the wildcard domain to the HA Proxy internal IP
-
-Once you create / change these files you will need to restart the DNS server. This can be done with the command `service bind9 restart`.
-
-*Thanks to [Bobby Allen's blog](http://blog.bobbyallen.me/2013/09/19/setting-up-internal-dns-on-ubuntu-server-12-04-lts/) for the help in figuring this out.*
-
-=======
->>>>>>> b4c812b2bda0900874cf8c0fa5d4213a910587cf
 
 ## <a id="next-step"></a> Next Step ##
 When you're finished setting up, move on to the next step - [deploying MicroBOSH](deploying_micro_bosh.html)
