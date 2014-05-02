@@ -10,7 +10,7 @@ This document explains how to delete a  Cloud Foundry Deployment and BOSH Deploy
 
 + Execute command: `bosh deployments`
 
-   Output of the above command is similar to listing below:
+   Output of the above command is similar to the listing below:
 
 
           $ bosh deployments
@@ -40,11 +40,11 @@ This document explains how to delete a  Cloud Foundry Deployment and BOSH Deploy
            Deleting instances
 
 
-+ Once Cloud Foundry is deleted, next step is to delete the Cloud Foundry  release.You can get the release name as follows:
++ Once Cloud Foundry is deleted, the next step is to delete the Cloud Foundry release. You can get the release name as follows:
 
   `bosh releases`
 
-   Output of the above command is similar to listing below. Cloud Foundry's release name uploaded into bosh is appcloud.
+   Output of the above command is similar to the listing below. Cloud Foundry's release name uploaded to BOSH is appcloud.
 
           $ bosh releases
 
@@ -71,14 +71,15 @@ This document explains how to delete a  Cloud Foundry Deployment and BOSH Deploy
 
             Deleting packages
 
-This completes the deletion of Cloud Foundry deployment release from BOSH.
+This completes the deletion of a Cloud Foundry release from BOSH.
 
 ## Delete BOSH Deployment
 
 + First delete the BOSH stemcell as follows
 
 
- `bosh delete stemcell bosh-vsphere-esxi-ubuntu 1029` # you can find stemcell name in the output of `bosh deployment` which we executed above
+ `bosh delete stemcell bosh-vsphere-esxi-ubuntu 1029`
+You can find the stemcell name from the output of `bosh deployment` which we executed above.
 
    Output of the above command is partially listed below:
 
@@ -129,4 +130,4 @@ Output of the above command is partially listed below:
 
          Deleting instances
 
- This deletes the Bosh deployment from Micro BOSH.
+ This deletes the BOSH deployment from Micro BOSH.
