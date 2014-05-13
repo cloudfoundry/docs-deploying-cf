@@ -1,14 +1,14 @@
 ---
-title: Deploy Micro Bosh on AWS
+title: Deploy MicroBOSH on AWS
 ---
 
-We will leverage the Elastic IP, Security Group and Key Pair file that we created in Configuring AWS for Micro BOSH](./configure_aws_micro_bosh.html) to deploy a Micro BOSH server on AWS in four steps:
+We will leverage the Elastic IP, Security Group and Key Pair file that we created in [Configuring AWS for MicroBOSH](./configure_aws_micro_bosh.html) to deploy a MicroBOSH server on AWS in four steps:
 
 1. Create Directory Structure
 
-2. Create Micro BOSH Deployment Manifest
+2. Create MicroBOSH Deployment Manifest
 
-3. Find the correct Micro BOSH Stemcell
+3. Find the correct MicroBOSH Stemcell
 
 4. Deploy Manifest
 
@@ -33,7 +33,7 @@ manifest file should include. If you did not use the us-east-1a
 availability zone, you will need to adjust that. We are using a small instance type for the Micro BOSH.
 
 **Note**: Replace all instances of "x.x.x.x" with
-the IP address you created in [Configuring AWS for Micro BOSH](./configure_aws_micro_bosh.html). Because MicroBOSH deploys to a single VM,
+the IP address you created in [Configuring AWS for MicroBOSH](./configure_aws_micro_bosh.html). Because MicroBOSH deploys to a single VM,
 all the IP addresses in the manifest are the same. Also ensure that you replace
 the AWS access credentials with your own.
 
@@ -86,10 +86,10 @@ If you are using the sample manifest provided, confirm the following:
 
 Save your changes to the file.
 
-**Find the correct Micro BOSH Stemcell**
+**Find the correct MicroBOSH Stemcell**
 
 It is important to deploy the correct AWS image that is compatible
-with the version of Micro BOSH you install.
+with the version of MicroBOSH you install.
 
 To obtain the current AMI, navigate to `http://bosh_artifacts.cfapps.io` and download the "light-bosh (aws xen ubuntu)" tarball file
 (.tar.gz). The light stemcell is just a wrapper pointing to a public
@@ -111,7 +111,7 @@ bosh-cli. You will need this AMI ID for the next section.
 ### Deploy Manifest
 
 Everything is now in place to use the deployment manifest you have
-created and deploy Micro BOSH to AWS (the first inception). Let’s now
+created and deploy MicroBOSH to AWS (the first inception). Let’s now
 do this.
 
 Enter the deployments folder you created earlier:
@@ -130,7 +130,7 @@ Ignore the warning: it is not an error, but displays to inform you that the dire
 
   ``WARNING! Your target has been changed to `[http://aws:25555](http://aws:25555)``!
 
-Deploy the Micro BOSH AMI using the AMI we retrieved from the stem cell config:
+Deploy the MicroBOSH AMI using the AMI we retrieved from the stem cell config:
 
 <pre class="terminal">
 bosh micro deploy ami-979dc6fe
@@ -145,7 +145,7 @@ stage will likely be related to having missed a step in configuring AWS or an er
 bosh micro delete
 </pre>
 
-Log into the new Micro BOSH server using the commands below. The default username and password are admin/admin.
+Log into the new MicroBOSH server using the commands below. The default username and password are admin/admin.
 
 <pre class="terminal">
 $ bosh target 54.204.16.249
@@ -156,7 +156,7 @@ Enter password: *****
 Logged in as `admin'
 </pre>
 
-If the deployment runs successfully, you have a Micro BOSH VM deployed onto AWS.
+If the deployment runs successfully, you have a MicroBOSH VM deployed onto AWS.
 
 ![image alt text](ec2/image_17.png)
 
@@ -171,6 +171,6 @@ A few things to note in the screenshot above:
 4. **bosh** - The name of the Security Group
 
 5. **54.204.16.249**- The Elastic IP address that we created, which
-is the external IP address for the Micro BOSH server
+is the external IP address for the MicroBOSH server
 
 ###Go on to [Configuring AWS for BOSH](./configure_aws_bosh.html) or [Return to Index](./index.html)
