@@ -1,9 +1,9 @@
 ---
-title: Troubleshooting Guide and Common Errors
+title: Troubleshooting Guide and Common Issues
 ---
 
 This guide describes strategies for troubleshooting vSphere Cloud
-Foundry deployments and lists a few common deployment errors.
+Foundry deployments and lists a few common deployment Issues.
 
 ## <a id="prerequisite"></a>Prerequisites ##
 * Cloud Foundry is being deployed by BOSH
@@ -42,7 +42,7 @@ $ tail -F [job].log
 </pre>
 This will follow the log file and display new lines as the file is updated by the job.
 
-## <a id="errors"></a>Common Errors ##
+## <a id="issues"></a>Common Issues ##
 This is a list of common errors during deployments of Cloud Foundry, and some
 steps to help resolve the errors.
 
