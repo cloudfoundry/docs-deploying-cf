@@ -19,3 +19,5 @@ The following pages show example BOSH manifests for deploying BOSH itself and Cl
 [BOSH example manifest](bosh-example-manifest.html)
 
 [Cloud Foundry example manifest](cloud-foundry-example-manifest.html)
+
+[Troubleshooting Guide](troubleshooting_guide.html)
