@@ -287,7 +287,7 @@ PING 9.9.8.7 (9.9.8.7) 56(84) bytes of data.
 
 </pre>
 
-## <a id="internet"></a> Can access the Internet from within instances? ##
+## <a id="internet"></a> Can you access the Internet from within instances? ##
 
 Your deployment of Cloud Foundry will need outbound access to the Internet. For example, the Ruby buildpack will run `bundle install` on users' applications to fetch RubyGems. You can verify that your OpenStack is configured correctly to allow outbound access to the Internet.
 
