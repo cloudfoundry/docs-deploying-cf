@@ -4,7 +4,7 @@ title: Validate your OpenStack Instance
 
 This page aims to help you validate your target OpenStack in preparation for installing BOSH and deploying Cloud Foundry.
 
-You will need a running OpenStack environment. Note that only [Folsom](https://wiki.openstack.org/wiki/ReleaseNotes/Folsom) and [Grizzly](https://wiki.openstack.org/wiki/ReleaseNotes/Grizzly) OpenStack releases are supported.
+You will need a running OpenStack environment. Note that only [Folsom](https://wiki.openstack.org/wiki/ReleaseNotes/Folsom), [Grizzly](https://wiki.openstack.org/wiki/ReleaseNotes/Grizzly) and [Havana](https://wiki.openstack.org/wiki/ReleaseNotes/Havana) OpenStack releases are supported.
 
 Note that the requirements listed here are considered *necessary* but not *sufficient* for BOSH to be able to use your OpenStack deployment. In other words, if you cannot perform any one of these items correctly, then BOSH will not work; however, satisfying all these requirements does not necessarily mean BOSH *will* work.
 
