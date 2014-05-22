@@ -16,7 +16,7 @@ Install the [BOSH CLI](/bosh/bosh-cli.html).
 
 ### <a id="openstack_services"></a>OpenStack Services ###
 
-Micro BOSH needs a running OpenStack environment. Only [Folsom](https://wiki.openstack.org/wiki/ReleaseNotes/Folsom) and [Grizzly](https://wiki.openstack.org/wiki/ReleaseNotes/Grizzly) OpenStack releases are supported.
+Micro BOSH needs a running OpenStack environment. Only [Folsom](https://wiki.openstack.org/wiki/ReleaseNotes/Folsom), [Grizzly](https://wiki.openstack.org/wiki/ReleaseNotes/Grizzly) and [Havana](https://wiki.openstack.org/wiki/ReleaseNotes/Havana) OpenStack releases are supported.
 
 You will need access to these OpenStack services:
 
