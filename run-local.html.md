@@ -28,4 +28,4 @@ to learn about using BOSH to deploy Cloud Foundry.
 cf\_nise\_installer with Vagrant supports Virtualbox only.
 
 See [https://github.com/nttlabs/nise_bosh](https://github.com/nttlabs/nise_bosh)
-for more information about the Nise BOSH project and [https://github.com/yudai/cf_nise_installer](https://github.com/yudai/cf\_nise\_installer) for more information about using Nise BOSH to install Cloud Foundry.
+for more information about the Nise BOSH project and [https://github.com/yudai/cf\_nise\_installer](https://github.com/yudai/cf_nise_installer) for more information about using Nise BOSH to install Cloud Foundry.
