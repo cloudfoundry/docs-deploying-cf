@@ -23,7 +23,7 @@ for one region cannot be assigned to an instance in another region.
 
 ### Obtain AWS credentials
 
-If you already know your AWS credentials (access_key_id and secret_access_key, which are not the same as your AWS login and password), skip this step.
+If you already know your AWS credentials (access\_key\_id and secret\_access\_key, which are not the same as your AWS login and password), skip this step.
 
 Start by logging into AWS: [https://console.aws.amazon.com](https://console.aws.amazon.com)
 
@@ -33,7 +33,7 @@ From the dropdown menu next to your login name, and select **Security Credential
 
 ![image alt text](ec2/image_1.png)
 
-Next, select **Create New Access Key**. If there are already keys created, you may want to stop and consult someone in your organization to obtain the existing access_key_id and secret_access_key, since there is a limit of two sets of Access Keys.
+Next, select **Create New Access Key**. If there are already keys created, you may want to stop and consult someone in your organization to obtain the existing access\_key\_id and secret\_access\_key, since there is a limit of two sets of Access Keys.
 
 ![image alt text](ec2/image_2.png)
 
@@ -44,7 +44,7 @@ lose this one.
 
 ![image alt text](ec2/image_3.png)
 
-Document the access_key_id and secret_access_key somewhere privately and securely within your organization and keep these safe. These are
+Document the access\_key\_id and secret\_access\_key somewhere privately and securely within your organization and keep these safe. These are
 the only two pieces of information needed to fraudulently consume AWS resources.
 
 ### Create Elastic IPs
