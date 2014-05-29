@@ -1,9 +1,9 @@
 ---
-title: Deploying Micro BOSH
+title: Deploying MicroBOSH
 ---
 
-BOSH is a system used to deploy and manage a Cloud Foundry installation. Like Cloud Foundry, BOSH itself is a distributed system. Micro BOSH is a single VM that contains all BOSH components. For most installation purposes, Micro BOSH can be used to install Cloud Foundry.
-If you are deploying a large, production instance of Cloud Foundry you may prefer to use a multi-VM deployment of BOSH for scale or resiliency purposes. To deploy this, you deploy Micro BOSH and then use Micro BOSH to deploy BOSH.
+BOSH is a system used to deploy and manage a Cloud Foundry installation. Like Cloud Foundry, BOSH itself is a distributed system. MicroBOSH is a single VM that contains all BOSH components. For most installation purposes, MicroBOSH can be used to install Cloud Foundry.
+If you are deploying a large, production instance of Cloud Foundry you may prefer to use a multi-VM deployment of BOSH for scale or resiliency purposes. To deploy this, you deploy MicroBOSH and then use MicroBOSH to deploy BOSH.
 
 A good way to think about this two step process is to consider that BOSH is a
 distributed system in itself.
@@ -23,7 +23,7 @@ Here we create both and name them appropriately. (In our example we named the su
 
 BOSH needs a deployment manifest for MicroBOSH.
 It must be named `micro_bosh.yml`.
-Create one in your new directory following the example [Micro BOSH example manifest](micro-bosh-example-manifest.html)
+Create one in your new directory following the example [MicroBOSH example manifest](micro-bosh-example-manifest.html)
 
 You will need to edit this file putting in various parameters like IP addresses, storage profile and network names, login credentials, the API URL and more. The example manifest above provides comments and examples to help this process.
 
@@ -75,14 +75,14 @@ $ bosh micro deployment micro01
 Deployment set to '/var/vcap/deployments/micro01/micro_bosh.yml'
 </pre>
 
-Next, deploy a stemcell for Micro BOSH.
+Next, deploy a stemcell for MicroBOSH.
 
 	bosh micro deploy bosh-stemcell-XXXX-vcloud-esxi-ubuntu.tgz
 
 
-## <a id="verify"></a>Checking Status of a Micro BOSH Deploy ##
+## <a id="verify"></a>Checking Status of a MicroBOSH Deploy ##
 
-To check the status of the Micro BOSH, first **target** the Micro BOSH (specifically, the Director process)
+To check the status of the MicroBOSH, first **target** the MicroBOSH (specifically, the Director process)
 
 	bosh target <ip_address_from_your_micro_bosh_manifest:25555>
 
@@ -114,7 +114,7 @@ User `killian' has been created
 
 After creating this user the original `admin` user is deleted and you can no longer login with admin / admin
 
-The `status` command will show the persisted state for a given Micro BOSH
+The `status` command will show the persisted state for a given MicroBOSH
 instance. 
 
 	bosh micro status
@@ -127,7 +127,7 @@ Stemcell name  bosh-stemcell-1341-vsphere-esxi-ubuntu
 VM CID         vm-ef943451-b46d-437f-b5a5-debbe6a305b3
 Disk CID       disk-5aefc4b4-1a22-4fb5-bd33-1c3cdb5da16f
 Micro BOSH CID bm-fa74d53a-1032-4c40-a262-9c8a437ee6e6
-Deployment     /home/user/cloudfoundry/bosh/deployments/micro_bosh/micro_bosh.yml
+Deployment     /home/user/cloudfoundry/bosh/deployments/micro\_bosh/micro\_bosh.yml
 Target         https://10.146.21.150:25555 #IP Address of the Director
 </pre>
 
@@ -137,9 +137,9 @@ The `deployments` command prints a table view of `bosh-deployments.yml`:
 
 	bosh micro deployments
 
-The files in your current directory need to be saved if you later want to be able to update your Micro BOSH instance. They are all text files, so you can commit them to a git repository to make sure they are safe in case your bootstrap VM goes away.
+The files in your current directory need to be saved if you later want to be able to update your MicroBOSH instance. They are all text files, so you can commit them to a git repository to make sure they are safe in case your bootstrap VM goes away.
 
-## <a id="send-message"></a>Sending Messages to the Micro BOSH Agent ##
+## <a id="send-message"></a>Sending Messages to the MicroBOSH Agent ##
 
 The `bosh` CLI can send messages over HTTP to the agent using the `agent`
 command.
@@ -153,9 +153,9 @@ $ bosh micro agent ping
 "pong"
 </pre>
 
-## <a id="ssh"></a>SSHing to the Micro BOSH ##
+## <a id="ssh"></a>SSH to the MicroBOSH ##
 
-If you want to SSH to the Micro BOSH you can do so using the default login credentials `vcap`, `c1oudc0w`
+If you want to SSH to the MicroBOSH you can do so using the default login credentials `vcap`, `c1oudc0w`
 
 You can change the default userid & password by specifying it in the deployment manifest, as follows (we installed the `whois` package on the jump box earlier in order to get these tools):
 
