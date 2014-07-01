@@ -106,6 +106,9 @@ cloud:
 
 apply_spec:
   properties:
+    nats:
+      ping_max_outstanding: 20
+      ping_interval: 20
     vcenter:
       host: <vcenter_ip>
       user: <vcenter_userid>
