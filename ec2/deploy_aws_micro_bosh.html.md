@@ -26,11 +26,11 @@ cd ~/bosh-workspace/deployments/microboshes/deployments/microbosh
 touch microbosh.yml
 </pre>
 
-**Create Micro BOSH Deployment Manifest**
+**Create MicroBOSH Deployment Manifest**
 
 Now let’s review what the contents of the `microbosh.yml` deployment
 manifest file should include. If you did not use the us-east-1a
-availability zone, you will need to adjust that. We are using a small instance type for the Micro BOSH.
+availability zone, you will need to adjust that. We are using a small instance type for the MicroBOSH.
 
 **Note**: Replace all instances of "x.x.x.x" with
 the IP address you created in [Configuring AWS for MicroBOSH](./configure_aws_micro_bosh.html). Because MicroBOSH deploys to a single VM,
@@ -120,7 +120,7 @@ Enter the deployments folder you created earlier:
 cd ~/bosh-workspace/deployments/microboshes/deployments
 </pre>
 
-Select the deployment you called "aws" by telling bosh which manifest file to use:
+Select the deployment you called "aws" by telling BOSH which manifest file to use:
 
 <pre class="terminal">
   bosh micro deployment microbosh/microbosh.yml
