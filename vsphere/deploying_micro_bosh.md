@@ -86,8 +86,8 @@ cloud:
   properties:
     agent:
       ntp:
-        - <ntp_host_1>
-        - <ntp_host_2>
+        - 0.north-america.pool.ntp.org
+        - 1.north-america.pool.ntp.org
     vcenters:
       - host: <vcenter_ip>
         user: <vcenter_userid>
