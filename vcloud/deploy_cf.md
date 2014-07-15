@@ -101,7 +101,7 @@ For this exercise, we'll use a release from the public repository. Clone this re
 <pre class="terminal">
 $ git clone https://github.com/cloudfoundry/cf-release.git
 $ cd cf-release
-$ bosh upload release releases/cf-xxx.yml # These docs have been tested with cf-147.yml
+$ bosh upload release releases/cf-xxx.yml # These docs have been tested with cf-147.yml ; they do NOT work with cf-173.yml
 </pre>
 
 You'll see a flurry of output as BOSH configures and uploads release components. Here's a shortened version:
