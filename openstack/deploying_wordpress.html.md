@@ -108,7 +108,7 @@ If you are using the new [OpenStack Networking](http://www.openstack.org/softwar
 * The `gateway` option sets subnet gateway.
 * The `reserved` option sets the range of IP addresses (starting at `first_reserved_ip_address` and ending at `last_reserved_ip_address`) that are reserved (so BOSH/OpenStack will not use them when assigning dynamically IP to vms).
 * The `static` option sets range of IP addresses (starting at `first_ip_address_for_vms` and ending at `last_ip_address_for_vms`) that are reserved to be set statically at the jobs section (so BOSH/OpenStack will not use them when assigning dynamically IP to vms).
-* The `net_id` option sets the OpenStack network to use. `network_uuid` **must** be an existing Network UUID (you can list your OpenStack networks using the command `quantum net-list`).
+* The `net_id` option sets the OpenStack network to use. `network_uuid` **must** be an existing Network UUID (you can list your OpenStack networks using the command `neutron net-list`).
 * The `network` option at the `nfs_server` properties set the NFS clients allowed to access to the NFS server. In order to simplify the example we will use the `subnet_cidr` set previously, but we can use any [Machine Name Format](http://manpages.ubuntu.com/manpages/lucid/man5/exports.5.html).
 * The `ip_address_for_mysql`, `ip_address_for_nfs`, `ip_address_for_wordpress` and `ip_address_for_nginx` sets the IP address to assign to each job. These IP addresses **must** in the range of IP addresses set previously in the  `static` option.
 

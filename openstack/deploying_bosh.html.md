@@ -130,7 +130,7 @@ If you are using the new [OpenStack Networking](http://www.openstack.org/softwar
 * The `gateway` option sets subnet gateway.
 * The `reserved` option sets the range of IP addresses (starting at `first_reserved_ip_address` and ending at `last_reserved_ip_address`) that are reserved (so BOSH/OpenStack will not use them when assigning dynamically IP to vms).
 * The `static` option sets range of IP addresses (starting at `first_ip_address_for_vms` and ending at `last_ip_address_for_vms`) that are reserved to be set statically at the jobs section (so BOSH/OpenStack will not use them when assigning dynamically IP to vms).
-* The `net_id` option sets the OpenStack network to use. `network_uuid` **must** be an existing Network UUID (you can list your OpenStack networks using the command `quantum net-list`).
+* The `net_id` option sets the OpenStack network to use. `network_uuid` **must** be an existing Network UUID (you can list your OpenStack networks using the command `neutron net-list`).
 * The `ip_address_for_natsl`, `ip_address_for_redis`, `ip_address_for_postgres`, `ip_address_for_powerdns`, `ip_address_for_blobstore`, `ip_address_for_director`, `ip_address_for_registry` and `ip_address_for_health_monitor` sets the IP address to assign to each job. These IP addresses **must** in the range of IP addresses set previously in the  `static` option.
 
 ### <a id="deploy"></a>Deploy BOSH ###

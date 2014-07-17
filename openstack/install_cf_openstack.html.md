@@ -131,7 +131,7 @@ The next step towards deploying Cloud Foundry is to create a `deployment file`. 
 * the one or more job templates from the bosh release to be applied to each VM
 * the custom properties to be applied into configuration files and scripts for each job template
 
-A deployment file can describe 10,000 VMs using a complex set of Quantum subnets all the way down to one or more VMs without any complex inter-networking. You can specify one job per VM or colocate multiple jobs for small deployments.
+A deployment file can describe 10,000 VMs using a complex set of Neutron subnets all the way down to one or more VMs without any complex inter-networking. You can specify one job per VM or colocate multiple jobs for small deployments.
 
 There are many different parts of Cloud Foundry that can be deployed. In this section, only the bare basics will be deployed that allow user applications to be run that do not require any services. The minimal set of jobs to be included are:
 
@@ -144,7 +144,7 @@ There are many different parts of Cloud Foundry that can be deployed. In this se
 * `debian_nfs_server` (see below for using Swift as the droplet blobstore)
 * `uaa`
 
-There are different ways that networking can be configured. If your OpenStack has Quantum running, then you can use advanced compositions of subnets to isolate and protect each job, thus providing greater security. In this section, no advanced networking will be used.
+There are different ways that networking can be configured. If your OpenStack has Neutron running, then you can use advanced compositions of subnets to isolate and protect each job, thus providing greater security. In this section, no advanced networking will be used.
 
 Only a single public floating IP is required. Replace your allocated floating IP with `2.3.4.5` below.
 

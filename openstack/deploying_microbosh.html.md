@@ -134,7 +134,7 @@ network:
 ~~~
 
 * The `vip` option is optional, and allows you to associate a floating IP address to the Micro Bosh vm in case you want to access it from outside of the vm network. If set, `allocated_floating_ip` **must** be a previously allocated floating ip.
-* The `net_id` option sets the OpenStack network to use. `network_uuid` **must** be an existing Network UUID (you can list your OpenStack networks using the command `quantum net-list`).
+* The `net_id` option sets the OpenStack network to use. `network_uuid` **must** be an existing Network UUID (you can list your OpenStack networks using the command `neutron net-list`).
 
 1. If you want to set the Micro Bosh IP address manually:
 
@@ -149,7 +149,7 @@ network:
 
 * The `vip` option is optional, and allows you to associate a floating IP address to the Micro Bosh vm in case you want to access it from outside of the vm network. If set, `allocated_floating_ip` **must** be a previously allocated floating ip.
 * The `ip` option sets the IP address to assign to the Micro BOSH vm. `static_ip` **must** be an IP address belonging to the IP range of one of the network subnets set in `net_id`.
-* The `net_id` option sets the OpenStack network to use. `network_uuid` **must** be an existing Network UUID (you can list your OpenStack networks using the command `quantum net-list`).
+* The `net_id` option sets the OpenStack network to use. `network_uuid` **must** be an existing Network UUID (you can list your OpenStack networks using the command `neutron net-list`).
 
 #### <a id="resources_properties"></a>Resources properties ####
 
