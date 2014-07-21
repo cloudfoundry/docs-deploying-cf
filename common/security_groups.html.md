@@ -18,7 +18,7 @@ The examples below show the Security Groups that are referenced in other section
 
 ![cf-public port](../images/cf-public.png)
 
-## <a id="bosh"></a>cf-private
+## <a id="cf-private"></a>cf-private
 
 ![cf-private port](../images/cf-private.png)
 
