@@ -85,7 +85,7 @@ cloud:
   plugin: vsphere
   properties:
     agent:
-      ntp:
+      ntp: # This example uses the North American NTP servers. Edit for your region.
         - 0.north-america.pool.ntp.org
         - 1.north-america.pool.ntp.org
     vcenters:
