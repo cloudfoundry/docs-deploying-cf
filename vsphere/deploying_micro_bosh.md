@@ -70,12 +70,12 @@ network:
   netmask: <netmask_for_the_subnet_you_are_deploying_to>
   gateway: <gateway_for_the_subnet_you_are_deploying_to>
   dns:
-  # The micro-bosh VM has the following DNS entries in its /etc/resolv.com, allowing it to resolve, for example, IaaS FQDNs.
+  # The MicroBOSH VM has the following DNS entries in its /etc/resolv.com, allowing it to resolve, for example, IaaS FQDNs.
   - <ip_for_dns>
   cloud_properties:
     name: <network_name_according_to_vsphere>
 
-resources: # this seems like good sizing for microbosh
+resources: # This seems like good sizing for MicroBOSH.
    persistent_disk: 16384
    cloud_properties:
       ram: 8192
