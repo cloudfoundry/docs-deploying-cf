@@ -1,18 +1,18 @@
 ---
-title: Deploying BOSH with Micro BOSH
+title: Deploying BOSH with MicroBOSH
 ---
 
-This guide describes the process for deploying BOSH as an application using micro BOSH.
+This guide describes the process for deploying BOSH as an application using MicroBOSH.
 
 ## <a id="prerequisites"></a>Prerequisites ##
 
-### <a id="microbosh"></a>Micro BOSH ###
+### <a id="microbosh"></a>MicroBOSH ###
 
-Micro BOSH should be deployed and targeted. See the steps in [Deploying Micro BOSH](deploying_microbosh.html).
+MicroBOSH should be deployed and targeted. See the steps in [Deploying MicroBOSH](deploying_microbosh.html).
 
 ### <a id="stemcell"></a>BOSH Stemcell ###
 
-A BOSH Stemcell should be uploaded to the Micro BOSH. See the steps in [Uploading a BOSH Stemcell](uploading_bosh_stemcell.html).
+A BOSH Stemcell should be uploaded to the MicroBOSH. See the steps in [Uploading a BOSH Stemcell](uploading_bosh_stemcell.html).
 
 ### <a id="openstack_floating_ip"></a>OpenStack Floating IPs ###
 
@@ -52,7 +52,7 @@ This command will output:
 
 ###  <a id="upload_release"></a>Upload BOSH Release ###
 
-Upload the BOSH Release generated previously to the Micro BOSH Director:
+Upload the BOSH Release generated previously to the MicroBOSH Director:
 
 <pre class="terminal">
 bosh upload release /Users/frodenas/bosh-workspace/bosh/release/dev_releases/bosh-13.1-dev.yml
@@ -93,7 +93,7 @@ To confirm that the BOSH Release has been loaded into your BOSH Director use the
 
 ### <a id="manifest_file"></a>Create manifest file ###
 
-Using the `deployments` directory we created when we [deployed Micro BOSH](deploying_microbosh.html#manifest_file), create a `bosh-openstack` subdirectory:
+Using the `deployments` directory we created when we [deployed MicroBOSH](deploying_microbosh.html#manifest_file), create a `bosh-openstack` subdirectory:
 
 <pre class="terminal">
 mkdir -p ~/bosh-workspace/deployments/bosh-openstack
@@ -114,22 +114,22 @@ cp ~/bosh-workspace/bosh/release/examples/bosh-openstack-manual.yml bosh-opensta
 
 Adapt the `bosh-openstack.yml` file to your environment settings. Search for the tag `# CHANGE`:
 
-* The `director_uuid` option set the [Bosh Director](/bosh/terminology.html#director) to use. We will use the Micro Bosh Director UUID. You can get it running the command `bosh status`.
-* The `instance_type` option set the OpenStack flavor used for the compilation vms (at the `compilation` section) and jobs vms (at the `resource_pools` section). The `flavor_name` **must** have ephemeral disk (check the [validate your OpenStack](validate_openstack.html) guide).
+* The `director_uuid` option set the [Bosh Director](/bosh/terminology.html#director) to use. We will use the MicroBosh Director UUID. You can get it running the command `bosh status`.
+* The `instance_type` option set the OpenStack flavor used for the compilation VMs (at the `compilation` section) and jobs VMs (at the `resource_pools` section). The `flavor_name` **must** have ephemeral disk (check the [validate your OpenStack](validate_openstack.html) guide).
 * The `allocated_floating_ip_1` and `allocated_floating_ip_2` allows us to associate a floating IP address to the Director and PowerDNS instances and **must** be a previously allocated floating ips (check the [prerequisites](#openstack_floating_ip) section).
 * The `dns.recursor` option set the IP address of the [recursor](http://en.wikipedia.org/wiki/Domain_Name_System#Recursive_and_caching_name_server) to query in case PowerDNS can't resolve a hostname. We will use the `microbosh_ip_address`.
 * The `auth_url` option set your [OpenStack identity](http://www.openstack.org/software/openstack-shared-services/) server.
 * The `username`, `api_key` and `tenant` options sets your OpenStack credentials.
 * The `region` option is optional, and allows you to set the OpenStack region to be used.
-* The `default_security_groups` option set the security groups used by vms, and **must** be existing security groups. We will use the `microbosh_security_group` we created when we [deployed Micro Bosh](deploying_microbosh.html#openstack_security_groups).
-* The `default_key_name` option set the key pair used by vms and **must** be an existing keypair. We will use the `microbosh_keypair` we created when we [deployed Micro Bosh](deploying_microbosh.html#openstack_keypairs).
+* The `default_security_groups` option set the security groups used by VMs, and **must** be existing security groups. We will use the `microbosh_security_group` we created when we [deployed MicroBosh](deploying_microbosh.html#openstack_security_groups).
+* The `default_key_name` option set the key pair used by VMs and **must** be an existing keypair. We will use the `microbosh_keypair` we created when we [deployed MicroBosh](deploying_microbosh.html#openstack_keypairs).
 
 If you are using the new [OpenStack Networking](http://www.openstack.org/software/openstack-networking/) component, you must also adapt the below settings:
 
 * The `range` option sets the IP range to use. `subnet_cidr` **must** be a [CIDR](http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing) belonging to one of the network subnets set in `net_id`.
 * The `gateway` option sets subnet gateway.
-* The `reserved` option sets the range of IP addresses (starting at `first_reserved_ip_address` and ending at `last_reserved_ip_address`) that are reserved (so BOSH/OpenStack will not use them when assigning dynamically IP to vms).
-* The `static` option sets range of IP addresses (starting at `first_ip_address_for_vms` and ending at `last_ip_address_for_vms`) that are reserved to be set statically at the jobs section (so BOSH/OpenStack will not use them when assigning dynamically IP to vms).
+* The `reserved` option sets the range of IP addresses (starting at `first_reserved_ip_address` and ending at `last_reserved_ip_address`) that are reserved (so BOSH/OpenStack will not use them when assigning dynamically IP to VMs).
+* The `static` option sets range of IP addresses (starting at `first_ip_address_for_vms` and ending at `last_ip_address_for_vms`) that are reserved to be set statically at the jobs section (so BOSH/OpenStack will not use them when assigning dynamically IP to VMs).
 * The `net_id` option sets the OpenStack network to use. `network_uuid` **must** be an existing Network UUID (you can list your OpenStack networks using the command `neutron net-list`).
 * The `ip_address_for_natsl`, `ip_address_for_redis`, `ip_address_for_postgres`, `ip_address_for_powerdns`, `ip_address_for_blobstore`, `ip_address_for_director`, `ip_address_for_registry` and `ip_address_for_health_monitor` sets the IP address to assign to each job. These IP addresses **must** in the range of IP addresses set previously in the  `static` option.
 
@@ -338,7 +338,7 @@ This command will output:
 
 ### <a id="bosh_ssh"></a>SSH ###
 
-If you want to ssh to any of your BOSH vms, first check the job names using the `bosh vms` command:
+If you want to ssh to any of your BOSH VMs, first check the job names using the `bosh vms` command:
 
     Deployment `bosh-openstack'
 
@@ -377,7 +377,7 @@ env:
 
 ## <a id="delete_bosh"></a>Deleting your BOSH ##
 
-If you want to delete your BOSH deployment, target your Micro BOSH and set the BOSH deployment file:
+If you want to delete your BOSH deployment, target your MicroBOSH and set the BOSH deployment file:
 
 <pre class="terminal">
 bosh target <microbosh_ip_address>
