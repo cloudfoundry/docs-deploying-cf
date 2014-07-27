@@ -98,7 +98,7 @@ apply_spec:
       max_threads: 3
     hm:
       resurrector_enabled: true
-    ntp:
+    ntp: # This example uses the North American NTP servers. Edit for your region.
       - 0.north-america.pool.ntp.org
       - 1.north-america.pool.ntp.org
 ~~~
@@ -199,7 +199,7 @@ apply_spec:
       max_threads: 3
     hm:
       resurrector_enabled: true
-    ntp:
+    ntp: # This example uses the North American NTP servers. Edit for your region.
       - 0.north-america.pool.ntp.org
       - 1.north-america.pool.ntp.org
 ~~~
