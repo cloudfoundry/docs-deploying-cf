@@ -1,23 +1,22 @@
 ---
-title: Install Cloud Foundry on OpenStack
+title: Installing Cloud Foundry on OpenStack
 ---
 
-In this page you will run Cloud Foundry on OpenStack.
+This topic describes how to install Cloud Foundry on OpenStack.
 
-NOTE: These instructions are for v138 release of Cloud Foundry. For newer versions of Cloud Foundry, [please let us know](https://github.com/cloudfoundry/docs-deploying-cf/issues/new) if this documentation continues to work or needed some changes.
+<p class="note"><strong>Note</strong>: These instructions are for v170 release of Cloud Foundry.</p>
 
-## What will happen ##
+## Goal ##
 
-At the end of this page, eight `m1.medium` VMs will be running in your OpenStack environment running Cloud Foundry.
-
+By the end of this topic, Cloud Foundry will be installed and running on OpenStack.
 You will be able to target it using your own DNS, login, and upload a simple application.
 
-For example, you will be able to:
+For example, you will be able to do the following:
 
 <pre class="terminal">
 $ cf target api.mycloud.com
 $ cf login admin
-Password> c1oudc0w  (unless you change it in the deployment file below)
+Password> ******  (unless you change it in the deployment file below)
 $ git clone https://github.com/cloudfoundry-community/cf_demoapp_ruby_rack.git
 $ cd cf_demoapp_ruby_rack
 $ cf push
@@ -27,19 +26,19 @@ Hello World!
 
 ## Requirements ##
 
-It is assumed that you have [validated your OpenStack](validate_openstack.html) and [have a bosh running](deploying_microbosh.html).
+It is assumed that you have [validated your OpenStack](validate_openstack.html) and [have a BOSH deployment running](deploying_microbosh.html).
 
-It is also required that you have provisioned a floating IP address (`2.3.4.5` in the examples below) and setup your DNS to map `*` records to this IP address. For example, if you were using `mycloud.com` domain as the base domain for your Cloud Foundry, you need a `*` A record for this zone mapping to `2.3.4.5`.
+It is also required that you have provisioned an IP address and setup your DNS to map `*` records to this IP address. For example, if you were using `mycloud.com` domain as the base domain for your Cloud Foundry, you need a `*` A record for this zone mapping to your provisioned IP address.
 
-Confirm in your local terminal that you have the bosh CLI installed and is targeting your bosh:
+Confirm in your local terminal that you have the installed the BOSH CLI and have targeted your BOSH:
 
 <pre class="terminate">
 $ bosh status
 Config
-             /Users/drnic/.bosh_config
+             /Users/example/.bosh_config
 
 Director
-  Name       firstbosh
+  Name       mybosh
   URL        https://1.2.3.4:25555
   Version    1.5.0.pre.939 (release:930f73f5 bosh:930f73f5)
   User       admin
@@ -52,7 +51,7 @@ Deployment
   not set
 </pre>
 
-You will use the `UUID` value above later on this page.
+You will use the `UUID` value found above when configuring your manifest.
 
 You have two flavors setup **with ephemeral disks**:
 
@@ -64,11 +63,11 @@ You have two security groups:
 * `default`
 * `cf` - opens all ports (until further understanding of what ports are required for each job of Cloud Foundry)
 
-## Upload bosh release ##
+## Upload BOSH Release ##
 
-To deploy Cloud Foundry, your bosh needs to be given the bosh release it will use. This includes all the packages and jobs. The Cloud Foundry bosh release includes dozens of jobs and almost 100 packages. Enforcing consistency and guaranteed output of a deployment is one of the reasons we prefer bosh for deploying a complex system like Cloud Foundry.
+To deploy Cloud Foundry, your BOSH needs to be given the BOSH release it will use. This includes all the packages and jobs. The Cloud Foundry BOSH release includes dozens of jobs and almost 100 packages. Enforcing consistency and guaranteed output of a deployment is one of the reasons we prefer BOSH for deploying a complex system like Cloud Foundry.
 
-You can now create and upload the Cloud Foundry bosh release ([cf-release](https://github.com/cloudfoundry/cf-release)).
+You can now create and upload the Cloud Foundry BOSH release ([cf-release](https://github.com/cloudfoundry/cf-release)).
 
 [Follow these instructions.](../common/cf-release.html)
 
@@ -80,24 +79,24 @@ $ bosh releases
 +------+----------+-------------+
 | Name | Versions | Commit Hash |
 +------+----------+-------------+
-| cf   | 138      | adca9c45    |
+| cf   | 170      | aabs1233ad  |
 +------+----------+-------------+
 </pre>
 
 ## Upload a base stemcell ##
 
-A cloud provider needs a base image to provision VMs/servers. Bosh explicitly requires that the base image includes the [Agent](/bosh/terminology.html#agent). Therefore, we use specific base images which are known to have a bosh agent installed. These base images are called `bosh stemcells`.
+A cloud provider needs a base image to provision VMs/servers. BOSH explicitly requires that the base image includes the [Agent](/bosh/terminology.html#agent). Therefore, we use specific base images which are known to have a BOSH agent installed. These base images are called BOSH **stemcells**.
 
-To upload the latest bosh stemcell to your bosh:
+To upload the latest BOSH stemcell to your BOSH:
 
 <pre class="terminate">
 $ wget http://bosh-jenkins-artifacts.s3.amazonaws.com/bosh-stemcell/openstack/bosh-stemcell-latest-openstack-kvm-ubuntu.tgz
 $ bosh upload stemcell bosh-stemcell-latest-openstack-kvm-ubuntu.tgz
 </pre>
 
-*Note* There has been [a report on the vcap-dev mailing list](https://www.pivotaltracker.com/story/show/62108468) that cf-release v147 and other releases through v150 are incompatible with some latest versions of openstack-kvm-ubuntu stemcell. The one that works for the user reporting the issue is [1256](https://bosh-jenkins-artifacts.s3.amazonaws.com/bosh-stemcell/openstack/bosh-stemcell-1256-openstack-kvm-ubuntu.tgz).
+<p class="note"><strong>Note</strong>: There has been [a report on the vcap-dev mailing list](https://www.pivotaltracker.com/story/show/62108468) that cf-release v147 and other releases through v150 are incompatible with some latest versions of openstack-kvm-ubuntu stemcell. The one that works for the user reporting the issue is [1256](https://bosh-jenkins-artifacts.s3.amazonaws.com/bosh-stemcell/openstack/bosh-stemcell-1256-openstack-kvm-ubuntu.tgz).</p>
 
-Confirm that you have at least one bosh stemcell loaded into your bosh:
+Confirm that you have at least one BOSH stemcell loaded into your BOSH:
 
 <pre class="terminate">
 $ bosh stemcells
@@ -128,7 +127,7 @@ The next step towards deploying Cloud Foundry is to create a `deployment file`. 
 * the VMs to be created
 * the persistent disks to be attached to different VMs
 * the networks and IP addresses to be bound to each VM
-* the one or more job templates from the bosh release to be applied to each VM
+* the one or more job templates from the BOSH release to be applied to each VM
 * the custom properties to be applied into configuration files and scripts for each job template
 
 A deployment file can describe 10,000 VMs using a complex set of Neutron subnets all the way down to one or more VMs without any complex inter-networking. You can specify one job per VM or colocate multiple jobs for small deployments.
@@ -146,32 +145,32 @@ There are many different parts of Cloud Foundry that can be deployed. In this se
 
 There are different ways that networking can be configured. If your OpenStack has Neutron running, then you can use advanced compositions of subnets to isolate and protect each job, thus providing greater security. In this section, no advanced networking will be used.
 
-Only a single public floating IP is required. Replace your allocated floating IP with `2.3.4.5` below.
+Only a single public IP is required. Replace `REPLACE-IP-ADDRESS` with your allocated IP address below.
 
 ### Initial manifest for OpenStack ###
 
 Create a `~/bosh-workspace/deployments/cf` folder and create `~/bosh-workspace/deployments/cf/demo.yml` with the initial deployment file displayed below.
 
-TODO, change the following at the top of the file:
+Change the following at the top of the file:
 
-* replace `DIRECTOR_UUID` with the UUID from `bosh status`
-* replace `2.3.4.5` with the floating IP you allocated above
+* replace `REPLACE-DIRECTOR_UUID` with the UUID from `bosh status`
+* replace `REPLACE-IP-ADDRESS` with the IP address you allocated above
 * replace `root_domain` value with a DNS, say `mycloud.com` that has `*.mycloud.com` mapped to your IP; defaults to using http://xip.io service for DNS
 * replace the `common_password`; even better is to put in lots of different passwords and tokens throughout the deployment file
 
 Further, note that you need to have configured the "cf-public" and "cf-private" security groups as outlined in [these instructions](../common/security_groups.html).
 
 ~~~
----
 <%
-director_uuid = "DIRECTOR_UUID"
-protocol = "http"
-cf_release = "141"
-ip_address = "2.3.4.5"
-common_password = "c1oudc0wc1oudc0w"
-root_domain = "#{ip_address}.xip.io"
-deployment_name = "cf-demo"
+director_uuid = "REPLACE-DIRECTOR_UUID"
+static_ip = "REPLACE-IP-ADDRESS"
+root_domain = "#{static_ip}.xip.io"
+deployment_name = 'cf'
+cf_release = '170'
+protocol = 'http'
+common_password = 'mysecretpassword'
 %>
+---
 name: <%= deployment_name %>
 director_uuid: <%= director_uuid %>
 
@@ -184,48 +183,60 @@ compilation:
   network: default
   reuse_compilation_vms: true
   cloud_properties:
-    instance_type: m1.small
+    instance_type: m1.large
 
 update:
-  canaries: 1
-  canary_watch_time: 30000-300000
-  update_watch_time: 30000-300000
-  max_in_flight: 4
+  canaries: 0
+  canary_watch_time: 30000-600000
+  update_watch_time: 30000-600000
+  max_in_flight: 32
+  serial: false
 
 networks:
-  - name: floating
-    type: vip
-    cloud_properties: {}
   - name: default
     type: dynamic
     cloud_properties:
       security_groups:
-      - cf-public
-      - cf-private
+        - default
+        - bosh
+        - cf-private
+
+  - name: external
+    type: dynamic
+    cloud_properties:
+      security_groups:
+        - default
+        - bosh
+        - cf-public
+
+  - name: floating
+    type: vip
+    cloud_properties: {}
 
 resource_pools:
   - name: common
     network: default
-    size: 8
+    size: 14
     stemcell:
-      name: bosh-openstack-kvm-ubuntu
+      name: bosh-openstack-kvm-ubuntu-lucid
       version: latest
     cloud_properties:
       instance_type: m1.small
 
   - name: large
     network: default
-    size: 1
+    size: 3
     stemcell:
-      name: bosh-openstack-kvm-ubuntu
+      name: bosh-openstack-kvm-ubuntu-lucid
       version: latest
     cloud_properties:
-      instance_type: m1.large
+      instance_type: m1.medium
 
 jobs:
   - name: nats
-    template:
-      - nats
+    templates:
+      - name: nats
+      - name: nats_stream_forwarder
     instances: 1
     resource_pool: common
     networks:
@@ -233,8 +244,8 @@ jobs:
         default: [dns, gateway]
 
   - name: syslog_aggregator
-    template:
-      - syslog_aggregator
+    templates:
+      - name: syslog_aggregator
     instances: 1
     resource_pool: common
     persistent_disk: 65536
@@ -242,9 +253,19 @@ jobs:
       - name: default
         default: [dns, gateway]
 
+  - name: nfs_server
+    templates:
+      - name: debian_nfs_server
+    instances: 1
+    resource_pool: common
+    persistent_disk: 65535
+    networks:
+      - name: default
+        default: [dns, gateway]
+
   - name: postgres
-    template:
-      - postgres
+    templates:
+      - name: postgres
     instances: 1
     resource_pool: common
     persistent_disk: 65536
@@ -254,19 +275,27 @@ jobs:
     properties:
       db: databases
 
-  - name: nfs_server
-    template:
-      - debian_nfs_server
+  - name: uaa
+    templates:
+      - name: uaa
     instances: 1
     resource_pool: common
-    persistent_disk: 65536
     networks:
       - name: default
         default: [dns, gateway]
 
-  - name: uaa
-    template:
-      - uaa
+  - name: loggregator
+    templates:
+      - name: loggregator
+    instances: 1
+    resource_pool: common
+    networks:
+      - name: default
+        default: [dns, gateway]
+
+  - name: trafficcontroller
+    templates:
+      - name: loggregator_trafficcontroller
     instances: 1
     resource_pool: common
     networks:
@@ -274,8 +303,8 @@ jobs:
         default: [dns, gateway]
 
   - name: cloud_controller
-    template:
-      - cloud_controller_ng
+    templates:
+      - name: cloud_controller_ng
     instances: 1
     resource_pool: common
     networks:
@@ -284,21 +313,41 @@ jobs:
     properties:
       ccdb: ccdb
 
-  - name: router
-    template:
-      - gorouter
+  - name: cloud_controller_worker
+    templates:
+      - name: cloud_controller_worker
     instances: 1
     resource_pool: common
     networks:
       - name: default
         default: [dns, gateway]
-      - name: floating
-        static_ips:
-          - <%= ip_address %>
+    properties:
+      ccdb: ccdb
+
+  - name: clock_global
+    templates:
+      - name: cloud_controller_clock
+    instances: 1
+    resource_pool: common
+    networks:
+      - name: default
+        default: [dns, gateway]
+    properties:
+      ccdb: ccdb
+
+  - name: etcd
+    templates:
+      - name: etcd
+    instances: 1
+    resource_pool: common
+    persistent_disk: 10024
+    networks:
+      - name: default
+        default: [dns, gateway]
 
   - name: health_manager
-    template:
-      - health_manager_next
+    templates:
+      - name: hm9000
     instances: 1
     resource_pool: common
     networks:
@@ -306,52 +355,55 @@ jobs:
         default: [dns, gateway]
 
   - name: dea
-    template:
-     - dea_next
-    instances: 1
+    templates:
+      - name: dea_logging_agent
+      - name: dea_next
+    instances: 3
     resource_pool: large
     networks:
       - name: default
         default: [dns, gateway]
 
+  - name: router
+    templates:
+      - name: gorouter
+    instances: 1
+    resource_pool: common
+    networks:
+      - name: default
+        default: [dns, gateway]
+
+  - name: haproxy
+    templates:
+      - name: haproxy
+    instances: 1
+    resource_pool: common
+    networks:
+      - name: external
+        default: [dns, gateway]
+      - name: floating
+        static_ips:
+          - <%= static_ip %>
+
 properties:
   domain: <%= root_domain %>
   system_domain: <%= root_domain %>
-  system_domain_organization: "demo"
+  system_domain_organization: 'admin'
   app_domains:
     - <%= root_domain %>
-  support_address: http://support.<%= root_domain %>
-  description: "Cloud Foundry v2 sponsored by Pivotal"
+
+  haproxy: {}
 
   networks:
     apps: default
-    management: default
-
-  ssl:
-    skip_cert_verify: true
 
   nats:
-    address: 0.nats.default.<%= deployment_name %>.microbosh
-    machines: [ 0.nats.default.<%= deployment_name %>.microbosh ]
-    port: 4222
     user: nats
     password: <%= common_password %>
-    authorization_timeout: 10
-
-  router:
-    port: 8081
-    status:
-      port: 8080
-      user: gorouter
-      password: <%= common_password %>
-
-  dea: &dea
-    memory_mb: 4096
-    disk_mb: 16384
-    directory_server_protocol: <%= protocol %>
-    mtu: 1454
-
-  dea_next: *dea
+    address: 0.nats.default.<%= deployment_name %>.microbosh
+    port: 4222
+    machines:
+      - 0.nats.default.<%= deployment_name %>.microbosh
 
   syslog_aggregator:
     address: 0.syslog-aggregator.default.<%= deployment_name %>.microbosh
@@ -360,10 +412,63 @@ properties:
   nfs_server:
     address: 0.nfs-server.default.<%= deployment_name %>.microbosh
     network: "*.<%= deployment_name %>.microbosh"
-    idmapd_domain: dfw2
+    idmapd_domain: "localdomain"
 
   debian_nfs_server:
     no_root_squash: true
+
+  loggregator_endpoint:
+    shared_secret: <%= common_password %>
+    host: 0.trafficcontroller.default.<%= deployment_name %>.microbosh
+
+  loggregator:
+    servers:
+      zone:
+        -  0.loggregator.default.<%= deployment_name %>.microbosh
+
+  traffic_controller:
+    zone: 'zone'
+
+  logger_endpoint:
+    use_ssl: <%= protocol == 'https' %>
+    port: 80
+
+  ssl:
+    skip_cert_verify: true
+
+  router:
+    endpoint_timeout: 60
+    status:
+      port: 8080
+      user: gorouter
+      password: <%= common_password %>
+    servers:
+      z1:
+        - 0.router.default.<%= deployment_name %>.microbosh
+      z2: []
+
+  etcd:
+    machines:
+      - 0.etcd.default.<%= deployment_name %>.microbosh
+
+  dea: &dea
+    disk_mb: 102400
+    disk_overcommit_factor: 2
+    memory_mb: 15000
+    memory_overcommit_factor: 3
+    directory_server_protocol: <%= protocol %>
+    mtu: 1460
+    deny_networks:
+      - 169.254.0.0/16 # Google Metadata endpoint
+
+  dea_next: *dea
+
+  disk_quota_enabled: false
+
+  dea_logging_agent:
+    status:
+      user: admin
+      password: <%= common_password %>
 
   databases: &databases
     db_scheme: postgres
@@ -412,27 +517,34 @@ properties:
         name: uaadb
         citext: true
 
-  cc_api_version: v2
-
   cc: &cc
-    logging_level: debug
     srv_api_uri: <%= protocol %>://api.<%= root_domain %>
-    cc_partition: default
-    db_encryption_key: <%= common_password %>
-    bootstrap_admin_email: "frodenas@gopivotal.com"
+    jobs:
+      local:
+        number_of_workers: 2
+      generic:
+        number_of_workers: 2
+      global:
+        timeout_in_seconds: 14400
+      app_bits_packer:
+        timeout_in_seconds: null
+      app_events_cleanup:
+        timeout_in_seconds: null
+      app_usage_events_cleanup:
+        timeout_in_seconds: null
+      blobstore_delete:
+        timeout_in_seconds: null
+      blobstore_upload:
+        timeout_in_seconds: null
+      droplet_deletion:
+        timeout_in_seconds: null
+      droplet_upload:
+        timeout_in_seconds: null
+      model_deletion:
+        timeout_in_seconds: null
     bulk_api_password: <%= common_password %>
-    uaa_resource_id: cloud_controller
     staging_upload_user: upload
     staging_upload_password: <%= common_password %>
-    resource_pool:
-      resource_directory_key: cc-resources
-      fog_connection:
-        provider: Local
-        local_root: /var/vcap/nfs/shared
-    packages:
-      app_package_directory_key: cc-packages
-    droplets:
-      droplet_directory_key: cc-droplets
     quota_definitions:
       default:
         memory_limit: 10240
@@ -440,6 +552,41 @@ properties:
         non_basic_services_allowed: true
         total_routes: 1000
         trial_db_allowed: true
+    resource_pool:
+      resource_directory_key: cloudfoundry-resources
+      fog_connection:
+        provider: Local
+        local_root: /var/vcap/nfs/shared
+    packages:
+      app_package_directory_key: cloudfoundry-packages
+      fog_connection:
+        provider: Local
+        local_root: /var/vcap/nfs/shared
+    droplets:
+      droplet_directory_key: cloudfoundry-droplets
+      fog_connection:
+        provider: Local
+        local_root: /var/vcap/nfs/shared
+    buildpacks:
+      buildpack_directory_key: cloudfoundry-buildpacks
+      fog_connection:
+        provider: Local
+        local_root: /var/vcap/nfs/shared
+    install_buildpacks:
+      - name: java_buildpack
+        package: buildpack_java
+      - name: ruby_buildpack
+        package: buildpack_ruby
+      - name: nodejs_buildpack
+        package: buildpack_nodejs
+      - name: go_buildpack
+        package: buildpack_go
+    db_encryption_key: <%= common_password %>
+    hm9000_noop: false
+    diego: false
+    newrelic:
+      license_key: null
+      environment_name: <%= deployment_name %>
 
   ccng: *cc
 
@@ -448,33 +595,7 @@ properties:
 
   uaa:
     url: <%= protocol %>://uaa.<%= root_domain %>
-    no_ssl: <%= protocol == "http" %>
-    catalina_opts: -Xmx768m -XX:MaxPermSize=256m
-    resource_id: account_manager
-    jwt:
-      signing_key: |
-        -----BEGIN RSA PRIVATE KEY-----
-        MIICXAIBAAKBgQDHFr+KICms+tuT1OXJwhCUmR2dKVy7psa8xzElSyzqx7oJyfJ1
-        JZyOzToj9T5SfTIq396agbHJWVfYphNahvZ/7uMXqHxf+ZH9BL1gk9Y6kCnbM5R6
-        0gfwjyW1/dQPjOzn9N394zd2FJoFHwdq9Qs0wBugspULZVNRxq7veq/fzwIDAQAB
-        AoGBAJ8dRTQFhIllbHx4GLbpTQsWXJ6w4hZvskJKCLM/o8R4n+0W45pQ1xEiYKdA
-        Z/DRcnjltylRImBD8XuLL8iYOQSZXNMb1h3g5/UGbUXLmCgQLOUUlnYt34QOQm+0
-        KvUqfMSFBbKMsYBAoQmNdTHBaz3dZa8ON9hh/f5TT8u0OWNRAkEA5opzsIXv+52J
-        duc1VGyX3SwlxiE2dStW8wZqGiuLH142n6MKnkLU4ctNLiclw6BZePXFZYIK+AkE
-        xQ+k16je5QJBAN0TIKMPWIbbHVr5rkdUqOyezlFFWYOwnMmw/BKa1d3zp54VP/P8
-        +5aQ2d4sMoKEOfdWH7UqMe3FszfYFvSu5KMCQFMYeFaaEEP7Jn8rGzfQ5HQd44ek
-        lQJqmq6CE2BXbY/i34FuvPcKU70HEEygY6Y9d8J3o6zQ0K9SYNu+pcXt4lkCQA3h
-        jJQQe5uEGJTExqed7jllQ0khFJzLMx0K6tj0NeeIzAaGCQz13oo2sCdeGRHO4aDh
-        HH6Qlq/6UOV5wP8+GAcCQFgRCcB+hrje8hfEEefHcFpyKH+5g1Eu1k0mLrxK2zd+
-        4SlotYRHgPCEubokb2S1zfZDWIXW3HmggnGgM949TlY=
-        -----END RSA PRIVATE KEY-----
-      verification_key: |
-        -----BEGIN PUBLIC KEY-----
-        MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDHFr+KICms+tuT1OXJwhCUmR2d
-        KVy7psa8xzElSyzqx7oJyfJ1JZyOzToj9T5SfTIq396agbHJWVfYphNahvZ/7uMX
-        qHxf+ZH9BL1gk9Y6kCnbM5R60gfwjyW1/dQPjOzn9N394zd2FJoFHwdq9Qs0wBug
-        spULZVNRxq7veq/fzwIDAQAB
-        -----END PUBLIC KEY-----
+    no_ssl: <%= protocol == 'http' %>
     cc:
       client_secret: <%= common_password %>
     admin:
@@ -482,9 +603,6 @@ properties:
     batch:
       username: batch
       password: <%= common_password %>
-    client:
-      autoapprove:
-        - cf
     clients:
       cf:
         override: true
@@ -498,25 +616,42 @@ properties:
         authorized-grant-types: client_credentials
         authorities: clients.read,clients.write,clients.secret,password.write,scim.read,uaa.admin
     scim:
-      userids_enabled: true
       users:
       - admin|<%= common_password %>|scim.write,scim.read,openid,cloud_controller.admin,uaa.admin,password.write
       - services|<%= common_password %>|scim.write,scim.read,openid,cloud_controller.admin
+    jwt:
+      signing_key: |
+        -----BEGIN RSA PRIVATE KEY-----
+        REPLACE+ME+WITH+A+REAL+RSA+PRIVATE+KEY+++++++++++++asdfghj123122
+        123456789+++++REPLACE+ME+WITH+A+REAL+RSA+PRIVATE+KEY++++++++++++
+        asd34++123456789+++++REPLACE+ME+WITH+A+REAL+RSA+PRIVATE+KEY+++++
+        KVy7psa8xzElSyzqx7oJyfJ1JZyOzToj9T5SfTIq396agbHJWVfYphNahvZ/7uMX
+        sdfvsdfgvKVy7psALKSFOa8xzElSyzqx7oJyfJ1JZyOzToj9T5SfTIq396agbHJW
+        VfYphNahvZ/7uMXKVy7psa8xzElSyzqx7oJyfJ1JZyOO:9T5SfTIq396agbHJWVf
+        YphNasvZ/7uMXFzqx7oJyfJ1JZyOzToj9T5SfTIq396agbHJWVfYphNahvZ/7uMX
+        sedfsyzqx7oJyfJ1JZyOzToj9TDASWDASD5SfTIq396agbHJWVfYphNahvZ/7uMX
+-----END RSA PRIVATE KEY-----
+      verification_key: |
+        -----BEGIN PUBLIC KEY-----
+        REPLACE+ME+WITH+A+VALID+PUBLIC+KEY++++++++++MIGfMA0GCSqGSIb3DQEBAQUA
+        AASAqHxf+ZH9BL1gk9Y6kCnbM5R60gfwjyW1/dQPjOzn9N394zd2FJoFHwdq9Qs0wBug
+        BUGBUGspULZVNRxq7veq/fzwIDAQAB
+        -----END PUBLIC KEY-----
 ~~~
 
-NOTE again: this is a deployment file that is known to work with v141 of Cloud Foundry.
+<p class="note"><strong>Note</strong>: This is a deployment file is for v170 of Cloud Foundry.
 
 ## Deploying your own Cloud Foundry ##
 
-In this section, your bosh will be instructed to provision 9 VMs (specified in the manifest), binding the router to your floating IP address, and running the minimal, useful set of jobs mentioned above. In the subsequent section, you well deploy a sample application to your Cloud Foundry
+In this section, your BOSH will be instructed to provision 9 VMs (specified in the manifest), binding the router to your IP address, and running the minimal, useful set of jobs mentioned above. In the subsequent section, you well deploy a sample application to your Cloud Foundry
 
-First, target your bosh CLI to your manifest file. Use either:
+First, target your BOSH CLI to your manifest file. Use either:
 
 <pre class="terminal">
 $ bosh deployment ~/bosh-workspace/deployments/cf/demo.yml
 </pre>
 
-Then, we upload the deployment file to your bosh and instruct it to "deploy" your Cloud Foundry service.
+Then, we upload the deployment file to your BOSH and instruct it to "deploy" your Cloud Foundry service.
 
 <pre class="terminal">
 $ bosh deploy
@@ -524,7 +659,7 @@ $ bosh deploy
 
 ### What is happening now? ###
 
-The first time you deploy a bosh release it will compile every package that it needs for your deployment. You will see something like:
+The first time you deploy a BOSH release it will compile every package that it needs for your deployment. You will see something like:
 
 <pre class="terminal">
 Compiling packages
@@ -541,7 +676,7 @@ And later...
 golang/2, gorouter/10,...  |ooo                     | 4/23 00:02:15  ETA: 00:04:04
 </pre>
 
-If you visit your OpenStack dashboard, you will see a number of VMs have been provisioned. Each of these VMs is being assigned a single package to compile. When it completes, it uploads the compiled binaries and libraries for that package into the bosh blobstore. These compiled packages can be used over and over and never need compilation again.
+If you visit your OpenStack dashboard, you will see a number of VMs have been provisioned. Each of these VMs is being assigned a single package to compile. When it completes, it uploads the compiled binaries and libraries for that package into the BOSH blobstore. These compiled packages can be used over and over and never need compilation again.
 
 Finally, the initial compilation of packages ends (after about 15 minutes in the example below):
 
@@ -569,7 +704,7 @@ Creating bound missing VMs
 Done                    9/9 00:07:34
 </pre>
 
-Finally it assigns each VM a job (which is a list of one or more job templates from the [cf-release bosh release jobs folder](https://github.com/cloudfoundry/cf-release/tree/master/jobs))
+Finally it assigns each VM a job (which is a list of one or more job templates from the [cf-release BOSH release jobs folder](https://github.com/cloudfoundry/cf-release/tree/master/jobs))
 
 <pre class="terminal">
 Binding instance VMs
@@ -649,7 +784,7 @@ organization: demo
 space: development
 </pre>
 
-Finally, clone an example application (that doesn't require any database services) and push it to deploy:
+Finally, clone an example application that does not require database services and push it to deploy:
 
 <pre class="terminal">
 $ git clone https://github.com/cloudfoundry-community/cf_demoapp_ruby_rack.git
