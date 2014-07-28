@@ -2,7 +2,7 @@
 title: Deploying Cloud Foundry with BOSH
 ---
 
-* [Local Setup with Bosh Lite](boshlite/index.html)
+* [Local Setup with BOSH Lite](boshlite/index.html)
 * [Network Configuration](configure/network_config.html)
 * [Deploying to AWS](ec2/index.html)
 * [Deploying to AWS with BOSH AWS Bootstrap](ec2/bootstrap-aws-vpc.html)
