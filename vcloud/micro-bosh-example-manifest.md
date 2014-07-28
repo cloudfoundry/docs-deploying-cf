@@ -27,7 +27,7 @@ Here is an example manifest for deploying Micro BOSH on vCloud.
       plugin: vcloud
       properties:
         agent:
-          ntp:
+          ntp: # This example uses a US NTP server. Edit for your region.
           - us.pool.ntp.org
         vcds:
           - url: <your_vcd_endpoint e.g. https://p2v1-vcd.vchs.vmware.com:443 - Do **not** include path on host >
