@@ -16,7 +16,7 @@ For example, you will be able to do the following:
 <pre class="terminal">
 $ cf target api.mycloud.com
 $ cf login admin
-Password> ******  (unless you change it in the deployment file below)
+Password> ******
 $ git clone https://github.com/cloudfoundry-community/cf_demoapp_ruby_rack.git
 $ cd cf_demoapp_ruby_rack
 $ cf push
@@ -763,7 +763,7 @@ First, target the Cloud Foundry, create an Organization, and create the first Sp
 $ gem install cf
 $ cf target api.mycloud.com
 $ cf login admin
-Password> c1oudc0w  (unless you change it in the deployment file below)
+Password> ******
 
 $ cf create-org demo
 Creating organization demo... OK
