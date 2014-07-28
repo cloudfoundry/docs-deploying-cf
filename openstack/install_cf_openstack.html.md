@@ -508,7 +508,7 @@ NOTE again: this is a deployment file that is known to work with v141 of Cloud F
 
 ## Deploying your own Cloud Foundry ##
 
-In this section, your bosh will be instructed to provision 9 VMs (specified in the manifest), binding the router to your floating IP address, and running the minimal, useful set of jobs mentioned above. In the subsequent section, you well deploy a sample application to your Cloud Foundry
+In this section, your bosh will be instructed to provision 9 VMs (specified in the manifest), binding the router to your floating IP address, and running the minimal, useful set of jobs mentioned above. In the subsequent section, you will deploy a sample application to your Cloud Foundry.
 
 First, target your bosh CLI to your manifest file. Use either:
 
