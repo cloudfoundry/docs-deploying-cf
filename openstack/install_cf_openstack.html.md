@@ -31,7 +31,7 @@ It is assumed that you have [validated your OpenStack](validate_openstack.html) 
 
 It is also required that you have provisioned a floating IP address (`2.3.4.5` in the examples below) and setup your DNS to map `*` records to this IP address. For example, if you were using `mycloud.com` domain as the base domain for your Cloud Foundry, you need a `*` A record for this zone mapping to `2.3.4.5`.
 
-Confirm in your local terminal that you have the bosh CLI installed and is targeting your bosh:
+Confirm in your local terminal that you have the bosh CLI installed and is targeting your BOSH:
 
 <pre class="terminate">
 $ bosh status
