@@ -4,7 +4,7 @@ title: Installing Cloud Foundry on OpenStack
 
 This topic describes how to install Cloud Foundry on OpenStack.
 
-<p class="note"><strong>Note</strong>: These instructions are for v170 release of Cloud Foundry.</p>
+<p class="note"><strong>Note</strong>: These instructions are for the v170 release of Cloud Foundry. For newer versions of Cloud Foundry, please <a href="https://github.com/cloudfoundry/docs-deploying-cf/issues/new">let us know</a> if this documentation continues to work or needs to be updated.</p>
 
 ## Goal ##
 
@@ -94,7 +94,7 @@ $ wget http://bosh-jenkins-artifacts.s3.amazonaws.com/bosh-stemcell/openstack/bo
 $ bosh upload stemcell bosh-stemcell-latest-openstack-kvm-ubuntu.tgz
 </pre>
 
-<p class="note"><strong>Note</strong>: There has been [a report on the vcap-dev mailing list](https://www.pivotaltracker.com/story/show/62108468) that cf-release v147 and other releases through v150 are incompatible with some latest versions of openstack-kvm-ubuntu stemcell. The one that works for the user reporting the issue is [1256](https://bosh-jenkins-artifacts.s3.amazonaws.com/bosh-stemcell/openstack/bosh-stemcell-1256-openstack-kvm-ubuntu.tgz).</p>
+<p class="note"><strong>Note</strong>: There has been a <a href="https://www.pivotaltracker.com/story/show/62108468">report</a> on the vcap-dev mailing list that cf-release v147 and other releases through v150 are incompatible with some latest versions of openstack-kvm-ubuntu stemcell. The stemcell that works for the user reporting the issue is <a href="https://bosh-jenkins-artifacts.s3.amazonaws.com/bosh-stemcell/openstack/bosh-stemcell-1256-openstack-kvm-ubuntu.tgz">1256</a>.</p>
 
 Confirm that you have at least one BOSH stemcell loaded into your BOSH:
 
@@ -639,7 +639,7 @@ properties:
         -----END PUBLIC KEY-----
 ~~~
 
-<p class="note"><strong>Note</strong>: This is a deployment file is for v170 of Cloud Foundry.
+<p class="note"><strong>Note</strong>: This deployment manifest is compatible with the v170 release of Cloud Foundry.</p>
 
 ## Deploying your own Cloud Foundry ##
 
