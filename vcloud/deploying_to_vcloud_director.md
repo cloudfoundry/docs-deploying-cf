@@ -126,7 +126,7 @@ The sample release is on Github for your cloning convenience:
 
 ##Uploading the Latest Stem Cell##
 
-Now we download the latest stem cellto upload to our micro BOSH instance.
+Now we download the latest stemcell to upload to our micro BOSH instance.
 
    * Download the latest BOSH stem cell for vCloud:
 
