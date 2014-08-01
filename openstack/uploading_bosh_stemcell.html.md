@@ -13,14 +13,16 @@ A Micro BOSH or Full BOSH should be deployed and targeted. See the steps in [Dep
 Upload a BOSH Stemcell to the BOSH Director using the `bosh upload` command:
 
 <pre class="terminal">
-bosh upload stemcell http://bosh-jenkins-artifacts.s3.amazonaws.com/bosh-stemcell/openstack/bosh-stemcell-latest-openstack-kvm-ubuntu.tgz
+bosh upload stemcell
+	http://bosh-jenkins-artifacts.s3.amazonaws.com/bosh-stemcell/openstack/bosh-stemcell-latest-openstack-kvm-ubuntu.tgz
 </pre>
 
 This command will output:
 
 <pre class="terminal">
 
-Using remote stemcell `http://bosh-jenkins-artifacts.s3.amazonaws.com/bosh-stemcell/openstack/bosh-stemcell-latest-openstack-kvm-ubuntu.tgz'
+Using remote stemcell
+	'http://bosh-jenkins-artifacts.s3.amazonaws.com/bosh-stemcell/openstack/bosh-stemcell-latest-openstack-kvm-ubuntu.tgz'
 
 Uploading stemcell...
 
