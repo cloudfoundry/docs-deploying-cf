@@ -39,7 +39,7 @@ $ fog openstack
 
 The `[]` is an empty array in Ruby. You might see a long list of servers being displayed if your OpenStack tenancy/project already contains provisioned servers.
 
-Note: It is recommended that you deploy BOSH and Cloud Foundry in a dedicated tenancy. This way, it is easier to keep track of the servers, volumes, security groups, and networks that you create. It also allows you to manage user access.
+<p class="note"><strong>Note</strong>: It is recommended that you deploy BOSH and Cloud Foundry in a dedicated tenancy. This way, it is easier to keep track of the servers, volumes, security groups, and networks that you create. It also allows you to manage user access.</p>
 
 There is more information on [OpenStack API docs](http://docs.openstack.org/api/quick-start/content/).
 
