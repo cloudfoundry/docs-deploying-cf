@@ -261,7 +261,8 @@ bosh micro deploy ~/bosh-workspace/stemcells/bosh-stemcell-XXXX-openstack-kvm-ub
 
 This command will output:
 
-    Deploying new MicroBOSH instance `microbosh-openstack/microbosh.yml' to `https://<microbosh_ip_address>:25555' (type 'yes' to continue): yes
+    Deploying new MicroBOSH instance `microbosh-openstack/microbosh.yml' to `https://<microbosh_ip_address>:25555'
+		(type 'yes' to continue): yes
 
     Verifying stemcell...
     File exists and readable                                     OK
@@ -299,18 +300,28 @@ This command will output:
 If for some reason the deploy process gets stuck or fails, you can check the log file located at `~/bosh-workspace/deployments/microbosh-openstack/bosh_micro_deploy.log`:
 
     # Logfile created on 2013-06-14 13:02:00 +0200 by logger.rb/31641
-    I, [2013-06-14T13:02:00.661999 #11533] [0x12b6ff0]  INFO -- : No existing deployments found (will save to /Users/frodenas/deployments/bosh-deployments.yml)
-    I, [2013-06-14T13:02:26.993498 #13692] [0x366ff0]  INFO -- : No existing deployments found (will save to /Users/frodenas/deployments/bosh-deployments.yml)
-    I, [2013-06-14T13:03:10.489924 #13692] [0x366ff0]  INFO -- : bosh_registry is ready on port 25889
-    I, [2013-06-14T13:03:13.135552 #13692] [0x366ff0]  INFO -- : Loading yaml from /tmp/d20130614-13692-15wkgqb/sc-20130614-13692-7eo4zq/stemcell.MF
-    I, [2013-06-14T13:03:19.602096 #13692] [create_stemcell(/tmp/d20130614-13692-15wkgqb/sc-20130614-13692-7eo4zq/image...)]  INFO -- : Creating new image...
-    I, [2013-06-14T13:03:19.602298 #13692] [create_stemcell(/tmp/d20130614-13692-15wkgqb/sc-20130614-13692-7eo4zq/image...)]  INFO -- : Extracting stemcell file to `/tmp/d20130614-13692-15wkgqb/d20130614-13692-2sfodm'...
+    I, [2013-06-14T13:02:00.661999 #11533] [0x12b6ff0]
+	INFO -- : No existing deployments found (will save to /Users/frodenas/deployments/bosh-deployments.yml)
+    I, [2013-06-14T13:02:26.993498 #13692] [0x366ff0]
+	INFO -- : No existing deployments found (will save to /Users/frodenas/deployments/bosh-deployments.yml)
+    I, [2013-06-14T13:03:10.489924 #13692] [0x366ff0]
+	INFO -- : bosh_registry is ready on port 25889
+    I, [2013-06-14T13:03:13.135552 #13692] [0x366ff0]
+	INFO -- : Loading yaml from /tmp/d20130614-13692-15wkgqb/sc-20130614-13692-7eo4zq/stemcell.MF
+    I, [2013-06-14T13:03:19.602096 #13692] [create_stemcell(/tmp/d20130614-13692-15wkgqb/sc-20130614-13692-7eo4zq/image...)]
+	INFO -- : Creating new image...
+    I, [2013-06-14T13:03:19.602298 #13692] [create_stemcell(/tmp/d20130614-13692-15wkgqb/sc-20130614-13692-7eo4zq/image...)]
+	INFO -- : Extracting stemcell file to `/tmp/d20130614-13692-15wkgqb/d20130614-13692-2sfodm'...
 
     ...
 
-    D, [2013-06-14T13:07:36.134753 #13692] [0x366ff0] DEBUG -- : Waiting for director to be ready: #<Errno::ECONNREFUSED: Connection refused - connect(2) (https://<microbosh_ip_address>:25555)>
-    I, [2013-06-14T13:07:36.171820 #13692] [0x366ff0]  INFO -- : Director is ready: {"name"=>"microbosh-openstack", "uuid"=>"fd581363-02cd-41c6-8bed-87780391cff7", "version"=>"1.5.0.pre.3 (release:bef17df0 bosh:bef17df0)", "user"=>nil, "cpi"=>"openstack", "features"=>{"dns"=>
-    {"status"=>true, "extras"=>{"domain_name"=>"microbosh"}}, "compiled_package_cache"=>{"status"=>false, "extras"=>{"provider"=>nil}}}
+    D, [2013-06-14T13:07:36.134753 #13692] [0x366ff0]
+	DEBUG -- : Waiting for director to be ready: #<Errno::ECONNREFUSED: Connection refused - connect(2) (https://<microbosh_ip_address>:25555)>
+    I, [2013-06-14T13:07:36.171820 #13692] [0x366ff0]
+	INFO -- : Director is ready: {"name"=>"microbosh-openstack", "uuid"=>"fd581363-02cd-41c6-8bed-87780391cff7",
+	"version"=>"1.5.0.pre.3 (release:bef17df0 bosh:bef17df0)", "user"=>nil, "cpi"=>"openstack", "features"=>{"dns"=>
+    {"status"=>true, "extras"=>{"domain_name"=>"microbosh"}},
+	"compiled_package_cache"=>{"status"=>false, "extras"=>{"provider"=>nil}}}
 
 Note that you can control the logging debug level in the manifest:
 
