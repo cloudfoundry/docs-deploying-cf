@@ -20,7 +20,9 @@ Allocate two new OpenStack Floating IP to your project. We will use it to access
 
 ## <a id="deploy_bosh"></a>Deploying BOSH ##
 
-### <a id="create_release"></a>Create BOSH Release ###
+### <a id="create_release"></a>Download or Create a BOSH Release ###
+
+You can download and use a [pre-built release](http://bosh-artifacts.cfapps.io/), or download the source code to build a release yourself.
 
 Download the BOSH [source code](https://github.com/cloudfoundry/bosh):
 
