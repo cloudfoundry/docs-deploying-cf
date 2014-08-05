@@ -139,7 +139,8 @@ There are many different parts of Cloud Foundry that can be deployed. In this se
 * `gorouter`
 * `nats`
 * `postgres`
-* `health_manager_next`
+* `hm9000`
+* `syslog_aggregator`
 * `debian_nfs_server` (see below for using Swift as the droplet blobstore)
 * `uaa`
 
@@ -713,7 +714,7 @@ Binding instance VMs
   nfs_server/0 (00:00:01)
   syslog_aggregator/0 (00:00:01)
   uaa/0 (00:00:01)
-  health_manager/0 (00:00:01)
+  hm9000/0 (00:00:01)
   router/0 (00:00:01)
   cloud_controller/0 (00:00:01)
   dea/0 (00:00:01)
@@ -834,5 +835,3 @@ OK
 $ open hello.mycloud.com
 Hello World!
 </pre>
-
-Success!
