@@ -105,7 +105,7 @@ For this exercise, we'll use a release from the public repository. Clone this re
 <pre class="terminal">
 $ git clone https://github.com/cloudfoundry/cf-release.git
 $ cd cf-release
-$ bosh upload release releases/cf-xxx.yml 
+$ bosh upload release releases/cf-xxx.yml
 </pre>
 
 You'll see a flurry of output as BOSH configures and uploads release components. Here's a shortened version:
@@ -154,22 +154,9 @@ Releases total: 1
 
 ## <a id="create-manifest"></a>Create a Cloud Foundry deployment manifest file ##
 
-For the purpose of this tutorial, we'll use a sample [deployment manifest template](cloud-foundry-example-manifest.html). Copy this file to the `~/deployments` directory on the jump box, with the name `cf.yml.erb` indicating that it's a YAML file written using erb, the ruby templating engine. It allows us to fill in a set of properties at the beginning of the file and then run `erb cf.yml.erb > cf.yml` to generate a suitable manifest file in `cf.yml`. There are significant comments within this template file, in the first section with all the user defined variables. You should fill out all of the variables provided.
+Create a manifest file in the `~/deployments` directory on the jump box, with the name `cf.yml.erb` indicating that it's a YAML file written using erb, the ruby templating engine. It allows us to fill in a set of properties at the beginning of the file and then run `erb cf.yml.erb > cf.yml` to generate a suitable manifest file in `cf.yml`.
 
-Please note that the goal of this example is to get an instance running **as simply as possible**. A production deployment of Cloud Foundry will likely make **significant changes** to network topology, security settings / certs, scale, etc. etc.
-
-To address some of the properties in the manifest template:
-
-* `director_uuid` - this should be set to the UUID of the Micro BOSH / BOSH being used. You can get this using bosh status.
-* `cf_release_name` / `cf_release_version` - these instructions have been tested with the Cloud Foundry release cf-147.
-* `vapp_name` - if you include a name all VMs will be created within a single vApp, which allows much simpler cleanup.
-* `IP addresses` - in general, you provide a complete range in `ip_range`, you exclude some of these (`reserved_ip_range`), assign some statically to particular VMs and leave some dynamic IPs for assignment to other VMs (in this case the DEAs are dynamic. Typically compilation VMs created by BOSH during deployments are also dynamic).
-* `network_name` - If using vCHS, this is lower case despite how it's presented in the UI
-* `uaa_login_http_s` - a secure deployment requires the UAA and login server to communicate over https. However, this requires trust between the two endpoints. Since we're using self-signed certs this is a little tricky to set up, so this deployment simply uses http. A production deployment should do this using https.
-* `wildcard_domain_name` - this deployment assumes a single (wildcard) domain name for both apps and system. Production deployments would typically use different domains.
-* **Cert / private key and public / private key pairs** - there are instructions to generate these in the template file. You can run these instructions on the jump box VM (that's why we installed the `openssl` package when setting up the jump box)
-
-Once you have filled in all the properties at the top of the templated manifest file run `erb` to generate the final manifest file `cf.yml`. Then use the BOSH CLI to set the deployment manifest file:
+Once you have prepared a manifest file, run `erb` to generate the final manifest file `cf.yml`. Then use the BOSH CLI to set the deployment manifest file:
 
 <pre class="terminal">
 $ erb ~/deployments/cf.yml.erb > ~/deployments/cf.yml

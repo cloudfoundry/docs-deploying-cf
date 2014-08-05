@@ -2,15 +2,15 @@
 title: BOSH Example Manifest
 ---
 
-This is an example manifest for deploying BOSH via Micro BOSH. The next step would be to deploy Cloud Foundry, which uses the [Cloud Foundry Example Manifest](./cloud-foundry-example-manifest.html).
+This is an example manifest for deploying BOSH via Micro BOSH. The next step would be to deploy Cloud Foundry.
 
     ---
     name: bosh_wdc_vdc-2
     director_uuid: micro_bosh_director_uuid
 
-    release:                                            
+    release:
       name: bosh
-      version: latest 
+      version: latest
 
     networks:
     - name: default # An internal name for the network in your manifest file
@@ -68,10 +68,10 @@ This is an example manifest for deploying BOSH via Micro BOSH. The next step wou
         cpu: 2
 
     #
-    # If you have errors with canary instances during a deployment, you can try 
-    # increasing the canary_watch_time and update_watch_time. The values here are in 
+    # If you have errors with canary instances during a deployment, you can try
+    # increasing the canary_watch_time and update_watch_time. The values here are in
     # milliseconds. Divide by 1000 to get the value in seconds.
-    # 
+    #
     #
 
     update:
@@ -104,7 +104,7 @@ This is an example manifest for deploying BOSH via Micro BOSH. The next step wou
 
     - name: redis
       template: redis
-      instances: 1 
+      instances: 1
       resource_pool: small
       networks:
       - name: default
@@ -159,13 +159,13 @@ This is an example manifest for deploying BOSH via Micro BOSH. The next step wou
         management: default
 
       nats:
-        user: nats              
+        user: nats
         password: password
         address: 10.146.21.157
         port: 4222
 
       postgres:
-        user: bosh             
+        user: bosh
         password: password
         address: 10.146.21.151
         port: 5432
@@ -224,7 +224,7 @@ This is an example manifest for deploying BOSH via Micro BOSH. The next step wou
           organization: <Organization name>
           virtual_datacenter: <VDC name>
           vapp_catalog: <Organization catalog name>
-          media_catalog: <Organization catalog name> 
+          media_catalog: <Organization catalog name>
           media_storage_profile: <Storage proflie>
           vm_metadata_key: <Metadata associated with Cloud Foundry VMs>
           description: <Text associated with Cloud Foundry VMs>
