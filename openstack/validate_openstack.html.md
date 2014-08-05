@@ -109,7 +109,11 @@ Create a security group for your virtual machines called **ping-test**.
 1. For **Security Group**, select **ping-test (Current)**.
 1. Click **Add**.
 
-<p class="note"><strong>Note</strong>: If you use the **Direction** field to create an <strong>Ingress</strong> rule, you must create an **Egress** rule that matches the ingress rule settings.</p>
+<<<<<<< HEAD
+<p class="note"><strong>Note</strong>: If you use the <strong>Direction</strong> field to create an <strong>Ingress</strong> rule, you must create an <strong>Egress</strong> rule that matches the ingress rule settings.</p>
+=======
+<p class="note"><strong>Note</strong>: If you use the <strong>Direction</strong> field to create an <strong>Ingress</strong> rule, you must create an <strong>Egress</strong> rule that matches the ingress rule settings.</p>
+>>>>>>> cd2e43c0a79f4a8c300d5dd11ac6aebfd30a0e40
 
 From your OpenStack dashboard, create two VMs and open the console into one of them through the **Console** tab on its **Instance Detail** page. Make sure that you put these virtual machines into the **ping-test** security group. Wait for the terminal to appear and login.
 
@@ -201,7 +205,7 @@ Last cylinder or +size or +sizeM or +sizeK (1-62415, default 62415):<strong>ENTE
 Command (m for help): <strong>t</strong>
 Partition number (1-4): <strong>2</strong>
 Hex code (type L to list codes): <strong>83</strong>
-Changed system type of partition 2 to 83 
+Changed system type of partition 2 to 83
 Command (m for help): <strong>w</strong>
 </pre>
 
@@ -325,4 +329,4 @@ PUBLIC_INTERFACE=eth1
 FLAT_INTERFACE=eth0
 </pre>
 
-<p class="note>"><strong>Note</strong>: You cannot use VMs that only have ping-test security groups assigned because they do not allow Internet traffic.</p>
+<p class="note"><strong>Note</strong>: You cannot use VMs that only have ping-test security groups assigned because they do not allow Internet traffic.</p>

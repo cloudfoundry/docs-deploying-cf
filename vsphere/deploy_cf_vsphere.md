@@ -85,9 +85,7 @@ If components are found locally, they are not downloaded.
 
 ## <a id="create-manifest"></a>Create a Cloud Deployment Manifest ##
 
-For the purpose of this tutorial, we'll use a sample [deployment manifest](cloud-foundry-example-manifest.html).
-
-Keep in mind that a manifest of this size requires significant virtual hardware resources to run. According to the manifest file, you ideally need 72 vCPUs, 200GB of RAM, and 1 TB of storage. The more IOPS you can throw at the deployment, the better.
+Keep in mind that a manifest requires significant virtual hardware resources to run. You ideally need 72 vCPUs, 200GB of RAM, and 1 TB of storage. The more IOPS you can throw at the deployment, the better.
 
 Use the BOSH CLI to set your current deployment. This example assumes your deployment manifest file is in `~/deployments`.
 

@@ -4,7 +4,7 @@ title: Deploying MicroBOSH
 
 Installation of BOSH is done using MicroBOSH, which is a single VM that includes all of the BOSH components. See [BOSH Components](/bosh/bosh-components.html) for more information.
 
-If you want to play around with BOSH, or create a simple development setup, you can install MicroBOSH using the BOSH Deployer. If you would like to use BOSH in production to manage a distributed system, you also use the BOSH Deployer, install MicroBOSH, and then use it as a means to deploy the final distributed system on multiple VMs.
+If you want to use BOSH to manage a distributed system, you must use the BOSH Deployer, install MicroBOSH, and then use it as a means to deploy the final distributed system on multiple VMs.
 
 ## <a id="prerequisites"></a>Prerequisites ##
 
@@ -22,7 +22,7 @@ You will need access to these OpenStack services:
 * [Compute](http://www.openstack.org/software/openstack-compute/): MicroBOSH will boot new VMs, assign floating IPs to VMs, and create and attach volumes to VMs.
 * [Image](http://www.openstack.org/software/openstack-shared-services/): MicroBOSH will update new images (called [BOSH Stemcells](/bosh/terminology.html#stemcell) in BOSH terminology).
 
-Although the new [OpenStack Networking](http://www.openstack.org/software/openstack-networking/) service is not required, it is recommended if you want to deploy complex distributed systems.
+Although the [OpenStack Networking](http://www.openstack.org/software/openstack-networking/) service is not required, it is recommended if you want to deploy complex distributed systems.
 
 ### <a id="openstack_security_groups"></a>OpenStack Security Groups ###
 
@@ -177,7 +177,7 @@ cloud:
       api_key: <password>
       tenant: <tenant>
       region: <region> # Optional
-      default_security_groups: ["default", <microbosh_security_group>]
+      default_security_groups: [<default_security_group>, <microbosh_security_group>]
       default_key_name: <microbosh_keypair>
       private_key: <path_to_microbosh_keypar_private_key>
 ~~~
