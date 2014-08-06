@@ -109,11 +109,8 @@ Create a security group for your virtual machines called **ping-test**.
 1. For **Security Group**, select **ping-test (Current)**.
 1. Click **Add**.
 
-<<<<<<< HEAD
 <p class="note"><strong>Note</strong>: If you use the <strong>Direction</strong> field to create an <strong>Ingress</strong> rule, you must create an <strong>Egress</strong> rule that matches the ingress rule settings.</p>
-=======
-<p class="note"><strong>Note</strong>: If you use the <strong>Direction</strong> field to create an <strong>Ingress</strong> rule, you must create an <strong>Egress</strong> rule that matches the ingress rule settings.</p>
->>>>>>> cd2e43c0a79f4a8c300d5dd11ac6aebfd30a0e40
+
 
 From your OpenStack dashboard, create two VMs and open the console into one of them through the **Console** tab on its **Instance Detail** page. Make sure that you put these virtual machines into the **ping-test** security group. Wait for the terminal to appear and login.
 
