@@ -129,10 +129,10 @@ If you are using the new [OpenStack Networking](http://www.openstack.org/softwar
         net_id: <network_uuid>
     ~~~
 
-      * The `vip` option is optional, and allows you to associate a floating IP address to the MicroBosh VM in case you want to access it from outside of the VM network. If set, `allocated_floating_ip` **must** be a previously allocated floating ip.
-      * The `net_id` option sets the OpenStack network to use. `network_uuid` **must** be an existing Network UUID. If necessary, you can list your OpenStack networks using the command `neutron net-list`.
+* The `vip` option is optional, and allows you to associate a floating IP address to the MicroBosh VM in case you want to access it from outside of the VM network. If set, `allocated_floating_ip` **must** be a previously allocated floating ip.
+* The `net_id` option sets the OpenStack network to use. `network_uuid` **must** be an existing Network UUID. If necessary, you can list your OpenStack networks using the command `neutron net-list`.
 
-1. If you want to set the MicroBosh IP address manually:
+2\. If you want to set the MicroBosh IP address manually:
 
 ~~~yaml
 network:
