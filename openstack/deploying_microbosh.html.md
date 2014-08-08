@@ -2,9 +2,7 @@
 title: Deploying MicroBOSH
 ---
 
-Installation of BOSH is done using MicroBOSH, which is a single VM that includes all of the BOSH components. See [BOSH Components](/bosh/bosh-components.html) for more information.
-
-If you want to use BOSH to manage a distributed system, you must use the BOSH Deployer, install MicroBOSH, and then use it as a means to deploy the final distributed system on multiple VMs.
+Installation of BOSH is done using MicroBOSH, which is a single VM that includes all of the BOSH components. See [BOSH Components](/bosh/bosh-components.html) for more information. You need BOSH to manage and deploy a distributed system on multiple VMs.
 
 ## <a id="prerequisites"></a>Prerequisites ##
 
@@ -123,16 +121,16 @@ If you are using the new [OpenStack Networking](http://www.openstack.org/softwar
 
 1. If your network has DHCP enabled, you can let OpenStack pick an IP address:
 
-~~~yaml
-network:
-  type: dynamic
-  vip: <allocated_floating_ip> # Optional
-  cloud_properties:
-    net_id: <network_uuid>
-~~~
+    ~~~yaml
+    network:
+      type: dynamic
+      vip: <allocated_floating_ip> # Optional
+      cloud_properties:
+        net_id: <network_uuid>
+    ~~~
 
-* The `vip` option is optional, and allows you to associate a floating IP address to the MicroBosh VM in case you want to access it from outside of the VM network. If set, `allocated_floating_ip` **must** be a previously allocated floating ip.
-* The `net_id` option sets the OpenStack network to use. `network_uuid` **must** be an existing Network UUID. If necessary, you can list your OpenStack networks using the command `neutron net-list`.
+    * The `vip` option is optional, and allows you to associate a floating IP address to the MicroBosh VM in case you want to access it from outside of the VM network. If set, `allocated_floating_ip` **must** be a previously allocated floating ip.
+    * The `net_id` option sets the OpenStack network to use. `network_uuid` **must** be an existing Network UUID. If necessary, you can list your OpenStack networks using the command `neutron net-list`.
 
 1. If you want to set the MicroBosh IP address manually:
 
