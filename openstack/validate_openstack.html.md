@@ -26,7 +26,7 @@ Create a `~/.fog` file and copy the below content:
   :openstack_region:    REGION # Optional
 </pre>
 
-<p class="note>"><strong>Note</strong>: You need to include `/v2.0/tokens` in the auth URL above.</p>
+<p class="note"><strong>Note</strong>: You need to include `/v2.0/tokens` in the auth URL above.</p>
 
 Install the `fog` application in your terminal, then run it in interactive mode:
 
@@ -81,11 +81,11 @@ SyntaxError: (irb):5: syntax error, unexpected ','
 ...ate(name: 'test', flavor_ref: , image_ref: , personality: [{...
 ...                               ^
 (irb):5: syntax error, unexpected ')', expecting $end
-  from /Users/pivotal/.gem/ruby/1.9.3/gems/fog-1.18.0/bin/fog:76:in `block in <top (required)>'
+  from /Users/pivotal/.gem/ruby/1.9.3/gems/fog-1.18.0/bin/fog:76:in `block in <\top (required)>'
   from /Users/pivotal/.gem/ruby/1.9.3/gems/fog-1.18.0/bin/fog:76:in `catch'
-  from /Users/pivotal/.gem/ruby/1.9.3/gems/fog-1.18.0/bin/fog:76:in `<top (required)>'
+  from /Users/pivotal/.gem/ruby/1.9.3/gems/fog-1.18.0/bin/fog:76:in `<\top (required)>'
   from /Users/pivotal/.gem/ruby/1.9.3/bin/fog:23:in `load'
-  from /Users/pivotal/.gem/ruby/1.9.3/bin/fog:23:in `<main>'
+  from /Users/pivotal/.gem/ruby/1.9.3/bin/fog:23:in `<\main>'
 </pre>
 
 ## <a id="private_ping"></a> Can you ping one virtual machine from another? ##
@@ -109,7 +109,7 @@ Create a security group for your virtual machines called **ping-test**.
 1. For **Security Group**, select **ping-test (Current)**.
 1. Click **Add**.
 
-<p class="note"><strong>Note</strong>: If you use the <strong>Direction</strong> field to create an <strong>Ingress</strong> rule, you must create an <strong>Egress</strong> rule that matches the ingress rule settings.</p>
+<p class="note"><strong>Note</strong>: If your interface contains the <strong>Direction</strong> field, use the default <strong>Direction</strong> entry to create an <strong>Ingress</strong> rule. You must create an <strong>Egress</strong> rule that matches the ingress rule settings.</p>
 
 
 From your OpenStack dashboard, create two VMs and open the console into one of them through the **Console** tab on its **Instance Detail** page. Make sure that you put these virtual machines into the **ping-test** security group. Wait for the terminal to appear and login.
@@ -140,7 +140,7 @@ $ fog openstack
 >> 100.times { p Compute[:openstack].servers }
 </pre>
 
-If you limited by API throttling, you will receive a 413 HTTP response.
+If you are limited by API throttling, you will receive a 413 HTTP response.
 
 To remove the API throttle if you are running **devstack**, add the following to your `localrc`:
 
@@ -206,7 +206,7 @@ Changed system type of partition 2 to 83
 Command (m for help): <strong>w</strong>
 </pre>
 
-Next, create a file system on the disk by entering at the prompt.
+Next, create a file system on the disk by entering at the prompt:
 <pre class="bash">
 $ sudo mkfs.ext3 /dev/vdb1
 </pre>
@@ -223,7 +223,7 @@ cd /disk
 sudo touch pla
 </pre>
 
-If you are running **devstack**, add the following to your `localrc` and at the end of this page you will recreate your devstack with a larger volume backing file:
+If you are running **devstack**, add the following to your `localrc`:
 
 <pre class="bash">
 VOLUME_BACKING_FILE_SIZE=70000M
