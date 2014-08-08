@@ -81,11 +81,11 @@ SyntaxError: (irb):5: syntax error, unexpected ','
 ...ate(name: 'test', flavor_ref: , image_ref: , personality: [{...
 ...                               ^
 (irb):5: syntax error, unexpected ')', expecting $end
-  from /Users/pivotal/.gem/ruby/1.9.3/gems/fog-1.18.0/bin/fog:76:in `block in %lt;top (required)>'
+  from /Users/pivotal/.gem/ruby/1.9.3/gems/fog-1.18.0/bin/fog:76:in `block in &lt;top (required)&gt;'
   from /Users/pivotal/.gem/ruby/1.9.3/gems/fog-1.18.0/bin/fog:76:in `catch'
-  from /Users/pivotal/.gem/ruby/1.9.3/gems/fog-1.18.0/bin/fog:76:in `\<top (required)>'
+  from /Users/pivotal/.gem/ruby/1.9.3/gems/fog-1.18.0/bin/fog:76:in `&lt;top (required)&gt;'
   from /Users/pivotal/.gem/ruby/1.9.3/bin/fog:23:in `load'
-  from /Users/pivotal/.gem/ruby/1.9.3/bin/fog:23:in `\<main>'
+  from /Users/pivotal/.gem/ruby/1.9.3/bin/fog:23:in `&lt;main&gt;'
 </pre>
 
 ## <a id="private_ping"></a> Can you ping one virtual machine from another? ##
