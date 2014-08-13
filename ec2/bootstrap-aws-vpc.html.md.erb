@@ -313,6 +313,9 @@ properties:
 
   loggregator_endpoint:
     shared_secret: PLACEHOLDER-LOGGREGATOR-SECRET
+    
+  ssl:
+    skip_cert_verify: false
 </pre>
 
 Replace placeholders with the approriate data:
@@ -375,6 +378,10 @@ Generate RSA key pair for:
 - `PLACEHOLDER-UAA-JWT-SIGNING-KEY` and `PLACEHOLDER-UAA-JWT-VERIFICATION-KEY`
 
 You can also replace the users username/password in uaa->scim->users list.
+
+If you are using Self-Signed SSL certificates:
+
+- Change ```skip_cert_verify:``` to ```true```
 
 
 ## <a id='deploy-cloudfoundry'></a>Deploy Cloud Foundry##
