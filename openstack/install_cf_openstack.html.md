@@ -644,9 +644,9 @@ properties:
 
 ## Deploying your own Cloud Foundry ##
 
-In this section, your BOSH will be instructed to provision 9 VMs (specified in the manifest), binding the router to your IP address, and running the minimal, useful set of jobs mentioned above. In the subsequent section, you well deploy a sample application to your Cloud Foundry
+In this section, your BOSH will be instructed to provision nine VMs (specified in the manifest), bind the router to your IP address, and run the minimal, useful set of jobs mentioned above. In the subsequent section, you will deploy a sample application to your Cloud Foundry
 
-First, target your BOSH CLI to your manifest file. Use either:
+First, target your BOSH CLI to your manifest file.
 
 <pre class="terminal">
 $ bosh deployment ~/bosh-workspace/deployments/cf/demo.yml
@@ -689,7 +689,7 @@ Finally, the initial compilation of packages ends (after about 15 minutes in the
 Done                    23/23 00:09:16
 </pre>
 
-Next it boots the 9 VMs mentioned in the deployment file above:
+Next it boots the nine VMs mentioned in the deployment file above:
 
 <pre class="terminal">
 Creating bound missing VMs
