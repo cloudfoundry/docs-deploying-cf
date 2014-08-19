@@ -2,7 +2,7 @@
 title: BOSH Example Manifest
 ---
 
-Here is an example manifest for deploying Micro BOSH on vCloud. 
+Here is an example manifest for deploying Micro BOSH on vCloud.
 
     name: bosh_micro_vcloud
 
@@ -27,7 +27,7 @@ Here is an example manifest for deploying Micro BOSH on vCloud.
       plugin: vcloud
       properties:
         agent:
-          ntp:
+          ntp: # This example uses a US NTP server. Edit for your region.
           - us.pool.ntp.org
         vcds:
           - url: <your_vcd_endpoint e.g. https://p2v1-vcd.vchs.vmware.com:443 - Do **not** include path on host >
@@ -37,11 +37,11 @@ Here is an example manifest for deploying Micro BOSH on vCloud.
               organization: <Organization name - e.g. 150-900 >
               virtual_datacenter: <VDC name - e.g. 150-900 >
               vapp_catalog: <Organization catalog name>
-              media_catalog: <Organization catalog name> 
+              media_catalog: <Organization catalog name>
               media_storage_profile: <Storage proflie e.g. SSD-Accelerated >
               vm_metadata_key: <Metadata associated with Cloud Foundry VMs>
-              description: <Text associated with Cloud Foundry VMs> 
-    
+              description: <Text associated with Cloud Foundry VMs>
+
     env:
       vapp: micro_bosh_vapp
       # By default you can ssh into the micro bosh using vcap / c1oudc0w
@@ -58,6 +58,6 @@ Here is an example manifest for deploying Micro BOSH on vCloud.
       # file: <file pathname>
 
 
- 
-      
+
+
 
