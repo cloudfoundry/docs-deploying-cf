@@ -1,5 +1,5 @@
 ---
-title: Set up vCHS or vCloud Virtual Data Center Resources
+title: Set up vCloud Air or vCloud Virtual Data Center Resources
 ---
 
 ## <a id="prerequisites"></a>Prerequisites ##
@@ -16,14 +16,14 @@ Administrator privileges for this virtual datacenter.
 
 Many of the actions we take during this installation will be carried out in the
 vCloud Director UI.
-When using vCHS, you can open the **vCloud Director UI** for your virtual
+When using vCloud Air, you can open the **vCloud Director UI** for your virtual
 datacenter as follows:
 
 Click on your virtual datacenter to open the virtual datacenter details.
-![vCHS Dashboard](/vcloud_images/vchs_dashboard.png)
+![vCloud Air Dashboard](/vcloud_images/vchs_dashboard.png)
 
 Next, click **Manage Catalogs in vCloud Director** to open the vCloud Director UI.
-![vCHS vDC](/vcloud_images/vchs_vdc_vcdui.png)
+![vCloud Air vDC](/vcloud_images/vchs_vdc_vcdui.png)
 
 ### vCloud Director ###
 To get started with Cloud Foundry on **vCloud Director** you will need an **account** in a [vCloud organization](http://pubs.vmware.com/vcd-51/topic/com.vmware.vcloud.users.doc_51/GUID-B2D21D95-B37F-4339-9887-F7788D397FD8.html) and a vCloud **virtual datacenter** with an Internet routable network and a block of assigned IP addresses. The recommended resources for a full CF deployment introduced in this doc is to have 28 CPU cores, 39 GB Memory, 120 GB disk, and 23 IPs to assign.
@@ -46,9 +46,9 @@ When planning a production deployment of Cloud Foundry, you will need to modify 
 
 ### Create a network ###
 
-If you are using vCHS you can reuse the networks provided out of the box. Typically you will use the routed network - for example, `164-935-default-routed`. Note that the default network names are actually all lower case, despite what is shown in the UI.
+If you are using vCloud Air you can reuse the networks provided out of the box. Typically you will use the routed network - for example, `164-935-default-routed`. Note that the default network names are actually all lower case, despite what is shown in the UI.
 
-If you want to add a network in vCHS, or if you need to in vCloud Director, here are the major steps to create a network from the vCloud Director UI:
+If you want to add a network in vCloud Air, or if you need to in vCloud Director, here are the major steps to create a network from the vCloud Director UI:
 
 1. Click the Manage & Monitor tab and click Organization vDCs in the left pane.
 2. Double-click the organization vDC name to open the organization vDC.
@@ -86,7 +86,7 @@ These instructions explain a deployment using a single wildcard domain for both 
 
 ### Private network deployments and limitations of NAT ###
 
-In vCloud and vCHS deployments the various components of Cloud Foundry are installed on a private network, where each component does not have a publicly routable IP address. Instead, when internal VMs need to access public IP addresses we use source NAT (SNAT) to map these multiple internal addresses to a public address (just like your home WiFi router).
+In vCloud and vCloud Air deployments the various components of Cloud Foundry are installed on a private network, where each component does not have a publicly routable IP address. Instead, when internal VMs need to access public IP addresses we use source NAT (SNAT) to map these multiple internal addresses to a public address (just like your home WiFi router).
 
 Similarly, when an external machine tries to connect to Cloud Foundry, it will connect to a public IP address. This needs to then connect to the private IP address of the Cloud Foundry instance, specifically the HA Proxy VM.
 
@@ -158,7 +158,7 @@ This should look as follows when complete:
 
 ## <a id="jumpbox"></a>Set up a jump box ##
 
-As illustrated in the diagram in the [Overview](index.html) section, Cloud Foundry installation on vCHS / vCloud Director is simplest if you create a machine within the target vDC (a **jump box** VM) from which you drive the rest of the installation process. We typically use Ubuntu 12.04 for this machine, and configure it with 1GB memory, 1GHz vCPU and 16GB storage (You will need to have around 8 GB of free disk space for the bosh_cli if you plan to use it to deploy CF releases. You'll need around 3 GB free disk space in /tmp)
+As illustrated in the diagram in the [Overview](index.html) section, Cloud Foundry installation on vCloud Air / vCloud Director is simplest if you create a machine within the target vDC (a **jump box** VM) from which you drive the rest of the installation process. We typically use Ubuntu 12.04 for this machine, and configure it with 1GB memory, 1GHz vCPU and 16GB storage (You will need to have around 8 GB of free disk space for the bosh_cli if you plan to use it to deploy CF releases. You'll need around 3 GB free disk space in /tmp)
 
 The rest of this documentation assumes you have created this machine in the target vDC.
 
