@@ -102,7 +102,7 @@ cloud:
             allow_mixed_datastores: <true_if_persistent_datastores_and_datastore_patterns_are_the_same>
             clusters:
             - <cluster_name>:
-              resource_pool: <resource_pool_name_optional>
+                resource_pool: <resource_pool_name_optional>
 
 apply_spec:
   properties:
@@ -123,7 +123,7 @@ apply_spec:
           allow_mixed_datastores: <true_if_persistent_datastores_and_datastore_patterns_are_the_same>
           clusters:
           - <cluster_name>:
-            resource_pool: <resource_pool_name_optional>
+              resource_pool: <resource_pool_name_optional>
     dns:
       # The BOSH powerDNS contacts the following DNS server for serving DNS entries from other domains.
       recursor: <ip_for_dns>
