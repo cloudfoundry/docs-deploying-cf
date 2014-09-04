@@ -2,9 +2,9 @@
 title: Adding Login Server to Cloud Foundry BOSH deployment
 ---
 
-Core Cloud Foundry includes a Login Server component that can be used as a single-sign on (SSO) service for applications. 
+Core Cloud Foundry includes a Login Server component that can be used as a single-sign on (SSO) service for applications.
 
-![login server](https://www.evernote.com/shard/s3/sh/1a205138-16e9-4bb4-b3db-22484108ea58/13e9230d134f99f03f82f160a50d2e83/deep/0/Cloud%20Foundry%20%5BBETA%5D.png)
+![login server](login-server.png)
 
 See the section "Configuration" below for configuring the links "Forgot Password" and "Create an account". These features are not implemented by Login Server; and require that you have a user-facing dashboard/console/portal to allow users to create accounts and request passwords be reset.
 
