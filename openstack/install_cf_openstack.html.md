@@ -90,8 +90,8 @@ A cloud provider needs a base image to provision VMs/servers. BOSH explicitly re
 To upload the latest BOSH stemcell to your BOSH:
 
 <pre class="terminate">
-$ wget http://bosh-jenkins-artifacts.s3.amazonaws.com/bosh-stemcell/openstack/bosh-stemcell-latest-openstack-kvm-ubuntu.tgz
-$ bosh upload stemcell bosh-stemcell-latest-openstack-kvm-ubuntu.tgz
+$ stemcell_url=$(bosh public stemcells --full | grep openstack | grep trusty | awk '{print $4}')
+$ bosh upload stemcell $stemcell_url
 </pre>
 
 <p class="note"><strong>Note</strong>: There has been a <a href="https://www.pivotaltracker.com/story/show/62108468">report</a> on the vcap-dev mailing list that cf-release v147 and other releases through v150 are incompatible with some latest versions of openstack-kvm-ubuntu stemcell. The stemcell that works for the user reporting the issue is <a href="https://bosh-jenkins-artifacts.s3.amazonaws.com/bosh-stemcell/openstack/bosh-stemcell-1256-openstack-kvm-ubuntu.tgz">1256</a>.</p>
