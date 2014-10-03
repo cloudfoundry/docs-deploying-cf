@@ -111,10 +111,9 @@ creating bucket xxxx-bosh-artifacts
 **Note:** RDS database creation may take 20+ minutes to finish.
 
 
-## <a id='deploy-microbosh'></a> Deploy Micro BOSH ##
+## <a id='deploy-microbosh'></a> Deploy MicroBOSH ##
 
-Deploy Micro BOSH from the workspace directory, using the `bosh aws
-bootstrap micro` command:
+Deploy MicroBOSH from the workspace directory, using the `bosh aws bootstrap micro` command:
 
 <pre class="terminal">
 ~/deployments/cf-example$ bundle exec bosh aws bootstrap micro
@@ -137,10 +136,9 @@ Logged in as `hm'
 </pre>
 
 The command prompts you for a username and password. Choose a
-username and password that you want to use later to access your Micro
-BOSH installation.
+username and password that you want to use later to access your MicroBOSH installation.
 
-After Micro BOSH has deployed successfully, you can check its status:
+After MicroBOSH has deployed successfully, you can check its status:
 
 <pre class="terminal">
 ~/deployments/cf-example$ bundle exec bosh status
@@ -320,7 +318,7 @@ properties:
 
 Replace placeholders with the approriate data:
 
-- `PLACEHOLDER-DIRECTOR-UUID` - the bosh director UUID. You can get it by running `bundle exec bosh status`.
+- `PLACEHOLDER-DIRECTOR-UUID` - the BOSH director UUID. You can get it by running `bundle exec bosh status`.
 
 - `PLACEHOLDER-ACCESS-KEY-ID` and `PLACEHOLDER-SECRET-KEY` - AWS access key id and secret key. You can use the same ones as you used in the `bosh_environment` file above, or generate new ones.
 
@@ -418,7 +416,7 @@ Check whether you are still targeting your new BOSH director:
 ~/releases/cf-release$ bundle exec bosh target
 Current target is https://x.x.x.x:25555 (micro-xxxxxx)
 </pre>
-If this does not match the name of your deployed micro BOSH, you can target the director using the IP from `~/deployments/micro/micro_bosh.yml`.
+If this does not match the name of your deployed MicroBOSH, you can target the director using the IP from `~/deployments/micro/micro_bosh.yml`.
 
 Set your deployment to the generated manifest:
 <pre class="terminal">
