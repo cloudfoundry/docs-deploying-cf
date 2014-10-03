@@ -6,10 +6,9 @@ title: Using the Latest CF-Release
 
 This topic describes how you can create a Cloud Foundry release ready to deploy to your environment after [bootstrapping BOSH](/deploying/).
 
-<p class="note"><strong>Note</strong>: These instructions are for v170 release of Cloud Foundry. We strongly recommend using the [highest final version tag of [cf-release](https://github.com/cloudfoundry/cf-release/releases), though this may require you modify the deployment manifest.</p>
+<p class="note"><strong>Note</strong>: These instructions are for v170 release of Cloud Foundry. We strongly recommend using the <a href="https://github.com/cloudfoundry/cf-release/releases">highest final version tag</a> of cf-release, though this may require that you modify the deployment manifest.</p>
 
 ## <a id='clone'></a> Clone CF-Release ##
------------------------------------
 
 Create a folder for your clone of the CF-Release repository and clone the repo from Github:
 
@@ -21,11 +20,12 @@ $ cd cf-release
 </pre>
 
 ## <a id='upload-the-release'></a> Upload the Release ##
---------------------------------------------------
 
 Releases of Cloud Foundry are published regularly.
-Upload a release to your BOSH deployment using `bosh upload release`, substituting the `cf-170.yml` file with the cf-release version of your choice.
-We recommend you us the [highest final version tag of cf-release](https://github.com/cloudfoundry/cf-release/releases).
+Use `bosh upload release RELEASE-NAME` to upload a release to your BOSH
+deployment. Replace RELEASE-NAME with the version of the cf-release YAML file of
+your choice.
+We recommend you use the [highest final version tag of cf-release](https://github.com/cloudfoundry/cf-release/releases).
 
 Run the following command to upload a release `.yml` file:
 
