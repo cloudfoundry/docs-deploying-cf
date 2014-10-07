@@ -10,21 +10,13 @@ If you would like to use BOSH in production to manage a distributed system, you
 also use the BOSH Deployer, install MicroBOSH, and then use it as a means to
 deploy the final distributed system on multiple VMs.
 
-A good way to think about this two step process is to consider that BOSH is a
-distributed system in itself.
-Since BOSH's core purpose is to deploy and manage distributed systems, it makes
-sense that we would use it to deploy itself.
-On the BOSH team, we gleefully refer to this as [Inception](http://en.wikipedia.org/wiki/Inception).
-
 ## <a id="bootstrap"></a>BOSH Bootstrap ##
 
 ### <a id="prerequisites"></a>Prerequisites ###
 
-We recommend that you run the BOSH bootstrap from Ubuntu since it is the
-distribution used by the BOSH team, and has been thoroughly tested.
+We recommend that you run the BOSH bootstrap from Ubuntu because the BOSH team uses and tests thoroughly against Ubuntu.
 
-Plan to have around 8 GB of free disk space for the `bosh_cli` if you plan to use it to deploy CF releases.
-You'll need around 3 GB free disk space in `/tmp`.
+We also recommend that you have 8 GB of free disk space for the `bosh_cli` if you plan to use it to deploy CF releases, with 3 GB free disk space in `/tmp`.
 
 * Install some core packages on Ubuntu that the BOSH deployer depends on.
 
@@ -47,9 +39,10 @@ To see help on these type `bosh help micro`
 
 ### <a id="config"></a>Configuration ###
 
-BOSH deploys things from a subdirectory under a deployments directory.
-So create both and name it appropriately.
-In our example we named it micro01.
+BOSH deploys from a subdirectory under a deployments directory.
+Create these directories.
+
+This example creates a "micro01" subdirectory.
 
 <pre class="terminal">
   mkdir deployments
@@ -57,8 +50,7 @@ In our example we named it micro01.
   mkdir micro01
 </pre>
 
-BOSH needs a deployment manifest for MicroBOSH.
-It must be named `micro_bosh.yml`.
+BOSH needs a deployment manifest for MicroBOSH named `micro_bosh.yml`.
 Create one in your new directory following the example below:
 
 ~~~yaml
@@ -70,12 +62,12 @@ network:
   netmask: <netmask_for_the_subnet_you_are_deploying_to>
   gateway: <gateway_for_the_subnet_you_are_deploying_to>
   dns:
-  # The MicroBOSH VM has the following DNS entries in its /etc/resolv.conf, allowing it to resolve, for example, IaaS FQDNs.
+  # To resolve IaaS FQDNs, the MicroBOSH VM has the following DNS entries in its /etc/resolv.conf
   - <ip_for_dns>
   cloud_properties:
     name: <network_name_according_to_vsphere>
 
-resources: # This seems like good sizing for MicroBOSH.
+resources:
    persistent_disk: 16384
    cloud_properties:
       ram: 8192
@@ -125,18 +117,18 @@ apply_spec:
           - <cluster_name>:
               resource_pool: <resource_pool_name_optional>
     dns:
-      # The BOSH powerDNS contacts the following DNS server for serving DNS entries from other domains.
+      # The BOSH powerDNS contacts the following DNS server for serving DNS entries from other domains:
       recursor: <ip_for_dns>
 
 logging:
-  # If needed increase the default logging level to trace REST traffic with IaaS providers. Default is info
+  # If needed, increase the default logging level to trace REST traffic with IaaS providers. Default is `info`
   level: debug
   # Default location is <deployment_dir>/bosh_micro_deploy.log
   # file :
 ~~~
 
-The `apply_spec` block provides MicroBOSH with the vCenter settings in order for it
-to deploy Cloud Foundry.
+The `apply_spec` block provides MicroBOSH with the vCenter settings needed to
+deploy Cloud Foundry.
 It is different than the vCenter you are using to deploy MicroBOSH because
 MicroBOSH can deploy to a different vCenter than the one it was deployed to.
 
@@ -250,10 +242,9 @@ Deploy a stemcell for MicroBOSH.
 $ bosh micro deploy bosh-stemcell-XXXX-vsphere-esxi-ubuntu.tgz
 </pre>
 
-
 ### <a id="verify"></a>Checking Status of a MicroBOSH Deploy ###
 
-Target the MicroBOSH
+Target the MicroBOSH.
 
 <pre class="terminal">
 bosh target <ip_address_from_your_micro_bosh_manifest:25555>

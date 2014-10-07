@@ -5,13 +5,6 @@ title: Deploying MicroBOSH
 BOSH is a system used to deploy and manage a Cloud Foundry installation. Like Cloud Foundry, BOSH itself is a distributed system. MicroBOSH is a single VM that contains all BOSH components. For most installation purposes, MicroBOSH can be used to install Cloud Foundry.
 If you are deploying a large, production instance of Cloud Foundry you may prefer to use a multi-VM deployment of BOSH for scale or resiliency purposes. To deploy this, you deploy MicroBOSH and then use MicroBOSH to deploy BOSH.
 
-A good way to think about this two step process is to consider that BOSH is a
-distributed system in itself.
-Since BOSH's core purpose is to deploy and manage distributed systems, it makes
-sense that we would use it to deploy itself.
-On the BOSH team, we gleefully refer to this as [Inception](http://en.wikipedia.org/wiki/Inception).
-
-
 ## <a id="bosh"></a>BOSH Configuration ##
 
 BOSH deploys software from a subdirectory under a deployments directory.
@@ -115,7 +108,7 @@ User `killian' has been created
 After creating this user the original `admin` user is deleted and you can no longer login with admin / admin
 
 The `status` command will show the persisted state for a given MicroBOSH
-instance. 
+instance.
 
 	bosh micro status
 

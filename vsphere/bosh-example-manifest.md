@@ -2,17 +2,17 @@
 title: BOSH Example Manifest
 ---
 
-This is an example manifest for deploying BOSH via Micro BOSH. The next step would be to deploy Cloud Foundry.
+This is an example manifest for deploying BOSH via MicroBOSH. The next step would be to deploy Cloud Foundry.
 
     ---
     name: example1
-    director_uuid: 729b6100-4035-4b35-ab9a-cf8299719fe3
+    director_uuid: 729b6100-4035-4b35-ab9a-cf8299719fe3 # get this from `bosh stats`
     release:
       name: bosh
       version: 11 # change this when the version of BOSH changes
 
     networks:
-    # all of these settings depend on your own infrastructure setup
+    # all of these settings depend on your infrastructure setup
     - name: default
       subnets:
       - range: 172.20.128.0/21
@@ -22,11 +22,15 @@ This is an example manifest for deploying BOSH via Micro BOSH. The next step wou
         static:
         - 172.20.134.48 - 172.20.134.56
         gateway: 172.20.128.1
+		# If you enable DNS in your BOSH or MicroBOSH configuration, leave the
+		# DNS section empty. An empty DNS section instructs the BOSH Director
+		# to use the PowerDNS IP instead. If some of your jobs need to resolve
+		# DNS entries outside the PowerDNS subdomain, *.microbosh by default,
+		# configure the PowerDNS recursor in your BOSH release.
         dns:
-        - 172.22.22.153 # use your own DNS server IP
-        - 172.22.22.154 # here too :)
+		- 8.8.8.8
         cloud_properties:
-          name: VLAN1234 #the VLAN that you are deploying BOSH to - provisioned on your vCenter
+          name: VLAN1234 # the VLAN where you are deploying BOSH as provisioned on your vCenter
 
     resource_pools:
     - name: small
@@ -131,11 +135,11 @@ This is an example manifest for deploying BOSH via Micro BOSH. The next step wou
         port: 25251
         backend_port: 25552
         agent:
-          user: agent # this creates a read only user for BOSH agents
-          password: AgenT # this creates a password for BOSH agents
+          user: agent # this creates a read-only user for BOSH Agents
+          password: AgenT # this creates a password for Agents
         director:
-          user: director # this creates a read / write user for the BOSH Director
-          password: DirectoR # this creates a password BOSH Director
+          user: director # this creates a read/write user for the BOSH Director
+          password: DirectoR # this creates a password for the Director
 
       networks:
         apps: default
@@ -185,7 +189,7 @@ This is an example manifest for deploying BOSH via Micro BOSH. The next step wou
           agent_timeout: 180
           rogue_agent_alert: 180
         loglevel: info
-        email_notifications: false # if this is false you don't need to worry about the smtp section below
+        email_notifications: false # if this is false, the smtp section is ignored
         email_recipients:
         - your-operations-team@your-company.com
         smtp:
@@ -196,7 +200,7 @@ This is an example manifest for deploying BOSH via Micro BOSH. The next step wou
           user: your-smtp-user
           password: your-smtp-password
           domain: localdomain
-        tsdb_enabled: false # it this is false you don't have to worry about the tsdb settings. Plus you can't set it to true until you have a complete Cloud Foundry running.
+        tsdb_enabled: false # it this is false, the tsdb section is ignored. Cannot be set to true until you have a complete Cloud Foundry running
         tsdb:
           address: 172.20.218.14 # opentsdb static IP from your Cloud Foundry deploy (optional)
           port: 4242
@@ -204,7 +208,7 @@ This is an example manifest for deploying BOSH via Micro BOSH. The next step wou
       vcenter: # must match your vCenter info
         address: vcenter.your.domain # IP or FQDN of vCenter
         user: domain\bosh-user # user name provisioned for BOSH
-        password: bosh-password # passowrd for BOSH
+        password: bosh-password # password for BOSH
         datacenters:
           - name: CF
             vm_folder: CF_VMs
