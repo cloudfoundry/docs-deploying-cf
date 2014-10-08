@@ -1,16 +1,16 @@
 ---
-title: Deploying BOSH with Micro BOSH
+title: Deploying BOSH with MicroBOSH
 ---
 
-This guide describes the process for deploying BOSH as an application using micro BOSH.
+This guide describes the process for deploying BOSH as an application using MicroBOSH.
 
 ## <a id="prerequisites"></a>Prerequisites ##
 
-* Micro BOSH should be deployed. See the steps in the [previous section](deploying_micro_bosh.html)
+* MicroBOSH should be deployed. See the steps in the [Deploying MicroBOSH](deploying_micro_bosh.html) topic.
 
-## <a id="target"></a>Target Micro BOSH ##
+## <a id="target"></a>Target MicroBOSH ##
 
-Once your micro BOSH instance is deployed, you can target its Director:
+Once your MicroBOSH instance is deployed, you can target its Director:
 
 <pre class="terminal">
 $ bosh micro status
@@ -24,7 +24,7 @@ Enter password: admin
 Logged in as 'admin'
 </pre>
 
-*Note*: Create a new user using `bosh create user` which overrides the default username and password.
+<p class="note"><strong>Note</strong>: Create a new user using `bosh create user`. This overrides the default username and password.</p>
 
 ## <a id="download-stemcell"></a>Download a BOSH Stemcell ##
 
@@ -51,19 +51,21 @@ $ bosh public stemcells
 To download use `bosh download public stemcell <stemcell_name>'. For full url use --full.
 </pre>
 
-Download a public stemcell. *Note*: if you have already downloaded a stemcell to deploy your micro BOSH, you can use that one.
+Download a public stemcell.
+
+<p class="note"><strong>Note</strong>: If you have already downloaded a stemcell to deploy your MicroBOSH, you do not need to download a different one.</p>
 
 <pre class="terminal">
 $ bosh download public stemcell bosh-stemcell-XXXX-vcloud-esxi-ubuntu.tgz
 </pre>
 
-Upload the downloaded stemcell to micro BOSH.
+Upload the downloaded stemcell to MicroBOSH.
 
 <pre class="terminal">
 $ bosh upload stemcell bosh-stemcell-XXXX-vcloud-esxi-ubuntu.tgz
 </pre>
 
-You can see the uploaded stemcells (on your Micro BOSH) by using `bosh stemcells`:
+You can see the uploaded stemcells on your MicroBOSH by using the `bosh stemcells` command:
 
 <pre class="terminal">
 $ bosh stemcells
@@ -75,9 +77,9 @@ $ bosh stemcells
 +-------------------------------+---------+-----------------------------------------+
 </pre>
 
-## <a id="upload-release"></a>Upload a BOSH release ##
+## <a id="upload-release"></a>Upload a BOSH Release ##
 
-You can find and download the latest bosh release file from [here](https://bosh-artifacts.cfapps.io/file_collections?type=releases)
+Locate and download the latest BOSH release file from [https://bosh-artifacts.cfapps.io/file_collections?type=releases](https://bosh-artifacts.cfapps.io/file_collections?type=releases).
 
 <pre class="terminal">
 $ bosh upload release bosh-XXXX.tgz
@@ -85,9 +87,9 @@ $ bosh upload release bosh-XXXX.tgz
 
 ## <a id="deploy"></a>Setup a BOSH Deployment Manifest and Deploy ##
 
-Create and setup a BOSH deployment manifest. Look at the [BOSH example manifest](./bosh-example-manifest.html).
+Create and setup a BOSH deployment manifest. See the [BOSH Example Manifest](./bosh-example-manifest.html).
 
-Deploy BOSH. (the following assumes your manifest is named `bosh.yml` in `/home/bosh_user`).
+Deploy BOSH. The following example assumes that your manifest is named `bosh.yml` and exists in the `/home/bosh_user` directory.
 
 <pre class="terminal">
 $ cd /home/bosh_user
@@ -135,11 +137,9 @@ Creating bound missing VMs
 Done                    6/6 00:01:26
 </pre>
 
-*Note*: There will be a lot of status information in addition to the above output.
+## <a id="verify"></a>Verify the Installation ##
 
-## <a id="verify"></a>Verification ##
-
-The example BOSH director has the IP address `10.146.21.153`. Targeting this director with `bosh target 10.146.21.153` will verify a successful installation.
+The example BOSH Director has the IP address `10.146.21.153`. Target this Director with `bosh target 172.20.134.52` to verify a successful installation.
 
 <pre class="terminal">
 $ bosh target 10.146.21.153
@@ -148,4 +148,3 @@ Your username: admin
 Enter password: admin
 Logged in as `admin'
 </pre>
-

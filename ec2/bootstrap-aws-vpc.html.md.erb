@@ -2,327 +2,208 @@
 title: Deploying Cloud Foundry on AWS with BOSH AWS Bootstrap
 ---
 
-  <table style="width: 64%;"><tr><td>
-  **WARNING**: The command `bosh aws destroy` destroys all S3 buckets
-and all instances: everything in your AWS account. Do not use this
-command unless everything in your AWS account, including stuff that
-has nothing to do with Cloud Foundry, is expendable.
-  </td></tr></table>
+<table style="width: 60%;"><tr><td>
+**WARNING**: The command `bosh aws destroy` destroys everything in your AWS account, including all S3 buckets and all instances. Do not use this command unless you want to lose **everything** in your AWS account, including objects and files unrelated to your Cloud Foundry deployment.
+</td></tr></table>
 
-
-Cloud Foundry tools simplify the process of deploying a Cloud Foundry
-instance to a variety of platforms, including Amazon Web Services.
-The following sections guide you through using BOSH and cf to deploy
+Cloud Foundry tools simplify the process of deploying a Cloud Foundry instance
+to a variety of platforms, including Amazon Web Services (AWS).
+The following document guides you through using BOSH and the [cf Command Line Interface (CLI)](../../devguide/installcf/index.html) to deploy
 Cloud Foundry to Amazon Web Services.
 
 ## <a id='domain-prep'></a> Prepare a Domain ##
 
-First, pick a DNS domain name for your Cloud Foundry instance. If you
-pick *cloud.example.com*, your applications will be available as
-*app-name.cloud.example.com*.
+1. Select a DNS domain name for your Cloud Foundry instance.
+For example, if you select the domain name *cloud.example.com*, Cloud Foundry deploys each of your applications as *APP-NAME.cloud.example.com*.
 
-Create an AWS Route 53 Hosted Zone for your domain at the [Route 53 control panel](https://console.aws.amazon.com/route53). The control
-panel shows you a "delegation set", or a list of addresses to which
-you must delegate DNS authority for your domain. If your domain is
-*cloud.example.com*, each address in the delegation set should
-become an NS record in the DNS server for *example.com*.
+1. Create an AWS Route 53 Hosted Zone for your domain on the [AWS Route 53 control panel](https://console.aws.amazon.com/route53).
+The control panel displays a **delegation set**, which is a list of addresses to
+which you must delegate DNS authority for your domain.
+For example, if you selected the domain name *cloud.example.com*, each address
+in the delegation set should become an NS record in the DNS server for
+*example.com*.
 
 <%= image_tag("hostedzone.png") %>
 
 ## <a id='deployment-env-prep'></a> Prepare the Deployment Environment ##
 
 Ruby 1.9.3 and git (1.8 or later) are prerequisites for the following
-steps. After you install Ruby and git, install the `bundler` RubyGem:
+steps.
 
-<pre class="terminal">
-$ gem install bundler
-</pre>
+1. After you install Ruby and git, install the `bundler` RubyGem:
 
-Create a deployments directory with a subdirectory for your
-particular deployment. For example, `~/deployments/cf-example`. In
-the particular deployment's sub-directory, create a file named `Gemfile` with the following contents:
+    <pre class="terminal">
+    $ gem install bundler
+    </pre>
 
-~~~
-source 'https://rubygems.org'
+1. Create a deployments directory with a sub-directory for your deployment.
 
-ruby "1.9.3"
+    <pre class="terminal">
+    $ mkdir deployments
+    $ cd deployments
+    $ mkdir cf-example
+    </pre>
 
-gem "bosh_cli_plugin_aws"
-~~~
+1. In the sub-directory, create a file named `Gemfile` with the following
+contents:
 
-<pre class="terminal">
-$ cd ~/deployments/cf-example
-~/deployments/cf-example$ bundle install
-</pre>
+    ~~~
+    source 'https://rubygems.org'
+    ruby "1.9.3"
+    gem "bosh_cli_plugin_aws"
+    ~~~
 
-Next, set environment variables required for deploying to AWS. Create
-a file called `bosh_environment` and add the following, changing the
-value for each line to suit your configuration:
+1. Run `bundle install` to install the gems you specified in the `Gemfile`.
 
-~~~
-export BOSH_VPC_DOMAIN=example.com
-export BOSH_VPC_SUBDOMAIN=cloud # Pick something more unique than 'cloud' to work around a temporary shortcoming of the tool
-export BOSH_AWS_ACCESS_KEY_ID=AWS_ACCESS_KEY_ID
-export BOSH_AWS_SECRET_ACCESS_KEY=AWS_SECRET_ACCESS_KEY
-export BOSH_AWS_REGION=us-east-1
-export BOSH_VPC_SECONDARY_AZ=us-east-1a # see note below
-export BOSH_VPC_PRIMARY_AZ=us-east-1d   # see note below
-~~~
+    <pre class="terminal">
+    $ bundle install
+    </pre>
 
-*Note:* `BOSH_VPC_DOMAIN` and `BOSH_VPC_SUBDOMAIN` must correspond to
-the DNS domain name you set up when configuring Route 53. The values
-shown above correspond to the earlier Route 53 example of
-*cloud.example.com*.
+1. Create a file named `bosh_environment` and add the following contents,
+replacing the values in each line to match your configuration:
 
-<table style="width: 64%;"><tr><td>
-<strong>Note:</strong> The following steps only support deployment to the <code>us-east-1</code> region of AWS.
-<br><br>
-To deploy MicroBOSH, please review the <a href="https://gist.github.com/danhigham/5804252">following guide</a>.
-</td></tr></table>
+    ~~~
+    export BOSH_VPC_DOMAIN=example.com
+    export BOSH_VPC_SUBDOMAIN=my-subdomain
+    export BOSH_AWS_ACCESS_KEY_ID=AWS_ACCESS_KEY_ID
+    export BOSH_AWS_SECRET_ACCESS_KEY=AWS_SECRET_ACCESS_KEY
+    export BOSH_AWS_REGION=my-aws-region
+    export BOSH_VPC_SECONDARY_AZ=us-east-1a # see note below
+    export BOSH_VPC_PRIMARY_AZ=us-east-1d   # see note below
+    ~~~
 
-Choose availability zones that are listed as "operating normally" on
-the [AWS Console Status Health Section](https://console.aws.amazon.com/ec2/v2/home?region=us-east-1)
+    <p class="note"><strong>Note</strong>: The values you add for `BOSH_VPC_DOMAIN` and `BOSH_VPC_SUBDOMAIN` must correspond to the DNS domain name you set up when configuring Route 53.</p>
+
+1. Run `source bosh_environment` to set the environment variables required for deploying to AWS.
+
+    <pre class="terminal">
+    $ source bosh_environment
+    </pre>
+
+    <p class="note"><strong>Note</strong>: The following steps only support deployment to the <code>us-east-1</code> region of AWS.<br><br>
+To deploy MicroBOSH, please review <a href="https://gist.github.com/danhigham/5804252">this guide</a>.</p>
+
+1. Choose an availability zone that is listed as "operating normally" in the
+Health Status section of the
+the [AWS Console](https://console.aws.amazon.com/ec2/v2/home?region=us-east-1)
 for your region.
 
-Use `source` to set them for the current shell:
-
-<pre class="terminal">
-~/deployments/cf-example$ source bosh_environment
-</pre>
-
-Run `bosh aws create` to create a VPC Internet Gateway, VPC subnets,
+1. Run `bosh aws create` to create a VPC Internet Gateway, VPC subnets,
 three RDS databases, and a NAT VM for Cloud Foundry subnet routing.
-The command takes some time but not require user input. This command
-generates receipt files that you use when deploying Cloud Foundry
-(`aws_rds_receipt.yml` and `aws_vpc_receipt.yml`).
+This command generates two receipt files, `aws_rds_receipt.yml` and
+`aws_vpc_receipt.yml`, that you use when deploying Cloud Foundry.
 
-<pre class="terminal">
-~/cf$ bundle exec bosh aws create
-Executing migration CreateKeyPairs
-allocating 1 KeyPair(s)
-Executing migration CreateVpc
-. . .
-details in S3 receipt: aws_rds_receipt and file: aws_rds_receipt.yml
-Executing migration CreateS3
-creating bucket xxxx-bosh-blobstore
-creating bucket xxxx-bosh-artifacts
-</pre>
+    <pre class="terminal">
+    $ bosh aws create
+    Executing migration CreateKeyPairs
+    allocating 1 KeyPair(s)
+    Executing migration CreateVpc
+    . . .
+    details in S3 receipt: aws_rds_receipt and file: aws_rds_receipt.yml
+    Executing migration CreateS3
+    creating bucket xxxx-bosh-blobstore
+    creating bucket xxxx-bosh-artifacts
+    </pre>
 
-**Note:** RDS database creation may take 20+ minutes to finish.
-
+    <p class="note"><strong>Note</strong>: RDS database creation may take 20 or more minutes.</p>
 
 ## <a id='deploy-microbosh'></a> Deploy MicroBOSH ##
 
-Deploy MicroBOSH from the workspace directory, using the `bosh aws bootstrap micro` command:
+1. Deploy MicroBOSH from the workspace directory, using the `bosh aws bootstrap micro` command:
 
-<pre class="terminal">
-~/deployments/cf-example$ bundle exec bosh aws bootstrap micro
+    <pre class="terminal">
+    $ bosh aws bootstrap micro
 
-WARNING! Your target has been changed to `https://10.10.0.6:25555'!
-Deployment set to '/Users/pivotal/cf/deployments/micro/micro_bosh.yml'
-Deploying new micro BOSH instance `micro/micro_bosh.yml' to `https://10.10.0.6:25555' (type 'yes' to continue): yes
+    WARNING! Your target has been changed to `https://10.10.0.6:25555'!
+    Deployment set to '/Users/pivotal/cf/deployments/micro/micro_bosh.yml'
+    Deploying new micro BOSH instance `micro/micro_bosh.yml' to    `https://10.10.0.6:25555' (type 'yes' to continue): yes
 
-Deploy Micro BOSH
-  using existing stemcell (00:00:00)
-. . .
-Deployed `micro/micro_bosh.yml' to `https://10.10.0.6:25555', took 00:04:57 to complete
-Logged in as `admin'
-Enter username: foo
-Enter password: ***
-User `foo' has been created
-Logged in as `foo'
-User `hm' has been created
-Logged in as `hm'
-</pre>
+    Deploy MicroBOSH
+      using existing stemcell (00:00:00)
+    . . .
+    Deployed `micro/micro_bosh.yml' to `https://10.10.0.6:25555', took 00:04:57 to complete
+    </pre>
 
-The command prompts you for a username and password. Choose a
-username and password that you want to use later to access your MicroBOSH installation.
+1. The `bosh aws bootstrap` command prompts you for a user name and password.
+Create a user name and password for later use accessing your MicroBOSH
+installation.
 
-After MicroBOSH has deployed successfully, you can check its status:
+1. After MicroBOSH has deployed successfully, you can check its status:
 
-<pre class="terminal">
-~/deployments/cf-example$ bundle exec bosh status
+    <pre class="terminal">
+    $ bosh status
 
-Updating director data... done
+    Updating director data... done
+    Config
+        ~/.bosh_config
 
-Config
-             ~/.bosh_config
+    Director
+      Name       micro-xxxx
+      URL        https://x.x.x.x:25555
+      Version    1.5.0.pre.xxx (release:xxxxx bosh:xxxxx)
+      User       admin
+      UUID       xxxxxx-xxxx-xxxx-xxxx-xxxxxxxx
+      CPI        aws
+      dns        enabled (domain_name: microbosh)
+      compiled_package_cache disabled
 
-Director
-  Name       micro-xxxx
-  URL        https://x.x.x.x:25555
-  Version    1.5.0.pre.xxx (release:xxxxx bosh:xxxxx)
-  User       hm
-  UUID       xxxxxx-xxxx-xxxx-xxxx-xxxxxxxx
-  CPI        aws
-  dns        enabled (domain_name: microbosh)
-  compiled_package_cache disabled
-
-Deployment
-  Manifest   ~/cf/deployments/micro/micro_bosh.yml
-</pre>
+    Deployment
+      Manifest   ~/cf/deployments/micro/micro_bosh.yml
+    </pre>
 
 ## <a id='upload-stemcell'></a>Upload a Stemcell##
 
-Get the list of available public stemcells.
+1. Use the `bosh public stemcells` command to view a list of available public
+stemcells.
 
-<pre class="terminal">
-~/deployments/cf-example$ bundle exec bosh public stemcells
-+---------------------------------------------+
-| Name                                        |
-+---------------------------------------------+
-| bosh-stemcell-1657-aws-xen-ubuntu.tgz       |
-| bosh-stemcell-1657-aws-xen-centos.tgz       |
-| light-bosh-stemcell-1657-aws-xen-ubuntu.tgz |
-| light-bosh-stemcell-1657-aws-xen-centos.tgz |
-| bosh-stemcell-1657-openstack-kvm-ubuntu.tgz |
-| bosh-stemcell-1657-vsphere-esxi-ubuntu.tgz  |
-| bosh-stemcell-1657-vsphere-esxi-centos.tgz  |
-+---------------------------------------------+
-To download use `bosh download public stemcell &lt;stemcell_name&gt;'. For full url use --full.
-</pre>
+    <pre class="terminal">
+    $ bosh public stemcells
+    +---------------------------------------------+
+    | Name                                        |
+    +---------------------------------------------+
+    | bosh-stemcell-1657-aws-xen-ubuntu.tgz       |
+    | bosh-stemcell-1657-aws-xen-centos.tgz       |
+    | light-bosh-stemcell-1657-aws-xen-ubuntu.tgz |
+    | light-bosh-stemcell-1657-aws-xen-centos.tgz |
+    | bosh-stemcell-1657-openstack-kvm-ubuntu.tgz |
+    | bosh-stemcell-1657-vsphere-esxi-ubuntu.tgz  |
+    | bosh-stemcell-1657-vsphere-esxi-centos.tgz  |
+    +---------------------------------------------+
+    To download use `bosh download public stemcell &lt;stemcell_name&gt;'. For full url use --full.
+    </pre>
 
-Download the latest ubuntu aws stemcell.
+1. Use the `bosh download public stemcell` command to download the latest `ubuntu aws` stemcell.
 
-<pre class="terminal">
-~/deployments/cf-example$ bundle exec bosh download public stemcell bosh-stemcell-1657-aws-xen-ubuntu.tgz
-</pre>
+    <pre class="terminal">
+    $ bosh download public stemcell bosh-stemcell-1657-aws-xen-ubuntu.tgz
+    </pre>
 
-Upload the stemcell to the BOSH director:
+1. Use the `bosh upload stemcell command to upload the stemcell to the BOSH
+Director:
 
-<pre class="terminal">
-~/deployments/cf-example$ bosh upload stemcell ./bosh-stemcell-1657-aws-xen-ubuntu.tgz
-</pre>
+    <pre class="terminal">
+    $ bosh upload stemcell ./bosh-stemcell-1657-aws-xen-ubuntu.tgz
+    </pre>
 
-## <a id='create-a-stub'></a>Create a Deployment Stub##
+## <a id='create-a-stub'></a>Create a Deployment Stub ##
 
-You can now deploy Cloud Foundry.
+Create a manifest stub file named `cf-stub.yml`. You will use [Spiff](https://github.com/cloudfoundry-incubator/spiff) to merge this file with
+Cloud Foundry templates to generate a BOSH manifest for your Cloud Foundry
+deployment.
 
-Create a stub file called `cf-aws-stub.yml` for spiff. You will use this to generate a BOSH manifest for the CF deployment.
+Example stub file:
 
-<pre class="terminal">
----
-name: cf-example
-director_uuid: 80be9b46-435f-41db-96a4-453f8d59f53c
-releases:
-  - name: cf
-    version: latest
+<%= yield_for_code_snippet from: 'cloudfoundry/docs-deploying-cf', at: 'cf-stub-aws' %>
 
-networks:
-- name: cf1
-  type: manual
-  subnets:
-  - range: 10.10.16.0/20
-    name: default_unused
-    reserved:
-    - 10.10.16.2 - 10.10.16.9
-    static:
-    - 10.10.16.10 - 10.10.16.253
-    gateway: 10.10.16.1
-    dns:
-    - 10.10.0.2
-    cloud_properties:
-      security_groups:
-      - cf
-      subnet: (( properties.template_only.aws.subnet_ids.cf1 ))
+Replace the placeholder values in your stub files with data appropriate to your deployment.
 
-- name: cf2
-  type: manual
-  subnets:
-  - range: 10.10.80.0/20
-    name: default_unused
-    reserved:
-    - 10.10.80.2 - 10.10.80.9
-    static:
-    - 10.10.80.10 - 10.10.80.253
-    gateway: 10.10.80.1
-    dns:
-    - 10.10.0.2
-    cloud_properties:
-      security_groups:
-      - cf
-      subnet: (( properties.template_only.aws.subnet_ids.cf2 ))
+* `DIRECTOR-UUID`: The BOSH Director UUID. Run `bosh status` to view the BOSH Director UUID.
 
-properties:
-  template_only:
-    aws:
-      access_key_id: PLACEHOLDER-ACCESS-KEY-ID
-      secret_access_key: PLACEHOLDER-SECRET-KEY
-      availability_zone: us-east-1a # Change this if you'd like to
-      availability_zone2: us-east-1b # Change this if you'd like to
-      subnet_ids:
-        cf1: PLACEHOLDER-SUBNET-FOR-AZ1
-        cf2: PLACEHOLDER-SUBNET-FOR-AZ2
+- `zone_1` and `zone_2`: The `BOSH_VPC_PRIMARY_AZ` and `BOSH_VPC_SECONDARY_AZ` that you specified in the `bosh_environment` file above.
 
-  domain: PLACEHOLDER-DOMAIN
-
-  nats:
-    user: PLACEHOLDER-NATS-USER
-    password: PLACEHOLDER-NATS-PASSWORD
-
-  cc:
-    db_encryption_key: PLACEHOLDER-CC-DB-ENCRYPTION-KEY
-    bulk_api_password: PLACEHOLDER-BULK-API-PASSWORD
-    staging_upload_password: PLACEHOLDER-STAGING-UPLOAD-PASSWORD
-    staging_upload_user: PLACEHOLDER-STAGING-UPLOAD-USER
-
-  uaa:
-    scim:
-      users:
-      - admin|the_admin_pw|scim.write,scim.read,openid,cloud_controller.admin         #change if you like
-      - services|the_services_pw|scim.write,scim.read,openid,cloud_controller.admin   #change if you like
-    admin:
-      client_secret: PLACEHOLDER-UAA-ADMIN-CLIENT-SECRET
-    jwt:
-      signing_key: PLACEHOLDER-UAA-JWT-SIGNING-KEY
-      verification_key: PLACEHOLDER-UAA-JWT-VERIFICATION-KEY
-    clients:
-      login:
-        secret: PLACEHOLDER-UAA-CLIENTS-LOGIN-SECRET
-      developer_console:
-        secret: PLACEHOLDER-UAA-CLIENTS-DEVELOPER-CONSOLE-SECRET
-      app-direct:
-        secret: PLACEHOLDER-UAA-CLIENTS-APP-DIRECT-SECRET
-      support-services:
-        secret: PLACEHOLDER-UAA-CLIENTS-SUPPORT-SERVICES-SECRET
-      servicesmgmt:
-        secret: PLACEHOLDER-UAA-CLIENTS-SERVICESMGMT-SECRET
-      space-mail:
-        secret: PLACEHOLDER-UAA-CLIENTS-SPACE-MAIL-SECRET
-      notifications:
-        secret: PLACEHOLDER-UAA-CLIENTS-NOTIFICATION-SECRET
-    batch:
-      username: PLACEHOLDER-UAA-BATCH-USERNAME
-      password: PLACEHOLDER-UAA-BATCH-PASSWORD
-    cc:
-      client_secret: PLACEHOLDER-UAA-CC-CLIENT-SECRET
-
-  uaadb: PLACEHOLDER_UAADB_PROPERTIES
-  ccdb: PLACEHOLDER_CCDB_PROPERTIES
-
-  router:
-    status:
-      user: PLACEHOLDER-ROUTER-STATUS-USER
-      password: PLACEHOLDER-ROUTER-STATUS-PASSWORD
-
-  dea_next:
-    disk_mb: 400001
-    memory_mb: 6656
-
-  loggregator_endpoint:
-    shared_secret: PLACEHOLDER-LOGGREGATOR-SECRET
-    
-  ssl:
-    skip_cert_verify: false
-</pre>
-
-Replace placeholders with the approriate data:
-
-- `PLACEHOLDER-DIRECTOR-UUID` - the BOSH director UUID. You can get it by running `bundle exec bosh status`.
-
-- `PLACEHOLDER-ACCESS-KEY-ID` and `PLACEHOLDER-SECRET-KEY` - AWS access key id and secret key. You can use the same ones as you used in the `bosh_environment` file above, or generate new ones.
-
-- `PLACEHOLDER-AWS-AVAILABILITY-ZONE` and `PLACEHOLDER-AWS-AVAILABILITY-ZONE2` - `BOSH_VPC_PRIMARY_AZ` and `BOSH_VPC_SECONDARY_AZ` from the `bosh_environment` file above.
+* `AWS_ACCESS_KEY-ID` and `AWS_SECRET_ACCESS`: Your AWS Access Key ID and Secret
+Key. You can use the keys that you specified in the `bosh_environment` file,
+or generate new ones.
 
 - `PLACEHOLDER-SUBNET-FOR-AZ1` and `PLACEHOLDER-SUBNET-FOR-AZ2` - Look in `~/deployments/cf-example/aws_vpc_receipt.yml` (this file was generated when you ran `bosh aws create`).  They are under 'subnets' 'cf1' and 'cf2'.
 
@@ -381,94 +262,117 @@ If you are using Self-Signed SSL certificates:
 
 - Change ```skip_cert_verify:``` to ```true```
 
-
 ## <a id='deploy-cloudfoundry'></a>Deploy Cloud Foundry##
 
-Clone `cf-release` into a convenient location, e.g. `~/releases/cf-release`:
+1. Clone the `cf-release` GitHub repository.
 
-<pre class="terminal">
-~/releases$ git clone https://github.com/cloudfoundry/cf-release.git
-</pre>
+    <pre class="terminal">
+    $ git clone https://github.com/cloudfoundry/cf-release.git
+    </pre>
 
-Update cf-release submodules. You can use helper script `update` in cf-release:
+1. Use the `update` helper script to update the `cf-release` submodules:
 
-<pre class="terminal">
-~/releases$ cd cf-release
-~/releases/cf-release$ ./update
-</pre>
+    <pre class="terminal">
+    $ cd cf-release
+    $ ./update
+    </pre>
 
-Install spiff using instructions from the [Spiff Readme](https://github.com/cloudfoundry-incubator/spiff).
+1. Install [Spiff](https://github.com/cloudfoundry-incubator/spiff).
 
-Generate a BOSH deployment manifest:
+1. Run the following Spiff command from the `cf-release` directory to create a deployment manifest named `cf-deployment.yml`:
 
-<pre class="terminal">
-~/releases/cf-release$ ./generate_deployment_manifest aws templates/cf-minimal-dev.yml ~/deployments/cf-example/cf-aws-stub.yml > ~/deployments/cf-example/cf.yml
-</pre>
+    `./generate_deployment_manifest INFRASTRUCTURE MANIFEST-STUB > cf-deployment.yml`
 
-Deploy CF using BOSH.
+    Replace INFRASTRUCTURE with `aws`, `openstack`, `vsphere`, or `warden`, and replace MANIFEST-STUB with the name and location of your `cf-stub.yml file`. For example:
 
-<pre class="terminal">
-~/releases/cf-release$ bundle install
-</pre>
+    <pre class="terminal">
+	$ ./generate_deployment_manifest aws cf-stub.yml > cf-deployment.yml
+    </pre>
 
-Check whether you are still targeting your new BOSH director:
-<pre class="terminal">
-~/releases/cf-release$ bundle exec bosh target
-Current target is https://x.x.x.x:25555 (micro-xxxxxx)
-</pre>
-If this does not match the name of your deployed MicroBOSH, you can target the director using the IP from `~/deployments/micro/micro_bosh.yml`.
+1. Use `bosh target` to target the BOSH Director:
 
-Set your deployment to the generated manifest:
-<pre class="terminal">
-~/releases/cf-release$ bundle exec bosh deployment ~/deployments/cf-example/cf.yml
-</pre>
+    <pre class="terminal">
+    $ bosh target
+    Current target is https://x.x.x.x:25555 (micro-xxxxxx)
+    </pre>
 
-Create a Cloud Foundry release. The command prompts you for a development release name. You can use `cf`, which is specified in the deployment manifest under **releases->name**.
+1. Set your deployment to the generated manifest:
 
-<pre class="terminal">
-~/releases/cf-release$ bundle exec bosh create release
-</pre>
+    <pre class="terminal">
+    $ bosh deployment cf-deployment.yml
+    </pre>
 
-Upload the generated release to the BOSH director:
+1. Use `bosh create release` to create a Cloud Foundry release.
+This command prompts you for a development release name.
 
-<pre class="terminal">
-~/releases/cf-release$ bundle exec bosh upload release
-</pre>
+    <pre class="terminal">
+    $ bosh create release
+    </pre>
 
-Deploy the uploaded Cloud Foundry release:
+1. Use `bosh upload release` to upload the generated release to the BOSH
+Director:
 
-<pre class="terminal">
-~/releases/cf-release$ bundle exec bosh deploy
-</pre>
+    <pre class="terminal">
+    $ bosh upload release
+    </pre>
 
-This process can take some time (2-3 hours), especially during its first run when all the jobs are compiled for the first time. If `bosh deploy` fails, it is usually possible to rerun it.
+1. Deploy the uploaded Cloud Foundry release:
 
-To test the Cloud Foundry installation, test the API endpoint:
+    <pre class="terminal">
+    $ bosh deploy
+    </pre>
 
-<pre class="terminal">
-~/releases/cf-release$ curl api.subdomain.domain/info
-</pre>
+    <p class="note"><strong>Note</strong>: `bosh deploy` can take 2-3 hours to
+	complete.</p>
 
-If that is successful, it should return the information as json. Otherwise, check your networking. **Tip**: Make sure your domain has an NS record for your subdomain.
+1. Use `curl` to test the API endpoint of your Cloud Foundry installation.
 
-At this point it should be possible to target the install with the  [cf](/devguide/installcf/index.html) cli tool and login as an administrator. The user name, `admin` and the password, `the_admin_pw`, are in the deployment manifest under uaa->scim->users. For more information about managing organizations, spaces, users, and applications, refer to the [cf](/devguide/installcf/index.html) topic.
+    <pre class="terminal">
+    $ curl api.subdomain.domain/info
+    </pre>
 
-If you want to update your deploy of cf-release to reflect changes in the cf-release directory, rerun `bosh create release && bosh upload release && bosh deploy`. If you only have changes in your manifest, just run `bosh deploy`.
+    If `curl` succeeds, it should return the JSON-formatted information.
+	If `curl` does not succeeds, check your networking and make sure your domain
+	has an NS record for your subdomain.
+
+1. You should be able to target your Cloud Foundry installation with the [cf Command Line Interface (CLI)](/devguide/installcf/index.html) and log in as an
+administrator.
+
+    The user name, `admin` and the password, `fakepassword`, are specified in
+    the deployment manifest under **uaa:scim:users.
+
+    For more information about managing organizations, spaces, users, and
+    applications, refer to the [cf](/devguide/installcf/index.html) topic.
+
+## <a id='updates'></a>Update Cloud Foundry##
+
+* If you make change to your manifest, run `bosh deploy` to update your Cloud
+Foundry deployment with these changes.
+
+* If you make changes to the `cf-release` directory, run `bosh create release && bosh upload release && bosh deploy` to update your Cloud Foundry deployment with
+these changes.
 
 ## <a id='deploy-cloudfoundry-services'></a>Deploy Cloud Foundry Services##
 
-If you want your Cloud Foundry to be able to provision services, you must deploy a services release. Refer to the services documentation [here](/services/).
+If you want your Cloud Foundry to be able to provision services, you must deploy
+a services release. Refer to the [services documentation](/services/).
 
-You also might be interested in checking out the [community-managed services release](https://github.com/cloudfoundry/cf-services-contrib-release).
+You also might be interested in the [community-managed services release](https://github.com/cloudfoundry/cf-services-contrib-release).
 
 ## <a id='destroy-environment'></a>Destroying the AWS Environment ##
-  <table style="width: 70%;"><tr><td>
-    **WARNING**: The command `bosh aws destroy` destroys all S3 buckets and all instances: **everything** in your AWS account. Do not use this command unless everything in your AWS account, including stuff that has nothing to do with Cloud Foundry, is expendable.
-  </td></tr></table>
 
-Finally, cleanup any YAML artifacts that are no longer valid:
+1. Use `bosh aws destroy` to destroy your AWS environment.
 
-<pre class="terminal">
-~/deployments/cf-example$ bundle exec bosh aws destroy
-~/deployments/cf-example$ rm -f *.yml
-</pre>
+    <table style="width: 60%;"><tr><td>
+    **WARNING**: The command `bosh aws destroy` destroys everything in your AWS account, including all S3 buckets and all instances. Do not use this command unless you want to lose **everything** in your AWS account, including objects and files unrelated to your Cloud Foundry deployment.
+    </td></tr></table>
+
+	<pre class="terminal">
+	$ bosh aws destroy
+	</pre>
+
+1. Remove any YAML artifacts:
+
+    <pre class="terminal">
+    $ rm -f *.yml
+    </pre>

@@ -2,11 +2,11 @@
 title: Deploying BOSH with MicroBOSH
 ---
 
-This guide describes the process for deploying BOSH as an application using MicroBOSH. 
+This guide describes the process for deploying BOSH as an application using MicroBOSH.
 
 ## <a id="prerequisites"></a>Prerequisites ##
 
-* MicroBOSH should be deployed. See the steps in the [previous section](deploying_micro_bosh.html)
+* MicroBOSH should be deployed. See the steps in the [Deploying MicroBOSH](deploying_micro_bosh.html) topic.
 
 ## <a id="target"></a>Target MicroBOSH ##
 
@@ -43,7 +43,7 @@ Deployment
   not set
 </pre>
 
-*Note*: Create a new user using `bosh create user` which overrides the default username and password.
+<p class="note"><strong>Note</strong>: Create a new user using `bosh create user`. This overrides the default username and password.</p>
 
 ## <a id="download-stemcell"></a>Download a BOSH Stemcell ##
 
@@ -67,7 +67,9 @@ To download use `bosh download public stemcell <stemcell_name>'. For full url us
 Alternatively, download the latest stemcells from the web: http://bosh_artifacts.cfapps.io/
 </pre>
 
-Download a public stemcell. *Note*: if you have already downloaded a stemcell to deploy your MicroBOSH, you can use that one.
+Download a public stemcell.
+
+<p class="note"><strong>Note</strong>: If you have already downloaded a stemcell to deploy your MicroBOSH, you do not need to download a different one.</p>
 
 <pre class="terminal">
 $ bosh download public stemcell bosh-stemcell-XXXX-vsphere-esxi-ubuntu.tgz
@@ -79,7 +81,7 @@ Upload the downloaded stemcell to MicroBOSH.
 $ bosh upload stemcell bosh-stemcell-XXXX-vsphere-esxi-ubuntu.tgz
 </pre>
 
-You can see the uploaded stemcells (on your MicroBOSH) by using `bosh stemcells`:
+You can see the uploaded stemcells on your MicroBOSH by using the `bosh stemcells` command:
 
 <pre class="terminal">
 $ bosh stemcells
@@ -91,7 +93,7 @@ $ bosh stemcells
 +-------------------------------+---------+-----------------------------------------+
 </pre>
 
-## <a id="upload-release"></a>Upload a BOSH release ##
+## <a id="upload-release"></a>Upload a BOSH Release ##
 
 <pre class="terminal">
 $ wget http://bosh-jenkins-artifacts.s3.amazonaws.com/release/bosh-XXXX.tgz
@@ -100,14 +102,14 @@ $ bosh upload release bosh-XXXX.tgz
 
 ## <a id="deploy"></a>Setup a BOSH Deployment Manifest and Deploy ##
 
-Create and setup a BOSH deployment manifest. Look at the [BOSH example manifest](./bosh-example-manifest.html). 
+Create and setup a BOSH deployment manifest. See the [BOSH Example Manifest](./bosh-example-manifest.html).
 
-Deploy BOSH. (the following assumes your manifest is named `bosh.yml` in `/home/bosh_user`).
+Deploy BOSH. The following example assumes that your manifest is named `bosh.yml` and exists in the `/home/bosh_user` directory.
 
 <pre class="terminal">
 $ cd /home/bosh_user
 $ bosh deployment bosh.yml
-		
+
 Deployment set to `/home/bosh_user/bosh.yml'
 
 $ bosh deploy
@@ -122,45 +124,42 @@ Deploying `bosh.yml' to `your-micro-BOSH' (type 'yes' to continue): yes
 Director task 5
 
 Preparing deployment
-  binding deployment (00:00:00)                                                                     
-  binding releases (00:00:00)                                                                       
-  binding existing deployment (00:00:00)                                                            
-  binding resource pools (00:00:00)                                                                 
-  binding stemcells (00:00:00)                                                                      
-  binding templates (00:00:00)                                                                      
-  binding unallocated VMs (00:00:00)                                                                
-  binding instance networks (00:00:00)                                                              
-Done                    8/8 00:00:00                                                                
+  binding deployment (00:00:00)
+  binding releases (00:00:00)
+  binding existing deployment (00:00:00)
+  binding resource pools (00:00:00)
+  binding stemcells (00:00:00)
+  binding templates (00:00:00)
+  binding unallocated VMs (00:00:00)
+  binding instance networks (00:00:00)
+Done                    8/8 00:00:00
 
 Preparing package compilation
-  finding packages to compile (00:00:00)                                                            
-Done                    1/1 00:00:00                                                                
+  finding packages to compile (00:00:00)
+Done                    1/1 00:00:00
 
 Preparing DNS
-  binding DNS (00:00:00)                                                                            
-Done                    1/1 00:00:00                                                                
+  binding DNS (00:00:00)
+Done                    1/1 00:00:00
 
 Creating bound missing VMs
-  small/0 (00:00:50)                                                                                
-  small/4 (00:01:02)                                                                                
-  small/1 (00:01:19)                                                                                
-  small/2 (00:01:22)                                                                                
-  small/3 (00:01:24)                                                                                
-  director/0 (00:01:26)                                                                             
+  small/0 (00:00:50)
+  small/4 (00:01:02)
+  small/1 (00:01:19)
+  small/2 (00:01:22)
+  small/3 (00:01:24)
+  director/0 (00:01:26)
 Done                    6/6 00:01:26
 </pre>
 
-*Note*: There will be a lot of status information in addition to the above output.
+## <a id="verify"></a>Verify the Installation ##
 
-## <a id="verify"></a>Verification ##
-
-The example BOSH director has the IP address `172.20.134.52`. Targeting this director with `bosh target 172.20.134.52` will verify a successful installation.
+The example BOSH Director has the IP address `172.20.134.52`. Target this Director with `bosh target 172.20.134.52` to verify a successful installation.
 
 <pre class="terminal">
 $ bosh target 172.20.134.52
 Target set to 'your-director'
-Your username: admin	
+Your username: admin
 Enter password: *****
 Logged in as `admin'
 </pre>
-
