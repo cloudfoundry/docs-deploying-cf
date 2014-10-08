@@ -3,7 +3,7 @@ title: Deploying Cloud Foundry on AWS with BOSH AWS Bootstrap
 ---
 
 <table style="width: 60%;"><tr><td>
-<strong>WARNING</strong>: The command `bosh aws destroy` destroys everything in your AWS account, including all S3 buckets and all instances. Do not use this command unless you want to lose **everything** in your AWS account, including objects and files unrelated to your Cloud Foundry deployment.
+<strong>WARNING</strong>: The command `bosh aws destroy` destroys everything in your AWS account, including all S3 buckets and all instances. Do not use this command unless you want to lose <strong>everything</strong> in your AWS account, including objects and files unrelated to your Cloud Foundry deployment.
 </td></tr></table>
 
 Cloud Foundry tools simplify the process of deploying a Cloud Foundry instance
@@ -81,7 +81,7 @@ replacing the values in each line to match your configuration:
     </pre>
 
     <p class="note"><strong>Note</strong>: The following steps only support deployment to the <code>us-east-1</code> region of AWS.<br><br>
-To deploy MicroBOSH, please review <a href="https://gist.github.com/danhigham/5804252">this guide</a>.</p>
+To deploy MicroBOSH, review <a href="https://gist.github.com/danhigham/5804252">this guide</a>.</p>
 
 1. Choose an availability zone that is listed as "operating normally" in the
 Health Status section of the
@@ -192,18 +192,6 @@ Cloud Foundry templates to generate a BOSH manifest for your Cloud Foundry
 deployment.
 
 Example stub file:
-
-<%= yield_for_code_snippet from: 'cloudfoundry/docs-deploying-cf', at: 'cf-stub-aws' %>
-
-Replace the placeholder values in your stub files with data appropriate to your deployment.
-
-* `DIRECTOR-UUID`: The BOSH Director UUID. Run `bosh status` to view the BOSH Director UUID.
-
-- `zone_1` and `zone_2`: The `BOSH_VPC_PRIMARY_AZ` and `BOSH_VPC_SECONDARY_AZ` that you specified in the `bosh_environment` file above.
-
-* `AWS_ACCESS_KEY-ID` and `AWS_SECRET_ACCESS`: Your AWS Access Key ID and Secret
-Key. You can use the keys that you specified in the `bosh_environment` file,
-or generate new ones.
 
 <pre class="terminal">
 ---
@@ -321,14 +309,13 @@ properties:
     skip_cert_verify: false
 </pre>
 
-Replace placeholders with the approriate data:
+Replace placeholders with the appropriate data:
 
 - `PLACEHOLDER-DIRECTOR-UUID` - the BOSH director UUID. You can get it by running `bundle exec bosh status`.
 
 - `PLACEHOLDER-ACCESS-KEY-ID` and `PLACEHOLDER-SECRET-KEY` - AWS access key id and secret key. You can use the same ones as you used in the `bosh_environment` file above, or generate new ones.
 
 - `PLACEHOLDER-AWS-AVAILABILITY-ZONE` and `PLACEHOLDER-AWS-AVAILABILITY-ZONE2` - `BOSH_VPC_PRIMARY_AZ` and `BOSH_VPC_SECONDARY_AZ` from the `bosh_environment` file above.
->>>>>>> 592814033f718e4ee4f2cf7113dad13d932b7159
 
 - `PLACEHOLDER-SUBNET-FOR-AZ1` and `PLACEHOLDER-SUBNET-FOR-AZ2` - Look in `~/deployments/cf-example/aws_vpc_receipt.yml` (this file was generated when you ran `bosh aws create`).  They are under 'subnets' 'cf1' and 'cf2'.
 
@@ -381,7 +368,7 @@ Generate RSA key pair for:
 
 - `PLACEHOLDER-UAA-JWT-SIGNING-KEY` and `PLACEHOLDER-UAA-JWT-VERIFICATION-KEY`
 
-You can also replace the users username/password in uaa->scim->users list.
+You can also replace the users username/password in `uaa:scim:users` list.
 
 If you are using Self-Signed SSL certificates:
 
@@ -489,7 +476,7 @@ You also might be interested in the [community-managed services release](https:/
 1. Use `bosh aws destroy` to destroy your AWS environment.
 
     <table style="width: 60%;"><tr><td>
-    <strong>WARNING</strong>: The command `bosh aws destroy` destroys everything in your AWS account, including all S3 buckets and all instances. Do not use this command unless you want to lose **everything** in your AWS account, including objects and files unrelated to your Cloud Foundry deployment.
+    <strong>WARNING</strong>: The command `bosh aws destroy` destroys everything in your AWS account, including all S3 buckets and all instances. Do not use this command unless you want to lose <strong>everything</strong> in your AWS account, including objects and files unrelated to your Cloud Foundry deployment.
     </td></tr></table>
 
 	<pre class="terminal">
