@@ -10,8 +10,8 @@ Your cloud performance can be affected if the application developer attempts to 
 
 To guard against this, you can blacklist the range of IP addresses that you allocate to Cloud Foundry components in your manifest.
 
-To blacklist an IP address range, add the loggregator.blacklisted\_syslog\_ranges property to your manifest.
-Specify IP ranges with starting and ending IP addresses.
+To blacklist an IP address range, add the `loggregator.blacklisted_syslog_ranges` property to your manifest.
+Specify starting and ending IP addresses for each IP address range.
 
 Example manifest excerpt:
 
