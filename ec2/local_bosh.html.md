@@ -1,13 +1,13 @@
 ---
-title: Preparing Your Local Machine for Micro Bosh Deployment
+title: Preparing Your Local Machine for MicroBOSH Deployment
 ---
 
-We use Micro BOSH to deploy BOSH. A micro BOSH is a single VM that
+We use MicroBOSH to deploy BOSH. A MicroBOSH is a single VM that
 includes all of the BOSH components. In order to deploy BOSH, install
-a Micro BOSH and then run the BOSH deployer. The libraries we need to
+a MicroBOSH and then run the BOSH deployer. The libraries needed to
 get started are distributed via a Ruby gem.
 
-Preparing your local computer for deploying Micro BOSH is the same
+Preparing your local computer for deploying MicroBOSH is the same
 regardless of the infrastructure you will deploy to. You may have some
 of the steps below already installed if you are a Ruby developer (and
 if you are, you know which steps you can skip):
@@ -81,14 +81,14 @@ from the command line. This step can take a few minutes.
 
 **Note**: If the step above errors out referencing sqlite on aptitude based systems, execute "apt-get install sqlite-devel", then try the previous step again or otherwise ensure that sqlite development packages have been installed.
 
-Now run bosh status to confirm:
+Run `bosh status` to confirm:
 
 <pre class="terminal">
   bosh status
 </pre>
 
 
-###Go on to [Configuring AWS for Micro BOSH](./configure_aws_micro_bosh.html) or [Return to Index](./index.html)
+###Go on to [Configuring AWS for MicroBOSH](./configure_aws_micro_bosh.html) or [Return to Index](./index.html)
 
 
 
