@@ -71,11 +71,8 @@ the executable file to your PATH.
 
 ##<a id="clone-repo"></a>Step 2: Clone the Cloud Foundry Release Repository ##
 
-Copy the [Cloud Foundry release repository](https://github.com/cloudfoundry/cf-release) from GitHub to your
-local environment.
-This repository contains files you need to complete the remaining steps.
-
 Use the `git clone` command to make a local copy of the [Cloud Foundry release repository](https://github.com/cloudfoundry/cf-release).
+This repository contains files you need to complete the remaining steps.
 
 <pre class="terminal">
 $ git clone git@github.com:cloudfoundry/cf-release
@@ -109,7 +106,7 @@ deployment manifest.
 Spiff produces this manifest by merging your manifest stub with Cloud Foundry
 release templates.
 
-Run the following command from the `cf-release` directory to create a deployment 
+Run the following command from the `cf-release` directory to create a deployment
 manifest named `cf-deployment.yml`:
 
 `./generate_deployment_manifest INFRASTRUCTURE MANIFEST-STUB > 	cf-deployment.yml`.
