@@ -2,15 +2,15 @@
 title: Preparing Your Local Machine for MicroBOSH Deployment
 ---
 
-We use MicroBOSH to deploy BOSH. A MicroBOSH is a single VM that
-includes all of the BOSH components. In order to deploy BOSH, install
-a MicroBOSH and then run the BOSH deployer. The libraries needed to
-get started are distributed via a Ruby gem.
+We use a MicroBOSH to deploy BOSH.
+A MicroBOSH is a single VM that includes all of the BOSH components.
+In order to deploy BOSH, first install a MicroBOSH, then run the BOSH deployer.
+We distribute the libraries needed to get started via a Ruby gem.
 
 Preparing your local computer for deploying MicroBOSH is the same
-regardless of the infrastructure you will deploy to. You may have some
-of the steps below already installed if you are a Ruby developer (and
-if you are, you know which steps you can skip):
+regardless of the infrastructure you will deploy to.
+If you are a Ruby developer, you may have some of the steps below already
+completed.
 
 1. Install Ruby
 
@@ -20,75 +20,77 @@ if you are, you know which steps you can skip):
 
 4. Install Gems for BOSH CLI
 
-### Install Ruby
+## <a id="install-ruby"></a>Install Ruby ##
 
 You need either Ruby 1.9.3 or 2.0.0 installed locally on your computer.
-We recommend
-using either [rvm](https://rvm.io/rvm/install) or
-[rbenv](https://github.com/sstephenson/rbenv) to manage
-your Ruby environment.
+We recommend using either [rvm](https://rvm.io/rvm/install) or [rbenv](https://github.com/sstephenson/rbenv) to manage your Ruby environment.
 
 For instructions on installing Ruby, see these pages:
 
 * [Ruby with rbenv](../common/install_ruby_rbenv.html)
 * [Ruby with rvm](../common/install_ruby_rvm.html)
 
-### Install the Git command line tool
+## <a id="install-git"></a>Install the Git Command Line Tool ##
 
-We leverage git for several downloads, so the git cli needs to be installed. Visit [http://git-scm.com/](http://git-scm.com/) for
-instructions to download and install git on your local system. Then
-validate that git was installed successfully and is available in your terminal:
+See [http://git-scm.com/](http://git-scm.com/) for instructions to download and
+install the Git command line tool on your local system.
+
+Use the `git --version` command to confirm that you have successfully installed the Git command line tool.
 
 <pre class="terminal">
-  git --version
-  git version 1.8.4.2
+$ git --version
+git version 1.9.3
 </pre>
 
-### Update RubyGems
+## <a id="update-rubygems"></a>Update RubyGems ##
 
-This installs Ruby’s package management framework. Additional details
-are located [here](http://rubygems.org/pages/download).
+Use the `gem update --system` command to installs the Ruby package management
+framework.
+For more information about RebyGems, see [http://rubygems.org/pages/download](http://rubygems.org/pages/download).
+
 <pre class="terminal">
-  gem update --system
+$ gem update --system
+Updating rubygems-update
+Fetching: rubygems-update-2.4.2.gem (100%)
+Successfully installed rubygems-update-2.4.2
+Installing RubyGems 2.4.2
+RubyGems 2.4.2 installed
 </pre>
 
 ### If using rvm, you can create a new gemset and update package management
 
 <pre class="terminal">
-  rvm use 2.0.0@bosh --create
+$ rvm use 2.0.0@bosh --create
 </pre>
 
 For Ubuntu:
 
 <pre class="terminal">
-  sudo apt-get update
+$ sudo apt-get update
 </pre>
 
 For Fedora:
 
 <pre class="terminal">
-  sudo yum update
+$ sudo yum update
 </pre>
 
-### Install Gems for BOSH CLI
+## <a id="bosh-cli-gems"></a>Install Gems for BOSH CLI ##
 
-Run the following command to install the gems required to run BOSH
-from the command line. This step can take a few minutes.
+Run the following command to install the gems you need to run BOSH from the
+command line.
 
 <pre class="terminal">
-  gem install bosh_cli_plugin_micro --no-rdoc --no-ri
+$ gem install bosh_cli_plugin_micro --no-rdoc --no-ri
 </pre>
 
-**Note**: If the step above errors out referencing sqlite on aptitude based systems, execute "apt-get install sqlite-devel", then try the previous step again or otherwise ensure that sqlite development packages have been installed.
+<p class="note"><strong>Note</strong>: If the step above errors out referencing sqlite on aptitude based systems, execute `apt-get install sqlite-devel` or otherwise ensure that sqlite development packages have been installed, then try the previous step again.</p>
 
-Run `bosh status` to confirm:
+## <a id="bosh-status"></a>Confirm BOSH ##
+Run `bosh status` to confirm you have installed BOSH:
 
 <pre class="terminal">
-  bosh status
+$ bosh status
 </pre>
 
-
-###Go on to [Configuring AWS for MicroBOSH](./configure_aws_micro_bosh.html) or [Return to Index](./index.html)
-
-
-
+## Go on to [Configuring AWS for MicroBOSH](./configure_aws_micro_bosh.html) or [Return to Index](./index.html)
