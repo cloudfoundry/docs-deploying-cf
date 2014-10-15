@@ -1,27 +1,12 @@
 ---
-title: Configure AWS for Micro Bosh
+title: Configure AWS for MicroBOSH
 ---
 
-This page assumes that you already have an AWS account and approval
-to spend money.
+This page assumes that you have administrator access to an AWS account.
 
- Complete the following prep work:
+<p class="note"><strong>Note</strong>: The examples below assume that you the US-EAST-1 AWS Region. If you use a different AWS region, ensure that you create Elastic IPs in the same region as your EC2 instances. You cannot assign IP addresses created for one region to an instance in another region.</p>
 
-1. Obtain AWS credentials
-
-2. Create Elastic IPs
-
-3. Create a key pair
-
-4. Create a security group
-
-5. Add ports to the security group
-
-**Note**: The examples below assume that you will use US-EAST-1 as
- your AWS Region. For a different AWS region, ensure that you create Elastic IPs in the same region as your EC2 instances. IP addresses
-for one region cannot be assigned to an instance in another region.
-
-### Obtain AWS credentials
+##<a id="aws-credentials"></a>Obtain AWS credentials ##
 
 If you already know your AWS credentials (access\_key\_id and secret\_access\_key, which are not the same as your AWS login and password), skip this step.
 
@@ -37,10 +22,7 @@ Next, select **Create New Access Key**. If there are already keys created, you m
 
 ![image alt text](ec2/image_2.png)
 
-You will be prompted to download the security file as a csv. DO
-THIS! You cannot retrieve the AWS secret key once the screen is
-closed. You will have to repeat this step and create a new key if you
-lose this one.
+Download the security file in CSV format when prompted. 
 
 ![image alt text](ec2/image_3.png)
 
@@ -49,7 +31,7 @@ the only two pieces of information needed to fraudulently consume AWS resources.
 
 ### Create Elastic IPs
 
-The Micro Bosh server needs a public IP address. AWS calls these
+The MicroBOSH server needs a public IP address. AWS calls these
 Elastic IPs.
 
 Ensure that "N. Virginia" is selected as the AWS Region, then click
@@ -101,8 +83,8 @@ this folder:
 
 ### Create a security group
 
-You must now create a security group for the Micro BOSH server. This
-is necessary to expose ports that the BOSH Agent uses.
+Create a security group for the MicroBOSH server.
+This security group exposes ports used by the BOSH Agent.
 
 Ensure that "N. Virginia" is selected as the AWS Region, then click
 **Security Groups > Create Security Group**.
@@ -115,7 +97,7 @@ From the popup dialog, assign "bosh" to the Name, “BOSH Security Group” to t
 
 ### Add ports to the security group
 
-Micro BOSH needs ports 25555 (BOSH Director), 6868 (BOSH Agent) and
+MicroBOSH needs ports 25555 (BOSH Director), 6868 (BOSH Agent) and
 22 (ssh to debug) opened for inbound for the security group "bosh"
 that we just created.
 
@@ -137,4 +119,4 @@ are adding, click **Apply Rule Changes** to save the changes to this Security Gr
 
 ![image alt text](ec2/image_13.png)
 
-###Go on to [Deployment of Micro BOSH on AWS](./deploy_aws_micro_bosh.html) or [Return to Index](./index.html)
+###Go on to [Deployment of MicroBOSH on AWS](./deploy_aws_micro_bosh.html) or [Return to Index](./index.html)
