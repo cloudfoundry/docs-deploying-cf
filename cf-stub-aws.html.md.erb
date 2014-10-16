@@ -7,11 +7,13 @@ with Cloud Foundry templates to generate a Cloud Foundry deployment manifest.
 
 ```
 ---
-director_uuid: DIRECTOR_UUID
+director_uuid: DIRECTOR_UUID 
+The Director UUID
+
 meta:
   zones:
-    z1: zone_1
-    z2: zone_2
+    z1: zone_1 Primary Availability Zone 
+    z2: zone_2 Secondary Availability Zone
 
 networks:
 - name: cf1
