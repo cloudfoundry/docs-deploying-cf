@@ -68,7 +68,7 @@ replacing the values in each line to match your configuration:
     export BOSH_AWS_ACCESS_KEY_ID=AWS_ACCESS_KEY_ID
     export BOSH_AWS_SECRET_ACCESS_KEY=AWS_SECRET_ACCESS_KEY
     export BOSH_AWS_REGION=my-aws-region
-    export BOSH_VPC_PRIMARY_AZ=us-east-1a   # see note below    
+    export BOSH_VPC_PRIMARY_AZ=us-east-1a   # see note below
     export BOSH_VPC_SECONDARY_AZ=us-east-1d # see note below
     ~~~
 
@@ -80,7 +80,7 @@ replacing the values in each line to match your configuration:
     $ source bosh_environment
     </pre>
 
-    <p class="note"><strong>Note</strong>: The following steps only support deployment to the <code>us-east-1</code> region of AWS.<br><br> 
+    <p class="note"><strong>Note</strong>: The following steps only support deployment to the <code>us-east-1</code> region of AWS.<br><br>
 To deploy MicroBOSH to a different region, see <a href="https://gist.github.com/danhigham/5804252">this guide</a>.</p>
 
 1. Choose an availability zone that is listed as "operating normally" in the
@@ -185,196 +185,17 @@ Director:
     $ bosh upload stemcell ./bosh-stemcell-1657-aws-xen-ubuntu.tgz
     </pre>
 
-## <a id='create-a-stub'></a>Create a Deployment Stub ##
+## <a id='create-a-stub'></a>Create a Deployment Manifest ##
 
-Create a manifest stub file named `cf-stub.yml`. You will use [Spiff](https://github.com/cloudfoundry-incubator/spiff) to merge this file with
-Cloud Foundry templates to generate a BOSH manifest for your Cloud Foundry
-deployment.
+Use [Spiff](https://github.com/cloudfoundry-incubator/spiff) to create a Cloud
+Foundry deployment manifest.
+To do this:
 
-The current [Cloud Foundry Deployment Manifest Stub for AWS](../cf-stub-aws.html). 
+1. Create a manifest stub file named `cf-stub.yml`. [Customize the manifest stub](./cf-stub-aws.html) for your environment.
 
-Example stub file:
-
-<pre class="terminal">
----
-name: cf-example
-director_uuid: 80be9b46-435f-41db-96a4-453f8d59f53c
-releases:
-  - name: cf
-    version: latest
-
-networks:
-- name: cf1
-  type: manual
-  subnets:
-  - range: 10.10.16.0/20
-    name: default_unused
-    reserved:
-    - 10.10.16.2 - 10.10.16.9
-    static:
-    - 10.10.16.10 - 10.10.16.253
-    gateway: 10.10.16.1
-    dns:
-    - 10.10.0.2
-    cloud_properties:
-      security_groups:
-      - cf
-      subnet: (( properties.template_only.aws.subnet_ids.cf1 ))
-
-- name: cf2
-  type: manual
-  subnets:
-  - range: 10.10.80.0/20
-    name: default_unused
-    reserved:
-    - 10.10.80.2 - 10.10.80.9
-    static:
-    - 10.10.80.10 - 10.10.80.253
-    gateway: 10.10.80.1
-    dns:
-    - 10.10.0.2
-    cloud_properties:
-      security_groups:
-      - cf
-      subnet: (( properties.template_only.aws.subnet_ids.cf2 ))
-
-properties:
-  template_only:
-    aws:
-      access_key_id: PLACEHOLDER-ACCESS-KEY-ID
-      secret_access_key: PLACEHOLDER-SECRET-KEY
-      availability_zone: us-east-1a # Change this if you'd like to
-      availability_zone2: us-east-1b # Change this if you'd like to
-      subnet_ids:
-        cf1: PLACEHOLDER-SUBNET-FOR-AZ1
-        cf2: PLACEHOLDER-SUBNET-FOR-AZ2
-
-  domain: PLACEHOLDER-DOMAIN
-
-  nats:
-    user: PLACEHOLDER-NATS-USER
-    password: PLACEHOLDER-NATS-PASSWORD
-
-  cc:
-    db_encryption_key: PLACEHOLDER-CC-DB-ENCRYPTION-KEY
-    bulk_api_password: PLACEHOLDER-BULK-API-PASSWORD
-    staging_upload_password: PLACEHOLDER-STAGING-UPLOAD-PASSWORD
-    staging_upload_user: PLACEHOLDER-STAGING-UPLOAD-USER
-
-  uaa:
-    scim:
-      users:
-      - admin|the_admin_pw|scim.write,scim.read,openid,cloud_controller.admin         #change if you like
-      - services|the_services_pw|scim.write,scim.read,openid,cloud_controller.admin   #change if you like
-    admin:
-      client_secret: PLACEHOLDER-UAA-ADMIN-CLIENT-SECRET
-    jwt:
-      signing_key: PLACEHOLDER-UAA-JWT-SIGNING-KEY # Use the YAML "|" character to format multiline RSA key data
-      verification_key: PLACEHOLDER-UAA-JWT-VERIFICATION-KEY # Use the YAML "|" character to format multiline RSA key data
-    clients:
-      login:
-        secret: PLACEHOLDER-UAA-CLIENTS-LOGIN-SECRET
-      developer_console:
-        secret: PLACEHOLDER-UAA-CLIENTS-DEVELOPER-CONSOLE-SECRET
-      app-direct:
-        secret: PLACEHOLDER-UAA-CLIENTS-APP-DIRECT-SECRET
-      support-services:
-        secret: PLACEHOLDER-UAA-CLIENTS-SUPPORT-SERVICES-SECRET
-      servicesmgmt:
-        secret: PLACEHOLDER-UAA-CLIENTS-SERVICESMGMT-SECRET
-      space-mail:
-        secret: PLACEHOLDER-UAA-CLIENTS-SPACE-MAIL-SECRET
-      notifications:
-        secret: PLACEHOLDER-UAA-CLIENTS-NOTIFICATION-SECRET
-    batch:
-      username: PLACEHOLDER-UAA-BATCH-USERNAME
-      password: PLACEHOLDER-UAA-BATCH-PASSWORD
-    cc:
-      client_secret: PLACEHOLDER-UAA-CC-CLIENT-SECRET
-
-  uaadb: PLACEHOLDER_UAADB_PROPERTIES
-  ccdb: PLACEHOLDER_CCDB_PROPERTIES
-
-  router:
-    status:
-      user: PLACEHOLDER-ROUTER-STATUS-USER
-      password: PLACEHOLDER-ROUTER-STATUS-PASSWORD
-
-  dea_next:
-    disk_mb: 400001
-    memory_mb: 6656
-
-  loggregator_endpoint:
-    shared_secret: PLACEHOLDER-LOGGREGATOR-SECRET
-
-  ssl:
-    skip_cert_verify: false
-</pre>
-
-Replace placeholders with the appropriate data:
-
-- `PLACEHOLDER-DIRECTOR-UUID` - the BOSH director UUID. You can get it by running `bundle exec bosh status`.
-
-- `PLACEHOLDER-ACCESS-KEY-ID` and `PLACEHOLDER-SECRET-KEY` - AWS access key id and secret key. You can use the same ones as you used in the `bosh_environment` file above, or generate new ones.
-
-- `PLACEHOLDER-AWS-AVAILABILITY-ZONE` and `PLACEHOLDER-AWS-AVAILABILITY-ZONE2` - `BOSH_VPC_PRIMARY_AZ` and `BOSH_VPC_SECONDARY_AZ` from the `bosh_environment` file above.
-
-- `PLACEHOLDER-SUBNET-FOR-AZ1` and `PLACEHOLDER-SUBNET-FOR-AZ2` - Look in `~/deployments/cf-example/aws_vpc_receipt.yml` (this file was generated when you ran `bosh aws create`).  They are under 'subnets' 'cf1' and 'cf2'.
-
-- `PLACEHOLDER-DOMAIN` - `BOSH_VPC_SUBDOMAIN.BOSH_VPC_DOMAIN` from the `bosh_environment` file above (hosted domain created in route 53).
-
-- `PLACEHOLDER-UAADB-PROPERTIES`, `PLACEHOLDER-CCDB-PROPERTIES` - copy these from `~/deployments/cf-example/aws_rds_receipt.yml`
-
-Generate secure keys for the following placeholders:
-
-- `PLACEHOLDER-NATS-USER`
-
-- `PLACEHOLDER-NATS-PASSWORD`
-
-- `PLACEHOLDER-CC-DB-ENCRYPTION-KEY`
-
-- `PLACEHOLDER-BULK-API-PASSWORD`
-
-- `PLACEHOLDER-CC-STAGING-UPLOAD-USER`
-
-- `PLACEHOLDER-CC-STAGING-UPLOAD-PASSWORD`
-
-- `PLACEHOLDER-UAA-ADMIN-CLIENT-SECRET`
-
-- `PLACEHOLDER-UAA-CLIENTS-LOGIN-SECRET`
-
-- `PLACEHOLDER-UAA-CLIENTS-DEVELOPER-CONSOLE-SECRET`
-
-- `PLACEHOLDER-UAA-CLIENTS-APP-DIRECT-SECRET`
-
-- `PLACEHOLDER-UAA-CLIENTS-SUPPORT-SERVICES-SECRET`
-
-- `PLACEHOLDER-UAA-CLIENTS-SERVICESMGMT-SECRET`
-
-- `PLACEHOLDER-UAA-CLIENTS-SPACE-MAIL-SECRET`
-
-- `PLACEHOLDER-UAA-BATCH-USERNAME`
-
-- `PLACEHOLDER-UAA-BATCH-PASSWORD`
-
-- `PLACEHOLDER-UAA-CC-CLIENT-SECRET`
-
-- `PLACEHOLDER-ROUTER-STATUS-USER`
-
-- `PLACEHOLDER-ROUTER-STATUS-PASSWORD`
-
-- `PLACEHOLDER-LOGGREGATOR-SECRET`
-
-
-Generate RSA key pair for:
-
-- `PLACEHOLDER-UAA-JWT-SIGNING-KEY` and `PLACEHOLDER-UAA-JWT-VERIFICATION-KEY`
-
-You can also replace the users username/password in `uaa:scim:users` list.
-
-If you are using Self-Signed SSL certificates:
-
-- Change ```skip_cert_verify:``` to ```true```
+1. Use [Spiff](https://github.com/cloudfoundry-incubator/spiff) to merge your
+customized manifest stub with Cloud Foundry templates to [generate a complete
+deployment manifest](./cf-manifest-spiff.html).
 
 ## <a id='deploy-cloudfoundry'></a>Deploy Cloud Foundry##
 
