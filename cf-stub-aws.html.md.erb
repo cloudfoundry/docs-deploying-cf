@@ -10,9 +10,12 @@ Save a copy of the code below to your deployment directory. Use the [editing ins
 Once completed, use [Spiff](https://github.com/cloudfoundry-incubator/spiff) to
 merge your manifest stub with Cloud Foundry templates to generate a complete
 Cloud Foundry deployment manifest. For more information, see the topic on
-[Generating a Cloud Foundry Deployment Manifest Using Spiff](./cf-manifest.html).
+[Generating a Cloud Foundry Deployment Manifest Using Spiff](./cf-manifest-spiff.html).
 
 ##<a id="stub"></a>Cloud Foundry on AWS Deployment Manifest Stub ##
+
+<%= yield_for_code_snippet from: 'cloudfoundry/cf-release', at: 'cf-stub-aws' %>
+
 
 ```
 ---
