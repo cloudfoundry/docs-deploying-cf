@@ -1,18 +1,12 @@
 ---
-title: Completing a Cloud Foundry Deployment Manifest Stub for AWS
+title: Customize the Cloud Foundry Deployment Manifest Stub for AWS
 ---
 
-This topic describes how to complete a deployment manifest stub to allow you to
-deploy Cloud Foundry to your AWS environment.
+This topic describes how to customize the Cloud Foundry deployment manifest stub for AWS. After you complete this task, use [Spiff](https://github.com/cloudfoundry-incubator/spiff) to merge your customized manifest stub with Cloud Foundry templates to [generate a complete deployment manifest](./cf-manifest-spiff.html).
 
-Save a copy of the code below to your deployment directory. Use the [editing instructions](#editing) in the table following it to replace the specified values with information about your environment.
+Save a copy of the manifest stub as a YAML file in your deployment directory. Follow the [editing instructions](#editing) to customize the manifest stub with information about your environment.
 
-Once completed, use [Spiff](https://github.com/cloudfoundry-incubator/spiff) to
-merge your manifest stub with Cloud Foundry templates to generate a complete
-Cloud Foundry deployment manifest. For more information, see the topic on
-[Generating a Cloud Foundry Deployment Manifest Using Spiff](./cf-manifest-spiff.html).
-
-##<a id="stub"></a>Cloud Foundry on AWS Deployment Manifest Stub ##
+##<a id="stub"></a>Cloud Foundry Deployment Manifest Stub for AWS ##
 
 ```
 ---
