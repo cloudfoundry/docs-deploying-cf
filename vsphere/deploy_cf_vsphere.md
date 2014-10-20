@@ -85,6 +85,8 @@ If components are found locally, they are not downloaded.
 
 ## <a id="create-manifest"></a>Create a Cloud Deployment Manifest ##
 
+Use Spiff to generate your Cloud Foundry deployment manifest. For more information, refer to the [Generating a Cloud Foundry Deployment Manifest Using Spiff](../cf-manifest-spiff.html) topic.
+
 Keep in mind that a manifest requires significant virtual hardware resources to run. You ideally need 72 vCPUs, 200GB of RAM, and 1 TB of storage. The more IOPS you can throw at the deployment, the better.
 
 Use the BOSH CLI to set your current deployment. This example assumes your deployment manifest file is in `~/deployments`.
