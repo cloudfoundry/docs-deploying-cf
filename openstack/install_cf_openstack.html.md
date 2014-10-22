@@ -1161,16 +1161,11 @@ update:
   max_in_flight: 1
   serial: true
   update_watch_time: 5000-600000
-
-
-
 ~~~
-
-<p class="note"><strong>Note</strong>: This deployment manifest is compatible with the v170 release of Cloud Foundry.</p>
 
 ## Deploying your own Cloud Foundry ##
 
-In this section, your BOSH will be instructed to provision nine VMs (specified in the manifest), bind the router to your IP address, and run the minimal, useful set of jobs mentioned above. In the subsequent section, you will deploy a sample application to your Cloud Foundry
+In this section, your BOSH will be instructed to provision a number of VMs, bind the router to your IP address, and run the minimal, useful set of jobs mentioned above. In the subsequent section, you will deploy a sample application to your Cloud Foundry
 
 First, target your BOSH CLI to your manifest file.
 
