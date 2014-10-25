@@ -2,7 +2,7 @@
 title: BOSH Example Manifest
 ---
 
-This is an example manifest for deploying BOSH via Micro BOSH. The next step would be to deploy Cloud Foundry.
+This is an example manifest for deploying BOSH via MicroBOSH.
 
     ---
     name: bosh_wdc_vdc-2

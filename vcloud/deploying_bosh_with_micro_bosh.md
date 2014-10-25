@@ -24,7 +24,7 @@ Enter password: admin
 Logged in as 'admin'
 </pre>
 
-<p class="note"><strong>Note</strong>: Create a new user using `bosh create user`. This overrides the default username and password.</p>
+<p class="note"><strong>Note</strong>: Create a new user using <code>bosh create user</code>. This overrides the default username and password.</p>
 
 ## <a id="download-stemcell"></a>Download a BOSH Stemcell ##
 
