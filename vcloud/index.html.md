@@ -40,5 +40,5 @@ Consult the [Troubleshooting](troubleshooting.html) page for assistance.
 
 ## Sample Manifest Files ##
 
-* [MicroBOSH example manifest](micro-bosh-example-manifest.html)
+* [MicroBOSH Deployment Manifest for vCloud](micro-bosh-example-manifest.html)
 * [BOSH example manifest](bosh-example-manifest.html)
