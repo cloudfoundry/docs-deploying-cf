@@ -1,63 +1,63 @@
 ---
-title: BOSH Example Manifest
+title: Customizing the MicroBOSH Deployment Manifest for vCloud
 ---
 
-Here is an example manifest for deploying Micro BOSH on vCloud.
+This topic contains a MicroBOSH deployment manifest template.
+Save a copy of this template as a YAML file in your deployment directory.
+Customize the contents of this file for your vCloud environment, then use the customized file to deploy MicroBOSH to vCloud.
 
-    name: bosh_micro_vcloud
+```yml
+name: microbosh
 
-    network:
-      ip: <IP addr for micro BOSH VM - e.g. 192.168.1.10>
-      netmask: <netmask for network - e.g. 255.255.255.0>
-      gateway: <gateway for network e.g. 192.168.1.1>
-      dns:
-      - <IP addr for DNS server. e.g. 8.8.8.8>
-      - <IP adds for second DNS server if desired>
-      cloud_properties:
-        name: "<vDC network name - e.g. 150-900-default-routed >"
+network:
+  ip: 192.168.1.10        # Change to the MicroBOSH IP address
+  netmask: 255.255.255.0  # Change to your network netmask
+  gateway: 192.168.1.1    # Change to your network gateway IP address
+  dns:
+  - 8.8.8.8               # Change to the DNS server IP address
+  - 8.8.4.4               # (Optional) Add a second DNS server IP address
+  cloud_properties:
+    name: "150-900-default-routed"  # Change to your vDC network name
 
-    resources:
-      persistent_disk: 16384
-      cloud_properties:
-        ram: 8192
-        disk: 16384
-        cpu: 4
+resources:
+  persistent_disk: 16384
+  cloud_properties:
+    ram: 8192
+    disk: 16384
+    cpu: 4
 
-    cloud:
-      plugin: vcloud
-      properties:
-        agent:
-          ntp: # This example uses a US NTP server. Edit for your region.
-          - us.pool.ntp.org
-        vcds:
-          - url: <your_vcd_endpoint e.g. https://p2v1-vcd.vchs.vmware.com:443 - Do **not** include path on host >
-            user: <username - e.g. mickey@mouse.com >
-            password: <password>
-            entities:
-              organization: <Organization name - e.g. 150-900 >
-              virtual_datacenter: <VDC name - e.g. 150-900 >
-              vapp_catalog: <Organization catalog name>
-              media_catalog: <Organization catalog name>
-              media_storage_profile: <Storage proflie e.g. SSD-Accelerated >
-              vm_metadata_key: <Metadata associated with Cloud Foundry VMs>
-              description: <Text associated with Cloud Foundry VMs>
+cloud:
+  plugin: vcloud
+  properties:
+    agent:
+      ntp: # Change to an NTP server for your region
+      - us.pool.ntp.org
+    vcds:
+      - url: https://p2v1-vcd.vchs.vmware.com:443  # Change to the endpoint of the target vCloud director
+        user: USERNAME      # Change to user name on the target vCloud director
+        password: PASSWORD  # Change to password
+        entities:
+          organization: 150-900        # Change to your organization name
+          virtual_datacenter: 150-900  # Change to your virtual datacenter name
+          vapp_catalog: VAPP-CAT       # Change to name of catalog for vapp templates
+          media_catalog: MEDIA-CAT     # Change to name of catalog for media files
+          media_storage_profile: SSD-Accelerated  # Change to the storage profile to use. Use a * to match all storage profiles
+          vm_metadata_key: KEYNAME # Change to the key name of VM metadata associated with Cloud Foundry
+          description: TEXT # Change to the text associated with the Cloud Foundry VMs
+env:
+  vapp: micro_bosh_vapp
+  # By default, you can ssh into MicroBOSH with username 'vcap' and password 'c1oudc0w'
+  # To change this default password, uncomment the following lines and
+  # change PASSWORD to an SHA hash password generated `using mkpasswd -m sha-512`
+  #
+  #bosh:
+  	#password: PASSWORD
 
-    env:
-      vapp: micro_bosh_vapp
-      # By default you can ssh into the micro bosh using vcap / c1oudc0w
-      # If you want to change this default password uncomment the following lines and
-      # specify the hashed password
-      #
-      #bosh:
-      	#password: # <password SHA hash generated using mkpasswd -m sha-512>
+logging:
+  # Increase the default logging level to trace REST traffic with IaaS providers. Default value is `INFO`
+  level: DEBUG
+  # Default location for the log: <deployment_dir>/bosh_micro_deploy.log
+  # To change this default, uncomment the following line and replace PATHNAME
 
-    logging:
-      # If needed increase the default logging level to trace REST traffic with IaaS providers. Default is info
-      level: DEBUG
-      # Default location is <deployment_dir>/bosh_micro_deploy.log. Change this with:
-      # file: <file pathname>
-
-
-
-
-
+  # file: <file pathname>
+```
