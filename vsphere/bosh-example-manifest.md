@@ -12,7 +12,7 @@ name: bosh
 director_uuid: DIRECTOR-UUID # Replace with the MicroBOSH Director UUID
 release:
   name: bosh
-  version: 80 # Replace with the current BOSH version
+  version: 111 # Replace with the current BOSH version
 
 networks:
 - name: default
