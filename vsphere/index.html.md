@@ -2,7 +2,8 @@
 title: Deploying Cloud Foundry on vSphere
 ---
 
-The following steps and sections provide more detail on installing Cloud Foundry on vSphere.
+The following topics describe how to install MicroBOSH, BOSH, and Cloud Foundry
+on vSphere.
 
 [Hardware Requirement](hardware_spec.html)
 
@@ -14,8 +15,6 @@ The following steps and sections provide more detail on installing Cloud Foundry
 
 [Deploy Cloud Foundry using BOSH](deploy_cf_vsphere.html)
 
-The following pages show example BOSH manifests for deploying BOSH itself and Cloud Foundry.
-
-[BOSH Example Manifest](bosh-example-manifest.html)
+[Example Manifest for Deploying BOSH with MicroBOSH on vSphere](bosh-example-manifest.html)
 
 [Troubleshooting Guide](troubleshooting_guide.html)

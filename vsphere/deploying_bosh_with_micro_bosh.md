@@ -10,7 +10,7 @@ This guide describes the process for deploying BOSH as an application using Micr
 
 ## <a id="target"></a>Target MicroBOSH ##
 
-Once your MicroBOSH instance is deployed, you can target its Director:
+Once your have deployed MicroBOSH, you can target its Director:
 
 <pre class="terminal">
 $ bosh micro status
@@ -43,7 +43,7 @@ Deployment
   not set
 </pre>
 
-<p class="note"><strong>Note</strong>: Create a new user using `bosh create user`. This overrides the default username and password.</p>
+<p class="note"><strong>Note</strong>: Create a new user using <code>bosh create user<code> to override the default user name and password.</p>
 
 ## <a id="download-stemcell"></a>Download a BOSH Stemcell ##
 
@@ -81,16 +81,16 @@ Upload the downloaded stemcell to MicroBOSH.
 $ bosh upload stemcell bosh-stemcell-XXXX-vsphere-esxi-ubuntu.tgz
 </pre>
 
-You can see the uploaded stemcells on your MicroBOSH by using the `bosh stemcells` command:
+Use the `bosh stemcells` command to view the stemcells uploaded to your MicroBOSH:
 
 <pre class="terminal">
 $ bosh stemcells
 
-+-------------------------------+---------+-----------------------------------------+
-| Name                          | Version | CID                                     |
-+-------------------------------+---------+-----------------------------------------+
-| bosh-vsphere-esxi-ubuntu      | 1365    | sc-c43d6d06-53b9-47dc-8830-b4e280684a9a |
-+-------------------------------+---------+-----------------------------------------+
++-------------------------------+---------+-------------------------+
+| Name                          | Version | CID                     |
++-------------------------------+---------+-------------------------+
+| bosh-vsphere-esxi-ubuntu      | 1365    | sc-dc-8830-b4e280684a9a |
++-------------------------------+---------+-------------------------+
 </pre>
 
 ## <a id="upload-release"></a>Upload a BOSH Release ##
@@ -100,9 +100,9 @@ $ wget http://bosh-jenkins-artifacts.s3.amazonaws.com/release/bosh-XXXX.tgz
 $ bosh upload release bosh-XXXX.tgz
 </pre>
 
-## <a id="deploy"></a>Setup a BOSH Deployment Manifest and Deploy ##
+## <a id="deploy"></a>Create a BOSH Deployment Manifest and Deploy ##
 
-Create and setup a BOSH deployment manifest. See the [BOSH Example Manifest](./bosh-example-manifest.html).
+Create and configure a BOSH deployment manifest. For more information, see the [Example Manifest for Deploying BOSH with MicroBOSH on vSphere](./bosh-example-manifest.html).
 
 Deploy BOSH. The following example assumes that your manifest is named `bosh.yml` and exists in the `/home/bosh_user` directory.
 
