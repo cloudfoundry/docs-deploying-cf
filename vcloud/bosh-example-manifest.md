@@ -213,3 +213,4 @@ properties:
       media_storage_profile: SSD-Accelerated  # Change to the storage profile to use. Use a * to match all storage profiles
       vm_metadata_key: KEYNAME # Change to the key name of VM metadata associated with Cloud Foundry
       description: TEXT # Change to the text associated with the Cloud Foundry VMs
+```
