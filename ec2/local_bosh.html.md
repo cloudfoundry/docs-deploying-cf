@@ -22,7 +22,7 @@ completed.
 
 ## <a id="install-ruby"></a>Install Ruby ##
 
-You need either Ruby 1.9.3 or 2.0.0 installed locally on your computer.
+You need either Ruby 1.9.3 or 2.1.2 installed locally on your computer.
 We recommend using either [rvm](https://rvm.io/rvm/install) or [rbenv](https://github.com/sstephenson/rbenv) to manage your Ruby environment.
 
 For instructions on installing Ruby, see these pages:
