@@ -1,56 +1,87 @@
-## Install Ruby via rbenv ##
+---
+title: Installing Ruby using rbenv
+---
 
-This document describes how to install Ruby using rbenv
+This topic describes how to install Ruby using rbenv.
 
-1. Bosh is written in Ruby. Let's install Ruby's dependencies
+<p class="note"><strong>Note</strong>: You can also build Ruby using the ruby-build plugin for rbenv. For more information, see <a href-"https://github.com/sstephenson/ruby-build">https://github.com/sstephenson/ruby-build</a>.</p>
 
-		sudo apt-get install git-core build-essential libsqlite3-dev curl \
-	    libmysqlclient-dev libxml2-dev libxslt-dev libpq-dev zlib1g-dev openssl libssl-dev
+1. Use the following command to install Ruby dependencies:
+  <pre class="terminal">
+    $ sudo apt-get install git-core build-essential libsqlite3-dev curl \
+        libmysqlclient-dev libxml2-dev libxslt-dev libpq-dev zlib1g-dev \
+        openssl libssl-dev
+  </pre>
 
-1. Get the latest version of rbenv
+1. Clone the rbenv repository from GitHub:
+  <pre class="terminal">
+    $ git clone git://github.com/sstephenson/rbenv.git .rbenv
+  </pre>
 
-		cd
-		git clone git://github.com/sstephenson/rbenv.git .rbenv
+1. Add `~/.rbenv/bin` to your `$PATH` to allow you to run the rbenv
+command-line utility:
+  <pre class="terminal">
+    $ echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile
+  </pre>
 
-1. Add `~/.rbenv/bin` to your `$PATH` for access to the `rbenv` command-line utility
+1. Add `rbenv init` to your shell to enable shims and autocompletion:
+  <pre class="terminal">
+    $ echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
+  </pre>
 
-		echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile
+1. Download Ruby 1.9.3 or 2.1.2.
+  * For Ruby 1.9.3, run the following command:
+    <pre class="terminal">
+      $ wget http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p550.tar.gz
+    </pre>
+  * For Ruby 2.1.2, run the following command:
+    <pre class="terminal">
+      $ wget http://ftp.ruby-lang.org/pub/ruby/2.1/ruby-2.1.2.tar.gz
+    </pre>
 
-1. Add rbenv init to your shell to enable shims and autocompletion
+1. Run the commands below to unpack and install Ruby.
+  * For Ruby 1.9.3, run the following command:
+    <pre class="terminal">
+      $ tar xvfz ruby-1.9.3-p550.tar.gz
+      $ cd ruby-1.9.3-p550
+      $ ./configure --prefix=$HOME/.rbenv/versions/1.9.3-p550
+      $ make
+      $ make install
+      </pre>
+  * For Ruby 2.1.2, run the following:
+    <pre class="terminal">
+      $ tar xvfz ruby-2.1.2.tar.gz
+      $ cd ruby-2.1.2
+      $ ./configure --prefix=$HOME/.rbenv/versions/2.1.2
+      $ make
+      $ make install
+    </pre>
 
-		echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
+1. Restart your shell so the path changes take effect:
+  <pre class="terminal">
+    $ source ~/.bash_profile
+  </pre>
 
-1. Download Ruby 1.9.2
+1. Set your default Ruby version.
+  * For Ruby 1.9.3, run the following command:
+    <pre class="terminal">
+      $ rbenv global 1.9.3-p550
+    </pre>
+  * For Ruby 2.1.2, run the following command:
+    <pre class="terminal">
+      $ rbenv global 2.1.2
+    </pre>
 
-_Note: You can also build ruby using ruby-build plugin for rbenv. See https://github.com/sstephenson/ruby-build_
+1. You may need to reinstall a rake gem when using this method. If so, run the following command:
+  <pre class="terminal">
+    $ gem pristine rake
+  </pre>
 
-		wget http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.2-p290.tar.gz
-
-1. Unpack and install Ruby
-
-    		tar xvfz ruby-1.9.2-p290.tar.gz
-    		cd ruby-1.9.2-p290
-    		./configure --prefix=$HOME/.rbenv/versions/1.9.2-p290
-    		make
-    		make install
-
-1. Restart your shell so the path changes take effect
-
-		source ~/.bash_profile
-
-1. Set your default Ruby to be version 1.9.2
-
-		rbenv global 1.9.2-p290
-
-_Note: The rake 0.8.7 gem may need to be reinstalled when using this method_
-
-		gem pristine rake
-
-1. Update rubygems and install bundler.
-
-_Note: After installing gems (`gem install` or `bundle install`) run `rbenv rehash` to add new shims_
-
-		rbenv rehash
-		gem update --system
-		gem install bundler
-		rbenv rehash
+1. Use the following commands to update rubygems, install bundler, and add new
+shims.
+  <pre class="terminal">
+    $ rbenv rehash
+    $ gem update --system
+    $ gem install bundler
+    $ rbenv rehash
+  </pre>
