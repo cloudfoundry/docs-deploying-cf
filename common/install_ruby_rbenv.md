@@ -4,13 +4,12 @@ title: Installing Ruby using rbenv
 
 This topic describes how to install Ruby using rbenv.
 
-<p class="note"><strong>Note</strong>: You can also build Ruby using the ruby-build plugin for rbenv. For more information, see <a href-"https://github.com/sstephenson/ruby-build">https://github.com/sstephenson/ruby-build</a>.</p>
+<p class="note"><strong>Note</strong>: You can also build Ruby using the ruby-build plugin for rbenv. For more information, see <a href="https://github.com/sstephenson/ruby-build">https://github.com/sstephenson/ruby-build</a>.</p>
 
 1. Use the following command to install Ruby dependencies:
   <pre class="terminal">
-    $ sudo apt-get install git-core build-essential libsqlite3-dev curl \
-        libmysqlclient-dev libxml2-dev libxslt-dev libpq-dev zlib1g-dev \
-        openssl libssl-dev
+    $ sudo apt-get install git-core build-essential libsqlite3-dev curl libmysqlclient-dev \
+libxml2-dev libxslt-dev libpq-dev zlib1g-dev openssl libssl-dev
   </pre>
 
 1. Clone the rbenv repository from GitHub:
@@ -40,7 +39,7 @@ command-line utility:
     </pre>
 
 1. Run the commands below to unpack and install Ruby.
-  * For Ruby 1.9.3, run the following command:
+  * For Ruby 1.9.3, run the following commands:
     <pre class="terminal">
       $ tar xvfz ruby-1.9.3-p550.tar.gz
       $ cd ruby-1.9.3-p550
@@ -48,7 +47,7 @@ command-line utility:
       $ make
       $ make install
       </pre>
-  * For Ruby 2.1.2, run the following:
+  * For Ruby 2.1.2, run the following commands:
     <pre class="terminal">
       $ tar xvfz ruby-2.1.2.tar.gz
       $ cd ruby-2.1.2
@@ -57,7 +56,7 @@ command-line utility:
       $ make install
     </pre>
 
-1. Restart your shell so the path changes take effect:
+1. Restart your shell:
   <pre class="terminal">
     $ source ~/.bash_profile
   </pre>
@@ -78,7 +77,7 @@ command-line utility:
   </pre>
 
 1. Use the following commands to update rubygems, install bundler, and add new
-shims.
+shims:
   <pre class="terminal">
     $ rbenv rehash
     $ gem update --system

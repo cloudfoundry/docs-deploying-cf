@@ -16,18 +16,18 @@ This topic describes how to install Ruby using rvm.
     $ curl -L https://get.rvm.io | bash -s
   </pre>
 
-1. Reload your `.bash_profile` in the current terminal:
+1. Restart your shell:
   <pre class="terminal">
     $ source ~/.bash_profile
   </pre>
-  <p class="note"><strong>Note</strong>: Follow the steps in [Integrating RVM with gnome-terminal](https://rvm.io/integration/gnome-terminal/) to make sure bash is run as a login shell and rvm is loaded correctly.</p>
+  <p class="note"><strong>Note</strong>: Follow the steps in <a href="https://rvm.io/integration/gnome-terminal/">Integrating RVM with gnome-terminal</a> to make sure bash runs as a login shell and rvm loads correctly.</p>
 
 1. Check the required dependencies for installing Ruby:
   <pre class="terminal">
     $ rvm requirements
   </pre>
 
-1. Install the required pre-reqs for installing Ruby:
+1. Install the required pre-requisites for installing Ruby:
   <pre class="terminal">
     $ sudo /usr/bin/apt-get install build-essential bison openssl libreadline6 libreadline6-dev \
     curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev \
