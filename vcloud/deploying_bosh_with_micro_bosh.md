@@ -1,5 +1,5 @@
 ---
-title: Deploying BOSH with MicroBOSH
+title: Deploying BOSH using MicroBOSH on vCloud
 ---
 
 This guide describes the process for deploying BOSH as an application using MicroBOSH.

@@ -33,7 +33,7 @@ If you need production level resilience and/or large scale, install **BOSH** usi
 Note that this is not illustrated in the above diagram.
 Most installations of Cloud Foundry can be done without this step by using MicroBOSH installed in step 3. Since it adds complexity, we suggest avoiding this step if possible.
 
-4. [Deploy Cloud Foundry](deploy_cf.html):
+4. [Deploy Cloud Foundry on vCloud using MicroBOSH or BOSH](deploy_cf.html):
 Use either MicroBOSH or BOSH to deploy Cloud Foundry.
 
 Consult the [Troubleshooting](troubleshooting.html) page for assistance.

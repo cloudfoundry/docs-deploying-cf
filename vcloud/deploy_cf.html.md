@@ -1,34 +1,51 @@
 ---
-title: Deploying Cloud Foundry with MicroBOSH or BOSH
+title: Deploying Cloud Foundry on vCloud using MicroBOSH or BOSH
 ---
 
-This topic describes the process for deploying Cloud Foundry to a vCloud environment using MicroBOSH or BOSH. 
+This topic describes the process for deploying Cloud Foundry to a vCloud environment using MicroBOSH or BOSH.
 
-All of the commands below should be run from the jump box, in the `~/deployments` directory we created earlier.
+<p class="note"><strong>Note</strong>: Run all the commands in this topic from the <code>~/deployments</code> directory of the jump box that you created in the <a href="deploying_micro_bosh.html"> Deploying MicroBOSH on vCloud</a> topic.</p>
 
-## <a id="prerequisites"></a>Prerequisites ##
+##<a id="prerequisites"></a>Prerequisites ##
 
-BOSH should be deployed. See the steps in the [previous](deploying_micro_bosh.html) [sections](deploying_bosh_with_micro_bosh.html).
+You must have deployed MicroBOSH or BOSH to your vCloud environment. For instructions on deploying MicroBOSH or BOSH to a vCloud environment, see the following topics:
 
-## <a id="target"></a>Target New BOSH Director ##
+  * [Deploying MicroBOSH on vCloud](deploying_micro_bosh.html)
+  * [Deploying BOSH using MicroBOSH on vCloud](deploying_bosh_with_micro_bosh.html)
 
-Target the Director of the deployed BOSH using `bosh target` and the IP address of the Director. Login with admin/admin or the userid and password you set after installation.
+##<a id="target"></a>Target the BOSH Director ##
 
-<pre class='terminal'>
+Use the `bosh target` command with the IP address of the BOSH Director to
+connect to the BOSH Director.
+Log in with the default user name and password, `admin` and `admin`, or use the
+user name and password that you set when you installed BOSH.
+
+<pre class="terminal">
 $ bosh target https://192.168.109.81:25555
-Target already set to `bosh_micro_vchs'
+Target set to `bosh_vcloud'
+Your username: admin
+Enter password: *****
+Logged in as 'admin'
+</pre>
+
+##<a id="uuid"></a>Record the BOSH Director UUID ##
+
+Use the `bosh status` command to view information about your BOSH deployment.
+Record the UUID of the BOSH Director. You use the UUID when [Customizing the Cloud Foundry Deployment Manifest Stub for vCloud](../cf-stub-vcloud.html).
+
+<pre class="terminal">
 $ bosh status
 Config
-             /home/killian/.bosh_config
+             /home/me/.bosh_config
 
 Director
-  Name       bosh_micro_vchs
+  Name       bosh_vcloud
   URL        https://192.168.109.81:25555
-  Version    1.0000.0 (release:125d9104 bosh:125d9104)
+  Version    1.2710.0 (00000000)
   User       admin
-  UUID       566c47b3-ca85-47e2-95f6-32d095747acf
+  UUID       abcdef12-3456-7890-abcd-ef1234567890
   CPI        vcloud
-  dns        enabled (domain_name: microbosh)
+  dns        enabled (domain_name: bosh)
   compiled_package_cache disabled
   snapshots  disabled
 
@@ -36,208 +53,153 @@ Deployment
   not set
 </pre>
 
-You will need the UUID of the BOSH Director in your Cloud Foundry deployment file later. It is provided in the above list of information also.
+##<a id="stemcell"></a>Upload a Stemcell ##
 
-## <a id="upload-stemcell"></a>Upload a Stemcell ##
+1. Use the `bosh public stemcells` command to view a list of available public
+stemcells.
 
-The Director needs a stemcell in order to deploy Cloud Foundry. If you followed the installation documentation, you should already have vcloud stemcell downloaded previously when you deployed Micro BOSH or BOSH. Please upload the same stemcell.
+    <pre class="terminal">
+    $ bosh public stemcells
+    +-----------------------------------------------------------+
+    | Name                                                      |
+    +-----------------------------------------------------------+
+	| bosh-stemcell-2710-vcloud-esxi-ubuntu-lucid-go_agent.tgz  |
+	| bosh-stemcell-2652-aws-xen-centos.tgz                     |
+	| bosh-stemcell-2751-aws-xen-centos-go_agent.tgz            |
+	| bosh-stemcell-2427-vsphere-esxi-ubuntu-go_agent.tgz       |
+	| bosh-stemcell-2710-vsphere-esxi-ubuntu-lucid-go_agent.tgz |
 
-<pre class="terminal">
-$ bosh upload stemcell ~/stemcells/bosh-stemcell-xxxx-vcloud-esxi-ubuntu.tgz
-Verifying stemcell...
-File exists and readable                                     OK
-Using cached manifest...
-Stemcell properties                                          OK
+    To download use `bosh download public stemcell &lt;stemcell_name&gt;'. For full url use --full.
+    </pre>
 
-Stemcell info
--------------
-Name:    bosh-vcloud-esxi-ubuntu
-Version: 1868
+1. Use the `bosh download public stemcell` command to download the latest
+stemcell for `vcloud` with `ubuntu`.
 
-Checking if stemcell already exists...
-No
+    <pre class="terminal">
+    $ bosh download public stemcell bosh-stemcell-2710-vcloud-esxi-ubuntu-lucid-go_agent.tgz
+    </pre>
 
-Uploading stemcell...
-bosh-vcloud-esxi-ubuntu: 100% |ooooooooooooooooooooooooooooooooooooooo| 277.1MB  78.8MB/s 		Time: 00:00:03
+1. Use the `bosh upload stemcell` command to upload the stemcell to the BOSH
+Director.
 
-Director task 1
+    <pre class="terminal">
+    $ bosh upload stemcell ./bosh-stemcell-2710-vcloud-esxi-ubuntu-lucid-go_agent.tgz
+    </pre>
 
-Update stemcell
-extracting stemcell archive (00:00:06)
-verifying stemcell manifest (00:00:00)
-checking if this stemcell already exists (00:00:00)
-uploading stemcell bosh-vcloud-esxi-ubuntu/1868 to the cloud (00:01:08)
-save stemcell: bosh-vcloud-esxi-ubuntu/1868 (sc-a85ab3dc-8d3d-4228-83d0-5be2436a1886) (00:00:00)
-Done                    5/5 00:01:14
-Task 1 done
-Started		2014-01-26 10:14:26 UTC
-Finished	2012-01-26 10:15:40 UTC
-Duration	00:01:14
+##<a id="create-stub"></a>Create a Deployment Manifest Stub ##
 
-Stemcell uploaded and created
-</pre>
+Create a manifest stub file named `cf-stub.yml`. [Customize the manifest stub](../cf-stub-vcloud.html) for your environment.
 
-After uploading you should be able to see the stem cell when you run `bosh stemcells`
+##<a id="deploy-cf"></a>Deploy Cloud Foundry##
 
-<pre class="terminal">
-$ bosh stemcells
+1. Clone the `cf-release` GitHub repository.
 
-+-------------------------+---------+-------------------------------------------------------------+
-| Name                    | Version | CID                                                         |
-+-------------------------+---------+-------------------------------------------------------------+
-| bosh-vcloud-esxi-ubuntu | 0000    | urn:vcloud:catalogitem:dd470e53-dbe4-4ad8-9257-4ac76bce273f |
-+-------------------------+---------+-------------------------------------------------------------+
+    <pre class="terminal">
+    $ git clone https://github.com/cloudfoundry/cf-release.git
+    </pre>
 
-(*) Currently in-use
+1. Use the `update` helper script to update the `cf-release` submodules.
 
-Stemcells total: 1
-</pre>
+    <pre class="terminal">
+    $ cd cf-release
+    $ ./update
+    </pre>
 
+1. Install [Spiff](https://github.com/cloudfoundry-incubator/spiff).
 
-## <a id="get-release"></a>Get a Cloud Release ##
+1. Run the following Spiff command from the `cf-release` directory to create a deployment manifest named `cf-deployment.yml`:
 
-For this exercise, we'll use a release from the public repository. Clone this repo in the `deployments` directory.
+    `./generate_deployment_manifest INFRASTRUCTURE MANIFEST-STUB > cf-deployment.yml`
 
-  <table style="width: 64%;"><tr><td>
-  **WARNING**: This upload process works with the cf-147 release. The Cloud Foundry team have not verified other releases.
-  </td></tr></table>
+    Replace INFRASTRUCTURE with `vsphere` and replace MANIFEST-STUB with the name and location of your `cf-stub.yml file`. For example:
 
-<pre class="terminal">
-$ git clone https://github.com/cloudfoundry/cf-release.git
-$ cd cf-release
-$ bosh upload release releases/cf-xxx.yml
-</pre>
+    <pre class="terminal">
+	$ ./generate_deployment_manifest aws cf-stub.yml > cf-deployment.yml
+    </pre>
 
-You'll see a flurry of output as BOSH configures and uploads release components. Here's a shortened version:
+1. Use `bosh target` to target the BOSH Director.
 
-<pre class="terminal">
-$ bosh upload release releases/cf-147.yml
+    <pre class="terminal">
+    $ bosh target
+	Current target is https://192.168.109.81:25555
+    </pre>
 
-Copying packages
-----------------
-rootfs_lucid64 (2)            FOUND LOCAL
-saml_login (14)               FOUND LOCAL
-haproxy (1)                   FOUND LOCAL
-loggregator_trafficcontroller (3) FOUND LOCAL
+1. Set your deployment to the generated manifest.
 
-[… Lots of output …]
+    <pre class="terminal">
+    $ bosh deployment cf-deployment.yml
+    </pre>
 
+1. Use `bosh create release` to create a Cloud Foundry release.
+This command prompts you for a development release name.
 
-Release has been created
-  cf/147 (00:00:00)
-Done                    1/1 00:00:00
+    <pre class="terminal">
+    $ bosh create release
+    </pre>
 
-Task 11 done
+1. Use `bosh upload release` to upload the generated release to the BOSH
+Director.
 
-Started		2014-03-22 00:40:06 UTC
-Finished	2014-03-22 00:40:38 UTC
-Duration	00:00:32
+    <pre class="terminal">
+    $ bosh upload release
+    </pre>
 
-Release uploaded
-</pre>
+1. Deploy the uploaded Cloud Foundry release.
 
-After finishing you should be able to see the release when you run `bosh releases`
+    <pre class="terminal">
+    $ bosh deploy
+    </pre>
 
-<pre class="terminal">
-$ bosh releases
+    <p class="note"><strong>Note</strong>: <code>bosh deploy</code> can take 2-3 hours to complete.</p>
 
-+------+----------+-------------+
-| Name | Versions | Commit Hash |
-+------+----------+-------------+
-| cf   | 147      | 07e0aa91+   |
-+------+----------+-------------+
-(+) Uncommitted changes
+1. Use `curl` to test the API endpoint of your Cloud Foundry installation.
 
-Releases total: 1
-</pre>
+    <pre class="terminal">
+    $ curl api.subdomain.domain/info
+    </pre>
 
+    If `curl` succeeds, it should return the JSON-formatted information.
+	If `curl` does not succeeds, check your networking and make sure your domain
+	has an NS record for your subdomain.
 
-## <a id="create-manifest"></a>Create a Cloud Foundry deployment manifest file ##
+1. You should be able to target your Cloud Foundry installation with the [cf Command Line Interface (CLI)](/devguide/installcf/index.html) and log in as an
+administrator.
 
-Create a manifest file in the `~/deployments` directory on the jump box, with the name `cf.yml.erb` indicating that it's a YAML file written using erb, the ruby templating engine. It allows us to fill in a set of properties at the beginning of the file and then run `erb cf.yml.erb > cf.yml` to generate a suitable manifest file in `cf.yml`.
+    The user name, `admin` and the password, `fakepassword`, are specified in
+    the deployment manifest under **uaa:scim:users**.
 
-Once you have prepared a manifest file, run `erb` to generate the final manifest file `cf.yml`. Then use the BOSH CLI to set the deployment manifest file:
+    For more information about managing organizations, spaces, users, and
+    applications, refer to the [cf](/devguide/installcf/index.html) topic.
 
-<pre class="terminal">
-$ erb ~/deployments/cf.yml.erb > ~/deployments/cf.yml
-$ bosh deployment ~/deployments/cf.yml
-Deployment set to '/home/user/deployments/cf.yml'
-</pre>
+##<a id="update-cf"></a>Update Cloud Foundry##
 
-## <a id="deploy"></a>Deploy Cloud Foundry ##
+* If you make change to your manifest, run `bosh deploy` to update your Cloud
+Foundry deployment with these changes.
 
-Now deploy Cloud Foundry via using the bosh command`bosh deploy`. This example shows only part of the expected output:
-
-<pre class="terminal">
-$ bosh deploy
-    Getting deployment properties from director...
-	Unable to get properties list from director, trying without it...
-	Compiling deployment manifest...
-	Cannot get current deployment information from director, possibly a new deployment
-    Please review all changes carefully
-      Deploying <filename>.yml' to dev148'(type 'yes' to continue): yes
-    Director task 31
-    Preparing deployment
-        binding deployment (00:00:00)
-        binding releases (00:00:00)
-        binding existing deployment (00:00:00)
-        binding resource pools (00:00:00)
-    binding stemcells (00:00:00)
-    binding templates (00:00:00)
-    binding unallocated VMs (00:00:01)
-    binding instance networks (00:00:00)
-    Done                    8/8 00:00:01        Preparing package compilation
-    finding packages to compile (00:00:00)
-    Done                    1/1 00:00:00
-</pre>
-
-If you run into issues, the Troubleshooting section may be of help.
+* If you make changes to the `cf-release` directory, run `bosh create release && bosh upload release && bosh deploy` to update your Cloud Foundry deployment with
+these changes.
 
 ## <a id="verify"></a>Verify the Deployment ##
 
-Execute the `bosh vms` command to see all the vas deployed.
-
-Output of this command will similar to the listing below. Make sure the "State" of all the jobs is "running".
+1. Run `bosh vms`. This command provides an overview of the virtual machines that BOSH manages as part of the current deployment. The state of every VM should show as **running**.
 
 <pre class="terminal">
-$ bosh vms
-Deployment `cloudfoundry'
+	$ bosh vms
 
-Director task 30
-
-
-Task 30 done
-
-+-----------------------------+---------+------------------+---------------+
-| Job/index                   | State   | Resource Pool    | IPs           |
-+-----------------------------+---------+------------------+---------------+
-| nfs_server/0                | running | nfs_server       | 10.146.21.174 |
-| ccdb/0                      | running | ccdb             | 10.146.21.175 |
-| cloud_controller/0          | running | cloud_controller | 10.146.21.176 |
-| collector/0                 | running | collector        | 10.146.21.178 |
-| health_manager/0            | running | health_manager   | 10.146.21.173 |
-| nats/0                      | running | nats             | 10.146.21.172 |
-| router/0                    | running | router           | 10.146.21.171 |
-| syslog/0                    | running | syslog           | 10.146.21.177 |
-| uaa/0                       | running | uaa              | 10.146.21.180 |
-| uaadb/0                     | running | uaadb            | 10.146.21.179 |
-| dea/0                       | running | dea              | 10.146.21.181 |
-| saml_login/0                | running | saml_login       | 10.146.21.181 |
-+-----------------------------+---------+------------------+---------------+
+	+-----------------------------+---------+------------------+---------------+
+	| Job/index                   | State   | Resource Pool    | IPs           |
+	+-----------------------------+---------+------------------+---------------+
+	| nfs_server/0                | running | nfs_server       | 10.146.21.174 |
+	| ccdb/0                      | running | ccdb             | 10.146.21.175 |
+	| cloud_controller/0          | running | cloud_controller | 10.146.21.176 |
+	| collector/0                 | running | collector        | 10.146.21.178 |
+	| health_manager/0            | running | health_manager   | 10.146.21.173 |
+	| nats/0                      | running | nats             | 10.146.21.172 |
+	| router/0                    | running | router           | 10.146.21.171 |
+	| syslog/0                    | running | syslog           | 10.146.21.177 |
+	| uaa/0                       | running | uaa              | 10.146.21.180 |
+	| uaadb/0                     | running | uaadb            | 10.146.21.179 |
+	| dea/0                       | running | dea              | 10.146.21.181 |
+	| saml_login/0                | running | saml_login       | 10.146.21.181 |
+	+-----------------------------+---------+------------------+---------------+
 </pre>
-
-
-## <a id="login"></a>Log In ##
-
-From your laptop try to target and log into your Cloud Foundry instance. You can now follow the instructions in the [cf](/devguide/index.html#cf) section of the Developer Guide to [install the cf](/devguide/installcf/install-go-cli.html) command-line tool and push an application.
-
-To log in, the manifest file includes a pre-defined account, user id `admin` and password `cdd0549963e8749b4a04` . You can modify or add to the list of pre-provisioned accounts in the generated manifest. In the jobs section look for uaa -> properties -> uaa ->
-
-## <a id="fin"></a>Finishing up ##
-
-If you run into issues the Troubleshooting section may be of some help.
-
-We hope these instructions have been helpful. If you find errors, want to make updates or have suggestions for further enhancement we would greatly appreciate it. Please follow the standard processes on github (i.e. send pull requests and file issues), along with the bosh-users email list. You can learn more at [cloudfoundry.org](http://www.cloudfoundry.org)
-
-Good luck with your Cloud Foundry deployments!
-

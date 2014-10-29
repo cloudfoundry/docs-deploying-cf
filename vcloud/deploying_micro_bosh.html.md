@@ -1,5 +1,5 @@
 ---
-title: Deploying MicroBOSH
+title: Deploying MicroBOSH on vCloud
 ---
 
 BOSH is a system used to deploy and manage a Cloud Foundry installation. Like Cloud Foundry, BOSH itself is a distributed system. MicroBOSH is a single VM that contains all BOSH components. For most installation purposes, MicroBOSH can be used to install Cloud Foundry.
