@@ -43,7 +43,7 @@ Deployment
   not set
 </pre>
 
-<p class="note"><strong>Note</strong>: Create a new user using <code>bosh create user<code> to override the default user name and password.</p>
+<p class="note"><strong>Note</strong>: Create a new user using <code>bosh create user</code> to override the default user name and password.</p>
 
 ## <a id="download-stemcell"></a>Download a BOSH Stemcell ##
 

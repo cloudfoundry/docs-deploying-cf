@@ -1,5 +1,5 @@
 ---
-title: Deploying CF on AWS
+title: Deploying Cloud Foundry on AWS
 ---
 
 These steps leverage the additional security group and ports opened in the previous step to deploy Cloud Foundry from the BOSH server:
@@ -51,7 +51,7 @@ To confirm that the release was successful:
 
 ### Obtain and Upload Stemcell
 
-These are the same instructions that we used to upload the latest stemcell of BOSH onto the Micro BOSH server:
+These are the same instructions that we used to upload the latest stemcell of BOSH onto the MicroBOSH server:
 
 <pre class="terminal">
   bosh upload stemcell https://s3.amazonaws.com/bosh-jenkins-artifacts/bosh-stemcell/aws/bosh-stemcell-1274-aws-xen-ubuntu.tgz
