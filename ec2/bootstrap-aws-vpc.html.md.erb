@@ -11,7 +11,7 @@ to a variety of platforms, including Amazon Web Services (AWS).
 The following document guides you through using BOSH and the [cf Command Line Interface (CLI)](../../devguide/installcf/index.html) to deploy
 Cloud Foundry to Amazon Web Services.
 
-## <a id='domain-prep'></a> Prepare a Domain ##
+## <a id="domain-prep"></a> Prepare a Domain ##
 
 1. Select a DNS domain name for your Cloud Foundry instance.
 For example, if you select the domain name *cloud.example.com*, Cloud Foundry deploys each of your applications as *APP-NAME.cloud.example.com*.
@@ -25,7 +25,7 @@ in the delegation set should become an NS record in the DNS server for
 
 <%= image_tag("hostedzone.png") %>
 
-## <a id='deployment-env-prep'></a> Prepare the Deployment Environment ##
+## <a id="deployment-env-prep"></a> Prepare the Deployment Environment ##
 
 Ruby 1.9.3 and git (1.8 or later) are prerequisites for the following
 steps.
@@ -107,7 +107,7 @@ This command generates two receipt files, `aws_rds_receipt.yml` and
 
     <p class="note"><strong>Note</strong>: RDS database creation may take 20 or more minutes.</p>
 
-## <a id='deploy-microbosh'></a> Deploy MicroBOSH ##
+## <a id="deploy-microbosh"></a> Deploy MicroBOSH ##
 
 1. Deploy MicroBOSH from the workspace directory, using the `bosh aws bootstrap micro` command:
 
@@ -151,7 +151,7 @@ installation.
       Manifest   ~/cf/deployments/micro/micro_bosh.yml
     </pre>
 
-## <a id='upload-stemcell'></a>Upload a Stemcell##
+## <a id="upload-stemcell"></a>Upload a Stemcell##
 
 1. Use the `bosh public stemcells` command to view a list of available public
 stemcells.
@@ -185,11 +185,11 @@ Director:
     $ bosh upload stemcell ./bosh-stemcell-1657-aws-xen-ubuntu.tgz
     </pre>
 
-## <a id='create-a-stub'></a>Create a Deployment Manifest Stub ##
+## <a id="create-a-stub"></a>Create a Deployment Manifest Stub ##
 
 Create a manifest stub file named `cf-stub.yml`. [Customize the manifest stub](../cf-stub-aws.html) for your environment.
 
-## <a id='deploy-cloudfoundry'></a>Deploy Cloud Foundry##
+## <a id="deploy-cloudfoundry"></a>Deploy Cloud Foundry##
 
 1. Clone the `cf-release` GitHub repository.
 
@@ -265,12 +265,12 @@ Director:
 administrator.
 
     The user name, `admin` and the password, `fakepassword`, are specified in
-    the deployment manifest under **uaa:scim:users.
+    the deployment manifest under **uaa:scim:users**.
 
     For more information about managing organizations, spaces, users, and
     applications, refer to the [cf](/devguide/installcf/index.html) topic.
 
-## <a id='updates'></a>Update Cloud Foundry##
+## <a id="updates"></a>Update Cloud Foundry##
 
 * If you make change to your manifest, run `bosh deploy` to update your Cloud
 Foundry deployment with these changes.
@@ -278,14 +278,14 @@ Foundry deployment with these changes.
 * If you make changes to the `cf-release` directory, run `bosh create release && bosh upload release && bosh deploy` to update your Cloud Foundry deployment with
 these changes.
 
-## <a id='deploy-cloudfoundry-services'></a>Deploy Cloud Foundry Services##
+## <a id="deploy-cloudfoundry-services"></a>Deploy Cloud Foundry Services##
 
 If you want your Cloud Foundry to be able to provision services, you must deploy
 a services release. Refer to the [services documentation](/services/).
 
 You also might be interested in the [community-managed services release](https://github.com/cloudfoundry/cf-services-contrib-release).
 
-## <a id='destroy-environment'></a>Destroying the AWS Environment ##
+## <a id="destroy-environment"></a>Destroying the AWS Environment ##
 
 1. Use `bosh aws destroy` to destroy your AWS environment.
 
