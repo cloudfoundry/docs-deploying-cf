@@ -4,7 +4,7 @@ title: Installing Cloud Foundry on OpenStack
 
 This topic describes how to install Cloud Foundry on OpenStack.
 
-<p class="note"><strong>Note</strong>: These instructions are for the v170 release of Cloud Foundry. For newer versions of Cloud Foundry, please <a href="https://github.com/cloudfoundry/docs-deploying-cf/issues/new">let us know</a> if this documentation continues to work or needs to be updated.</p>
+<p class="note"><strong>Note</strong>: These instructions are for the v183 release of Cloud Foundry. For newer versions of Cloud Foundry, please <a href="https://github.com/cloudfoundry/docs-deploying-cf/issues/new">let us know</a> if this documentation continues to work or needs to be updated.</p>
 
 ## Goal ##
 

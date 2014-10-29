@@ -1,8 +1,8 @@
 ---
-title: Example Manifest for Deploying BOSH with MicroBOSH on vCloud
+title: Example Manifest for Deploying BOSH using MicroBOSH on vCloud
 ---
 
-This topic contains a manifest for deploying BOSH with MicroBOSH on vCloud Air
+This topic contains a manifest for deploying BOSH using MicroBOSH on vCloud Air
 or vCloud Director.
 Save a copy of this template as a YAML file in your deployment directory.
 Customize the contents of this file for your environment, then use the

@@ -1,5 +1,5 @@
 ---
-title: MicroBOSH Deployment Manifest for vCloud
+title: Example Manifest for Deploying MicroBOSH on vCloud
 ---
 
 This topic contains a MicroBOSH deployment manifest template.
