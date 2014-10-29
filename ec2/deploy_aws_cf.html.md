@@ -2,17 +2,9 @@
 title: Deploying Cloud Foundry on AWS
 ---
 
-This topic leverages the security group and ports opened in the [Configuring AWS for Cloud Foundry](./configure_aws_cf.html) the previous step to deploy Cloud Foundry from the BOSH server:
+This topic leverages the security group and ports opened in the [Configuring AWS for Cloud Foundry](./configure_aws_cf.html) topic to deploy Cloud Foundry from the BOSH server:
 
-* Obtain and Upload Release
-
-* Upload a Stemcell
-
-* Modify a Deployment Manifest
-
-* Deploy
-
-## Obtain and Upload Release
+##<a id="release"></a>Obtain and Upload Release ##
 
 Create a folder on the local computer to store the CF Release:
 
@@ -47,7 +39,7 @@ To confirm that the release was successful:
   bosh releases
 </pre>
 
-### Obtain and Upload Stemcell
+##<a id="stemcell"></a>Obtain and Upload Stemcell ##
 
 These are the same instructions that we used to upload the latest stemcell of BOSH onto the MicroBOSH server:
 
@@ -62,7 +54,7 @@ After the upload is complete, view the list of stemcells by calling:
   bosh stemcells
 </pre>
 
-### Generate a Deployment Manifest
+##<a id="manifest"></a>Generate a Deployment Manifest ##
 
 You need a deployment manifest to deploy Cloud Foundry.
 We recommend using [Spiff](https://github.com/cloudfoundry-incubator/spiff) to
@@ -74,7 +66,7 @@ templates.
 
 Follow the instructions in the [Generating a Cloud Foundry Deployment Manifest Using Spiff](../cf-manifest-spiff.html) topic.
 
-### Deploy Cloud Foundry on AWS
+##<a id="deploy"></a>Deploy Cloud Foundry on AWS ##
 
 Everything is now in place to use the deployment manifest you have
 created and deploy Cloud Foundry from the BOSH server to AWS. Let’s now do this.
@@ -96,5 +88,3 @@ Deploy the BOSH:
 If you receive the following error, try running "bosh deploy" again:
 
 **Error 400007: `api/0' is not running after update**
-
-###Go on to [Configuring AWS for CF](./configure_aws_cf.html) or [Return to Index](./index.html)
