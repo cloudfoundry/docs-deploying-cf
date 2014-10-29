@@ -16,7 +16,7 @@ Here we create both and name them appropriately. (In our example we named the su
 
 BOSH needs a deployment manifest for MicroBOSH.
 It must be named `micro_bosh.yml`.
-Create one in your new directory following the example [MicroBOSH example manifest](micro-bosh-example-manifest.html)
+Create one in your new directory following the [Example Manifest for Deploying MicroBOSH on vCloud](micro-bosh-example-manifest.html).
 
 You will need to edit this file putting in various parameters like IP addresses, storage profile and network names, login credentials, the API URL and more. The example manifest above provides comments and examples to help this process.
 

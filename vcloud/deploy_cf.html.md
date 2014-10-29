@@ -1,8 +1,8 @@
 ---
-title: Deploying Cloud Foundry with Micro BOSH or BOSH
+title: Deploying Cloud Foundry with MicroBOSH or BOSH
 ---
 
-This guide describes the process for deploying Cloud Foundry to a vCloud environment using Micro BOSH or distributed BOSH. To keep it simple, the rest of this document will simply call it BOSH.
+This topic describes the process for deploying Cloud Foundry to a vCloud environment using MicroBOSH or BOSH. 
 
 All of the commands below should be run from the jump box, in the `~/deployments` directory we created earlier.
 
