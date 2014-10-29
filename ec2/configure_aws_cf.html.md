@@ -1,5 +1,5 @@
 ---
-title: Configuring AWS for CF
+title: Configuring AWS for Cloud Foundry
 ---
 
 ### Additional Elastic IPs
@@ -24,16 +24,14 @@ Ensure that "N. Virginia" is selected as the AWS Region, then click **Security G
 
 ![image alt text](ec2/image_30.png)
 
-On the pop-up dialog, assign "cf" to the Name, “cf Security Group” to the Description, and leave “No VPC” selected in the dropdown menu.
+On the pop-up dialog, assign "cf" to the Name, "cf Security Group" to the Description, and leave "No VPC" selected in the dropdown menu.
  Click **Yes, Create** to confirm.
 
 ![image alt text](ec2/image_31.png)
 
 ### Open Ports for the new Security Group
 
-The original documentation was borrowed from [here](https://github.com/cloudfoundry-community/bosh-cloudfoundry/blob/master/tutorials/build-your-own-heroku-with-cloudfoundry.md). See below for a summary.
-
-Visit the [AWS Console for Security Groups](https://www.google.com/url?q=https%3A%2F%2Fconsole.aws.amazon.com%2Fec2%2Fhome%3Fregion%3Dus-east-1%23s%3DSecurityGroups&sa=D&sntz=1&usg=AFQjCNGEowcsPVCqMAhuqS27xnaVuvKiIg) and click **Create Security Group**.
+Open the [AWS Console for Security Groups](https://www.google.com/url?q=https%3A%2F%2Fconsole.aws.amazon.com%2Fec2%2Fhome%3Fregion%3Dus-east-1%23s%3DSecurityGroups&sa=D&sntz=1&usg=AFQjCNGEowcsPVCqMAhuqS27xnaVuvKiIg) and click **Create Security Group**.
 
 Click **Create Security Group** and create the group with the name "cf".
 
@@ -53,16 +51,15 @@ Add UDP ports:
 
 * 1-65535 (for security group VMs only)
 
-Select the **Inbound** tab, enter “22” into the “Port range:” box and click **Add Rule**.  Repeat this for ports 80 and 443.  To add TCP 1 -
-65535, enter “1-66535” into the “Port range:” box, enter the name
-of the cf Security Group into the “Source:” box, and click **Add Rule**.
- To add UDP 1 - 65535, select “Custom UDP rule” from the “Create a new
-rule:” dropdown box, enter “1-66535” into the “Port range:” box,
-enter the name of the cf Security Group into the “Source:” box, and
+Select the **Inbound** tab, enter "22" into the "Port range:" box and click **Add Rule**.  Repeat this for ports 80 and 443.  To add TCP 1 -
+65535, enter "1-66535" into the "Port range:" box, enter the name
+of the cf Security Group into the "Source:" box, and click **Add Rule**.
+ To add UDP 1 - 65535, select "Custom UDP rule" from the "Create a new
+rule:" dropdown box, enter "1-66535" into the "Port range:" box,
+enter the name of the cf Security Group into the "Source:" box, and
 click **Add Rule**. When you are done, click **Apply Rule Changes**.
  The screen should look similar to the image below:
 
 ![image alt text](ec2/image_32.png)
 
-
-###Go on to [Deployment of CF on AWS](./deploy_aws_cf.html) or [Return to Index](./index.html)
+###Go on to [Deploying Cloud Foundry on AWS](./deploy_aws_cf.html) or [Return to Index](./index.html)

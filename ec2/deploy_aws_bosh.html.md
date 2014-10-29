@@ -1,10 +1,10 @@
 ---
-title: Deployment of BOSH on AWS
+title: Deploying BOSH on AWS
 ---
 
-This step leverages the new Elastic IP created in [Configuring AWS for BOSH](./configure_aws_bosh.html), as well as the Security Group and Key Pair file that we created in [Configuring AWS for Micro BOSH](./configure_aws_micro_bosh.html), to deploy a BOSH server on AWS in four steps:
+This step leverages the new Elastic IP created in [Configuring AWS for BOSH](./configure_aws_bosh.html), as well as the Security Group and Key Pair file that we created in [Configuring AWS for MicroBOSH](./configure_aws_micro_bosh.html), to deploy a BOSH server on AWS in four steps:
 
-**Note:** CF may be deployed straight from Micro BOSH, but this is typically not considered a reliable method and so it is not discussed here.
+**Note:** CF may be deployed straight from MicroBOSH, but this is typically not considered a reliable method and so it is not discussed here.
 
 
 1. Create Directory Structure
@@ -14,8 +14,6 @@ This step leverages the new Elastic IP created in [Configuring AWS for BOSH](./c
 3. Locate the correct BOSH Stemcell
 
 4. Deploy Manifest
-
-The original source of this information was the [cloud foundry blog post](http://blog.cloudfoundry.com/2012/09/06/deploying-to-aws-using-cloud-foundry-bosh/).
 
 ### Obtain and Upload Release
 
@@ -29,7 +27,7 @@ bosh upload release https://s3.amazonaws.com/bosh-jenkins-artifacts/release/bosh
 ### Create Directory Structure
 
 Create a standard place to store the Deployment Manifest on your
-local computer. You should still be targeting the Micro BOSH server:
+local computer. You should still be targeting the MicroBOSH server:
 
 <pre class="terminal">
   mkdir -p ~/bosh-workspace/deployments/bosh
@@ -42,13 +40,13 @@ local computer. You should still be targeting the Micro BOSH server:
 
 It is important to deploy the correct AWS image that is compatible with the version of BOSH you will be installing.
 
-To find and obtain the current BOSH stemcell, navigate to `http://bosh_artifacts.cfapps.io`, right click **Download**, and copy the link for the “bosh (aws xen ubuntu)” tarball file (.tar.gz).  An example of the link URL is:
+To find and obtain the current BOSH stemcell, navigate to `http://bosh_artifacts.cfapps.io`, right click **Download**, and copy the link for the "bosh (aws xen ubuntu)" tarball file (.tar.gz).  An example of the link URL is:
 
 [https://s3.amazonaws.com/bosh-jenkins-artifacts/bosh-stemcell/aws/bosh-stemcell-1274-aws-xen-ubuntu.tgz](https://s3.amazonaws.com/bosh-jenkins-artifacts/bosh-stemcell/aws/bosh-stemcell-1274-aws-xen-ubuntu.tgz)
 
 ![image alt text](ec2/image_25.png)
 
-Upload the latest stemcell of BOSH onto the Micro BOSH server:
+Upload the latest stemcell of BOSH onto the MicroBOSH server:
 
 <pre class="terminal">
   bosh upload stemcell https://s3.amazonaws.com/bosh-jenkins-artifacts/bosh-stemcell/aws/bosh-stemcell-1274-aws-xen-ubuntu.tgz
@@ -63,7 +61,7 @@ After the upload completes, view the list of stemcells by calling:
 
 **Create BOSH Deployment Manifest**
 
-Now let’s review what the contents of the bosh.yml deployment
+Now let's review what the contents of the bosh.yml deployment
 manifest file should include. Notice the first comment in the
 example file.  You'll need to replace that uuid with the one for the
 results of the command:
@@ -104,7 +102,7 @@ networks:
     type: dynamic
     cloud_properties:
       security_groups:
-        - bosh # This needs to be changed if you didn’t call the security group “bosh”
+        - bosh # This needs to be changed if you didn’t call the security group "bosh"
 
 resource_pools:
   - name: medium
@@ -160,7 +158,7 @@ properties:
       basic_auth: replication:zxKDUBeCfKYX
       user: replication
       password: powerdns
-    recursor: 54.204.16.249 # CHANGE: microBOSH IP address, Elastic IP #1
+    recursor: 54.204.16.249 # CHANGE: MicroBOSH IP address, Elastic IP #1
 
   redis:
     address: 0.bosh.default.bosh.microbosh
@@ -217,7 +215,7 @@ Save your changes to the file.
 
 ### Deploy Manifest
 
-Everything is now in place to use the deployment manifest you have created and deploy BOSH to AWS (the first inception). Let’s now do this.
+Everything is now in place to use the deployment manifest you have created and deploy BOSH to AWS (the first inception). Let's now do this.
 
 Enter the deployments folder you created earlier:
 
@@ -252,7 +250,7 @@ the IP address you created in Step 4 with the one below:
 bosh target 23.21.249.15
 </pre>
 
-The default username and password are "admin" and “admin”.
+The default username and password are "admin" and "admin".
 
 If the deployment ran successfully, you now have a BOSH instance deployed onto AWS.
 

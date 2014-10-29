@@ -2,7 +2,7 @@
 title: Deploying Cloud Foundry on AWS
 ---
 
-These steps leverage the additional security group and ports opened in the previous step to deploy Cloud Foundry from the BOSH server:
+This topic leverages the security group and ports opened in the [Configuring AWS for Cloud Foundry](./configure_aws_cf.html) the previous step to deploy Cloud Foundry from the BOSH server:
 
 * Obtain and Upload Release
 
@@ -12,9 +12,7 @@ These steps leverage the additional security group and ports opened in the previ
 
 * Deploy
 
-### Obtain and Upload Release
-
-The original documentation was borrowed heavily from [here](http://www.google.com/url?q=http%3A%2F%2Fdocs.cloudfoundry.com%2Fdocs%2Frunning%2Fdeploying-cf%2Fcommon%2Fcf-release.html&sa=D&sntz=1&usg=AFQjCNEnuPr0Fy05RET8NliV2OUS-sjwhw); however, you can follow the instructions below.
+## Obtain and Upload Release
 
 Create a folder on the local computer to store the CF Release:
 
