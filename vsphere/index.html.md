@@ -15,6 +15,6 @@ on vSphere.
 
 [Deploy Cloud Foundry using BOSH](deploy_cf_vsphere.html)
 
-[Example Manifest for Deploying BOSH with MicroBOSH on vSphere](bosh-example-manifest.html)
+[Example Manifest for Deploying BOSH using MicroBOSH on vSphere](bosh-example-manifest.html)
 
 [Troubleshooting Guide](troubleshooting_guide.html)

@@ -1,8 +1,8 @@
 ---
-title: Example Manifest for Deploying BOSH with MicroBOSH on vSphere
+title: Example Manifest for Deploying BOSH using MicroBOSH on vSphere
 ---
 
-This topic contains a manifest for deploying BOSH with MicroBOSH on vSphere.
+This topic contains a manifest for deploying BOSH using MicroBOSH on vSphere.
 Save a copy of this template as a YAML file in your deployment directory.
 Customize the contents of this file for your environment, then use the
 customized file to deploy BOSH to vSphere using MicroBOSH.
@@ -72,7 +72,7 @@ jobs:
   networks:
   - name: default
     static_ips:
-    - 192.168.50.142  # Replace with an IP address in the range you set for `network: static`
+    - 192.168.50.142  # Replace with an IP address in the range you set for "network: static"
 
 - name: postgres
   template: postgres
@@ -82,7 +82,7 @@ jobs:
   networks:
   - name: default
     static_ips:
-    - 192.168.50.143  # Replace with an IP address in the range you set for `network: static`
+    - 192.168.50.143  # Replace with an IP address in the range you set for "network: static"
 
 - name: redis
   template: redis
@@ -91,7 +91,7 @@ jobs:
   networks:
   - name: default
     static_ips:
-    - 192.168.50.144  # Replace with an IP address in the range you set for `network: static`
+    - 192.168.50.144  # Replace with an IP address in the range you set for "network: static"
 
 - name: director
   template: director
@@ -101,7 +101,7 @@ jobs:
   networks:
   - name: default
     static_ips:
-    - 192.168.50.145  # Replace with an IP address in the range you set for `network: static`
+    - 192.168.50.145  # Replace with an IP address in the range you set for "network: static"
 
 - name: blobstore
   template: blobstore
@@ -111,7 +111,7 @@ jobs:
   networks:
   - name: default
     static_ips:
-    - 192.168.50.146  # Replace with an IP address in the range you set for `network: static`
+    - 192.168.50.146  # Replace with an IP address in the range you set for "network: static"
 
 - name: health_monitor
   template: health_monitor
@@ -120,13 +120,13 @@ jobs:
   networks:
   - name: default
     static_ips:
-    - 192.168.50.147  # Replace with an IP address in the range you set for `network: static`
+    - 192.168.50.147  # Replace with an IP address in the range you set for "network: static"
 
 properties:
   env:
 
   blobstore:
-    address: 192.168.50.146  # Replace with the IP address you set for the `static_ips` of the `blobstore` job
+    address: 192.168.50.146  # Replace with the IP address you set for the "static_ips" of the "blobstore" job
     port: 25251
     backend_port: 25552
     agent:
@@ -143,30 +143,30 @@ properties:
   nats:
     user: nats
     password: mysecretpw
-    address: 192.168.50.142 # Replace with the IP address you set for the `static_ips` of the `nats` job
+    address: 192.168.50.142 # Replace with the IP address you set for the "static_ips" of the "nats" job
     port: 4222
 
   postgres:
     user: bosh
     password: mysecretpw
-    address: 192.168.50.143  # Replace with the IP address you set for the `static_ips` of the `postgres` job
+    address: 192.168.50.143  # Replace with the IP address you set for the "static_ips" of the "postgres" job
     port: 5432
     database: bosh
 
   redis:
-    address: 192.168.50.144  # Replace with the IP address you set for the `static_ips` of the `redis` job
+    address: 192.168.50.144  # Replace with the IP address you set for the "static_ips" of the "redis" job
     port: 25255
     password: mysecretpw
 
   director:
     name: microBOSH-director
-    address: 192.168.50.145 # Replace with the IP address you set for the `static_ips` of the `director` job
+    address: 192.168.50.145 # Replace with the IP address you set for the "static_ips" of the "director" job
     port: 25555
     encryption: false
     db:
       user: bosh
       password: mysecretpw
-      host: 192.168.50.143  # Replace with the IP address you set for the `static_ips` of the `postgres` job
+      host: 192.168.50.143  # Replace with the IP address you set for the "static_ips" of the "postgres" job
 
   hm:
     http:
@@ -184,7 +184,7 @@ properties:
       agent_timeout: 180
       rogue_agent_alert: 180
     loglevel: info
-    email_notifications: false # If set to `false`, the values in the `smtp` section are ignored
+    email_notifications: false # If set to "false" the values in the "smtp" section are ignored
     email_recipients:
     - anyuser@example.com  # Replace with any email address
     smtp:
@@ -195,8 +195,8 @@ properties:
       user: your-smtp-user       # Replace with a user name
       password: smtp-password    # Replace with a password
       domain: localdomain        # Replace with your domain
-    tsdb_enabled: false # If set to `false`, the values in the `tsdb` section are ignored.
-                        # Can only be set to `true` if you have a complete running deployment of Cloud Foundry.
+    tsdb_enabled: false # If set to "false" the values in the "tsdb" section are ignored.
+                        # Can only be set to "true" if you have a complete running deployment of Cloud Foundry.
     tsdb:
       address: 172.20.218.14 # (Optional) The opentsdb static IP address from your Cloud Foundry deployment
       port: 4242
@@ -216,3 +216,4 @@ properties:
         clusters:
         - ShuttleXPC:
             resource_pool: bosh
+```
