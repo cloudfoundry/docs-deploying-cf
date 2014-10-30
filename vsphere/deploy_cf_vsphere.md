@@ -85,7 +85,7 @@ Director.
 
 ##<a id="create-stub"></a>Create a Deployment Manifest Stub ##
 
-Create a manifest stub file named `cf-stub.yml`. [Customize the manifest stub](../cf-stub-vspehre.html) for your environment.
+Create a manifest stub file named `cf-stub.yml`. [Customize the manifest stub](../cf-stub-vsphere.html) for your environment.
 
 ##<a id="deploy-cf"></a>Deploy Cloud Foundry##
 
