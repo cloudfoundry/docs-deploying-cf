@@ -78,12 +78,15 @@ properties:
         secret: space-mail_secret
       support-services:
         secret: support-services_secret
+      doppler:
+        secret: doppler_secret
     jwt:
       verification_key: vk
       signing_key: sk
     scim:
       users:
-      - admin|fakepassword|scim.write,scim.read,openid,cloud_controller.admin
+      - admin|fakepassword|scim.write,scim.read,openid,cloud_controller.admin,doppler.firehose
+
 ```
 
 ##<a id="editing"></a>Editing Instructions ##
