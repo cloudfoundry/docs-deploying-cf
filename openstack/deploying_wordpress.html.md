@@ -8,7 +8,7 @@ This guide describes the process for deploying [Wordpress](http://wordpress.org/
 
 ### <a id="microbosh"></a>Micro BOSH ###
 
-Micro BOSH should be deployed and targeted. See the steps in [Deploying Micro BOSH](deploying_microbosh.html).
+MicroBOSH should be deployed and targeted. See the steps in [Deploying MicroBOSH on Openstack](deploying_microbosh.html).
 
 ### <a id="stemcell"></a>BOSH Stemcell ###
 

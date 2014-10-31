@@ -1,0 +1,266 @@
+---
+title: Customizing the Cloud Foundry Deployment Manifest Stub for vSphere
+---
+
+This topic describes how to customize the Cloud Foundry deployment manifest stub
+for vSphere.
+After you complete this task, use
+[Spiff](https://github.com/cloudfoundry-incubator/spiff) to merge your
+customized manifest stub with Cloud Foundry templates to [generate a complete
+deployment manifest](./cf-manifest-spiff.html).
+
+Save a copy of the manifest stub as a YAML file in your deployment directory.
+Follow the [editing instructions](#editing) to customize the manifest stub with
+information about your environment.
+
+##<a id="stub"></a>Cloud Foundry Deployment Manifest Stub for vSphere ##
+
+```
+---
+director_uuid: DIRECTOR_UUID
+
+networks:
+- name: cf1
+  subnets:
+    - cloud_properties:
+      static:
+      - 0.0.0.0 - 0.0.0.25
+- name: cf2
+  subnets:
+    - cloud_properties:
+      static:
+      - 0.0.1.0 - 0.0.1.25
+properties:
+  cc:
+    diego:
+      staging: disabled
+      running: disabled
+    droplets:
+      droplet_directory_key: the_key
+    buildpacks:
+      buildpack_directory_key: bd_key
+    staging_upload_user: username
+    staging_upload_password: password
+    bulk_api_password: password
+    db_encryption_key: the_key
+  dea_next:
+    disk_mb: 2048
+    memory_mb: 1024
+  loggregator_endpoint:
+    shared_secret: loggregator_endpoint_secret
+  nats:
+    user: nats_user
+    password: nats_password
+  router:
+    status:
+      user: router_user
+      password: router_password
+  uaa:
+    admin:
+      client_secret: admin_secret
+    batch:
+      username: batch_username
+      password: batch_password
+    cc:
+      client_secret: cc_client_secret
+    clients:
+      app-direct:
+        secret: app-direct_secret
+      developer_console:
+        secret: developer_console_secret
+      login:
+        secret: login_client_secret
+      notifications:
+        secret: notification_secret
+      servicesmgmt:
+        secret: service_mgmt_secret
+      space-mail:
+        secret: space-mail_secret
+      support-services:
+        secret: support-services_secret
+      doppler:
+        secret: doppler_secret
+    jwt:
+      verification_key: vk
+      signing_key: sk
+    scim:
+      users:
+      - admin|fakepassword|scim.write,scim.read,openid,cloud_controller.admin,doppler.firehose
+
+```
+
+##<a id="editing"></a>Editing Instructions ##
+
+<table border="1" class="nice">
+  <tr>
+    <th style="width:35%">Deployment Manifest Stub Contents</th>
+    <th>Editing Instructions</th>
+  </tr>
+  <tr>
+    <td><pre><code>
+director_uuid: DIRECTOR_UUID</code></pre></td>
+    <td>Replace <code>DIRECTOR_UUID</code> with the
+		BOSH Director UUID. Use <code>bosh status</code> to view the BOSH
+		Director UUID.
+	</td>
+  </tr>
+  <tr>
+    <td><pre><code>
+networks:
+- name: cf1
+  subnets:
+    - cloud_properties:
+      static:
+      - 0.0.0.0 - 0.0.0.25
+- name: cf2
+  subnets:
+    - cloud_properties:
+      static:
+      - 0.0.1.0 - 0.0.1.25
+	  </code></pre>
+	</td>
+    <td>Replace the <strong>cf1 subnets: cloud_properties: static:</strong>
+	<code>0.0.0.0 - 0.0.0.25</code> IP address range with a range of at least 26
+		consecutive IP addresses on your private network.
+		<br /><br />
+		Replace the <strong>cf2 subnets: cloud_properties: static:</strong>
+		<code>0.0.1.0 - 0.0.1.25</code> IP address range with a range of at
+		least 26 consecutive IP addresses on your private network.
+	</td>
+  </tr>
+  <tr>
+    <td><pre><code>
+properties:
+  cc:
+    diego:
+	  staging: disabled
+	  running: disabled
+    droplets:
+      droplet_directory_key: the_key
+    buildpacks:
+      buildpack_directory_key: bd_key
+    staging_upload_user: username
+    staging_upload_password: password
+    bulk_api_password: password
+    db_encryption_key: the_key
+	  </code></pre>
+	</td>
+    <td>Do not change the values of the <strong>diego: staging</strong> or
+		<strong>diego: running</strong> keys.
+		<br /><br />
+		Replace the <strong>droplet_directory_key:</strong> <code>the key</code>
+		with the directory (bucket) used to store droplets.
+		<br /><br />
+		Replace the <strong>buildpack_directory_key:</strong>
+		<code>bd_key</code> with the directory (bucket) used to store
+		buildpacks.
+		<br /><br />
+		Replace the <strong>staging_upload_user:</strong>
+		<code>username</code> with the account user name used to upload files to
+		the Cloud Controller.
+		<br /><br />
+		Replace the <strong>staging_upload_password:</strong>
+		<code>password</code> with the password of the account used to upload
+		files to the Cloud Controller.
+		<br /><br />
+		Replace the <strong>bulk_api_password:</strong> <code>password</code>
+		with the password used to access the bulk_api.
+		<br /><br />
+		Replace the <strong>db_encryption_key:</strong> <code>the_key</code>
+		with a secure key you generate to encrypt sensitive values in the Cloud
+		Controller database.
+    </td>
+  </tr>
+  <tr>
+    <td><pre><code>
+dea_next:
+  disk_mb: 2048
+  memory_mb: 1024
+	 </code></pre></td>
+    <td>Do not change these values.</td>
+  </tr>
+  <tr>
+    <td><pre><code>
+loggregator_endpoint:
+  shared_secret: loggregator_endpoint_secret</code></pre>
+	</td>
+    <td>Replace the <strong>share_secret:</strong>
+		<code>loggregator_endpoint_secret</code> with a secure secret.
+	</td>
+  </tr>
+  <tr>
+    <td><pre><code>
+nats:
+  user: nats_user
+  password: nats_password
+	 </code></pre>
+	</td>
+    <td>Replace <code>nats_user</code> and <code>nats_password</code> with a
+		secure user name and password for NATS access.
+	</td>
+  </tr>
+  <tr>
+    <td><pre><code>
+router:
+  status:
+    user: router_user
+    password: router_password</code></pre>
+	</td>
+    <td>Replace <code>router_user</code> and <code>router_password</code> with a
+		secure user name and password for router access.
+	</td>
+  </tr>
+  <tr>
+    <td><pre><code>
+uaa:
+  admin:
+    client_secret: admin_secret
+  batch:
+    username: batch_username
+    password: batch_password
+  cc:
+    client_secret: cc_client_secret
+  clients:
+    app-direct:
+      secret: app-direct_secret
+    developer_console:
+      secret: developer_console_secret
+    login:
+      secret: login_client_secret
+    notifications:
+      secret: notification_secret
+    servicesmgmt:
+      secret: service_mgmt_secret
+    space-mail:
+      secret: space-mail_secret
+    support-services:
+      secret: support-services_secret
+	 </code></pre>
+	</td>
+    <td>Replace <code>batch_username</code> and
+		<code>batch_password</code> with a secure user name and password.
+		<br /><br />
+		Generate secure keys for each <code>secret</code> and replace them.
+	</td>
+  </tr>
+  <tr>
+    <td><pre><code>
+jwt:
+  verification_key: vk
+  signing_key: sk
+	 </code></pre>
+	</td>
+    <td>Replace <code>vk</code> with an RSA Public Key.
+      	<br /><br />
+		Replace <code>sk</code> with an RSA Private Key.
+	</td>
+  </tr>
+  <tr>
+    <td><pre><code>
+scim:
+  users:
+  - admin|fakepassword|scim.write,scim.read,openid,cloud_controller.admin	 </code></pre>
+	</td>
+    <td>Replace <code>fakepassword</code> with an admin password.</td>
+  </tr>
+</table>

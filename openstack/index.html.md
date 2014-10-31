@@ -16,9 +16,9 @@ Follow these steps to install Cloud Foundry on OpenStack using BOSH.
 
 1. [Deploying BOSH using MicroBOSH](deploying_bosh.html) *(optional)*
 
-1. [Install Cloud Foundry using BOSH](install_cf_openstack.html)
+1. [Deploying Cloud Foundry on Openstack using BOSH](install_cf_openstack.html)
 
-For advanced or support topics:
+Advanced and Support Topics:
 
 * [Troubleshooting an OpenStack Installation](troubleshooting.html)
 
@@ -28,5 +28,4 @@ For advanced or support topics:
 
 For another example of using BOSH to deploy a system, follow these instructions:
 
-[Deploying Wordpress using Micro BOSH](deploying_wordpress.html)
-
+[Deploying Wordpress using MicroBOSH](deploying_wordpress.html)

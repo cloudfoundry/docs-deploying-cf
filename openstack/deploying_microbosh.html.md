@@ -1,5 +1,5 @@
 ---
-title: Deploying MicroBOSH
+title: Deploying MicroBOSH on Openstack
 ---
 
 Installation of BOSH is done using MicroBOSH, which is a single VM that includes all of the BOSH components. You need BOSH to manage and deploy a distributed system on multiple VMs. See [BOSH Documentation](/bosh) for more information.

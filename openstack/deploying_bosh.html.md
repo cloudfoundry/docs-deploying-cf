@@ -1,5 +1,5 @@
 ---
-title: Deploying BOSH with MicroBOSH
+title: Deploying BOSH using MicroBOSH on Openstack
 ---
 
 This guide describes the process for deploying BOSH as an application using MicroBOSH.
@@ -8,7 +8,7 @@ This guide describes the process for deploying BOSH as an application using Micr
 
 ### <a id="microbosh"></a>MicroBOSH ###
 
-MicroBOSH should be deployed and targeted. See the steps in [Deploying MicroBOSH](deploying_microbosh.html).
+MicroBOSH should be deployed and targeted. See the steps in [Deploying MicroBOSH on Openstack](deploying_microbosh.html).
 
 ### <a id="stemcell"></a>BOSH Stemcell ###
 
@@ -95,7 +95,7 @@ To confirm that the BOSH Release has been loaded into your BOSH Director use the
 
 ### <a id="manifest_file"></a>Create manifest file ###
 
-Using the `deployments` directory we created when we [deployed MicroBOSH](deploying_microbosh.html#manifest_file), create a `bosh-openstack` subdirectory:
+Using the `deployments` directory that you created in the [Deploying MicroBOSH on Openstack](deploying_microbosh.html#manifest_file) topic, create a `bosh-openstack` subdirectory:
 
 <pre class="terminal">
 mkdir -p ~/bosh-workspace/deployments/bosh-openstack

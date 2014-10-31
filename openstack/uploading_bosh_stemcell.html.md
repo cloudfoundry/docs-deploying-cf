@@ -6,7 +6,7 @@ This guide describes the process for uploading a [BOSH Stemcell](/bosh/terminolo
 
 ## <a id="prerequisites"></a>Prerequisites ##
 
-A Micro BOSH or Full BOSH should be deployed and targeted. See the steps in [Deploying Micro BOSH](deploying_microbosh.html).
+You must deploy and target MicroBOSH or BOSH. See the steps in [Deploying MicroBOSH on Openstack](deploying_microbosh.html).
 
 ## <a id="upload_stemcell"></a>Upload BOSH stemcell ###
 
