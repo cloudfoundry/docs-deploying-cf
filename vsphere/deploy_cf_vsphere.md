@@ -4,7 +4,7 @@ title: Deploying Cloud Foundry on vSphere using BOSH
 
 This topic describes the process for deploying Cloud Foundry to a vSphere environment using BOSH.
 
-<p class="note"><strong>Note</strong>: Run all the commands in this topic from the <code>~/deployments</code> directory of the jump box that you created in the <a href="deploying_micro_bosh.html"> Deploying MicroBOSH on vSphere</a> topic.</p>
+<p class="note"><strong>Note</strong>: Run all the commands in this topic from the <code>~/deployments</code> directory of the jump box that you created in the  <a href="deploying_micro_bosh.html">Deploying MicroBOSH on vSphere</a> topic.</p>
 
 ##<a id="prerequisites"></a>Prerequisites ##
 
@@ -70,7 +70,7 @@ stemcells.
     </pre>
 
 1. Use the `bosh download public stemcell` command to download the latest
-stemcell for `vshere` with `ubuntu`.
+stemcell for `vsphere` with `ubuntu`.
 
     <pre class="terminal">
     $ bosh download public stemcell bosh-stemcell-2710-vsphere-esxi-ubuntu-lucid-go_agent.tgz
@@ -111,7 +111,7 @@ Create a manifest stub file named `cf-stub.yml`. [Customize the manifest stub](.
     Replace INFRASTRUCTURE with `vsphere` and replace MANIFEST-STUB with the name and location of your `cf-stub.yml file`. For example:
 
     <pre class="terminal">
-	$ ./generate_deployment_manifest aws cf-stub.yml > cf-deployment.yml
+	$ ./generate_deployment_manifest vsphere cf-stub.yml > cf-deployment.yml
     </pre>
 
 1. Use `bosh target` to target the BOSH Director.
