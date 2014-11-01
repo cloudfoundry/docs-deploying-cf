@@ -1,9 +1,9 @@
 ---
-title: Customizing the Cloud Foundry Deployment Manifest Stub for vSphere
+title: Customizing the Cloud Foundry Deployment Manifest Stub for Openstack
 ---
 
 This topic describes how to customize the Cloud Foundry deployment manifest stub
-for vSphere.
+for Openstack.
 After you complete this task, use
 [Spiff](https://github.com/cloudfoundry-incubator/spiff) to merge your
 customized manifest stub with Cloud Foundry templates to [generate a complete
@@ -13,28 +13,29 @@ Save a copy of the manifest stub as a YAML file in your deployment directory.
 Follow the [editing instructions](#editing) to customize the manifest stub with
 information about your environment.
 
-##<a id="stub"></a>Cloud Foundry Deployment Manifest Stub for vSphere ##
+##<a id="stub"></a>Cloud Foundry Deployment Manifest Stub for Openstack ##
 
 ```
 ---
 director_uuid: DIRECTOR_UUID
-
+meta:
+  openstack:
+    net_id: net_id
+    auth_url: auth_url
+    tenant: openstack_tenant
+    username: openstack_username
+    api_key: openstack_api_key
+    security_groups: []
+  floating_static_ips:
+  - 0.0.0.0
 networks:
 - name: cf1
   subnets:
     - cloud_properties:
       static:
       - 0.0.0.0 - 0.0.0.25
-- name: cf2
-  subnets:
-    - cloud_properties:
-      static:
-      - 0.0.1.0 - 0.0.1.25
 properties:
   cc:
-    diego:
-      staging: disabled
-      running: disabled
     droplets:
       droplet_directory_key: the_key
     buildpacks:
@@ -43,9 +44,21 @@ properties:
     staging_upload_password: password
     bulk_api_password: password
     db_encryption_key: the_key
+  ccdb:
+    roles:
+    - name: ccadmin
+      password: admin_password
+      tag: admin
+  databases:
+    roles:
+    - name: ccadmin
+      password: ccadmin_password
+    - name: uaaadmin
+      password: uaaadmin_password
   dea_next:
     disk_mb: 2048
     memory_mb: 1024
+  domain: example.com
   loggregator_endpoint:
     shared_secret: loggregator_endpoint_secret
   nats:
@@ -68,10 +81,10 @@ properties:
         secret: app-direct_secret
       developer_console:
         secret: developer_console_secret
-      login:
-        secret: login_client_secret
       notifications:
         secret: notification_secret
+      login:
+        secret: login_client_secret
       servicesmgmt:
         secret: service_mgmt_secret
       space-mail:
@@ -86,7 +99,11 @@ properties:
     scim:
       users:
       - admin|fakepassword|scim.write,scim.read,openid,cloud_controller.admin,doppler.firehose
-
+  uaadb:
+    roles:
+    - name: uaaadmin
+      password: admin_password
+      tag: admin
 ```
 
 ##<a id="editing"></a>Editing Instructions ##
@@ -106,35 +123,50 @@ director_uuid: DIRECTOR_UUID</code></pre></td>
   </tr>
   <tr>
     <td><pre><code>
+meta:
+  openstack:
+    net_id: net_id
+    auth_url: auth_url
+    tenant: openstack_tenant
+    username: openstack_username
+    api_key: openstack_api_key
+    security_groups: []
+  floating_static_ips:
+  - 0.0.0.0	  </code></pre>
+	</td>
+    <td>Replace <code>net_id</code> with an existing Openstack network UUID.
+		<br /><br />
+		Replace <code>auth_url</code> with the OpenStack identity server.
+		<br /><br />
+		Replace <code>openstack_tenant</code>, <code>openstack_username</code>,
+			and <code>openstack_api_key</code> with your OpenStack credentials.
+		<br /><br />
+		Add <code>cf</code> and any other security groups you used to deploy by
+			MicroBOSH to the <code>security_groups</code> array.
+		<br /><br />
+		Replace the <strong>floating_static_ips:</strong> <code>0.0.0.0</code>
+			with a static IP address for your Openstack floating network.
+	</td>
+  </tr>
+  <tr>
+    <td><pre><code>
 networks:
 - name: cf1
   subnets:
     - cloud_properties:
       static:
       - 0.0.0.0 - 0.0.0.25
-- name: cf2
-  subnets:
-    - cloud_properties:
-      static:
-      - 0.0.1.0 - 0.0.1.25
 	  </code></pre>
 	</td>
     <td>Replace the <strong>cf1 subnets: cloud_properties: static:</strong>
 	<code>0.0.0.0 - 0.0.0.25</code> IP address range with a range of at least 26
 		consecutive IP addresses on your private network.
-		<br /><br />
-		Replace the <strong>cf2 subnets: cloud_properties: static:</strong>
-		<code>0.0.1.0 - 0.0.1.25</code> IP address range with a range of at
-		least 26 consecutive IP addresses on your private network.
 	</td>
   </tr>
   <tr>
     <td><pre><code>
 properties:
   cc:
-    diego:
-	  staging: disabled
-	  running: disabled
     droplets:
       droplet_directory_key: the_key
     buildpacks:
@@ -145,10 +177,7 @@ properties:
     db_encryption_key: the_key
 	  </code></pre>
 	</td>
-    <td>Do not change the values of the <strong>diego: staging</strong> or
-		<strong>diego: running</strong> keys.
-		<br /><br />
-		Replace the <strong>droplet_directory_key:</strong> <code>the key</code>
+    <td>Replace the <strong>droplet_directory_key:</strong> <code>the key</code>
 		with the directory (bucket) used to store droplets.
 		<br /><br />
 		Replace the <strong>buildpack_directory_key:</strong>
@@ -173,12 +202,50 @@ properties:
   </tr>
   <tr>
     <td><pre><code>
+ccdb:
+  roles:
+  - name: ccadmin
+    password: admin_password
+    tag: admin
+    </code></pre></td>
+    <td>Replace the <strong>roles: name:</strong> <code>ccadmin</code> with the
+		admin user name used to connect to the Cloud Controller database.
+		<br /><br />
+		Replace <code>admin_password</code> with the admin password.
+	</td>
+  </tr>
+  <tr>
+    <td><pre><code>
+databases:
+  roles:
+  - name: ccadmin
+    password: ccadmin_password
+  - name: uaaadmin
+    password: uaaadmin_password
+	 </code></pre></td>
+    <td>Replace <code>ccadmin</code> with the admin user name used to connect to
+		the Cloud Controller database.
+		<br /><br />
+		Replace the <code>ccadmin_password</code> with the admin password.
+		<br /><br />
+		Replace <code>uaaadmin</code> with the admin user name used to connect
+		to the UAA database.
+		<br /><br />
+		Replace <code>uaaadmin_password</code> with the admin password.
+	</td>
+  </tr>
+  <tr>
+    <td><pre><code>
 dea_next:
   disk_mb: 2048
   memory_mb: 1024
 	 </code></pre></td>
     <td>Do not change these values.</td>
   </tr>
+  <td><pre><code>
+domain: example.com
+	</code></pre></td>
+  <td>Replace <code>example.com</code> with your domain.</td>
   <tr>
     <td><pre><code>
 loggregator_endpoint:
@@ -262,5 +329,19 @@ scim:
   - admin|fakepassword|scim.write,scim.read,openid,cloud_controller.admin	 </code></pre>
 	</td>
     <td>Replace <code>fakepassword</code> with an admin password.</td>
+  </tr>
+  <tr>
+    <td><pre><code>
+uaadb:
+  roles:
+  - name: uaaadmin
+    password: admin_password
+    tag: admin
+    </code></pre></td>
+	<td>Replace <code>uaaadmin</code> with the admin user name used to connect
+	to the UAA database.
+	<br /><br />
+	Replace <code>admin_password</code> with the admin password.
+	</td>
   </tr>
 </table>
