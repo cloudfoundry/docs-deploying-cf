@@ -111,10 +111,10 @@ Create a manifest stub file named `cf-stub.yml`. [Customize the manifest stub](.
 
     `./generate_deployment_manifest INFRASTRUCTURE MANIFEST-STUB > cf-deployment.yml`
 
-    Replace INFRASTRUCTURE with `vsphere` and replace MANIFEST-STUB with the name and location of your `cf-stub.yml file`. For example:
+    Replace INFRASTRUCTURE with `vcloud` and replace MANIFEST-STUB with the name and location of your `cf-stub.yml file`. For example:
 
     <pre class="terminal">
-	$ ./generate_deployment_manifest vsphere cf-stub.yml > cf-deployment.yml
+	$ ./generate_deployment_manifest vcloud cf-stub.yml > cf-deployment.yml
     </pre>
 
 1. Use `bosh target` to target the BOSH Director.
@@ -159,13 +159,13 @@ Director.
     </pre>
 
     If `curl` succeeds, it should return the JSON-formatted information.
-	If `curl` does not succeeds, check your networking and make sure your domain
+	If `curl` does not succeed, check your networking and make sure your domain
 	has an NS record for your subdomain.
 
 1. You should be able to target your Cloud Foundry installation with the [cf Command Line Interface (CLI)](/devguide/installcf/index.html) and log in as an
 administrator.
 
-    The user name, `admin` and the password, `fakepassword`, are specified in
+    The user name, `admin`, and the password, `fakepassword`, are specified in
     the deployment manifest under **uaa:scim:users**.
 
     For more information about managing organizations, spaces, users, and
