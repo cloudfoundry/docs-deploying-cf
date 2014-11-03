@@ -114,7 +114,7 @@ Create a manifest stub file named `cf-stub.yml`. [Customize the manifest stub](.
     Replace INFRASTRUCTURE with `vsphere` and replace MANIFEST-STUB with the name and location of your `cf-stub.yml file`. For example:
 
     <pre class="terminal">
-	$ ./generate_deployment_manifest aws cf-stub.yml > cf-deployment.yml
+	$ ./generate_deployment_manifest vsphere cf-stub.yml > cf-deployment.yml
     </pre>
 
 1. Use `bosh target` to target the BOSH Director.
