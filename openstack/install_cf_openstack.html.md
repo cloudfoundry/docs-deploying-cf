@@ -5,14 +5,14 @@ title: Deploying Cloud Foundry on Openstack using BOSH
 This topic describes the process for deploying Cloud Foundry to an Openstack
 environment using BOSH.
 
-<p class="note"><strong>Note</strong>: Run all the commands in this topic from the <code>~/deployments</code> directory that you created in the <a href="deploying_microbosh.html">Deploying MicroBOSH on Openstack</a> topic.>
+<p class="note"><strong>Note</strong>: Run all the commands in this topic from the <code>~/deployments</code> directory that you created in the <a href="deploying_microbosh.html">Deploying MicroBOSH on Openstack</a> topic.</p>
 
 ##<a id="prerequisites"></a>Prerequisites ##
 
 To deploy Cloud Foundry to Openstack, you must first complete the following steps:
 
 * [Validate your OpenStack Instance](validate_openstack.html).
-* [Install the BOSH Command Line Interface (CLI)](../../bosh/bosh-cli.html).
+* Install the [BOSH Command Line Interface (CLI)](../../bosh/bosh-cli.html).
 * Deploy BOSH to your Openstack environment. For instructions, see [Deploying
 	BOSH using MicroBOSH on Openstack](deploying_bosh.html).
 * Provision an IP address and set your DNS to map `*` records to this IP
