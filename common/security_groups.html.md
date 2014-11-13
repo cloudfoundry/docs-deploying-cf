@@ -54,7 +54,7 @@ The examples below show the Security Groups that are referenced in other section
 | Egress    | IPv4       | Any         | -          | 0.0.0.0/0 (CIDR) |
 | Ingress   | IPv4       | UDP         | 68         | 0.0.0.0/0 (CIDR) |
 | Ingress   | IPv4       | TCP         | 1-65535    | bosh             |
-| Ingress   | IPv4       | UDP         | 3456       | 0.0.0.0/0 (CIDR) |
+| Ingress   | IPv4       | UDP         | 3456-3457  | 0.0.0.0/0 (CIDR) |
 
 
 
