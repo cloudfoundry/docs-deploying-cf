@@ -88,7 +88,9 @@ Director.
 
 ##<a id="create-stub"></a>Create a Deployment Manifest Stub ##
 
-Create a manifest stub file named `cf-stub.yml`. [Customize the manifest stub](../cf-stub-vcloud.html) for your environment.
+Create a manifest stub file named `cf-stub.yml`. [Customize the manifest stub](../cf-stub-vsphere.html) for your environment.
+
+<p class="note"><strong>Note</strong>: vCloud uses the vSphere manifest stub.</p>
 
 ##<a id="deploy-cf"></a>Deploy Cloud Foundry##
 
@@ -111,10 +113,10 @@ Create a manifest stub file named `cf-stub.yml`. [Customize the manifest stub](.
 
     `./generate_deployment_manifest INFRASTRUCTURE MANIFEST-STUB > cf-deployment.yml`
 
-    Replace INFRASTRUCTURE with `vcloud` and replace MANIFEST-STUB with the name and location of your `cf-stub.yml file`. For example:
+    Replace INFRASTRUCTURE with `vsphere` and replace MANIFEST-STUB with the name and location of your `cf-stub.yml file`. vCloud uses the same manifest stub and command that vSphere uses. Example:
 
     <pre class="terminal">
-	$ ./generate_deployment_manifest vcloud cf-stub.yml > cf-deployment.yml
+	$ ./generate_deployment_manifest vsphere cf-stub.yml > cf-deployment.yml
     </pre>
 
 1. Use `bosh target` to target the BOSH Director.
