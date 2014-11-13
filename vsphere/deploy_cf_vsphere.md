@@ -166,7 +166,7 @@ administrator.
     the deployment manifest under **uaa:scim:users**.
 
     For more information about managing organizations, spaces, users, and
-    applications, refer to the [cf](/devguide/installcf/index.html) topic.
+    applications, refer to the [cf CLI](/devguide/installcf/index.html) topic.
 
 ##<a id="update-cf"></a>Update Cloud Foundry##
 
