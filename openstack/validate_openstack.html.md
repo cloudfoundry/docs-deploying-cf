@@ -26,7 +26,7 @@ Create a `~/.fog` file and copy the below content:
   :openstack_region:    REGION # Optional
 </pre>
 
-<p class="note"><strong>Note</strong>: You need to include `/v2.0/tokens` in the auth URL above.</p>
+<p class="note"><strong>Note</strong>: You need to include <code>/v2.0/tokens</code> in the auth URL above.</p>
 
 Install the `fog` application in your terminal, then run it in interactive mode:
 
