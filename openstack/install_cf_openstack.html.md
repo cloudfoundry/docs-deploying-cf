@@ -1,57 +1,54 @@
 ---
-title: Deploying Cloud Foundry on Openstack using BOSH
+title: Deploying Cloud Foundry on OpenStack using BOSH
 ---
 
-This topic describes the process for deploying Cloud Foundry to an Openstack
+This topic describes the process for deploying Cloud Foundry to an OpenStack
 environment using BOSH.
 
-<p class="note"><strong>Note</strong>: Run all the commands in this topic from the <code>~/deployments</code> directory that you created in the <a href="deploying_microbosh.html">Deploying MicroBOSH on Openstack</a> topic.</p>
+<p class="note"><strong>Note</strong>: Run all the commands in this topic from the <code>~/deployments</code> directory that you created in the <a href="deploying_microbosh.html">Deploying MicroBOSH on OpenStack</a> topic.</p>
 
 ##<a id="prerequisites"></a>Prerequisites ##
 
-To deploy Cloud Foundry to Openstack, you must first complete the following steps:
+To deploy Cloud Foundry to OpenStack, you must first complete the following steps:
 
 * Install the [BOSH Command Line Interface (CLI)](../../bosh/bosh-cli.html).
-* Confirm that your OpenStack instance includes the following flavors with the  listed specifications, at minimum:
+* Confirm that your OpenStack instance includes three flavors that correspond with the OpenStack default flavor names `m1.small`, `m1.medium`, and `m1.large` and have the following listed specifications, at minimum:
     <table class="nice">
       <tr>
-	    <th>Flavor Name</th>
+	    <th>OpenStack Flavor Name</th>
 	    <th>CPU</th>
-	    <th>Root Disk (GB)</th>
-	    <th>Ephemeral Disk (GB)</th>
+	    <th>Disk (GB)</th>
 	    <th>RAM (GB)</th>
       </tr>
       <tr>
 	    <td>m1.small</td>
 	    <td>1</td>
-	    <td>10</td>
-	    <td>20</td>
+	    <td>30</td>
 	    <td>2</td>
 	  </tr>
 	  <tr>
         <td>m1.medium</td>
         <td>2</td>
-        <td>10</td>
-        <td>40</td>
+        <td>50</td>
         <td>4</td>
       </tr>
       <tr>
         <td>m1.large</td>
 	    <td>4</td>
-	    <td>10</td>
-	    <td>80</td>
+	    <td>90</td>
 	    <td>8</td>
 	  </tr>
     </table>
+
 * [Validate your OpenStack Instance](validate_openstack.html).
-* Deploy BOSH to your Openstack environment. For instructions, see [Deploying
-	BOSH using MicroBOSH on Openstack](deploying_bosh.html).
+* Deploy BOSH to your OpenStack environment. For instructions, see [Deploying
+	BOSH using MicroBOSH on OpenStack](deploying_bosh.html).
 * Provision an IP address and set your DNS to map `*` records to this IP
 	address.
 	For example, if you use `mycloud.com` domain as the base domain for
 	your Cloud Foundry deployment, set a `*` A record for this zone mapping to
 	the IP address that you provision.
-* Create an Openstack security group named `cf`.
+* Create an OpenStack security group named `cf`.
 	Configure the `cf` security group as follows:
 	* Open all ports of the VMs in the `cf` security group to all other VMs in
 		the `cf` security group. This allows the VMs in the `cf` security group
@@ -77,7 +74,7 @@ Logged in as 'admin'
 ##<a id="uuid"></a>Record the BOSH Director UUID ##
 
 Use the `bosh status` command to view information about your BOSH deployment.
-Record the UUID of the BOSH Director. You use the UUID when [Customizing the Cloud Foundry Deployment Manifest Stub for Openstack](../cf-stub-openstack.html).
+Record the UUID of the BOSH Director. You use the UUID when [Customizing the Cloud Foundry Deployment Manifest Stub for OpenStack](../cf-stub-openstack.html).
 
 <pre class="terminal">
 $ bosh status
@@ -161,6 +158,8 @@ Create a manifest stub file named `cf-stub.yml`. [Customize the manifest stub](.
     <pre class="terminal">
 	$ ./generate_deployment_manifest openstack cf-stub.yml > cf-deployment.yml
     </pre>
+
+    <p class="note"><strong>Note</strong>: The <code>cf-deployment.yml</code> uses the default OpenStack flavor names of <code>m1.small</code>, <code>m1.medium</code>, and <code>m1.large</code>. If your OpenStack instance uses alternate names for these flavors, change the default flavor names in <code>cf-deployment.yml</code> to match the alternate names used by your instance.</p>
 
 1. Use `bosh target` to target the BOSH Director.
 
