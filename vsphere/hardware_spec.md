@@ -1,65 +1,28 @@
 ---
-title: Hardware Requirement 
+title: Hardware Requirements
 ---
 
-This page shows the recommended hardware requirement for installing BOSH and Cloud Foundry on vSphere.
+This page shows the hardware requirements for installing BOSH and Cloud Foundry on vSphere.
 
-## Hardware Components ##
+Cloud Foundry requires an ESXi host on which to run; the hardware requirements for running ESXi 5.5 can be found [here](http://kb.vmware.com/selfservice/microsites/search.do?language=en_US&cmd=displayKC&externalId=2052329).
 
-* Physical servers to install ESXi and vCenter
-* Storage servers
-* L3 switch to create a Private network
-* Firewall for Routing and Security
+Cloud Foundry also requires a vCenter to manage the ESXi host; the hardware requirements for running vCenter Server can be found [here](http://kb.vmware.com/selfservice/microsites/search.do?language=en_US&cmd=displayKC&externalId=2005086).
 
-## Physical servers ##
+## Minimum Requirements
 
-The hardware requirements depends on the size of the RAM and CPUs allocated for each of the VMs. Values below are only indicative.
+The ESXi host on which Cloud Foundry will be installed must have the following resources available:
 
-### ESXi host servers: Server 1 and 2 ###
+* Processor: **2 Physical CPU Cores** (hyperthreading does not count)
+* RAM: **48 GiB RAM**
+* Hard Disk Space: **500 GB**
+* 1 NIC (Network Interface Controller)
 
-*Note*: configuration is for each of the machines
+## Recommended
 
-##### Minimum Specs
+For internal small-scale testing and proof-of-concept, we recommend the following:
 
-* 4 CPUs: Intel Xeon E5620 @ 2.40 GHz, 2 cores per CPU
-* At least 4 NIC cards
-* 60 GB RAM
-
-##### Recommended Spec
-
-* 8 CPUs Intel Xeon E5620 @ 2.40 GHz, 2 cores per CPU
-* At least 4 NIC cards or Dual HBA Cards for Fiber Channel per host
-* 80 GB RAM running in Tri-Channel Memory Support (Multiples of 6)
-
-### vCenter Server ###
-
-This could run Windows natively or on top of a ESXi host in a VM.
-
-##### Minmum Specs
-
-* 1 CPUs Intel Xeon E5620, 4 cores per CPU
-* 8 GB RAM
-* 256 GB hard disk
-
-##### Recommended Specs
-
-* 2 CPUs Intel Xeon E5620, 4 cores per CPU
-* 8 GB RAM
-* 2 x 256 GB hard disk
-
-### Storage ###
-
-A minimum of 1 TB of Network storage is required. This could be SAN based storage or EMC VNX based storage.
-Ethernet or Fiber Channel; should support Jumbo Frames.
-
-### Switch ###
-
-##### Min Specs
-
-* L2 switch with 24 ports.
-
-##### Recommended Specs
-
-* L3 switch with 48 ports and 100 GB RAM
-* 12 CPUs Intel Xeon E5649 @ 2.53 GHz
+* Processor: **8 Physical CPU Cores** (hyperthreading does not count)
+* RAM: **128 GiB RAM**
+* Hard Disk Space: **1 TB**
+* 2 NICs (Network Interface Controller)
 
