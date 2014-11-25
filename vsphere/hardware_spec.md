@@ -4,13 +4,13 @@ title: Hardware Requirements
 
 This page shows the hardware requirements for installing BOSH and Cloud Foundry on vSphere.
 
-Cloud Foundry requires an ESXi host on which to run; the hardware requirements for running ESXi 5.5 can be found [here](http://kb.vmware.com/selfservice/microsites/search.do?language=en_US&cmd=displayKC&externalId=2052329).
+Cloud Foundry requires an ESXi host on which to run. The hardware requirements for running ESXi 5.5 can be found [here](http://kb.vmware.com/selfservice/microsites/search.do?language=en_US&cmd=displayKC&externalId=2052329).
 
-Cloud Foundry also requires a vCenter to manage the ESXi host; the hardware requirements for running vCenter Server can be found [here](http://kb.vmware.com/selfservice/microsites/search.do?language=en_US&cmd=displayKC&externalId=2005086).
+Cloud Foundry also requires a vCenter to manage the ESXi host. The hardware requirements for running vCenter Server can be found [here](http://kb.vmware.com/selfservice/microsites/search.do?language=en_US&cmd=displayKC&externalId=2005086).
 
 ## Minimum Requirements
 
-The ESXi host on which Cloud Foundry will be installed must have the following resources available:
+The ESXi host where you install Cloud Foundry must have the following resources available:
 
 * Processor: **2 Physical CPU Cores** (hyperthreading does not count)
 * RAM: **48 GiB RAM**
