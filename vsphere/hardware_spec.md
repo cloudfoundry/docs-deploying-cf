@@ -17,9 +17,9 @@ The ESXi host where you install Cloud Foundry must have the following resources 
 * Hard Disk Space: **500 GB**
 * 1 NIC (Network Interface Controller)
 
-## Recommended
+## Recommended Requirements
 
-For internal small-scale testing and proof-of-concept, we recommend the following:
+For internal, small-scale testing and proof-of-concept, we recommend the following:
 
 * Processor: **8 Physical CPU Cores** (hyperthreading does not count)
 * RAM: **128 GiB RAM**
