@@ -81,5 +81,5 @@ The Login Server will be available at http://login.mycloud.com (as specified in 
 
 The links "Forgot Password" and "Create an account" should be configured. These features are not implemented by Login Server; and require that you have a user-facing dashboard/console/portal to allow users to create accounts and request passwords be reset.
 
-By default, if the `properties.login.links` section is omitted these links will reference the public https://console.run.pivotal.io/ portal service. This is very confusing to your users. As such you must configure these links to your own dashboard/console.
+By default, if the `properties.login.links` section is omitted these links will reference the public Apps Manager at https://console.run.pivotal.io/. This is very confusing to your users. As such you must configure these links to your own dashboard/console.
 
