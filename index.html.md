@@ -1,5 +1,5 @@
 ---
-title: Deploying Cloud Foundry with BOSH
+title: Deploying Cloud Foundry
 ---
 
 * [Local Setup with BOSH Lite](boshlite/index.html)
