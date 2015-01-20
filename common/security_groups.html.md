@@ -1,27 +1,10 @@
 ---
-title: Security Groups for Cloud Foundry and BOSH
+title: Security Groups for Cloud Foundry
 ---
 
 AWS and OpenStack offer Security Groups as a mechanism to restrict inbound traffic to servers.
 
 The examples below show the Security Groups that are referenced in other sections of this documentation.
-
-## <a id="bosh"></a>bosh
-
-| Direction | Ether Type | IP Protocol | Port Range | Remote           |
-|-----------|------------|-------------|------------|------------------|
-| Ingress   | IPv4       | UDP         | 53         | 0.0.0.0/0 (CIDR) |
-| Ingress   | IPv4       | TCP         | 4222       | 0.0.0.0/0 (CIDR) |
-| Egress    | IPv6       | Any         | -          | ::/0 (CIDR)      |
-| Ingress   | IPv4       | UDP         | 68         | 0.0.0.0/0 (CIDR) |
-| Ingress   | IPv4       | TCP         | 25555      | 0.0.0.0/0 (CIDR) |
-| Ingress   | IPv4       | TCP         | 1-65535    | bosh             |
-| Ingress   | IPv4       | TCP         | 6868       | 0.0.0.0/0 (CIDR) |
-| Ingress   | IPv4       | TCP         | 53         | 0.0.0.0/0 (CIDR) |
-| Egress    | IPv4       | Any         | -          | 0.0.0.0/0 (CIDR) |
-| Ingress   | IPv4       | TCP         | 25250      | 0.0.0.0/0 (CIDR) |
-| Ingress   | IPv4       | TCP         | 25777      | 0.0.0.0/0 (CIDR) |
-
 
 ## <a id="ssh"></a>ssh
 

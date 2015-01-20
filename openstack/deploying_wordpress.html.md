@@ -8,11 +8,7 @@ This guide describes the process for deploying [Wordpress](http://wordpress.org/
 
 ### <a id="microbosh"></a>Micro BOSH ###
 
-MicroBOSH should be deployed and targeted. See the steps in [Deploying MicroBOSH on Openstack](deploying_microbosh.html).
-
-### <a id="stemcell"></a>BOSH Stemcell ###
-
-A BOSH Stemcell should be uploaded to the Micro BOSH. See the steps in [Uploading a BOSH Stemcell](uploading_bosh_stemcell.html).
+MicroBOSH should be deployed and targeted. See the steps in [Deploying MicroBOSH on Openstack](../../bosh/deploy-microbosh-to-openstack.html).
 
 ### <a id="openstack_security_groups"></a>OpenStack Security Groups ###
 
@@ -76,7 +72,7 @@ To confirm that the BOSH sample release has been loaded into your BOSH Director 
 
 ### <a id="manifest_file"></a>Create manifest file ###
 
-Using the `deployments` directory we created when we [deployed Micro BOSH](deploying_microbosh.html#manifest_file), create a `wordpress-openstack` subdirectory:
+Using the `deployments` directory we created when we [deployed Micro BOSH](../../bosh/deploy-microbosh-to-openstack.html), create a `wordpress-openstack` subdirectory:
 
 <pre class="terminal">
 mkdir -p ~/bosh-workspace/deployments/wordpress-openstack
@@ -99,7 +95,7 @@ Adapt the `wordpress-openstack.yml` file to your environment settings. Search fo
 
 * The `director_uuid` option set the [Bosh Director](/bosh/terminology.html#director) to use. We will use the Micro Bosh Director UUID. You can get it running the command `bosh status`.
 * The `instance_type` option set the OpenStack flavor used for the compilation vms (at the `compilation` section) and jobs vms (at the `resource_pools` section). The `flavor_name` **must** have ephemeral disk (check the [validate your OpenStack](validate_openstack.html) guide).
-* The `security_groups` option set the security groups used by vms, and **must** be existing security groups. We will use the `microbosh_security_group` we created when we [deployed Micro Bosh](deploying_microbosh.html#openstack_security_groups) and the `wordpress_security_group` we created [previously](#openstack_security_groups).
+* The `security_groups` option set the security groups used by vms, and **must** be existing security groups. We will use the `microbosh_security_group` we created when we [deployed Micro Bosh](../../bosh/deploy-microbosh-to-openstack.html) and the `wordpress_security_group` we created [previously](#openstack_security_groups).
 * The `allocated_floating_ip` allows us to associate a floating IP address to the Wordpress webserver and **must** be a previously allocated floating ip (check the [prerequisites](#openstack_floating_ip) section).
 
 If you are using the new [OpenStack Networking](http://www.openstack.org/software/openstack-networking/) component, you must also adapt the below settings:

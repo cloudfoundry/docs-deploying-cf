@@ -173,18 +173,7 @@ The rest of this documentation assumes you have created this machine in the targ
 
 ## <a id="bosh-cli"></a> Install BOSH CLI ##
 
-The following steps will help you to install the BOSH command line interface (CLI) on the jump box VM:
-
-1. Make sure you have installed the core Ubuntu packages that the BOSH deployer depends on - see the [section above](#jumpbox)
-
-2. Install Ruby and RubyGems. We recommend using rbenv to install a recent version of ruby 1.9.3 (e.g. 1.9.3-p545) as we have found the versions available using apt-get on Ubuntu are out of date and don't work well.
-
-3. Install the BOSH deployer Ruby gem.
-
-        gem install bosh_cli --no-ri --no-rdoc
-        gem install bosh_cli_plugin_micro --no-ri --no-rdoc
-
-Once you have installed the deployer, you will be able to use `bosh micro` commands. To see help on these type `bosh help micro`
+Refer to the [BOSH Command Line Interface](../../bosh/bosh-cli.html) topic for installation instructions.
 
 ## <a id="next-step"></a> Next Step ##
-When you're finished setting up, move on to the next step - [deploying MicroBOSH](deploying_micro_bosh.html)
+When you're finished setting up, move on to the next step - [deploying MicroBOSH](../../bosh/deploy_microbosh_to_vcloud.html)

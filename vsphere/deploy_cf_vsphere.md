@@ -4,11 +4,11 @@ title: Deploying Cloud Foundry on vSphere using BOSH
 
 This topic describes the process for deploying Cloud Foundry to a vSphere environment using BOSH.
 
-<p class="note"><strong>Note</strong>: Run all the commands in this topic from the <code>~/deployments</code> directory of the jump box that you created in the  <a href="deploying_micro_bosh.html">Deploying MicroBOSH on vSphere</a> topic.</p>
+<p class="note"><strong>Note</strong>: Run all the commands in this topic from the <code>~/deployments</code> directory of the jump box that you created in the  <a href="../../bosh/deploy-microbosh-to-vsphere.html">Deploying MicroBOSH on vSphere</a> topic.</p>
 
 ##<a id="prerequisites"></a>Prerequisites ##
 
-You must have deployed BOSH to your vSphere. For instructions, see [Deploying BOSH using MicroBOSH on vSphere](deploying_bosh_with_micro_bosh.html)
+You must have deployed BOSH to your vSphere. For instructions, see [Deploying BOSH](../../bosh/deploying.html)
 
 ##<a id="target"></a>Target the BOSH Director ##
 

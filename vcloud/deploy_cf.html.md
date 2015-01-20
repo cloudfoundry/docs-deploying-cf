@@ -4,14 +4,11 @@ title: Deploying Cloud Foundry on vCloud using MicroBOSH or BOSH
 
 This topic describes the process for deploying Cloud Foundry to a vCloud environment using MicroBOSH or BOSH.
 
-<p class="note"><strong>Note</strong>: Run all the commands in this topic from the <code>~/deployments</code> directory of the jump box that you created in the <a href="deploying_micro_bosh.html"> Deploying MicroBOSH on vCloud</a> topic.</p>
+<p class="note"><strong>Note</strong>: Run all the commands in this topic from the <code>~/deployments</code> directory of the jump box that you created in the <a href="../../bosh/deploy_microbosh_to_vcloud.html"> Deploying MicroBOSH on vCloud</a> topic.</p>
 
 ##<a id="prerequisites"></a>Prerequisites ##
 
-You must have deployed MicroBOSH or BOSH to your vCloud environment. For instructions on deploying MicroBOSH or BOSH to a vCloud environment, see the following topics:
-
-  * [Deploying MicroBOSH on vCloud](deploying_micro_bosh.html)
-  * [Deploying BOSH using MicroBOSH on vCloud](deploying_bosh_with_micro_bosh.html)
+You must have deployed MicroBOSH or BOSH to your vCloud environment. For instructions on deploying MicroBOSH to a vCloud environment, see [Deploying MicroBOSH on vCloud](../../bosh/deploy_microbosh_to_vcloud.html).
 
 ##<a id="target"></a>Target the BOSH Director ##
 

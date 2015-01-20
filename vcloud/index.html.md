@@ -24,11 +24,11 @@ Follow the steps below to install open source Cloud Foundry on vCloud Air or vCl
 Configure a **virtual datacenter** for the installation, then deploy a **jump box** in the virtual datacenter.
 The rest of the installation is driven from this jump box.
 
-2. [Deploy MicroBOSH](deploying_micro_bosh.html):
+2. [Deploy MicroBOSH](../../bosh/deploy_microbosh_to_vcloud.html):
 Deploy **MicroBOSH** from the jump box. MicroBOSH is a single VM version of
 BOSH.
 
-3. (**Optional**) [Deploy BOSH using MicroBOSH](deploying_bosh_with_micro_bosh.html):
+3. (**Optional**) [Deploy BOSH using MicroBOSH](../../bosh/deploying.html):
 If you need production level resilience and/or large scale, install **BOSH** using MicroBOSH.
 Note that this is not illustrated in the above diagram.
 Most installations of Cloud Foundry can be done without this step by using MicroBOSH installed in step 3. Since it adds complexity, we suggest avoiding this step if possible.
@@ -37,8 +37,3 @@ Most installations of Cloud Foundry can be done without this step by using Micro
 Use either MicroBOSH or BOSH to deploy Cloud Foundry.
 
 Consult the [Troubleshooting](troubleshooting.html) page for assistance.
-
-## Sample Manifest Files ##
-
-* [Example Manifest for Deploying MicroBOSH on vCloud](micro-bosh-example-manifest.html)
-* [Example Manifest for Deploying BOSH using MicroBOSH on vCloud](bosh-example-manifest.html)

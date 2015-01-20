@@ -1,5 +1,5 @@
 ---
-title: Adding Login Server to Cloud Foundry BOSH deployment
+title: Adding a Login Server to a Cloud Foundry Deployment
 ---
 
 Core Cloud Foundry includes a Login Server component that can be used as a single-sign on (SSO) service for applications.

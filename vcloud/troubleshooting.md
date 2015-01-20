@@ -5,7 +5,7 @@ title: Troubleshooting
 
 ## <a id="ssh_to_vms"></a> SSHing to BOSH created VMS
 
-If you need to debug a Cloud Foundry deployment you will probably need to log into one or more of the deployed VMs at some point. You can get the IP address using `bosh vms` . Then use `ssh` to connect to the VM. By default you can use the userid `vcap` with the password `c1oudc0w` . You can change the default password in the manifest file as described in the [micro BOSH deployment instructions](./deploying_micro_bosh.html)
+If you need to debug a Cloud Foundry deployment you will probably need to log into one or more of the deployed VMs at some point. You can get the IP address using `bosh vms` . Then use `ssh` to connect to the VM. By default you can use the userid `vcap` with the password `c1oudc0w` . You can change the default password in the manifest file as described in the [micro BOSH deployment instructions](../../bosh/deploy_microbosh_to_vcloud.html)
 
 Once you are logged into the target machine the Cloud Foundry components are typically deployed in `/var/vcap`. The following session demonstrates getting the VM IPs, logging into the UAA and showing the log.
 
