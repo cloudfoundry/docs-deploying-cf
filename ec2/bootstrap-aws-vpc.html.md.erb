@@ -17,10 +17,8 @@ Cloud Foundry to Amazon Web Services.
 For example, if you select the domain name *cloud.example.com*, Cloud Foundry deploys each of your applications as *APP-NAME.cloud.example.com*.
 
 1. Create an AWS Route 53 Hosted Zone for your domain on the [AWS Route 53 control panel](https://console.aws.amazon.com/route53).
-The control panel displays a **delegation set**, which is a list of addresses to
-which you must delegate DNS authority for your domain.
-For example, if you selected the domain name *cloud.example.com*, each address
-in the delegation set should become an NS record in the DNS server for
+
+1. Select the checkbox for a hosted zone to view the **Hosted Zone Details**  panel. The panel displays the **Name Servers** section, which contains a list of addresses to which you must delegate DNS authority for your domain. For example, if you selected the domain name *cloud.example.com*, each address in **Name Servers** should become an NS record in the DNS server for
 *example.com*.
 
 <%= image_tag("hostedzone.png") %>
@@ -44,8 +42,7 @@ steps.
     $ mkdir cf-example
     </pre>
 
-1. In the sub-directory, create a file named `Gemfile` with the following
-contents:
+1. In the `cf-example` sub-directory, create a file named `Gemfile` with the following contents:
 
     ~~~
     source 'https://rubygems.org'
@@ -60,33 +57,32 @@ contents:
     </pre>
 
 1. Create a file named `bosh_environment` and add the following contents,
-replacing the values in each line to match your configuration:
+replacing the values in each line to match your configuration.
+cat 
+    Note the following:
+    * The values that you add for <code>BOSH_VPC_DOMAIN</code> and <code>BOSH_VPC_SUBDOMAIN</code> must correspond to the DNS domain name that you set up when configuring Route 53. The example below uses <code>my-subdomain.example.com</code>.
+    * The values that you add for <code>BOSH_AWS_ACCESS_KEY_ID</code> and <code>BOSH_SECRET_ACCESS_KEY</code> are the [AWS credentials](deploy-microbosh-to-aws.html#credentials) you established when you deployed MicroBOSH to AWS.
+    * For the `BOSH_VPC_PRIMARY_AZ` and `BOSH_VPC_SECONDARY_AZ` properties, choose an availability zone that is listed as "operating normally" in the Health Status section of the [AWS Console](https://console.aws.amazon.com/ec2/v2/home?region=us-east-1) for your region.
 
     ~~~
     export BOSH_VPC_DOMAIN=example.com
     export BOSH_VPC_SUBDOMAIN=my-subdomain
     export BOSH_AWS_ACCESS_KEY_ID=AWS_ACCESS_KEY_ID
     export BOSH_AWS_SECRET_ACCESS_KEY=AWS_SECRET_ACCESS_KEY
-    export BOSH_AWS_REGION=my-aws-region
-    export BOSH_VPC_PRIMARY_AZ=us-east-1a   # see note below
-    export BOSH_VPC_SECONDARY_AZ=us-east-1d # see note below
+    export BOSH_AWS_REGION=us-east-1
+    export BOSH_VPC_PRIMARY_AZ=us-east-1a
+    export BOSH_VPC_SECONDARY_AZ=us-east-1b
     ~~~
 
-    <p class="note"><strong>Note</strong>: The values you add for <code>BOSH_VPC_DOMAIN</code> and <code>BOSH_VPC_SUBDOMAIN</code> must correspond to the DNS domain name you set up when configuring Route 53.</p>
+    <p class="note"><strong>Note</strong>: The following steps only support deployment to the <code>us-east-1</code> region of AWS.<br><br>
+To deploy MicroBOSH to a different region, see <a href="https://gist.github.com/danhigham/5804252">this guide</a>.</p>
+
 
 1. Run `source bosh_environment` to set the environment variables required for deploying to AWS.
 
     <pre class="terminal">
     $ source bosh_environment
     </pre>
-
-    <p class="note"><strong>Note</strong>: The following steps only support deployment to the <code>us-east-1</code> region of AWS.<br><br>
-To deploy MicroBOSH to a different region, see <a href="https://gist.github.com/danhigham/5804252">this guide</a>.</p>
-
-1. Choose an availability zone that is listed as "operating normally" in the
-Health Status section of the
-the [AWS Console](https://console.aws.amazon.com/ec2/v2/home?region=us-east-1)
-for your region.
 
 1. Run `bosh aws create` to create a VPC Internet Gateway, VPC subnets,
 three RDS databases, and a NAT VM for Cloud Foundry subnet routing.
@@ -201,8 +197,7 @@ administrator.
 * If you make change to your manifest, run `bosh deploy` to update your Cloud
 Foundry deployment with these changes.
 
-* If you make changes to the `cf-release` directory, run `bosh create release && bosh upload release && bosh deploy` to update your Cloud Foundry deployment with
-these changes.
+* If you make changes to the `cf-release` directory, run `bosh create release && bosh upload release && bosh deploy` to update your Cloud Foundry deployment with these changes.
 
 ## <a id="deploy-cloudfoundry-services"></a>Deploy Cloud Foundry Services##
 
