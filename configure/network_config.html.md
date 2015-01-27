@@ -10,7 +10,7 @@ Your cloud performance can be affected if the application developer attempts to 
 
 To guard against this, you can blacklist the range of IP addresses that you allocate to Cloud Foundry components in your manifest.
 
-To blacklist an IP address range, add the `loggregator.blacklisted_syslog_ranges` property to your manifest.
+To blacklist an IP address range, add the `doppler.blacklisted_syslog_ranges` property to your manifest.
 Specify starting and ending IP addresses for each IP address range.
 
 Example manifest excerpt:
@@ -19,7 +19,7 @@ Example manifest excerpt:
 properties:
   ... other properties ...
 
-  loggregator:
+  doppler:
     blacklisted_syslog_ranges:
     - start: 10.10.16.0
       end: 10.10.31.255
