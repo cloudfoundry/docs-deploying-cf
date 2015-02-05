@@ -24,7 +24,7 @@ Ensure that "N. Virginia" is selected as the AWS Region, then click **Security G
 
 ![image alt text](ec2/image_30.png)
 
-On the pop-up dialog, assign "cf" to the Name, "cf Security Group" to the Description, and leave "No VPC" selected in the dropdown menu.
+On the pop-up dialog, assign "cf" to the Name tag, "cf" to Group tag, "cf Security Group" to the Description, and select VPC for the BOSH in the dropdown menu.
  Click **Yes, Create** to confirm.
 
 ![image alt text](ec2/image_31.png)
