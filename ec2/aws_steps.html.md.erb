@@ -2,33 +2,21 @@
 title: Deploying to AWS
 ---
 
-This guide is intended to walk someone with minimal experience through an
-end-to-end Cloud Foundry deployment running on Amazon Web Services (AWS) EC2.
-This includes installing the Command Line Interface (CLI) locally, installing
-MicroBOSH, deploying BOSH from MicroBOSH on AWS, and deploying Cloud Foundry
-from BOSH on AWS.
+This tutorial guides users who have minimal experience with Cloud Foundry deployments through deploying a test environment that runs on Amazon Web Services (AWS) EC2.
 
-**WARNING**: On AWS, Cloud Foundry uses BOSH DNS, and BOSH DNS requires a
-single-VM implementation of PostgreSQL.
-This results in a non-fault-tolerant DNS situation.
-In a production environment, use static IP addresses to communicate between
-internal VMs in non-fault-tolerant DNS situations.
-Detailing the steps to configure static IP addresses in a production environment
-is beyond the scope of this guide.
+##Installing MicroBOSH and Cloud Foundry on AWS ##
 
-##Installing MicroBOSH, BOSH, and Cloud Foundry on AWS ##
+Complete the following steps to set up and deploy a Cloud Foundry release using MicroBOSH on AWS:
 
-Complete the following steps to set up and deploy a full Cloud Foundry release using BOSH on AWS:
-
-1. [Create an AWS Account](http://goo.gl/MaAybK) if you do not already have one.
+1. [Create an AWS Account](http://goo.gl/MaAybK), or sign in to your existing account.
 
 1. [Deploy MicroBOSH to AWS](/bosh/deploy-microbosh-to-aws.html)
-
-1. [Deploy BOSH on AWS](../../bosh/deploy-with-bosh.html)
 
 1. [Configure AWS for Cloud Foundry](./configure_aws_cf.html)
 
 1. [Deploy Cloud Foundry on AWS](./deploy_aws_cf.html)
+
+<p class="note"><strong>Note</strong>: On AWS, Cloud Foundry uses BOSH DNS, and BOSH DNS requires a single-VM implementation of PostgreSQL. This results in a non-fault-tolerant DNS situation. In a production environment, use static IP addresses to communicate between internal VMs in non-fault-tolerant DNS situations. Detailing the steps to configure static IP addresses in a production environment is not described in this guide.</p>
 
 ##Additional Information ##
 

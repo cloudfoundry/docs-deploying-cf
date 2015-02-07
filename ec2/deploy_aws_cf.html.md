@@ -2,28 +2,39 @@
 title: Deploying Cloud Foundry on AWS
 ---
 
-This topic leverages the security group and ports opened in the [Configuring AWS for Cloud Foundry](./configure_aws_cf.html) topic to deploy Cloud Foundry from the BOSH server:
+This topic leverages the stemcell uploaded in the [Deploying MicroBOSH to AWS](./deploy-microbosh-to-aws.html) topic and the AWS and minimal manifest configuration information defined in the [Configuring AWS for Cloud Foundry](./configure_aws_cf.html) topic.
+
+Run `bosh stemcells` to view stemcells that are active in your MicroBOSH deployment.
 
 ##<a id="release"></a>Obtain and Upload Release ##
 
-Create a folder on the local computer to store the CF Release:
+1. Create a directory on your machine to store the cf release:
 
-<pre class="terminal">
-  mkdir -p ~/bosh-workspace/releases/
-  cd ~/bosh-workspace/releases/
-  git clone -b release-candidate git://github.com/cloudfoundry/cf-release.git
-  cd ~/bosh-workspace/releases/cf-release
-</pre>
+    <pre class="terminal">
+    mkdir -p ~/cf-workspace/test/cf-release/
+    cd ~/cf-workspace/test/cf-release/
+    </pre>
 
-Navigate to the releases folder and pick a recent release, then upload:
+1. Clone the `cf-release` repo from GitHub and navigate to the `releases` subdirectory:
 
-<pre class="terminal">
-  bosh upload release ~/bosh-workspace/releases/cf-release/releases/cf-146.yml
-</pre>
+    <pre class="terminal">
+    git clone -b release-candidate git://github.com/cloudfoundry/cf-release.git
+    cd ~/cf-workspace/test/cf-release/releases
+    </pre>
 
-**Note**: If you get a blobstore error "No space left of device…",
-the local computer ran out of space in the `/tmp` folder. To fix
-this, find a larger local partition and execute the following commands to point `/tmp` to a larger device:
+1. Select and upload a recent release:
+
+    <pre class="terminal">
+    bosh upload release ~/cf-workspace/test/cf-release/releases/cf-193.yml
+    </pre>
+
+1. To confirm that the release was successful:
+
+    <pre class="terminal">
+    bosh releases
+    </pre>
+
+<p class="note"><strong>Note</strong>: If you get a blobstore error that indicates that the device has no space left, your machine ran out of space in the <code>/tmp</code> directory. To fix this, find a larger local partition and execute the following commands to point <code>/tmp</code> to a larger device:</p>
 
 <pre class="terminal">
   sudo su -
@@ -33,58 +44,35 @@ this, find a larger local partition and execute the following commands to point 
   sudo chmod 1777 /tmp
 </pre>
 
-To confirm that the release was successful:
-
-<pre class="terminal">
-  bosh releases
-</pre>
-
-##<a id="stemcell"></a>Obtain and Upload Stemcell ##
-
-These are the same instructions that we used to upload the latest stemcell of BOSH onto the MicroBOSH server:
-
-<pre class="terminal">
-  bosh upload stemcell https://s3.amazonaws.com/bosh-jenkins-artifacts/bosh-stemcell/aws/bosh-stemcell-1274-aws-xen-ubuntu.tgz
-</pre>
-
-
-After the upload is complete, view the list of stemcells by calling:
-
-<pre class="terminal">
-  bosh stemcells
-</pre>
-
-##<a id="manifest"></a>Generate a Deployment Manifest ##
-
-You need a deployment manifest to deploy Cloud Foundry.
-We recommend using [Spiff](https://github.com/cloudfoundry-incubator/spiff) to
-generate Cloud Foundry deployment manifests.
-
-Spiff produces a deployment manifest by merging environment-specific information
-that you provide in a stub with the most current Cloud Foundry release
-templates.
-
-Follow the instructions in the [Generating a Cloud Foundry Deployment Manifest Using Spiff](../cf-manifest-spiff.html) topic.
-
 ##<a id="deploy"></a>Deploy Cloud Foundry on AWS ##
 
-Everything is now in place to use the deployment manifest you have
-created and deploy Cloud Foundry from the BOSH server to AWS. Let’s now do this.
+To deploy Cloud Foundry on AWS:
 
-Select the deployment file:
+1. Deploy the manifest you created in the [Configuring AWS for Cloud Foundry](./configure_aws_cf.html) topic.
+
+    <pre class="terminal">
+    bosh deployment ~/PATH_TO_YOUR_MANIFEST/MANIFEST_NAME.yml
+    </pre>
+
+1. Deploy BOSH.
+
+    <pre class="terminal">
+    bosh deploy
+    </pre>
+
+
+Re-run `bosh deploy` if you receive the error: `Error 400007: 'api/0' is not running after update`
+
+##<a id="access-cf-vms"></a>Access Cloud Foundry VMs ##
+
+To manage your Cloud Foundry deployment, you need to access the VMs using SSH. 
+
+Run the `bosh vms` command to view a list of deployed VMs. 
+
+Access the VMs with the following command:
 
 <pre class="terminal">
-  bosh deployment ~/bosh-workspace/deployments/cf/cf.yml</td>
+bosh ssh VM_FROM_BOSH_VMS_COMMAND/INSTANCE_NUMBER --gateway_host YOUR_PUBLIC_MICROBOSH_ADDRESS --gateway_user vcap
 </pre>
 
-
-Deploy the BOSH:
-
-<pre class="terminal">
-  bosh deploy
-</pre>
-
-
-If you receive the following error, try running "bosh deploy" again:
-
-**Error 400007: `api/0' is not running after update**
+Back to [Deploying to AWS](aws_steps.html)
