@@ -35,7 +35,7 @@ Create a manifest for your deployment as follows:
     * `REPLACE_WITH_SSL_CERT_AND_KEY`
     
 
-1. Run `bosh status --uuid` to retrieve your bosh director id. Replace `REPLACE_WITH_DIRECTOR_ID` in the example manifest with this value.
+1. Run `bosh status --uuid` to retrieve your BOSH Director ID. Update `REPLACE_WITH_DIRECTOR_ID` in the example manifest with this value.
 
 We describe replacing these properties in [Step 2: Configure AWS for Your Cloud Foundry Deployment](#config-aws).
 
@@ -99,13 +99,13 @@ To configure your AWS account for Cloud Foundry:
 1. Click **Create Subnet** and complete as follows:
     * **Name tag**: cf
     * **VPC**: microbosh
-    * **Availability Zone**: Pick the same Availability Zone as the microbosh Subnet.
+    * **Availability Zone**: Pick the same Availability Zone as the MicroBOSH Subnet.
     * **CIDR block**: 10.0.16.0/24
-    * Click **Yes, Create**
+    * Click **Yes, Create**.
 1. Replace the following in your manifest:
     * `REPLACE_WITH_AZ` with the Availability Zone you chose.
     * `REPLACE_WITH_PRIVATE_SUBNET_ID` with the Subnet ID for the cf Subnet.
-    * `REPLACE_WITH_PUBLIC_SUBNET_ID` with the Subnet ID for the microbosh Subnet.
+    * `REPLACE_WITH_PUBLIC_SUBNET_ID` with the Subnet ID for the MicroBOSH Subnet.
 1. Select the "cf Subnet" from the **Subnet** list.
 1. Click the **Route table** tab in the bottom window to view the route tables.
 1. Click the route table ID link in the **Route Table** field.
@@ -156,7 +156,7 @@ If you have a domain you plan to use for your Cloud Foundry System Domain, set u
 
 If you do not have a domain, you can use 0.0.0.0.xip.io for your System Domain and replace the zeroes with your Elastic IP.
 
-1. Update `REPLACE_WITH_SYSTEM_DOMAIN` with your system domain.
+1. Update `REPLACE_WITH_SYSTEM_DOMAIN` with your system domain value.
 
 1. Run the following series of commands to generate an SSL certificate for your system domain:
 

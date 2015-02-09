@@ -2,7 +2,7 @@
 title: Deploying Cloud Foundry on AWS
 ---
 
-This topic leverages the stemcell uploaded in the [Deploying MicroBOSH to AWS](../../bosh/deploy-microbosh-to-aws.html) topic and the AWS and minimal manifest configuration information defined in the [Configuring AWS for Cloud Foundry](./configure_aws_cf.html) topic.
+This topic leverages the AWS and Cloud Foundry components defined and uploaded in the [Deploying MicroBOSH to AWS](../../bosh/deploy-microbosh-to-aws.html) and [Configuring AWS for Cloud Foundry](./configure_aws_cf.html) topics.
 
 Run `bosh stemcells` to view stemcells that are active in your MicroBOSH deployment.
 
@@ -61,7 +61,7 @@ To deploy Cloud Foundry on AWS:
     </pre>
 
 
-Re-run `bosh deploy` if you receive the error: `Error 400007: 'api/0' is not running after update`
+Re-run `bosh deploy` if you receive the message: `Error 400007: 'api/0' is not running after update`
 
 ##<a id="access-cf-vms"></a>Access Cloud Foundry VMs ##
 
