@@ -57,7 +57,7 @@ To configure your AWS account for Cloud Foundry:
 1. Search for and select "amzn-ami-vpc-nat-pv-2014.09.1.x86_64-ebs".
 1. Select "m1.small".
 1. Click **Next: Configure Instance Details** and complete as follows:
-    * **Network**: Select your 'microbosh' VPC.
+    * **Network**: Select your 'bosh' VPC.
     * **Subnet**: Select your "Public subnet".
     * **Auto-assign Public IP**: "Enable"
 1. Click **Next: Add Storage**.
@@ -98,7 +98,7 @@ To configure your AWS account for Cloud Foundry:
 1. Click **Subnets** from the VPC Dashboard.
 1. Click **Create Subnet** and complete as follows:
     * **Name tag**: cf
-    * **VPC**: microbosh
+    * **VPC**: bosh
     * **Availability Zone**: Pick the same Availability Zone as the MicroBOSH Subnet.
     * **CIDR block**: 10.0.16.0/24
     * Click **Yes, Create**.
