@@ -108,7 +108,7 @@ To configure your AWS account for Cloud Foundry:
 1. Select the "cf Subnet" from the **Subnet** list.
 1. Click the **Route table** tab in the bottom window to view the route tables.
 1. Click the route table ID link in the **Route Table** field.
-1. Select the route and click the **Routes** tab in the bottom window.
+1. Select the route to display the route details in the bottom window. Click the **Routes** tab.
 1. Click **Edit** and complete as follows:
     * **Destination**: 0.0.0.0/0
     * **Target**: Select the NAT instance from the list.
@@ -140,7 +140,7 @@ To configure your AWS account for Cloud Foundry:
 
 ###<a id="config-cf-dns"></a> Configure your Cloud Foundry System Domain
 
-If you have a domain you plan to use for your Cloud Foundry System Domain, use the procedure below to set up your DNS. If you do not have a domain, skip steps 1 through 5 and use YOUR\_ELASTIC\_IP.xip.io for your System Domain.
+If you have a domain you plan to use as your Cloud Foundry System Domain, use the procedure below to set up your DNS. If you do not have a domain, skip steps 1-5 and use YOUR\_ELASTIC\_IP.xip.io as your System Domain.
 
 Create a wildcard DNS entry for your root System Domain in the form `*.ROOT_SYSTEM_DOMAIN.com` to point at the Elastic IP address you created in the [Create a Subnet for Cloud Foundry Deployment](#create-cf-subnet) section.
 
@@ -175,7 +175,7 @@ Create a wildcard DNS entry for your root System Domain in the form `*.ROOT_SYST
     $ cat cf.crt && cat cf.key
     </pre>
 
-1. Update `REPLACE_WITH_SSL_CERT_AND_KEY` in your manifest with the value from the above command, indented properly.
+1. Update `REPLACE_WITH_SSL_CERT_AND_KEY` in your manifest with the value from the above command.
 
 Back to [Deploying to AWS](aws_steps.html)
 
