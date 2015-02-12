@@ -26,14 +26,16 @@ Create a manifest for your deployment as follows:
 1. Navigate to the example_manifests subdirectory to retrieve the `minimal-aws.yml` template. Copy and paste the template into a text editor and save the edited manifest to your deployment directory.
 
     In the template, you must replace the following properties:
-    * `REPLACE_WITH_DIRECTOR_ID`
-    * `REPLACE_WITH_PRIVATE_SUBNET_ID`
-    * `REPLACE_WITH_PUBLIC_SUBNET_ID`
-    * `REPLACE_WITH_ELASTIC_IP`
-    * `REPLACE_WITH_PUBLIC_SECURITY_GROUP`
+
+    * `REPLACE_WITH_AZ`
     * `REPLACE_WITH_BOSH_SECURITY_GROUP`
-    * `REPLACE_WITH_SYSTEM_DOMAIN`
+    * `REPLACE_WITH_DIRECTOR_ID`
+    * `REPLACE_WITH_ELASTIC_IP`
+    * `REPLACE_WITH_PRIVATE_SUBNET_ID`
+    * `REPLACE_WITH_PUBLIC_SECURITY_GROUP`
+    * `REPLACE_WITH_PUBLIC_SUBNET_ID`
     * `REPLACE_WITH_SSL_CERT_AND_KEY`
+    * `REPLACE_WITH_SYSTEM_DOMAIN`
 
     We describe replacing these properties in [Step 2: Configure AWS for Your Cloud Foundry Deployment](#config-aws). 
 
@@ -79,7 +81,6 @@ To configure your AWS account for Cloud Foundry:
 1. Select the "NAT" instance in the **Instances** list.
 1. Click **Actions**, then **Networking**, then **Change Source/Dest. Check**.
 1. Click **Yes, Disable**.
-
 
 ###<a id="update-mibo-sec-group"></a> Update the MicroBOSH Security Group
 
