@@ -16,7 +16,7 @@ The goal of these instructions is to help you deploy an environment that looks l
 * We provide outbound connectivity for all VMs from the private network to a public network.
 * We provide inbound access to the jump box VM and to the Cloud Foundry instance from the public network.
 
-![vCloud Air / vCloud Director Cloud Foundry deployment](/vcloud_images/vcloud_cf_deployment_vms.png)
+![vCloud Air / vCloud Director Cloud Foundry deployment](vcloud_images/vcloud_cf_deployment_vms.png)
 
 Follow the steps below to install open source Cloud Foundry on vCloud Air or vCloud Director.
 

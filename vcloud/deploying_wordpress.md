@@ -31,11 +31,11 @@ Now we download the latest stem cellto upload to our micro BOSH instance.
 ##Create a Private Network##
 
    1. [Add private networks](http://pubs.vmware.com/vcd-51/index.jsp?topic=%2Fcom.vmware.vcloud.admin.doc_51%2FGUID-6E69AF88-31E0-4DD8-A79E-E8E4B6F68878.html) to separate application components from each other and from direct access by users. Here, “cf-net” is a direct network added earlier and “cf-routed” is a private network.
-	![vcloud_private_network](/images/vcloud_private_network.png)
+	![vcloud_private_network](../images/vcloud_private_network.png)
 
    1. To allow machines on the private network to talk outside the network, e.g. the micro BOSH, [configure a source NAT rule on the network](http://www.google.com/url?q=http%3A%2F%2Fpubs.vmware.com%2Fvcd-51%2Findex.jsp%3Ftopic%3D%252Fcom.vmware.vcloud.admin.doc_51%252FGUID-464E27A8-3238-4553-ABCF-77808D3A510D.html&sa=D&sntz=1&usg=AFQjCNGXS8KPBo_PsbMblK3bh835u_FFmg).
 
-	![vcloud_source_nat](/images/vcloud_source_nat.png)
+	![vcloud_source_nat](../images/vcloud_source_nat.png)
 
 ##Create a Deployment Manifest##
 
