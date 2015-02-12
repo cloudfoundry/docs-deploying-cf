@@ -59,7 +59,7 @@ To configure your AWS account for Cloud Foundry:
 1. Search for and select "amzn-ami-vpc-nat-pv-2014.09.1.x86_64-ebs".
 1. Select "m1.small".
 1. Click **Next: Configure Instance Details** and complete as follows:
-    * **Network**: Select your 'bosh' VPC.
+    * **Network**: Select your "bosh" VPC.
     * **Subnet**: Select your "Public subnet".
     * **Auto-assign Public IP**: "Enable"
 1. Click **Next: Add Storage**.
