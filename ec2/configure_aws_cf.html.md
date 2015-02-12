@@ -31,6 +31,7 @@ Create a manifest for your deployment as follows:
     * `REPLACE_WITH_PUBLIC_SUBNET_ID`
     * `REPLACE_WITH_ELASTIC_IP`
     * `REPLACE_WITH_PUBLIC_SECURITY_GROUP`
+    * `REPLACE_WITH_BOSH_SECURITY_GROUP`
     * `REPLACE_WITH_SYSTEM_DOMAIN`
     * `REPLACE_WITH_SSL_CERT_AND_KEY`
 
@@ -91,6 +92,7 @@ To configure your AWS account for Cloud Foundry:
     * **Port Range**: "4443"
     * **Source**: "0.0.0.0/0"
 1. Click **Save**.
+1. Update `REPLACE_WITH_BOSH_SECURITY_GROUP` in your manifest with the MicroBOSH security Group ID.
 
 ###<a id="create-cf-subnet"></a> Create a Subnet for Cloud Foundry Deployment 
 
@@ -136,7 +138,7 @@ To configure your AWS account for Cloud Foundry:
 	<tr><td>Custom TCP Rule</td><td>TCP</td><td>4443</td><td>0.0.0.0/0</td></tr>
 </table>
 
-1. Update `REPLACE_WITH_PUBLIC_SECURITY_GROUP` in your manifest with the new security group.
+1. Update `REPLACE_WITH_PUBLIC_SECURITY_GROUP` in your manifest with the cf-public security group ID.
 
 ###<a id="config-cf-dns"></a> Configure your Cloud Foundry System Domain
 
