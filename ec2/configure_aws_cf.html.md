@@ -6,7 +6,7 @@ This topic describes how to configure Amazon Web Services (AWS) for Cloud Foundr
 
 ## <a id="create-cf-manifest"></a>Step 1: Create a Deployment Manifest
 
-The Cloud Foundry deployment manifest is a YAML file that defines the deployment components and properties. The [*cloudfoundry/cf-release*](https://github.com/cloudfoundry/cf-release) repo
+The Cloud Foundry deployment manifest is a YAML file that defines the deployment components and properties. The [cloudfoundry/cf-release](https://github.com/cloudfoundry/cf-release) repo
 contains template deployment manifests that you can edit with your deployment information. The `minimal-aws.yml` file contains the minimum information necessary to deploy Cloud Foundry to AWS.
 
 Create a manifest for your deployment as follows:
@@ -14,16 +14,16 @@ Create a manifest for your deployment as follows:
 1. Create a deployment directory to store your manifest.
 
     <pre class='terminal'>
-    $ mkdir ~/CF-deployment
+    $ mkdir ~/cf-deployment
     </pre>
 
-1. Clone the *cloudfoundry/cf-release* repo.
+1. Change into the cf-deployment directory and clone the cloudfoundry/cf-release repo.
 
     <pre class='terminal'>
     $ git clone https://github.com/cloudfoundry/cf-release.git
     </pre>
 
-1. Navigate to the *example_manifests* subdirectory to retrieve the `minimal-aws.yml` template. Copy and paste the template into a text editor and save the edited manifest to your deployment directory.
+1. Navigate to the example_manifests subdirectory to retrieve the `minimal-aws.yml` template. Copy and paste the template into a text editor and save the edited manifest to your deployment directory.
 
     In the template, you must replace the following properties:
     * `REPLACE_WITH_DIRECTOR_ID`
@@ -33,11 +33,10 @@ Create a manifest for your deployment as follows:
     * `REPLACE_WITH_PUBLIC_SECURITY_GROUP`
     * `REPLACE_WITH_SYSTEM_DOMAIN`
     * `REPLACE_WITH_SSL_CERT_AND_KEY`
-    
+
+    We describe replacing these properties in [Step 2: Configure AWS for Your Cloud Foundry Deployment](#config-aws). 
 
 1. Run `bosh status --uuid` to retrieve your BOSH Director ID. Update `REPLACE_WITH_DIRECTOR_ID` in the example manifest with this value.
-
-We describe replacing these properties in [Step 2: Configure AWS for Your Cloud Foundry Deployment](#config-aws).
 
 ##<a id="config-aws"></a>Step 2: Configure AWS for Your Cloud Foundry Deployment
 
@@ -86,7 +85,7 @@ To configure your AWS account for Cloud Foundry:
 1. On the VPC Dashboard, click **Security Groups**.
 1. Select the "bosh" security group.
 1. Click **Inbound Rules** at the bottom.
-1. Click **Edit** and **Add another rule** as follows:
+1. Click **Edit** and add a rule as follows:
     * **Type**: "Custom TCP Rule"
     * **Protocol**: "TCP (6)"
     * **Port Range**: "4443"
@@ -109,7 +108,7 @@ To configure your AWS account for Cloud Foundry:
 1. Select the "cf Subnet" from the **Subnet** list.
 1. Click the **Route table** tab in the bottom window to view the route tables.
 1. Click the route table ID link in the **Route Table** field.
-1. Click the **Routes** tab in the bottom window.
+1. Select the route and click the **Routes** tab in the bottom window.
 1. Click **Edit** and complete as follows:
     * **Destination**: 0.0.0.0/0
     * **Target**: Select the NAT instance from the list.
@@ -123,30 +122,31 @@ To configure your AWS account for Cloud Foundry:
     * **Group name**: cf-public
     * **Description**: cf Public Security Group
     * **VPC**: Select the bosh VPC.
-    * Click **Create**.
-1. In **Inbound Rules** tab in the bottom window, click **Edit** and add the following inbound rules:
+    * Click **Yes, Create**.
+1. In the **Inbound Rules** tab in the bottom window, click **Edit** and add the following inbound rules:
 <table border="1" class="nice">
 	<tr>
 		<th>Type</th>
+		<th>Protocol</th>
 		<th>Port Range</th>
 		<th>Source</th>
-		<th>Purpose</th>
 	</tr>
 	<tr><td>HTTP</td><td>TCP</td><td>80</td><td>0.0.0.0/0</td></tr>
 	<tr><td>HTTPS</td><td>TCP</td><td>443</td><td>0.0.0.0/0</td></tr>
-	<tr><td>TCP</td><td>TCP</td><td>4443</td><td>0.0.0.0/0</td></tr>
+	<tr><td>Custom TCP Rule</td><td>TCP</td><td>4443</td><td>0.0.0.0/0</td></tr>
 </table>
 
 1. Update `REPLACE_WITH_PUBLIC_SECURITY_GROUP` in your manifest with the new security group.
 
 ###<a id="config-cf-dns"></a> Configure your Cloud Foundry System Domain
 
-If you have a domain you plan to use for your Cloud Foundry System Domain, set up your DNS as follows:
+If you have a domain you plan to use for your Cloud Foundry System Domain, use the procedure below to set up your DNS. If you do not have a domain, skip steps 1 through 5 and use YOUR\_ELASTIC\_IP.xip.io for your System Domain.
 
-1. Create a wildcard DNS entry for your root System Domain in the form `*.your-cf-domain.com` to point at the Elastic IP address you created in the [Create a Subnet for Cloud Foundry Deployment](#create-cf-subnet) section.
-1. Click on **Route 53** from the Amazon Web Services Dashboard.
+Create a wildcard DNS entry for your root System Domain in the form `*.ROOT_SYSTEM_DOMAIN.com` to point at the Elastic IP address you created in the [Create a Subnet for Cloud Foundry Deployment](#create-cf-subnet) section.
+
+1. Click on **Route 53** from the AWS Console.
 1. Click on **Hosted Zones**.
-1. Select your zone.
+1. Create a zone or select an existing zone.
 1. Click **Go to Record Sets**.
 1. Click **Create Record Set** and complete as follows:
     * **Name**: *
@@ -154,10 +154,7 @@ If you have a domain you plan to use for your Cloud Foundry System Domain, set u
     * **Value**: Enter the Elastic IP created above.
     * Click **Create**.
 
-If you do not have a domain, you can use 0.0.0.0.xip.io for your System Domain and replace the zeroes with your Elastic IP.
-
-1. Update `REPLACE_WITH_SYSTEM_DOMAIN` with your system domain value.
-
+1. Update `REPLACE_WITH_SYSTEM_DOMAIN` with your root System Domain, for example, `your-cf-domain.com`.
 1. Run the following series of commands to generate an SSL certificate for your system domain:
 
     <pre class="terminal">
@@ -178,7 +175,7 @@ If you do not have a domain, you can use 0.0.0.0.xip.io for your System Domain a
     $ cat cf.crt && cat cf.key
     </pre>
 
-1. Update `REPLACE_WITH_SSL_CERT_AND_KEY` in your manifest with the value from the above command.
+1. Update `REPLACE_WITH_SSL_CERT_AND_KEY` in your manifest with the value from the above command, indented properly.
 
 Back to [Deploying to AWS](aws_steps.html)
 

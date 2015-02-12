@@ -6,26 +6,18 @@ This topic leverages the AWS and Cloud Foundry components defined and uploaded i
 
 Run `bosh stemcells` to view stemcells that are active in your MicroBOSH deployment.
 
-##<a id="release"></a>Obtain and Upload Release ##
+##<a id="release"></a>Select and Upload Release ##
 
-1. Create a directory on your machine to store the cf release:
-
-    <pre class="terminal">
-    mkdir -p ~/cf-workspace/test/cf-release/
-    cd ~/cf-workspace/test/cf-release/
-    </pre>
-
-1. Clone the `cf-release` repo from GitHub and navigate to the `releases` subdirectory:
+1. Navigate to the releases subdirectory:
 
     <pre class="terminal">
-    git clone -b release-candidate git://github.com/cloudfoundry/cf-release.git
-    cd ~/cf-workspace/test/cf-release/releases
+    cd ~/cf-deployment/cf-release/releases/
     </pre>
 
 1. Select and upload a recent release:
 
     <pre class="terminal">
-    bosh upload release ~/cf-workspace/test/cf-release/releases/cf-193.yml
+    bosh upload release ~/cf-deployment/cf-release/releases/cf-193.yml
     </pre>
 
 1. To confirm that the release was successful:
@@ -37,11 +29,11 @@ Run `bosh stemcells` to view stemcells that are active in your MicroBOSH deploym
 <p class="note"><strong>Note</strong>: If you get a blobstore error that indicates that the device has no space left, your machine ran out of space in the <code>/tmp</code> directory. To fix this, find a larger local partition and execute the following commands to point <code>/tmp</code> to a larger device:</p>
 
 <pre class="terminal">
-  sudo su -
-  mkdir /tmp2
-  mount --bind /tmp2 /tmp
-  sudo chown root.root /tmp
-  sudo chmod 1777 /tmp
+sudo su -
+mkdir /tmp2
+mount --bind /tmp2 /tmp
+sudo chown root.root /tmp
+sudo chmod 1777 /tmp
 </pre>
 
 ##<a id="deploy"></a>Deploy Cloud Foundry on AWS ##
