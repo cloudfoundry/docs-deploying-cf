@@ -20,7 +20,7 @@ Create a manifest for your deployment as follows:
 1. Change into the cf-deployment directory and clone the cloudfoundry/cf-release repo.
 
     <pre class='terminal'>
-    $ git clone https://github.com/cloudfoundry/cf-release.git
+    $ git clone -b BRANCH_NAME https://github.com/cloudfoundry/cf-release.git
     </pre>
 
 1. Navigate to the example_manifests subdirectory to retrieve the `minimal-aws.yml` template. Copy and paste the template into a text editor and save the edited manifest to your deployment directory.
