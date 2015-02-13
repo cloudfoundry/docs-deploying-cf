@@ -26,7 +26,6 @@ Create a manifest for your deployment as follows:
 1. Navigate to the example_manifests subdirectory to retrieve the `minimal-aws.yml` template. Copy and paste the template into a text editor and save the edited manifest to your deployment directory.
 
     In the template, you must replace the following properties:
-
     * `REPLACE_WITH_AZ`
     * `REPLACE_WITH_BOSH_SECURITY_GROUP`
     * `REPLACE_WITH_DIRECTOR_ID`
@@ -50,7 +49,7 @@ To configure your AWS account for Cloud Foundry:
 * [Create a Subnet for Cloud Foundry Deployment](#create-cf-subnet)
 * [Configure your Cloud Foundry System Domain](#config-cf-dns)
 
-<p class="note"><strong>Note</strong>: Ensure that "N. Virginia" is selected as the AWS Region.</p>
+<p class="note"><strong>Note</strong>: Before configuring these components, ensure that you set "N. Virginia" as the AWS Region.</p>
 
 ###<a id="create-nat-vm"></a>Create a NAT VM
 
@@ -59,7 +58,7 @@ To configure your AWS account for Cloud Foundry:
 1. Search for and select "amzn-ami-vpc-nat-pv-2014.09.1.x86_64-ebs".
 1. Select "m1.small".
 1. Click **Next: Configure Instance Details** and complete as follows:
-    * **Network**: Select your "bosh" VPC.
+    * **Network**: Select your "microbosh" VPC.
     * **Subnet**: Select your "Public subnet".
     * **Auto-assign Public IP**: "Enable"
 1. Click **Next: Add Storage**.
@@ -75,7 +74,7 @@ To configure your AWS account for Cloud Foundry:
     * **Source**: "Custom IP / 10.0.16.0/24"
 1. Click **Review and Launch**.
 1. Click **Launch**.
-1. Specify "Choose an existing key pair" and "bosh" from the dropdown menus.
+1. Specify "Choose an existing key pair" and "microbosh" from the dropdown menus.
 1. Click **Launch Instances**.
 1. Click **View Instances**.
 1. Select the "NAT" instance in the **Instances** list.
@@ -85,7 +84,7 @@ To configure your AWS account for Cloud Foundry:
 ###<a id="update-mibo-sec-group"></a> Update the MicroBOSH Security Group
 
 1. On the VPC Dashboard, click **Security Groups**.
-1. Select the "bosh" security group.
+1. Select the "microbosh" security group.
 1. Click **Inbound Rules** at the bottom.
 1. Click **Edit** and add a rule as follows:
     * **Type**: "Custom TCP Rule"
@@ -93,21 +92,21 @@ To configure your AWS account for Cloud Foundry:
     * **Port Range**: "4443"
     * **Source**: "0.0.0.0/0"
 1. Click **Save**.
-1. Update `REPLACE_WITH_BOSH_SECURITY_GROUP` in your manifest with the MicroBOSH security Group ID.
+1. Update `REPLACE_WITH_BOSH_SECURITY_GROUP` in your manifest with the "microbosh" security group ID.
 
 ###<a id="create-cf-subnet"></a> Create a Subnet for Cloud Foundry Deployment 
 
 1. Click **Subnets** from the VPC Dashboard.
 1. Click **Create Subnet** and complete as follows:
     * **Name tag**: cf
-    * **VPC**: bosh
-    * **Availability Zone**: Pick the same Availability Zone as the MicroBOSH Subnet.
+    * **VPC**: microbosh
+    * **Availability Zone**: Pick the same Availability Zone as the "microbosh" subnet.
     * **CIDR block**: 10.0.16.0/24
     * Click **Yes, Create**.
 1. Replace the following in your manifest:
     * `REPLACE_WITH_AZ` with the Availability Zone you chose.
-    * `REPLACE_WITH_PRIVATE_SUBNET_ID` with the Subnet ID for the cf Subnet.
-    * `REPLACE_WITH_PUBLIC_SUBNET_ID` with the Subnet ID for the MicroBOSH Subnet.
+    * `REPLACE_WITH_PRIVATE_SUBNET_ID` with the Subnet ID for the "cf" subnet.
+    * `REPLACE_WITH_PUBLIC_SUBNET_ID` with the Subnet ID for the "microbosh" subnet.
 1. Select the "cf Subnet" from the **Subnet** list.
 1. Click the **Route table** tab in the bottom window to view the route tables.
 1. Click the route table ID link in the **Route Table** field.
@@ -124,7 +123,7 @@ To configure your AWS account for Cloud Foundry:
     * **Name tag**: cf-public
     * **Group name**: cf-public
     * **Description**: cf Public Security Group
-    * **VPC**: Select the bosh VPC.
+    * **VPC**: Select the "microbosh" VPC.
     * Click **Yes, Create**.
 1. In the **Inbound Rules** tab in the bottom window, click **Edit** and add the following inbound rules:
 <table border="1" class="nice">
@@ -154,7 +153,7 @@ Create a wildcard DNS entry for your root System Domain in the form `*.ROOT_SYST
 1. Click **Create Record Set** and complete as follows:
     * **Name**: *
     * **Type**: A - IPv4 address
-    * **Value**: Enter the Elastic IP created above.
+    * **Value**: Enter the Elastic IP that you created in the previous section.
     * Click **Create**.
 
 1. Update `REPLACE_WITH_SYSTEM_DOMAIN` with your root System Domain, for example, `your-cf-domain.com`.
