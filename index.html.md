@@ -16,5 +16,3 @@ title: Deploying Cloud Foundry
 * [Using the Latest CF-Release](common/cf-release.html)
 * [Generating a Cloud Foundry Deployment Manifest Using Spiff](./cf-manifest-spiff.html)
 
-
-* [Deploying Community Services](adding-services.html)
