@@ -36,7 +36,7 @@ Create a manifest for your deployment as follows:
     * `REPLACE_WITH_SSL_CERT_AND_KEY`
     * `REPLACE_WITH_SYSTEM_DOMAIN`
 
-    We describe replacing these properties in [Step 2: Configure AWS for Your Cloud Foundry Deployment](#config-aws). 
+    We describe replacing these properties in [Step 2: Configure AWS for Your Cloud Foundry Deployment](#config-aws).
 
 1. Run `bosh status --uuid` to retrieve your BOSH Director ID. Update `REPLACE_WITH_DIRECTOR_ID` in the example manifest with this value.
 
@@ -94,7 +94,7 @@ To configure your AWS account for Cloud Foundry:
 1. Click **Save**.
 1. Update `REPLACE_WITH_BOSH_SECURITY_GROUP` in your manifest with the "microbosh" security group ID.
 
-###<a id="create-cf-subnet"></a> Create a Subnet for Cloud Foundry Deployment 
+###<a id="create-cf-subnet"></a> Create a Subnet for Cloud Foundry Deployment
 
 1. Click **Subnets** from the VPC Dashboard.
 1. Click **Create Subnet** and complete as follows:
@@ -106,7 +106,7 @@ To configure your AWS account for Cloud Foundry:
 1. Replace the following in your manifest:
     * `REPLACE_WITH_AZ` with the Availability Zone you chose.
     * `REPLACE_WITH_PRIVATE_SUBNET_ID` with the Subnet ID for the "cf" subnet.
-    * `REPLACE_WITH_PUBLIC_SUBNET_ID` with the Subnet ID for the "microbosh" subnet.
+    * `REPLACE_WITH_PUBLIC_SUBNET_ID` with the Subnet ID for the "Public subnet" subnet.
 1. Select the "cf Subnet" from the **Subnet** list.
 1. Click the **Route table** tab in the bottom window to view the route tables.
 1. Click the route table ID link in the **Route Table** field.
