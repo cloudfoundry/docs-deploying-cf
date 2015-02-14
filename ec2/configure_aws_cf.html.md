@@ -2,12 +2,18 @@
 title: Configuring AWS for Cloud Foundry
 ---
 
-This topic describes how to configure Amazon Web Services (AWS) for Cloud Foundry.
+This topic describes how to configure Amazon Web Services (AWS) for Cloud
+Foundry.
 
 ## <a id="create-cf-manifest"></a>Step 1: Create a Deployment Manifest
 
-The Cloud Foundry deployment manifest is a YAML file that defines the deployment components and properties. The [cloudfoundry/cf-release](https://github.com/cloudfoundry/cf-release) repo
-contains template deployment manifests that you can edit with your deployment information. The `minimal-aws.yml` file contains the minimum information necessary to deploy Cloud Foundry to AWS.
+The Cloud Foundry deployment manifest is a YAML file that defines the deployment
+components and properties.
+The [cloudfoundry/cf-release](https://github.com/cloudfoundry/cf-release) repo
+contains template deployment manifests that you can edit with your deployment
+information.
+The `minimal-aws.yml` file contains the minimum information necessary to deploy
+Cloud Foundry to AWS.
 
 Create a manifest for your deployment as follows:
 
@@ -17,13 +23,17 @@ Create a manifest for your deployment as follows:
     $ mkdir ~/cf-deployment
     </pre>
 
-1. Change into the cf-deployment directory and clone the cloudfoundry/cf-release repo.
+1. Change into the cf-deployment directory and clone the cloudfoundry/cf-release
+repo.
 
     <pre class='terminal'>
-    $ git clone -b BRANCH_NAME https://github.com/cloudfoundry/cf-release.git
+    $ git clone https://github.com/cloudfoundry/cf-release.git
     </pre>
 
-1. Navigate to the example_manifests subdirectory to retrieve the `minimal-aws.yml` template. Copy and paste the template into a text editor and save the edited manifest to your deployment directory.
+1. Navigate to the example_manifests subdirectory to retrieve the
+`minimal-aws.yml` template.
+Copy and paste the template into a text editor and save the edited manifest to
+your deployment directory.
 
     In the template, you must replace the following properties:
     * `REPLACE_WITH_AZ`
@@ -38,7 +48,8 @@ Create a manifest for your deployment as follows:
 
     We describe replacing these properties in [Step 2: Configure AWS for Your Cloud Foundry Deployment](#config-aws).
 
-1. Run `bosh status --uuid` to retrieve your BOSH Director ID. Update `REPLACE_WITH_DIRECTOR_ID` in the example manifest with this value.
+1. Run `bosh status --uuid` to retrieve your BOSH Director ID.
+Update `REPLACE_WITH_DIRECTOR_ID` in the example manifest with this value.
 
 ##<a id="config-aws"></a>Step 2: Configure AWS for Your Cloud Foundry Deployment
 
@@ -74,7 +85,8 @@ To configure your AWS account for Cloud Foundry:
     * **Source**: "Custom IP / 10.0.16.0/24"
 1. Click **Review and Launch**.
 1. Click **Launch**.
-1. Specify "Choose an existing key pair" and "microbosh" from the dropdown menus.
+1. Specify "Choose an existing key pair" and "microbosh" from the dropdown
+menus.
 1. Click **Launch Instances**.
 1. Click **View Instances**.
 1. Select the "NAT" instance in the **Instances** list.
@@ -92,7 +104,8 @@ To configure your AWS account for Cloud Foundry:
     * **Port Range**: "4443"
     * **Source**: "0.0.0.0/0"
 1. Click **Save**.
-1. Update `REPLACE_WITH_BOSH_SECURITY_GROUP` in your manifest with the "microbosh" security group ID.
+1. Update `REPLACE_WITH_BOSH_SECURITY_GROUP` in your manifest with the
+name of the "microbosh" security group. Note: You must use add the name of the security group to the manifest, not the security group ID.
 
 ###<a id="create-cf-subnet"></a> Create a Subnet for Cloud Foundry Deployment
 
@@ -138,13 +151,18 @@ To configure your AWS account for Cloud Foundry:
 	<tr><td>Custom TCP Rule</td><td>TCP</td><td>4443</td><td>0.0.0.0/0</td></tr>
 </table>
 
-1. Update `REPLACE_WITH_PUBLIC_SECURITY_GROUP` in your manifest with the cf-public security group ID.
+1. Update `REPLACE_WITH_PUBLIC_SECURITY_GROUP` in your manifest with the name of the "cf-public" security group. Note: You must add the name of the security group to the manifest, not the security group ID.
 
 ###<a id="config-cf-dns"></a> Configure your Cloud Foundry System Domain
 
-If you have a domain you plan to use as your Cloud Foundry System Domain, use the procedure below to set up your DNS. If you do not have a domain, skip steps 1-5 and use YOUR\_ELASTIC\_IP.xip.io as your System Domain.
+If you have a domain you plan to use as your Cloud Foundry System Domain, use
+the procedure below to set up your DNS.
+If you do not have a domain, skip steps 1-5 and use YOUR\_ELASTIC\_IP.xip.io as
+your System Domain.
 
-Create a wildcard DNS entry for your root System Domain in the form `*.ROOT_SYSTEM_DOMAIN.com` to point at the Elastic IP address you created in the [Create a Subnet for Cloud Foundry Deployment](#create-cf-subnet) section.
+Create a wildcard DNS entry for your root System Domain in the form
+`*.ROOT_SYSTEM_DOMAIN.com` to point at the Elastic IP address you created in the
+[Create a Subnet for Cloud Foundry Deployment](#create-cf-subnet) section.
 
 1. Click on **Route 53** from the AWS Console.
 1. Click on **Hosted Zones**.
