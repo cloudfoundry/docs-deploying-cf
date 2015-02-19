@@ -196,5 +196,4 @@ Create a wildcard DNS entry for your root System Domain in the form
 
 1. Update `REPLACE_WITH_SSL_CERT_AND_KEY` in your manifest with the value from the above command.
 
-Back to [Deploying to AWS](aws_steps.html)
 

@@ -67,4 +67,3 @@ Access the VMs with the following command:
 bosh ssh VM_FROM_BOSH_VMS_COMMAND/INSTANCE_NUMBER --gateway_host YOUR_PUBLIC_MICROBOSH_ADDRESS --gateway_user vcap
 </pre>
 
-Back to [Deploying to AWS](aws_steps.html)
