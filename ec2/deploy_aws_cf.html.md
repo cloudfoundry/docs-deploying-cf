@@ -2,7 +2,7 @@
 title: Deploying Cloud Foundry on AWS
 ---
 
-This topic leverages the AWS and Cloud Foundry components defined and uploaded in the [Deploying MicroBOSH to AWS](../../bosh/deploy-microbosh-to-aws.html) and [Configuring AWS for Cloud Foundry](./configure_aws_cf.html) topics.
+This topic leverages the AWS and Cloud Foundry components defined and deployed in the [Deploying MicroBOSH to AWS](../../bosh/deploy-microbosh-to-aws.html) and [Configuring AWS for Cloud Foundry](./configure_aws_cf.html) topics.
 
 Run `bosh stemcells` to view stemcells that are active in your MicroBOSH deployment.
 

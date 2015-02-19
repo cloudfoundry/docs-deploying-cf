@@ -2,8 +2,7 @@
 title: Configuring AWS for Cloud Foundry
 ---
 
-This topic describes how to configure Amazon Web Services (AWS) for Cloud
-Foundry.
+This topic leverages the AWS and Cloud Foundry components defined and deployed in the [Deploying MicroBOSH to AWS](../../bosh/deploy-microbosh-to-aws.html) topic.
 
 ## <a id="create-cf-manifest"></a>Step 1: Create a Deployment Manifest
 
