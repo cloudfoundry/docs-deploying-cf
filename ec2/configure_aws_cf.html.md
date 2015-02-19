@@ -69,9 +69,9 @@ To configure your AWS account for Cloud Foundry:
 1. Search for and select "amzn-ami-vpc-nat-pv-2014.09.1.x86_64-ebs".
 1. Select "m1.small".
 1. Click **Next: Configure Instance Details** and complete as follows:
-    * **Network**: Select your "microbosh" VPC.
+    * **Network**: Select your "bosh" VPC.
     * **Subnet**: Select your "Public subnet".
-    * **Auto-assign Public IP**: "Enable"
+    * **Auto-assign Public IP**: Select "Enable".
 1. Click **Next: Add Storage**.
 1. Click **Next: Tag Instance**.
 1. Enter "NAT" as the **Value** for the "Name" **Key**.
@@ -85,7 +85,7 @@ To configure your AWS account for Cloud Foundry:
     * **Source**: "Custom IP / 10.0.16.0/24"
 1. Click **Review and Launch**.
 1. Click **Launch**.
-1. Specify "Choose an existing key pair" and "microbosh" from the dropdown
+1. Specify "Choose an existing key pair" and "bosh" from the dropdown
 menus.
 1. Click **Launch Instances**.
 1. Click **View Instances**.
@@ -96,7 +96,7 @@ menus.
 ###<a id="update-mibo-sec-group"></a> Update the MicroBOSH Security Group
 
 1. On the VPC Dashboard, click **Security Groups**.
-1. Select the "microbosh" security group.
+1. Select the "bosh" security group.
 1. Click **Inbound Rules** at the bottom.
 1. Click **Edit** and add a rule as follows:
     * **Type**: "Custom TCP Rule"
@@ -104,16 +104,15 @@ menus.
     * **Port Range**: "4443"
     * **Source**: "0.0.0.0/0"
 1. Click **Save**.
-1. Update `REPLACE_WITH_BOSH_SECURITY_GROUP` in your manifest with the
-name of the "microbosh" security group. Note: You must use add the name of the security group to the manifest, not the security group ID.
+1. Update `REPLACE_WITH_BOSH_SECURITY_GROUP` in your manifest with the name of the "bosh" security group. Note: You must use add the name of the security group to the manifest, not the security group ID.
 
 ###<a id="create-cf-subnet"></a> Create a Subnet for Cloud Foundry Deployment
 
 1. Click **Subnets** from the VPC Dashboard.
 1. Click **Create Subnet** and complete as follows:
     * **Name tag**: cf
-    * **VPC**: microbosh
-    * **Availability Zone**: Pick the same Availability Zone as the "microbosh" subnet.
+    * **VPC**: bosh
+    * **Availability Zone**: Pick the same Availability Zone as the "bosh" subnet.
     * **CIDR block**: 10.0.16.0/24
     * Click **Yes, Create**.
 1. Replace the following in your manifest:
@@ -136,7 +135,7 @@ name of the "microbosh" security group. Note: You must use add the name of the s
     * **Name tag**: cf-public
     * **Group name**: cf-public
     * **Description**: cf Public Security Group
-    * **VPC**: Select the "microbosh" VPC.
+    * **VPC**: Select the "bosh" VPC.
     * Click **Yes, Create**.
 1. In the **Inbound Rules** tab in the bottom window, click **Edit** and add the following inbound rules:
 <table border="1" class="nice">
