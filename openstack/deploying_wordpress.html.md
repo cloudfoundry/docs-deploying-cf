@@ -1,23 +1,23 @@
 ---
-title: Deploying Wordpress using Micro BOSH
+title: Deploying Wordpress using MicroBOSH
 ---
 
-This guide describes the process for deploying [Wordpress](http://wordpress.org/) as an application using Micro BOSH.
+This guide describes the process for deploying [Wordpress](http://wordpress.org/) as an application using MicroBOSH.
 
 ## <a id="prerequisites"></a>Prerequisites ##
 
-### <a id="microbosh"></a>Micro BOSH ###
+### <a id="microbosh"></a>MicroBOSH ###
 
 MicroBOSH should be deployed and targeted. See the steps in [Deploying MicroBOSH on Openstack](../../bosh/deploy-microbosh-to-openstack.html).
 
 ### <a id="openstack_security_groups"></a>OpenStack Security Groups ###
 
-Create a new OpenStack security group, name it ie `wordpress`, and open the following ports:
+Create a new OpenStack security group, name it `wordpress`, and open the following ports:
 
 * All ports (from `1` to `65535`) where the source group is the current security group
 * Port `80` from source 0.0.0.0/0 (CIDR): Used by Wordpress webserver
 
-### <a id="openstack_floating_ip"></a>OpenStack Floating IPs ###
+### <a id="openstack_floating_ip"></a>OpenStack Floating IP Address ###
 
 Allocate a new OpenStack Floating IP to your project. We will use it to access our Wordpress application from outside of our network.
 
@@ -33,7 +33,7 @@ cd ~/bosh-workspace/releases
 git clone git://github.com/cloudfoundry/bosh-sample-release.git
 </pre>
 
-Upload the BOSH sample release to the Micro BOSH Director:
+Upload the BOSH sample release to the MicroBOSH Director:
 
 <pre class="terminal">
 cd ~/bosh-workspace/releases/bosh-sample-release
@@ -70,9 +70,9 @@ To confirm that the BOSH sample release has been loaded into your BOSH Director 
 
     Releases total: 1
 
-### <a id="manifest_file"></a>Create manifest file ###
+### <a id="manifest_file"></a>Create Manifest File ###
 
-Using the `deployments` directory we created when we [deployed Micro BOSH](../../bosh/deploy-microbosh-to-openstack.html), create a `wordpress-openstack` subdirectory:
+Using the `deployments` directory we created when we [deployed MicroBOSH](../../bosh/deploy-microbosh-to-openstack.html), create a `wordpress-openstack` subdirectory:
 
 <pre class="terminal">
 mkdir -p ~/bosh-workspace/deployments/wordpress-openstack
@@ -93,9 +93,9 @@ cp ~/bosh-workspace/releases/bosh-sample-release/examples/wordpress-openstack-ma
 
 Adapt the `wordpress-openstack.yml` file to your environment settings. Search for the tag `# CHANGE`:
 
-* The `director_uuid` option set the [Bosh Director](/bosh/terminology.html#director) to use. We will use the Micro Bosh Director UUID. You can get it running the command `bosh status`.
+* The `director_uuid` option set the [BOSH Director](http://bosh.io/docs/terminology.html#director) to use. We will use the MicroBOSH Director UUID. You can get it running the command `bosh status`.
 * The `instance_type` option set the OpenStack flavor used for the compilation vms (at the `compilation` section) and jobs vms (at the `resource_pools` section). The `flavor_name` **must** have ephemeral disk (check the [validate your OpenStack](validate_openstack.html) guide).
-* The `security_groups` option set the security groups used by vms, and **must** be existing security groups. We will use the `microbosh_security_group` we created when we [deployed Micro Bosh](../../bosh/deploy-microbosh-to-openstack.html) and the `wordpress_security_group` we created [previously](#openstack_security_groups).
+* The `security_groups` option set the security groups used by vms, and **must** be existing security groups. We will use the `microbosh_security_group` we created when we [deployed MicroBOSH](../../bosh/deploy-microbosh-to-openstack.html) and the `wordpress_security_group` we created [previously](#openstack_security_groups).
 * The `allocated_floating_ip` allows us to associate a floating IP address to the Wordpress webserver and **must** be a previously allocated floating ip (check the [prerequisites](#openstack_floating_ip) section).
 
 If you are using the new [OpenStack Networking](http://www.openstack.org/software/openstack-networking/) component, you must also adapt the below settings:
