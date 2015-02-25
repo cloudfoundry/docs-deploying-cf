@@ -55,7 +55,7 @@ Update `REPLACE_WITH_DIRECTOR_ID` in the example manifest with this value.
 To configure your AWS account for Cloud Foundry:
 
 1. [Create a NAT VM](#create-nat-vm)
-1. [Update the MicroBOSH Security Group](#update-mibo-sec-group)
+1. [Update the BOSH Security Group](#update-bosh-sec-group)
 1. [Create a Subnet for Cloud Foundry Deployment](#create-cf-subnet)
 1. [Configure your Cloud Foundry System Domain](#config-cf-dns)
 
@@ -91,7 +91,7 @@ To configure your AWS account for Cloud Foundry:
 1. Click **Actions**, then **Networking**, then **Change Source/Dest. Check**.
 1. Click **Yes, Disable**.
 
-###<a id="update-mibo-sec-group"></a> Update the BOSH Security Group
+###<a id="update-bosh-sec-group"></a> Update the BOSH Security Group
 
 1. On the VPC Dashboard, click **Security Groups**.
 1. Select the "bosh" security group.
