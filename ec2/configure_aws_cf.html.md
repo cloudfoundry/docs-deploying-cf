@@ -2,7 +2,7 @@
 title: Configuring AWS for Cloud Foundry
 ---
 
-This topic leverages the AWS and Cloud Foundry components defined and deployed in the [Deploying MicroBOSH to AWS](../../bosh/deploy-microbosh-to-aws.html) topic.
+This topic leverages the AWS and Cloud Foundry components defined and deployed in the [Deploying MicroBOSH to AWS](http://bosh.io/docs/deploy-microbosh-to-aws.html) topic.
 
 ## <a id="create-cf-manifest"></a>Step 1: Create a Deployment Manifest
 
@@ -54,10 +54,10 @@ Update `REPLACE_WITH_DIRECTOR_ID` in the example manifest with this value.
 
 To configure your AWS account for Cloud Foundry:
 
-* [Create a NAT VM](#create-nat-vm)
-* [Update the MicroBOSH Security Group](#update-mibo-sec-group)
-* [Create a Subnet for Cloud Foundry Deployment](#create-cf-subnet)
-* [Configure your Cloud Foundry System Domain](#config-cf-dns)
+1. [Create a NAT VM](#create-nat-vm)
+1. [Update the MicroBOSH Security Group](#update-mibo-sec-group)
+1. [Create a Subnet for Cloud Foundry Deployment](#create-cf-subnet)
+1. [Configure your Cloud Foundry System Domain](#config-cf-dns)
 
 <p class="note"><strong>Note</strong>: Before configuring these components, ensure that you set "N. Virginia" as the AWS Region.</p>
 
@@ -84,15 +84,14 @@ To configure your AWS account for Cloud Foundry:
     * **Source**: "Custom IP / 10.0.16.0/24"
 1. Click **Review and Launch**.
 1. Click **Launch**.
-1. Specify "Choose an existing key pair" and "bosh" from the dropdown
-menus.
+1. Specify "Choose an existing key pair" and "bosh" from the dropdown menus.
 1. Click **Launch Instances**.
 1. Click **View Instances**.
 1. Select the "NAT" instance in the **Instances** list.
 1. Click **Actions**, then **Networking**, then **Change Source/Dest. Check**.
 1. Click **Yes, Disable**.
 
-###<a id="update-mibo-sec-group"></a> Update the MicroBOSH Security Group
+###<a id="update-mibo-sec-group"></a> Update the BOSH Security Group
 
 1. On the VPC Dashboard, click **Security Groups**.
 1. Select the "bosh" security group.
@@ -103,7 +102,8 @@ menus.
     * **Port Range**: "4443"
     * **Source**: "0.0.0.0/0"
 1. Click **Save**.
-1. Update `REPLACE_WITH_BOSH_SECURITY_GROUP` in your manifest with the name of the "bosh" security group. Note: You must use add the name of the security group to the manifest, not the security group ID.
+1. Update `REPLACE_WITH_BOSH_SECURITY_GROUP` in your manifest with the name of the "bosh" security group. 
+    <p class="note"><strong>Note</strong>: You must add the name of the security group to the manifest, not the security group ID.</p>
 
 ###<a id="create-cf-subnet"></a> Create a Subnet for Cloud Foundry Deployment
 
@@ -149,7 +149,8 @@ menus.
 	<tr><td>Custom TCP Rule</td><td>TCP</td><td>4443</td><td>0.0.0.0/0</td></tr>
 </table>
 
-1. Update `REPLACE_WITH_PUBLIC_SECURITY_GROUP` in your manifest with the name of the "cf-public" security group. Note: You must add the name of the security group to the manifest, not the security group ID.
+1. Update `REPLACE_WITH_PUBLIC_SECURITY_GROUP` in your manifest with the name of the "cf-public" security group. 
+    <p class="note"><strong>Note</strong>: You must add the name of the security group to the manifest, not the security group ID.</p>
 
 ###<a id="config-cf-dns"></a> Configure your Cloud Foundry System Domain
 
