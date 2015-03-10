@@ -102,7 +102,7 @@ The list displays the most recent builds of BOSH stemcell organized by operating
 
 1. Download a BOSH stemcell for OpenStack by clicking on its version number.
 
-1. In a terminal window, use the `bosh upload stemcell` command to upload the
+1. In a terminal window, run `bosh upload stemcell STEMCELL-NAME` to upload the
 stemcell to the BOSH Director.
 
     <pre class="terminal">
