@@ -52,32 +52,14 @@ Deployment
 
 ##<a id="stemcell"></a>Upload a Stemcell ##
 
-1. Use the `bosh public stemcells` command to view a list of available public
-stemcells.
+1. Open [https://bosh.io/stemcells](https://bosh.io/stemcells) in a web browser
+to view a list of publicly available BOSH stemcells.
+The list displays the most recent builds of BOSH stemcell organized by operating system, target IaaS, and hypervisor.
 
-    <pre class="terminal">
-    $ bosh public stemcells
-    +-----------------------------------------------------------+
-    | Name                                                      |
-    +-----------------------------------------------------------+
-	| bosh-stemcell-2710-vsphere-esxi-ubuntu-lucid-go_agent.tgz |
-	| bosh-stemcell-2652-aws-xen-centos.tgz                     |
-	| bosh-stemcell-2751-aws-xen-centos-go_agent.tgz            |
-	| bosh-stemcell-2427-vsphere-esxi-ubuntu-go_agent.tgz       |
-	| bosh-stemcell-2710-vcloud-esxi-ubuntu-lucid-go_agent.tgz  |
-    +-----------------------------------------------------------+
-    To download use `bosh download public stemcell &lt;stemcell_name&gt;'. For full url use --full.
-    </pre>
+1. Download a BOSH stemcell for vSphere by clicking on its version number.
 
-1. Use the `bosh download public stemcell` command to download the latest
-stemcell for `vsphere` with `ubuntu`.
-
-    <pre class="terminal">
-    $ bosh download public stemcell bosh-stemcell-2710-vsphere-esxi-ubuntu-lucid-go_agent.tgz
-    </pre>
-
-1. Use the `bosh upload stemcell` command to upload the stemcell to the BOSH
-Director.
+1. In a terminal window, use the `bosh upload stemcell` command to upload the
+stemcell to the BOSH Director.
 
     <pre class="terminal">
     $ bosh upload stemcell ./bosh-stemcell-2710-vsphere-esxi-ubuntu-lucid-go_agent.tgz
