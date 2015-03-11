@@ -98,9 +98,9 @@ Deployment
 
 1. Open [https://bosh.io/stemcells](https://bosh.io/stemcells) in a web browser
 to view a list of publicly available BOSH stemcells.
-The list displays the most recent builds of BOSH stemcell organized by operating system, target IaaS, and hypervisor.
+The list displays the most recent build numbers of BOSH stemcells, organized by operating system, target IaaS, and hypervisor.
 
-1. Download a BOSH stemcell for OpenStack by clicking on its version number.
+1. Select a BOSH stemcell for OpenStack and click the build number to download.
 
 1. In a terminal window, run `bosh upload stemcell STEMCELL-NAME` to upload the
 stemcell to the BOSH Director.
