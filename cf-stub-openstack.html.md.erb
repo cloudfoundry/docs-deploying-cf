@@ -34,29 +34,13 @@ director_uuid: DIRECTOR_UUID</code></pre></td>
   </tr>
   <tr>
     <td><pre><code>
-meta:
-  openstack:
-    net_id: net_id
-    auth_url: auth_url
-    tenant: openstack_tenant
-    username: openstack_username
-    api_key: openstack_api_key
-    security_groups: []
   floating_static_ips:
   - 0.0.0.0	  </code></pre>
 	</td>
-    <td>Replace <code>net_id</code> with an existing Openstack network UUID.
-		<br /><br />
-		Replace <code>auth_url</code> with the OpenStack identity server.
-		<br /><br />
-		Replace <code>openstack_tenant</code>, <code>openstack_username</code>,
-			and <code>openstack_api_key</code> with your OpenStack credentials.
-		<br /><br />
-		Add <code>cf</code> and any other security groups you used to deploy by
-			MicroBOSH to the <code>security_groups</code> array.
-		<br /><br />
+    <td>
 		Replace the <strong>floating_static_ips:</strong> <code>0.0.0.0</code>
-			with a static IP address for your Openstack floating network.
+			with an existing static IP address for your Openstack floating network.
+			This will be assigned to the ha_proxy job to receive incoming traffic.
 	</td>
   </tr>
   <tr>
@@ -71,7 +55,10 @@ networks:
 	</td>
     <td>Replace the <strong>cf1 subnets: cloud_properties: static:</strong>
 	<code>0.0.0.0 - 0.0.0.25</code> IP address range with a range of at least 26
-		consecutive IP addresses on your private network.
+		consecutive IP addresses on your private network and generally complete
+		this network section with <code>net_id</code> mapped to an existing
+		Openstack network UUID, and security_groups, similarly to the
+		bosh/micro-bosh configuration.
 	</td>
   </tr>
   <tr>
