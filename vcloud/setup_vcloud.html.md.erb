@@ -83,6 +83,9 @@ The system services are made available in the same way - `api.mycf.com`, `consol
 
 These instructions explain a deployment using a single wildcard domain for both applications and system services. It is straightforward to use separate domains if you wish, by modifying the Cloud Foundry manifest file used in [Deploying Cloud Foundry](deploy_cf.html).
 
+Even when using a single wildcard domain, we recommend that you use different subdomain names for your system domain and your app domain. Doing so prevents apps from creating routes that overlap and conflict with system routes.
+
+For example, name your system domain `system.MYDOMAIN.COM` and your apps domain `apps.MYDOMAIN.COM`.
 
 ### Private network deployments and limitations of NAT ###
 
