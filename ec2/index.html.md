@@ -4,10 +4,8 @@ title: Deploying Cloud Foundry on AWS
 
 There are several ways to deploy Cloud Foundry with BOSH on AWS.
 
-This tutorial deploys Cloud Foundry to the VPC flavor of AWS, rather than the
-explicit EC2 flavor of AWS.
-We recommend this deployment method in production environments for the following
-reasons:
+The following methods describe deploying Cloud Foundry to the VPC flavor of AWS, rather than the explicit EC2 flavor of AWS.
+We recommend these deployment methods in production environments for the following reasons:
 
 * Additional security offered by network isolation
 * Service discovery using Static IPs
@@ -24,7 +22,7 @@ The BOSH and Cloud Foundry Runtime teams maintain a bootstrapping tool to deploy
 
 Follow the [tutorial](./bootstrap-aws-vpc.html).
 
-<p class="note"><strong>Note</strong>We deploy the <a
+<p class="note"><strong>Note</strong>: We deploy the <a
 	href="http://run.pivotal.io">hosted Cloud Foundry solution</a> using this
 	method.</p>
 
@@ -39,5 +37,5 @@ Follow the [tutorial](./aws_steps.html).
 
 The community tool,
 [bosh-bootstrap](https://github.com/cloudfoundry-community/bosh-bootstrap),
-that automates most of the steps in the "Deploy MicroBOSH to AWS" sections of
+automates most of the steps in the "Deploy MicroBOSH to AWS" sections of
 the tutorials above.
