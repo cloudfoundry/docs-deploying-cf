@@ -16,27 +16,38 @@ To deploy Cloud Foundry to OpenStack, you must first complete the following step
     <table class="nice">
       <tr>
 	    <th>OpenStack Flavor Name</th>
-	    <th>CPU</th>
-	    <th>Disk (GB)</th>
+	    <th>CPUs</th>
 	    <th>RAM (GB)</th>
+	    <th>Disk (GB)</th>
+	    <th>Ephemeral Disk (GB)</th>
       </tr>
       <tr>
 	    <td>m1.small</td>
 	    <td>1</td>
-	    <td>30</td>
 	    <td>2</td>
+	    <td>10</td>
+	    <td>20</td>
 	  </tr>
 	  <tr>
         <td>m1.medium</td>
         <td>2</td>
-        <td>50</td>
         <td>4</td>
+        <td>10</td>
+        <td>40</td>
       </tr>
       <tr>
         <td>m1.large</td>
 	    <td>4</td>
-	    <td>90</td>
 	    <td>8</td>
+	    <td>10</td>
+	    <td>80</td>
+	  </tr>
+      <tr>
+        <td>m1.xlarge</td>
+	    <td>8</td>
+	    <td>16</td>
+	    <td>10</td>
+	    <td>160</td>
 	  </tr>
     </table>
 
