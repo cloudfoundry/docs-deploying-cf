@@ -9,10 +9,14 @@ environment using BOSH.
 
 ##<a id="prerequisites"></a>Prerequisites ##
 
-To deploy Cloud Foundry to OpenStack, you must first complete the following steps:
+To deploy Cloud Foundry to OpenStack, you must first complete the following
+steps:
 
 * Install the [BOSH Command Line Interface (CLI)](../../bosh/bosh-cli.html).
-* Confirm that your OpenStack instance includes three flavors that correspond with the OpenStack default flavor names `m1.small`, `m1.medium`, and `m1.large` and have the following listed specifications, at minimum:
+* Confirm that your OpenStack instance includes four flavors that correspond
+with the OpenStack default flavor names `m1.small`, `m1.medium`, `m1.large`, and
+`m1.xlarge`.
+These flavors must have the following listed specifications, at minimum:
     <table class="nice">
       <tr>
 	    <th>OpenStack Flavor Name</th>
@@ -152,7 +156,7 @@ Create a manifest stub file named `cf-stub.yml`.
 	$ ./generate_deployment_manifest openstack cf-stub.yml > cf-deployment.yml
     </pre>
 
-    <p class="note"><strong>Note</strong>: The <code>cf-deployment.yml</code> uses the default OpenStack flavor names of <code>m1.small</code>, <code>m1.medium</code>, and <code>m1.large</code>. If your OpenStack instance uses alternate names for these flavors, change the default flavor names in <code>cf-deployment.yml</code> to match the alternate names that your instance uses.</p>
+    <p class="note"><strong>Note</strong>: The <code>cf-deployment.yml</code> uses the default OpenStack flavor names of <code>m1.small</code>, <code>m1.medium</code>, <code>m1.large</code>, and <code>m1.xlarge</code>. If your OpenStack instance uses alternate names for these flavors, change the default flavor names in <code>cf-deployment.yml</code> to match the alternate names that your instance uses.</p>
 
 1. Use `bosh target` to target the BOSH Director.
 
