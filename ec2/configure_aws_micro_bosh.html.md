@@ -14,7 +14,7 @@ Start by logging into AWS: [https://console.aws.amazon.com](https://console.aws.
 
 Click **Instances** in the left pane. Make sure to select N. Virginia as your region.![image alt text](ec2/image_0.png)
 
-From the dropdown menu next to your login name, and select **Security Credentials**.
+From the dropdown menu next to your login name, select **Security Credentials**.
 
 ![image alt text](ec2/image_1.png)
 
@@ -22,7 +22,7 @@ Next, select **Create New Access Key**. If there are already keys created, you m
 
 ![image alt text](ec2/image_2.png)
 
-Download the security file in CSV format when prompted. 
+Download the security file in CSV format when prompted.
 
 ![image alt text](ec2/image_3.png)
 

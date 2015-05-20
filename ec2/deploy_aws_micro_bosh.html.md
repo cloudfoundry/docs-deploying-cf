@@ -45,7 +45,7 @@ logging:
 
 network:
   type: dynamic
-  vip: x.x.x.x    #Change this to the MicroBOSH IP address
+  vip: x.x.x.x    # Change this to the MicroBOSH IP address
 
 resources:
   persistent_disk: 20000
@@ -57,8 +57,8 @@ cloud:
   plugin: aws
   properties:
     aws:
-      access_key_id: xxxxxxxxxxxx	#Change this to your key
-      secret_access_key: xxxxxxxxxxx	#Change this to your key
+      access_key_id: xxxxxxxxxxxx	# Change this to your key
+      secret_access_key: xxxxxxxxxxx	# Change this to your key
       default_key_name: bosh
       default_security_groups: ["bosh"]
       ec2_private_key: ~/.ssh/bosh
@@ -68,12 +68,12 @@ cloud:
 apply_spec:
   agent:
     blobstore:
-      address: x.x.x.x    #Change this to the MicroBOSH IP address
+      address: x.x.x.x    # Change this to the MicroBOSH IP address
     nats:
-      address: x.x.x.x    #Change this to the MicroBOSH IP address
+      address: x.x.x.x    # Change this to the MicroBOSH IP address
   properties:
     aws_registry:
-      address: x.x.x.x    #Change this to the MicroBOSH IP address
+      address: x.x.x.x    # Change this to the MicroBOSH IP address
 ~~~
 
 If you are using the sample manifest provided, confirm the following:

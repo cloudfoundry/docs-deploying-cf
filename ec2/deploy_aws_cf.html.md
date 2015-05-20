@@ -26,7 +26,7 @@ Run `bosh stemcells` to view stemcells that are active in your MicroBOSH deploym
     bosh releases
     </pre>
 
-<p class="note"><strong>Note</strong>: If you get a blobstore error that indicates that the device has no space left, your machine ran out of space in the <code>/tmp</code> directory. To fix this, find a larger local partition and execute the following commands to point <code>/tmp</code> to a larger device:</p>
+<p class="note"><strong>Note</strong>: If you receive a blobstore error indicating that indicates that the device has no space left, your machine ran out of space in the <code>/tmp</code> directory. To fix this, find a larger local partition and execute the following commands to point <code>/tmp</code> to a larger device:</p>
 
 <pre class="terminal">
 sudo su -
