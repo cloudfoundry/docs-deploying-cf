@@ -2,7 +2,7 @@
 title: Deploying Cloud Foundry on OpenStack
 ---
 
-Follow these steps to install Cloud Foundry on OpenStack using BOSH.
+Follow these steps to install Cloud Foundry on OpenStack using BOSH:
 
 1. Install the [BOSH Command Line Interface](/bosh/bosh-cli.html)
 
@@ -10,9 +10,9 @@ Follow these steps to install Cloud Foundry on OpenStack using BOSH.
 
 1. Create [Security Groups for Cloud Foundry](../common/security_groups.html)
 
-1. [Deploying MicroBOSH on Openstack](../../bosh/deploy-microbosh-to-openstack.html)
+1. [Deploy MicroBOSH on Openstack](../../bosh/deploy-microbosh-to-openstack.html)
 
-1. [Deploying Cloud Foundry on Openstack using BOSH](install_cf_openstack.html)
+1. [Deploy Cloud Foundry on OpenStack using BOSH](install_cf_openstack.html)
 
 Advanced and Support Topics:
 
@@ -20,7 +20,7 @@ Advanced and Support Topics:
 
 * [Adding a Login Server to a Cloud Foundry Deployment](../common/login-server.html)
 
-* [Using OpenStack Swift as Cloud Foundry blobstore](using_swift_blobstore.html)
+* [Using OpenStack Swift as a Cloud Foundry Blobstore](using_swift_blobstore.html)
 
 For another example of using BOSH to deploy a system, follow these instructions:
 

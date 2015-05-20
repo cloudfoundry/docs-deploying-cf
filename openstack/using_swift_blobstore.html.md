@@ -1,5 +1,5 @@
 ---
-title: Using OpenStack Swift as Cloud Foundry Blobstore
+title: Using OpenStack Swift as a Cloud Foundry Blobstore
 ---
 
 ## Introduction ##
