@@ -23,18 +23,18 @@ You must configure an [X-Account-Meta-Temp-URL-Key](http://docs.openstack.org/ha
 1. Replace TENANT, USER, and PASSWORD in the command below. Run this command to
 retrieve an auth token.
 
-```
-curl -s -H 'Content-type: application/json' -d '{"auth": {"tenantName": "TENANT", "passwordCredentials":
-	{"username": "USER", \"password": "PASSWORD"}}}' https://auth.example.com:5000/v2.0/tokens
-		| python -mjson.tool
-```
+    ```
+    curl -s -H 'Content-type: application/json' -d '{"auth": {"tenantName":     "TENANT", "passwordCredentials":
+    	{"username": "USER", \"password": "PASSWORD"}}}' https://auth.example.com:5000/v2.0/tokens
+		    | python -mjson.tool
+    ```
 
 1. Replace YOUR-AUTH-TOKEN, ACCOUNT-META-TEMP-URL-KEY, and YOUR-TENANT-ID in the command below. Run this command to assign an Account-Meta-Temp-URL-Key to your OpenStack account.
 
-```
-curl -i -X POST -H 'X-Auth-Token:YOUR-AUTH-TOKEN' -H 'X-Account-Meta-Temp-URL-Key:ACCOUNT-META-TEMP-URL-KEY' \
-	https://swift.example.com/v1/AUTH_YOUR-TENANT-ID
-```
+    ```
+    curl -i -X POST -H 'X-Auth-Token:YOUR-AUTH-TOKEN' -H 'X-Account-Meta-Temp-URL-Key:ACCOUNT-META-TEMP-URL-KEY' \
+    https://swift.example.com/v1/AUTH_YOUR-TENANT-ID
+    ```
 
 ## Configure BOSH Deployment Manifest ##
 
