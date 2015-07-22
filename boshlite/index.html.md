@@ -1,5 +1,5 @@
 ---
-title: Deploying Cloud Foundry on BOSH-Lite
+title: Deploying Locally with BOSH Lite
 ---
 
 If you want to run an instance of Cloud Foundry on a single
