@@ -23,19 +23,19 @@ stemcell to the BOSH Director.
 
 ##<a id="create-stub"></a>Create a Deployment Manifest Stub ##
 
-For BOSH-Lite, the minimum required for your stub is just the BOSH Director uuid.  Create a manifest stub file named `cf-stub.yml` with the following contents:
+For BOSH Lite, the minimum required for your stub is just the BOSH Director uuid.  Create a manifest stub file named `cf-stub.yml` with the following contents:
 
-    <pre class="terminal">
-    ---
-    director_uuid: DIRECTOR_UUID
-    </pre>
+<pre class="terminal">
+---
+director_uuid: DIRECTOR_UUID
+</pre>
 
 You can determine the Director UUID with the `bosh status --uuid` command:
 
-    <pre class="terminal">
-    $ bosh status --uuid
-    b02f8ab5-b63c-4f08-b144-89f96810a022
-    </pre>
+<pre class="terminal">
+$ bosh status --uuid
+b02f8ab5-b63c-4f08-b144-89f96810a022
+</pre>
 
 ##<a id="deploy-cf"></a>Deploy Cloud Foundry##
 
@@ -102,15 +102,15 @@ Director.
 Install the [Cloud Foundry CLI](https://github.com/cloudfoundry/cli) and run the following:
 
 <pre class="terminal">
-    $ # If using the AWS provider for your BOSH-Lite VM, use https://api.BOSH_LITE_PUBLIC_IP.xip.io
-    $ #   instead of https://api.10.244.0.3.xip.io
-    $ # If not using AWS, but behind a proxy, make sure to run 'export no_proxy=192.168.50.4,xip.io'
-    $ cf api --skip-ssl-validation https://api.10.244.0.34.xip.io
-    $ cf auth admin admin
-    $ cf create-org test-org
-    $ cf target -o test-org
-    $ cf create-space test-space
-    $ cf target -s test-space
+$ # If using the AWS provider for your BOSH Lite VM, use https://api.BOSH_LITE_PUBLIC_IP.xip.io
+$ #   instead of https://api.10.244.0.3.xip.io
+$ # If not using AWS, but behind a proxy, make sure to run 'export no_proxy=192.168.50.4,xip.io'
+$ cf api --skip-ssl-validation https://api.10.244.0.34.xip.io
+$ cf auth admin admin
+$ cf create-org test-org
+$ cf target -o test-org
+$ cf create-space test-space
+$ cf target -s test-space
 </pre>
 
 Now you are ready to run commands such as `cf push`. If your Cloud Foundry deployment needs to go through an HTTP proxy to reach the Internet, specify `http_proxy`, `https_proxy` and `no_proxy` environment variables using `cf set-env` or add them to the `env:` section of your application's `manifest.yml`. This ensures the buildpacks can download required libraries, gems, etc. during application staging and running.
