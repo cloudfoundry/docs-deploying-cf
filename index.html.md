@@ -14,5 +14,4 @@ title: Deploying Cloud Foundry
 * [Deploying to vSphere](vsphere/index.html)
 * [Deploying to vCloud Air or vCloud Director](vcloud/index.html)
 * [Using the Latest CF-Release](common/cf-release.html)
-* [Generating a Cloud Foundry Deployment Manifest Using Spiff](./cf-manifest-spiff.html)
 
