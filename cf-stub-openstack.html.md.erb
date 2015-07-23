@@ -1,16 +1,17 @@
 ---
-title: Customizing the Cloud Foundry Deployment Manifest Stub for Openstack
+title: Customizing the Cloud Foundry Deployment Manifest Stub for OpenStack
 ---
 
 This topic describes how to customize the Cloud Foundry deployment manifest stub
-for Openstack.
-After you complete this task, you can use the `generate_deployment_manifest` script in the `cf-release` repository to generate your Cloud Foundry deployment manifest.
+for OpenStack.
+After you complete this task, use the `generate_deployment_manifest` script in
+the `cf-release` repository to generate your Cloud Foundry deployment manifest.
 
 Save a copy of the manifest stub as a YAML file in your deployment directory.
 Follow the [editing instructions](#editing) to customize the manifest stub with
 information about your environment.
 
-##<a id="stub"></a>Cloud Foundry Deployment Manifest Stub for Openstack ##
+##<a id="stub"></a>Cloud Foundry Deployment Manifest Stub for OpenStack ##
 
 <%= yield_for_code_snippet from: 'cloudfoundry/cf-release', at: 'cf-stub-openstack' %>
 
@@ -22,12 +23,9 @@ information about your environment.
     <th>Editing Instructions</th>
   </tr>
   <tr>
-    <td><pre><code>
-director_uuid: DIRECTOR_UUID</code></pre></td>
-    <td>Replace <code>DIRECTOR_UUID</code> with the
-		BOSH Director UUID. Use <code>bosh status</code> to view the BOSH
-		Director UUID.
-	</td>
+    <td><pre><code>director_uuid: DIRECTOR_UUID</code></pre></td>
+    <td>Replace <code>DIRECTOR_UUID</code> with the BOSH Director UUID. Use
+    <code>bosh status</code> to view the BOSH Director UUID.</td>
   </tr>
   <tr>
     <td><pre><code>
@@ -36,7 +34,7 @@ director_uuid: DIRECTOR_UUID</code></pre></td>
 	</td>
     <td>
 		Replace the <strong>floating_static_ips:</strong> <code>0.0.0.0</code>
-			with an existing static IP address for your Openstack floating network.
+			with an existing static IP address for your OpenStack floating network.
 			This is assigned to the ha_proxy job to receive incoming traffic.
 	</td>
   </tr>
@@ -54,7 +52,7 @@ networks:
 	<code>0.0.0.0 - 0.0.0.25</code> IP address range with a range of at least 26
 		consecutive IP addresses on your private network and generally complete
 		this network section with <code>net_id</code> mapped to an existing
-		Openstack network UUID, and security_groups, similarly to the
+		OpenStack network UUID, and security_groups, similarly to the
 		bosh/micro-bosh configuration.
 	</td>
   </tr>
