@@ -23,14 +23,16 @@ stemcell to the BOSH Director.
 
 ##<a id="create-stub"></a>Create a Deployment Manifest Stub ##
 
-For BOSH Lite, the minimum required for your stub is just the BOSH Director uuid.  Create a manifest stub file named `cf-stub.yml` with the following contents:
+For BOSH Lite, the minimum information required in a manifest stub is the BOSH
+Director UUID.
+Create a manifest stub file named `cf-stub.yml` with the following contents:
 
 <pre class="terminal">
 ---
 director_uuid: DIRECTOR_UUID
 </pre>
 
-You can determine the Director UUID with the `bosh status --uuid` command:
+Use `bosh status --uuid` to view the BOSH Director UUID.
 
 <pre class="terminal">
 $ bosh status --uuid
@@ -54,44 +56,46 @@ b02f8ab5-b63c-4f08-b144-89f96810a022
 
 1. Install [spiff](https://github.com/cloudfoundry-incubator/spiff).
 
-1. Run the following command from the `cf-release` directory to create a deployment manifest named `cf-deployment.yml`:
+1. From the `cf-release` directory, use the `generate_deployment_manifest
+INFRASTRUCTURE MANIFEST-STUB > cf-deployment.yml` command to create a deployment
+manifest named `cf-deployment.yml`.
 
-    `./generate_deployment_manifest INFRASTRUCTURE MANIFEST-STUB > cf-deployment.yml`
-
-    Replace INFRASTRUCTURE with `warden` and replace MANIFEST-STUB with the name and location of your `cf-stub.yml file`. For example:
+    Replace INFRASTRUCTURE with `warden`, and replace MANIFEST-STUB with the
+    name and location of your `cf-stub.yml file`. For example:
 
     <pre class="terminal">
-	$ ./generate_deployment_manifest warden cf-stub.yml > cf-deployment.yml
+    $ ./generate_deployment_manifest warden cf-stub.yml > cf-deployment.yml
     </pre>
 
-1. Use `bosh target` to target the BOSH Director.
+1. Run `bosh target` to target the BOSH Director.
 
     <pre class="terminal">
     $ bosh target
-	Current target is https://192.168.50.4:25555 (Bosh Lite Director)
+    Current target is https://192.168.50.4:25555 (Bosh Lite Director)
     </pre>
 
-1. Set your deployment to the generated manifest.
+1. Use `bosh deployment MANIFEST-NAME` to set your deployment to the generated
+manifest. Replace MANIFEST-NAME with the name of your deployment manifest.
 
     <pre class="terminal">
     $ bosh deployment cf-deployment.yml
     </pre>
 
-1. Use `bosh create release` to create a Cloud Foundry release.
+1. Run `bosh create release` to create a Cloud Foundry release.
 This command prompts you for a development release name.
 
     <pre class="terminal">
     $ bosh create release
     </pre>
 
-1. Use `bosh upload release` to upload the generated release to the BOSH
+1. Run `bosh upload release` to upload the generated release to the BOSH
 Director.
 
     <pre class="terminal">
     $ bosh upload release
     </pre>
 
-1. Deploy the uploaded Cloud Foundry release.
+1. Run `bosh deploy` to deploy the uploaded Cloud Foundry release.
 
     <pre class="terminal">
     $ bosh deploy
@@ -99,7 +103,7 @@ Director.
 
 ## <a id="verify"></a>Verify the Deployment ##
 
-Install the [Cloud Foundry CLI](https://github.com/cloudfoundry/cli) and run the following:
+Install the [Cloud Foundry CLI](https://github.com/cloudfoundry/cli) and run the following commands to verify your deployent:
 
 <pre class="terminal">
 $ # If using the AWS provider for your BOSH Lite VM, use https://api.BOSH_LITE_PUBLIC_IP.xip.io
@@ -113,7 +117,9 @@ $ cf create-space test-space
 $ cf target -s test-space
 </pre>
 
-Now you are ready to run commands such as `cf push`. If your Cloud Foundry deployment needs to go through an HTTP proxy to reach the Internet, specify `http_proxy`, `https_proxy` and `no_proxy` environment variables using `cf set-env` or add them to the `env:` section of your application's `manifest.yml`. This ensures the buildpacks can download required libraries, gems, etc. during application staging and running.
+You can now run commands such as `cf push`.
+
+If your Cloud Foundry deployment needs to go through an HTTP proxy to reach the Internet, specify `http_proxy`, `https_proxy` and `no_proxy` environment variables using `cf set-env` or add them to the `env:` section of your application's `manifest.yml`. This ensures the buildpacks can download required libraries, gems, and other files during application staging and execution.
 
 ##<a id="update-cf"></a>Update Cloud Foundry##
 
