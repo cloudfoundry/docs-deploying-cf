@@ -14,11 +14,19 @@ Start by logging into AWS: [https://console.aws.amazon.com](https://console.aws.
 
 Click **Instances** in the left pane. Make sure to select N. Virginia as your region.
 
+<%= image_tag("ec2/instances.png") %>
+
 From the dropdown menu next to your login name, select **Security Credentials**.
+
+<%= image_tag("ec2/security-creds.png") %>
 
 Next, select **Create New Access Key**. If there are already keys created, you may want to stop and consult someone in your organization to obtain the existing access\_key\_id and secret\_access\_key, since there is a limit of two sets of Access Keys.
 
+<%= image_tag("ec2/create-access-key.png") %>
+
 Download the security file in CSV format when prompted.
+
+<%= image_tag("ec2/save-key-file.png") %>
 
 Document the access\_key\_id and secret\_access\_key somewhere privately and securely within your organization and keep these safe. These are
 the only two pieces of information needed to fraudulently consume AWS resources.
@@ -31,11 +39,17 @@ Elastic IPs.
 Ensure that "N. Virginia" is selected as the AWS Region, then click
 **Elastic IPs > Allocate New Address**.
 
+<%= image_tag("ec2/allocate-address.png") %>
+
 To confirm, click **Yes, Allocate** and leave “EC2” selected in the
 dropdown menu.
 
+<%= image_tag("ec2/confirm-address-allocation.png") %>
+
 Take note of the newly created IP address; you will use it later.
 Your address will be different than what is listed here.
+
+<%= image_tag("ec2/record-address.png") %>
 
 ### Create a key pair
 
@@ -46,7 +60,11 @@ key pair. You still need to place a copy of the PEM file, as shown below.
 Ensure that "N. Virginia" is selected as the AWS Region, then click
 **Key Pairs > Create Key Pair**.
 
+<%= image_tag("ec2/create-key-pair.png") %>
+
 Name your key pair "bosh" and click **Yes**.
+
+<%= image_tag("ec2/confirm-key-pair-creation.png") %>
 
 After you click "Yes", a file downloads to your computer, likely
 named `bosh.pem.txt`.
@@ -73,7 +91,11 @@ This security group exposes ports used by the BOSH Agent.
 Ensure that "N. Virginia" is selected as the AWS Region, then click
 **Security Groups > Create Security Group**.
 
+<%= image_tag("ec2/create-security-group.png") %>
+
 From the popup dialog, assign "bosh" to the Name, “BOSH Security Group” to the Description, and leave “No VPC” selected in the dropdown menu. Then, click **Yes, Create**.
+
+<%= image_tag("ec2/confirm-security-group-creation.png") %>
 
 ### Add ports to the security group
 
@@ -87,10 +109,16 @@ network.
 
 Starting with the BOSH Director, which needs port 25555, select the newly created Security Group and click **Inbound**. In the Port range box, enter “25555” and click **Add Rule**.
 
+<%= image_tag("ec2/add-security-rule-0.png") %>
+
 Now add the second port, 6868, by entering this port number into the Port range box and clicking **Add Rule**.
+
+<%= image_tag("ec2/add-security-rule-1.png") %>
 
 Now add the last port, 22, by entering this port number into the Port
 range box and clicking "Add Rule". Since this is the last port you
 are adding, click **Apply Rule Changes** to save the changes to this Security Group.
+
+<%= image_tag("ec2/apply-rule-changes.png") %>
 
 ###Go on to [Deployment of MicroBOSH on AWS](./deploy_aws_micro_bosh.html) or [Return to Index](./index.html)
