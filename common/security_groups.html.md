@@ -22,11 +22,12 @@ The examples below show the Security Groups that are referenced in other section
 
 | Direction | Ether Type | IP Protocol | Port Range | Remote           |
 |-----------|------------|-------------|------------|------------------|
-| Ingress    | IPv4       | TCP         | 443       | 0.0.0.0/0 (CIDR) |
-| Ingress    | IPv4       | UDP         | 68        | 0.0.0.0/0 (CIDR) |
-| Ingress    | IPv4       | TCP         | 80        | 0.0.0.0/0 (CIDR) |
-| Egress     | IPv4       | Any         | -         | 0.0.0.0/0 (CIDR) |
-| Egress     | IPv6       | Any         | -         | ::/0 (CIDR)      |
+| Ingress    | IPv4       | TCP        | 4443       | 0.0.0.0/0 (CIDR) |
+| Ingress    | IPv4       | TCP        | 443        | 0.0.0.0/0 (CIDR) |
+| Ingress    | IPv4       | UDP        | 68         | 0.0.0.0/0 (CIDR) |
+| Ingress    | IPv4       | TCP        | 80         | 0.0.0.0/0 (CIDR) |
+| Egress     | IPv4       | Any        | -          | 0.0.0.0/0 (CIDR) |
+| Egress     | IPv6       | Any        | -          | ::/0 (CIDR)      |
 
 
 ## <a id="cf-private"></a>cf-private
