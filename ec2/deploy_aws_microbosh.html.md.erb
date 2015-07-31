@@ -96,17 +96,17 @@ To obtain the current AMI, navigate to `http://bosh_artifacts.cfapps.io` and dow
 AMI. If you are not using us-east-1 as specified previously, there
 may not be a public AMI available.
 
-![image alt text](ec2/image_14.png)
+<%= image_tag("ec2/download-light-stemcell.png") %>
 
 This downloads the tar file to you local computer. Extract this
 and open the file named "stemcell.MF" in your text editor.
 
-![image alt text](ec2/image_15.png)
+<%= image_tag("ec2/open-stemcell-mf.png") %>
 
 This file contains the image name (AMI ID) for this version of the
 bosh-cli. You will need this AMI ID for the next section.
 
-![image alt text](ec2/image_16.png)
+<%= image_tag("ec2/find-ami.png") %>
 
 ### Deploy Manifest
 
@@ -158,7 +158,7 @@ Logged in as `admin'
 
 If the deployment runs successfully, you have a MicroBOSH VM deployed onto AWS.
 
-![image alt text](ec2/image_17.png)
+<%= image_tag("ec2/deployment.png") %>
 
 A few things to note in the screenshot above:
 
