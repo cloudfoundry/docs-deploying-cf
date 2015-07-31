@@ -2,7 +2,7 @@
 title: Deploy MicroBOSH on AWS
 ---
 
-We will leverage the Elastic IP, Security Group and Key Pair file that we created in [Configuring AWS for MicroBOSH](./configure_aws_micro_bosh.html) to deploy a MicroBOSH server on AWS in four steps:
+We will leverage the Elastic IP, Security Group and Key Pair file that we created in [Configuring AWS for MicroBOSH](./configure_aws_microbosh.html) to deploy a MicroBOSH server on AWS in four steps:
 
 1. Create Directory Structure
 
@@ -33,7 +33,7 @@ manifest file should include. If you did not use the us-east-1a
 availability zone, you will need to adjust that. We are using a small instance type for the MicroBOSH.
 
 **Note**: Replace all instances of "x.x.x.x" with
-the IP address you created in [Configuring AWS for MicroBOSH](./configure_aws_micro_bosh.html). Because MicroBOSH deploys to a single VM,
+the IP address you created in [Configuring AWS for MicroBOSH](./configure_aws_microbosh.html). Because MicroBOSH deploys to a single VM,
 all the IP addresses in the manifest are the same. Also ensure that you replace
 the AWS access credentials with your own.
 
