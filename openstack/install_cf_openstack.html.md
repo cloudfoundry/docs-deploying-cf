@@ -144,9 +144,9 @@ Create a manifest stub file named `cf-stub.yml`.
     $ ./update
     </pre>
 
-1. Install [Spiff](https://github.com/cloudfoundry-incubator/spiff).
+1. Install [spiff](https://github.com/cloudfoundry-incubator/spiff).
 
-1. Run the following Spiff command from the `cf-release` directory to create a deployment manifest named `cf-deployment.yml`:
+1. Run the following spiff command from the `cf-release` directory to create a deployment manifest named `cf-deployment.yml`:
 
     `./generate_deployment_manifest INFRASTRUCTURE MANIFEST-STUB > cf-deployment.yml`
 
@@ -217,8 +217,7 @@ administrator.
 * If you make change to your manifest, run `bosh deploy` to update your Cloud
 Foundry deployment with these changes.
 
-* If you make changes to the `cf-release` directory, run `bosh create release && bosh upload release && bosh deploy` to update your Cloud Foundry deployment with
-these changes.
+* If you make changes to the `cf-release` directory, run `bosh create release && bosh upload release && bosh deploy` to update your Cloud Foundry deployment with these changes.
 
 ## <a id="verify"></a>Verify the Deployment ##
 
