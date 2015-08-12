@@ -6,7 +6,7 @@ This topic describes the process for deploying Cloud Foundry to a BOSH Lite envi
 
 ##<a id="prerequisites"></a>Prerequisites ##
 
-You must have your BOSH Lite VM up and running, and have your BOSH CLI targetted at the BOSH Lite director.  For instructions, consult the [BOSH Lite repository](https://github.com/cloudfoundry/bosh-lite).
+You must have your BOSH Lite VM up and running, and have targeted the BOSH Lite Director with the BOSH CLI. For instructions, consult the [BOSH Lite repository](https://github.com/cloudfoundry/bosh-lite).
 
 ##<a id="stemcell"></a>Upload a Stemcell ##
 
@@ -29,7 +29,7 @@ Create a manifest stub file named `cf-stub.yml` with the following contents:
 
 <pre class="terminal">
 ---
-director_uuid: DIRECTOR_UUID
+director_uuid: DIRECTOR-UUID
 </pre>
 
 Use `bosh status --uuid` to view the BOSH Director UUID.
@@ -103,10 +103,10 @@ Director.
 
 ## <a id="verify"></a>Verify the Deployment ##
 
-Install the [Cloud Foundry CLI](https://github.com/cloudfoundry/cli) and run the following commands to verify your deployent:
+Install the [Cloud Foundry CLI](https://github.com/cloudfoundry/cli) and run the following commands to verify your deployment:
 
 <pre class="terminal">
-$ # If using the AWS provider for your BOSH Lite VM, use https://api.BOSH_LITE_PUBLIC_IP.xip.io
+$ # If using the AWS provider for your BOSH Lite VM, use https://api.BOSH-LITE-PUBLIC-IP.xip.io
 $ #   instead of https://api.10.244.0.3.xip.io
 $ # If not using AWS, but behind a proxy, make sure to run 'export no_proxy=192.168.50.4,xip.io'
 $ cf api --skip-ssl-validation https://api.10.244.0.34.xip.io
@@ -125,5 +125,4 @@ If your Cloud Foundry deployment needs to go through an HTTP proxy to reach the 
 
 * If you make change to your manifest, run `bosh deploy` to update your Cloud Foundry deployment with these changes.
 
-* If you make changes to the `cf-release` directory, run `bosh create release && bosh upload release && bosh deploy` to update your Cloud Foundry deployment with
-these changes.
+* If you make changes to the `cf-release` directory, run `bosh create release && bosh upload release && bosh deploy` to update your Cloud Foundry deployment with these changes.
