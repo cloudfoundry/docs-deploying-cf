@@ -74,9 +74,9 @@ command.
 
 **Issue:** Before a deployment, the following error is displayed:
 <pre class='terminal'>
-Error 100: Bosh::Director::Lock::TimeoutError"
+Error 100: Bosh::Director::Lock::TimeoutError
 </pre>
-Bosh creates a lock so that only one process may modify a Cloud Foundry
+BOSH creates a lock so that only one process may modify a Cloud Foundry
 deployment at a time. This error means that BOSH is busy doing something else.
 
 **Troubleshooting:**
