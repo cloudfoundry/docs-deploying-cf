@@ -14,4 +14,7 @@ title: Deploying Cloud Foundry
 * [Deploying to vSphere](vsphere/index.html)
 * [Deploying to vCloud Air or vCloud Director](vcloud/index.html)
 * [Using the Latest CF-Release](common/cf-release.html)
-
+* [Deploying Community Services](https://github.com/cloudfoundry-community/cf-services-contrib-releasecommon/cf-release.html)
+* [Run a Local Cloud Foundry Instance](run-local.html)
+* [Customizing the Cloud Foundry Deployment Manifest Stub for AWS](cf-stub-aws.html)
+* [Customizing the Cloud Foundry Deployment Manifest Stub for vCloud](cf-stub-vcloud.html)
