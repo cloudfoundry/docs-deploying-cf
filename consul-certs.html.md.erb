@@ -2,16 +2,16 @@
 title: Generating Certificates for Consul
 ---
 
-As of [cf-release v216](https://github.com/cloudfoundry/cf-release/releases/tag/v216), Cloud Foundry requires SSL encryption for all Consul traffic by default.
+As of [cf-release v216](https://github.com/cloudfoundry/cf-release/releases/tag/v216), Cloud Foundry enables encryption for all Consul traffic by default. 
+To disable SSL encryption, set the `consul.require_ssl` manifest property to `false`.
 
-To enable this SSL encryption, you must provide the following certificates and keys in your deployment manifest:
+If you do not disable SSL encryption, you must provide the following certificates and keys in your deployment manifest:
 
 * `ca_cert`: Used to verify the keys
 * `agent_cert` and `agent_key`: Used by every client-mode agent co-located across your VMs
 * `server_cert` and `server_key`: Used by the cluster of Consul servers that the agents join
 
-Additionally, you must add a 16-byte Base64-encoded `encrypt_key` property to your deployment manifest. 
-Cloud Foundry encrypts data transmitted over Consul's "gossip" protocol using this `encrypt_key` value.
+Additionally, you must add a 16-byte Base64-encoded `encrypt_key` property to your deployment manifest.  Cloud Foundry encrypts transmitted Consul data using this `encrypt_key` value.
 
 ## <a id='certificates'></a>Step 1: Generate Certificates and Keys ##
 
@@ -35,11 +35,9 @@ $ cat /dev/urandom | head -c 16 | base64
 8b9IJjXH5aN2Z9A5H8HAmg==
 </pre>
 
-## <a id='manifest'></a>Step 3: Modify your Deployment Manifest ##
+## <a id='stub'></a>Step 3: Create Stub File ##
 
-Add the certificates, keys, and `encrypt_key` value to your deployment manifest.
-
-Either manually edit your existing deployment manifest, or use the `generate_deployment_manifest` script from `cf-release` to generate a deployment manifest as follows:
+Create a stub file that includes the the certificates, keys, and `encrypt_key` value. You use this stub file with the `generate_deployment_manifest` script from `cf-release` to generate a deployment manifest.
 
 1. In the `cf-release` directory, create a stub file named `consul-stub.yml`. 
 
@@ -74,10 +72,11 @@ Either manually edit your existing deployment manifest, or use the `generate_dep
 
 1. Copy the contents of the files in the `./consul-certs` directory to the `consul-stub.yml` file. You generated these files in [Step 1: Generate Certificates and Keys](#certificates).
  
-1. Replace RANDOM-16-BYTE-BASE64-ENCODED-VALUE with your [encrypt-key](#encrypt-key).
+1. Replace RANDOM-16-BYTE-BASE64-ENCODED-VALUE with your [encrypt_key](#encrypt-key).
 
-1. Run `generate_deployment_manifest IAAS consul-stub.yml > cf-dm.yml` to create a deployment manifest named `cf-dm.yml`. Replace IAAS with `aws`, `openstack`, or `vsphere`.  For example:
+1. Use the instructions for your infrastructure to generate a deployment manifest with this stub file:
+  * **AWS**: [Deploying Cloud Foundry on AWS with BOSH AWS Bootstrap](ec2/bootstrap-aws-vpc.html#deploy-cloudfoundry)
+  * **OpenStack**: [Deploying Cloud Foundry on OpenStack using BOSH](openstack/install_cf_openstack.html#deploy-cf)
+  * **vCloud**: [Deploying Cloud Foundry on vCloud using MicroBOSH or   BOSH](vcloud/deploy_cf.html#deploy-cf)
+  * **vSpehere**: [Deploying Cloud Foundry on vSphere using BOSH](vsphere/deploy_cf_vsphere.html#deploy-cf) 
 
-    <pre class="terminal">
-	$ ./generate_deployment_manifest aws consul-stub.yml > cf-dm.yml
-    </pre>

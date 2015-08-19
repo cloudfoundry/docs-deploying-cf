@@ -156,6 +156,8 @@ Create a manifest stub file named `cf-stub.yml`.
 	$ ./generate_deployment_manifest openstack cf-stub.yml > cf-deployment.yml
     </pre>
 
+    <p class="note"><strong>Note</strong>: <code>generate_deployment_manifest</code> can accept a list of stub files. For example: <code>generate_deployment_manifest openstack cf-stub.yml cf-consul.yml > cf-dm.yml</code></p>
+
     <p class="note"><strong>Note</strong>: The <code>cf-deployment.yml</code> uses the default OpenStack flavor names of <code>m1.small</code>, <code>m1.medium</code>, <code>m1.large</code>, and <code>m1.xlarge</code>. If your OpenStack instance uses alternate names for these flavors, change the default flavor names in <code>cf-deployment.yml</code> to match the alternate names that your instance uses.</p>
 
 1. Use `bosh target` to target the BOSH Director.

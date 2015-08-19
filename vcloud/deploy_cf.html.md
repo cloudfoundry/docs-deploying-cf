@@ -98,6 +98,8 @@ Create a manifest stub file named `cf-stub.yml`. [Customize the manifest stub](.
 	$ ./generate_deployment_manifest vsphere cf-stub.yml > cf-deployment.yml
     </pre>
 
+    <p class="note"><strong>Note</strong>: <code>generate_deployment_manifest</code> can accept a list of stub files. For example: <code>generate_deployment_manifest vsphere cf-stub.yml cf-consul.yml > cf-dm.yml</code></p>
+
 1. Use `bosh target` to target the BOSH Director.
 
     <pre class="terminal">
