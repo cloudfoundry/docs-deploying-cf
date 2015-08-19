@@ -2,33 +2,31 @@
 title: Generating Certificates for Consul
 ---
 
-As of CF-Release commit 
-[55c8a19](https://github.com/cloudfoundry/cf-release/commit/55c8a19de1b8a09893010d84034ba9a2b0f5e477), 
-Consul requires SSL encryption for all traffic.
+As of [cf-release v216](https://github.com/cloudfoundry/cf-release/releases/tag/v216), Cloud Foundry requires SSL encryption for all Consul traffic by default.
 
-You must provide the following certificate and keys:
+To enable this SSL encryption, you must provide the following certificates and keys in your deployment manifest:
 
 * `ca_cert`: Used to verify the keys
-* `server_cert` and `server_key`: Used by the cluster of Consul servers that the agents join
 * `agent_cert` and `agent_key`: Used by every client-mode agent co-located across your VMs
+* `server_cert` and `server_key`: Used by the cluster of Consul servers that the agents join
 
 Additionally, you must add a 16-byte Base64-encoded `encrypt_key` property to your deployment manifest. 
-Cloud Foundry encrypts data transmitted over Consul's "gossip" protocol using the `encrypt_key` value.
+Cloud Foundry encrypts data transmitted over Consul's "gossip" protocol using this `encrypt_key` value.
 
-## <a id='certificates'></a>Step 1: Generate Certificates ##
+## <a id='certificates'></a>Step 1: Generate Certificates and Keys ##
 
 To generate the certificates and keys that you need for Consul, we recommend using [certstrap](https://github.com/square/certstrap). 
 
-The [cf-release/scripts](https://github.com/cloudfoundry/cf-release/scripts) repository contains a helper script, `generate-consul-certs`. This script uses certstrap to generate a certificate authority (CA), and the certificates and keys for Consul.
+The [cf-release/scripts](https://github.com/cloudfoundry/cf-release/scripts) repository contains a helper script, `generate-consul-certs`. This script uses certstrap to initialize a certificate authority (CA), and generate the certificates and keys for Consul.
 
 If you already have a CA, you may have an existing workflow. 
-If not, modify `generate-consul-certs` to use your CA instead of generating a new one.
+If you do not have a CA, modify the `generate-consul-certs` script to use your CA instead of generating a new one.
 
-The `generate-consul-certs` script outputs files to `./consul-certs`. You use the output files when you [Modify your Deployment Manifest](#manifest).
+The `generate-consul-certs` script outputs files to the `./consul-certs` directory. You use the contents of these output files in [Step 3: Modify your Deployment Manifest](#manifest).
 
 ## <a id='encrypt-key'></a>Step 2: Generate encrypt_key ##
 
-Run `cat /dev/urandom | head -c 16 | base64` to generate and display a random 16-byte Base64-encoded value. You use this value as the `encrypt_key` when you [Modify your Deployment Manifest](#manifest).
+Run `cat /dev/urandom | head -c 16 | base64` to generate and display a random 16-byte Base64-encoded value. You use this value as the `encrypt_key` in [Step 3: Modify your Deployment Manifest](#manifest).
 
 Example:
 
@@ -41,43 +39,45 @@ $ cat /dev/urandom | head -c 16 | base64
 
 Add the certificates, keys, and `encrypt_key` value to your deployment manifest.
 
-### Stub ###
+Either manually edit your existing deployment manifest, or use the `generate_deployment_manifest` script from `cf-release` to generate a deployment manifest as follows:
 
-1. Create a stub.  and keys that you need for Consul, we recommend 
-Use the certs and your key, you'll need to provide the values using
-a stub that looks something like:
+1. In the `cf-release` directory, create a stub file named `consul-stub.yml`. 
 
-```yaml
-properties:
-  consul:
-    encrypt_key: 8b9IJjXH5aN2Z9A5H8HAmg==
-    ca_cert: |
-      -----BEGIN CERTIFICATE-----
-      ...
-      -----END CERTIFICATE-----
-    server_cert: |
-      -----BEGIN CERTIFICATE-----
-      ...
-      -----END CERTIFICATE-----
-    server_key: |
-      -----BEGIN RSA PRIVATE KEY-----
-      ...
-      -----END RSA PRIVATE KEY-----
-    agent_cert: |
-      -----BEGIN CERTIFICATE-----
-      ...
-      -----END CERTIFICATE-----
-    agent_key: |
-      -----BEGIN RSA PRIVATE KEY-----
-      ...
-      -----END RSA PRIVATE KEY-----
-```
+1. Copy the following text into the `consul-stub.yml` file: 
 
-1. Use the `generate_deployment_manifest` script from [CF-Release](https://github.com/cloudfoundry/cf-release) to include the stub in your deployment manifest.
 
-### Edit Deployment Manifest ###
+    ```yaml
+    properties:
+      consul:
+        encrypt_key: RANDOM-16-BYTE-BASE64-ENCODED-VALUE
+        ca_cert: |
+          -----BEGIN CERTIFICATE-----
+          ...
+          -----END CERTIFICATE-----
+        agent_cert: |
+          -----BEGIN CERTIFICATE-----
+          ...
+          -----END CERTIFICATE-----
+        agent_key: |
+          -----BEGIN RSA PRIVATE KEY-----
+          ...
+          -----END RSA PRIVATE KEY-----
+        server_cert: |
+          -----BEGIN CERTIFICATE-----
+          ...
+          -----END CERTIFICATE-----
+        server_key: |
+          -----BEGIN RSA PRIVATE KEY-----
+          ...
+          -----END RSA PRIVATE KEY-----
+    ```
 
-(...or just edit your manifest if you're not using `./generate_deployment_manifest`).
+1. Copy the contents of the files in the `./consul-certs` directory to the `consul-stub.yml` file. You generated these files in [Step 1: Generate Certificates and Keys](#certificates).
+ 
+1. Replace RANDOM-16-BYTE-BASE64-ENCODED-VALUE with your [encrypt-key](#encrypt-key).
 
-Once you have your stub, you can just delete the generated `./consul-certs`
-directory.
+1. Run `generate_deployment_manifest IAAS consul-stub.yml > cf-dm.yml` to create a deployment manifest named `cf-dm.yml`. Replace IAAS with `aws`, `openstack`, or `vsphere`.  For example:
+
+    <pre class="terminal">
+	$ ./generate_deployment_manifest aws consul-stub.yml > cf-dm.yml
+    </pre>
