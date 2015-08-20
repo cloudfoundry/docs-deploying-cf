@@ -148,7 +148,7 @@ Create a manifest stub file named `cf-stub.yml`.
 
 1. Run the following spiff command from the `cf-release` directory to create a deployment manifest named `cf-deployment.yml`:
 
-    `./generate_deployment_manifest INFRASTRUCTURE MANIFEST-STUB > cf-deployment.yml`
+    `generate_deployment_manifest INFRASTRUCTURE MANIFEST-STUB > cf-deployment.yml`
 
     Replace INFRASTRUCTURE with `openstack` and replace MANIFEST-STUB with the name and location of your `cf-stub.yml file`. For example:
 

@@ -90,7 +90,7 @@ Create a manifest stub file named `cf-stub.yml`. [Customize the manifest stub](.
 
 1. Run the following spiff command from the `cf-release` directory to create a deployment manifest named `cf-deployment.yml`:
 
-    `./generate_deployment_manifest INFRASTRUCTURE MANIFEST-STUB > cf-deployment.yml`
+    `generate_deployment_manifest INFRASTRUCTURE MANIFEST-STUB > cf-deployment.yml`
 
     Replace INFRASTRUCTURE with `vsphere` and replace MANIFEST-STUB with the name and location of your `cf-stub.yml file`. vCloud uses the same manifest stub and command that vSphere uses. Example:
 

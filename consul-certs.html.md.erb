@@ -2,31 +2,47 @@
 title: Generating Certificates for Consul
 ---
 
-As of [cf-release v216](https://github.com/cloudfoundry/cf-release/releases/tag/v216), Cloud Foundry enables encryption for all Consul traffic by default. 
-To disable SSL encryption, set the `consul.require_ssl` manifest property to `false`.
+As of [cf-release v216](https://github.com/cloudfoundry/cf-release/releases/tag/v216), Cloud 
+Foundry enables encryption for all Consul traffic by default. 
 
-If you do not disable SSL encryption, you must provide the following certificates and keys in your deployment manifest:
+To use SSL encryption, your deployment manifest must include properties for 
+encryption and mutual authentication. 
+Generate the certificates and keys listed below, and add them to your 
+deployment manifest:
 
-* `ca_cert`: Used to verify the keys
-* `agent_cert` and `agent_key`: Used by every client-mode agent co-located across your VMs
-* `server_cert` and `server_key`: Used by the cluster of Consul servers that the agents join
+* `ca_cert`
+* `agent_cert` and `agent_key`
+* `server_cert` and `server_key`
 
-Additionally, you must add a 16-byte Base64-encoded `encrypt_key` property to your deployment manifest.  Cloud Foundry encrypts transmitted Consul data using this `encrypt_key` value.
+Additionally, you must add a 16-byte Base64-encoded `encrypt_key` property to 
+your deployment manifest. 
+Cloud Foundry encrypts transmitted Consul data using this `encrypt_key` value.
+
+If you do not want to use SSL encryption, set the `consul.require_ssl` manifest 
+property to `false`.
 
 ## <a id='certificates'></a>Step 1: Generate Certificates and Keys ##
 
-To generate the certificates and keys that you need for Consul, we recommend using [certstrap](https://github.com/square/certstrap). 
+To generate the certificates and keys that you need for Consul, we recommend 
+using [certstrap](https://github.com/square/certstrap). 
 
-The [cf-release/scripts](https://github.com/cloudfoundry/cf-release/scripts) repository contains a helper script, `generate-consul-certs`. This script uses certstrap to initialize a certificate authority (CA), and generate the certificates and keys for Consul.
+The [cf-release](https://github.com/cloudfoundry/cf-release) repository 
+contains a helper script, `scripts/generate-consul-certs`. 
+This script uses certstrap to initialize a certificate authority (CA), and 
+generate the certificates and keys for Consul.
 
 If you already have a CA, you may have an existing workflow. 
-If you do not have a CA, modify the `generate-consul-certs` script to use your CA instead of generating a new one.
+You can modify the `generate-consul-certs` script to use your existing CA 
+instead of generating a new one.
 
-The `generate-consul-certs` script outputs files to the `./consul-certs` directory. You use the contents of these output files in [Step 3: Modify your Deployment Manifest](#manifest).
+The `generate-consul-certs` script outputs files to the `./consul-certs` 
+directory. 
+You use the contents of these output files in [Step 3: Modify your Deployment Manifest](#manifest).
 
 ## <a id='encrypt-key'></a>Step 2: Generate encrypt_key ##
 
-Run `cat /dev/urandom | head -c 16 | base64` to generate and display a random 16-byte Base64-encoded value. You use this value as the `encrypt_key` in [Step 3: Modify your Deployment Manifest](#manifest).
+Run `cat /dev/urandom | head -c 16 | base64` to generate and display a random 16-byte Base64-encoded value. 
+You use this value as the `encrypt_key` in [Step 3: Modify your Deployment Manifest](#manifest).
 
 Example:
 
@@ -37,7 +53,10 @@ $ cat /dev/urandom | head -c 16 | base64
 
 ## <a id='stub'></a>Step 3: Create Stub File ##
 
-Create a stub file that includes the the certificates, keys, and `encrypt_key` value. You use this stub file with the `generate_deployment_manifest` script from `cf-release` to generate a deployment manifest.
+Create a stub file that includes the the certificates, keys, and `encrypt_key` 
+value. 
+You use this stub file with the `generate_deployment_manifest` script from 
+`cf-release` to generate a deployment manifest.
 
 1. In the `cf-release` directory, create a stub file named `consul-stub.yml`. 
 
@@ -70,13 +89,16 @@ Create a stub file that includes the the certificates, keys, and `encrypt_key` v
           -----END RSA PRIVATE KEY-----
     ```
 
-1. Copy the contents of the files in the `./consul-certs` directory to the `consul-stub.yml` file. You generated these files in [Step 1: Generate Certificates and Keys](#certificates).
+1. Copy the contents of the files in the `./consul-certs` directory to the 
+`consul-stub.yml` file. 
+You generated these files in [Step 1: Generate Certificates and Keys](#certificates).
  
-1. Replace RANDOM-16-BYTE-BASE64-ENCODED-VALUE with your [encrypt_key](#encrypt-key).
+1. Replace RANDOM-16-BYTE-BASE64-ENCODED-VALUE with your 
+[encrypt_key](#encrypt-key).
 
-1. Use the instructions for your infrastructure to generate a deployment manifest with this stub file:
+1. Use the instructions for your infrastructure to generate a deployment 
+  manifest with this stub file:
   * **AWS**: [Deploying Cloud Foundry on AWS with BOSH AWS Bootstrap](ec2/bootstrap-aws-vpc.html#deploy-cloudfoundry)
   * **OpenStack**: [Deploying Cloud Foundry on OpenStack using BOSH](openstack/install_cf_openstack.html#deploy-cf)
   * **vCloud**: [Deploying Cloud Foundry on vCloud using MicroBOSH or   BOSH](vcloud/deploy_cf.html#deploy-cf)
   * **vSpehere**: [Deploying Cloud Foundry on vSphere using BOSH](vsphere/deploy_cf_vsphere.html#deploy-cf) 
-
