@@ -2,13 +2,10 @@
 title: Generating Certificates for Consul
 ---
 
-As of [cf-release v216](https://github.com/cloudfoundry/cf-release/releases/tag/v216), Cloud 
+As of [cf-release v217](https://github.com/cloudfoundry/cf-release/releases/tag/v217), Cloud 
 Foundry enables encryption for all Consul traffic by default. 
 
-To use SSL encryption, your deployment manifest must include properties for 
-encryption and mutual authentication. 
-Generate the certificates and keys listed below, and add them to your 
-deployment manifest:
+To use SSL encryption, you must generate and add the following certificates and keys to your deployment manifest: 
 
 * `ca_cert`
 * `agent_cert` and `agent_key`
