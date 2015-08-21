@@ -22,7 +22,7 @@ Create a manifest for your deployment as follows:
     $ mkdir ~/cf-deployment
     </pre>
 
-1. Change into the cf-deployment directory and clone the cloudfoundry/cf-release
+1. Move into the `cf-deployment` directory and clone the cloudfoundry/cf-release
 repo.
 
     <pre class='terminal'>

@@ -11,29 +11,29 @@ Run `bosh stemcells` to view stemcells that are active in your MicroBOSH deploym
 1. Navigate to the releases subdirectory:
 
     <pre class="terminal">
-    cd ~/cf-deployment/cf-release/releases/
+    $ cd ~/cf-deployment/cf-release/releases/
     </pre>
 
 1. Select and upload a recent release:
 
     <pre class="terminal">
-    bosh upload release ~/cf-deployment/cf-release/releases/cf-193.yml
+    $ bosh upload release ~/cf-deployment/cf-release/releases/cf-193.yml
     </pre>
 
 1. To confirm that the release was successful:
 
     <pre class="terminal">
-    bosh releases
+    $ bosh releases
     </pre>
 
 <p class="note"><strong>Note</strong>: If you receive a blobstore error indicating that indicates that the device has no space left, your machine ran out of space in the <code>/tmp</code> directory. To fix this, find a larger local partition and execute the following commands to point <code>/tmp</code> to a larger device:</p>
 
 <pre class="terminal">
-sudo su -
-mkdir /tmp2
-mount --bind /tmp2 /tmp
-sudo chown root.root /tmp
-sudo chmod 1777 /tmp
+$ sudo su -
+$ mkdir /tmp2
+$ mount --bind /tmp2 /tmp
+$ sudo chown root.root /tmp
+$ sudo chmod 1777 /tmp
 </pre>
 
 ##<a id="deploy"></a>Deploy Cloud Foundry on AWS ##
@@ -43,13 +43,13 @@ To deploy Cloud Foundry on AWS:
 1. Deploy the manifest you created in the [Configuring AWS for Cloud Foundry](./configure_aws_cf.html) topic.
 
     <pre class="terminal">
-    bosh deployment ~/PATH_TO_YOUR_MANIFEST/MANIFEST_NAME.yml
+    $ bosh deployment ~/PATH_TO_YOUR_MANIFEST/MANIFEST-NAME.yml
     </pre>
 
 1. Deploy BOSH.
 
     <pre class="terminal">
-    bosh deploy
+    $ bosh deploy
     </pre>
 
 
