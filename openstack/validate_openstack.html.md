@@ -271,7 +271,7 @@ Create a security group for your public-facing virtual machine called **cidr-pin
 
 1.  Open the OpenStack dashboard, and click on **Access & Security** in the left-hand menu.
 2.  Click **Create Security Group** on the upper-right hand corner on the list of security groups.
-3.  Under **Name**, enter **cidr-ping-test**. The **Description** field requires text, but the the text can be anything.
+3.  Under **Name**, enter **cidr-ping-test**. The **Description** field requires text, but the text can be anything.
 4.  Click **Create Security Group**.
 5.  The list of security groups should now contain **cidr-ping-test**. Find it in the list and click the **Edit Rules** button.
 6.  The list of rules should be blank. Click **Add Rule**.

@@ -11,7 +11,7 @@ If you're using Self Signed SSL Certificates to secure your OpenStack installati
 Excon.defaults[:ssl_verify_peer] = false
 ```
 
-This is currently being [worked on](https://github.com/cloudfoundry/bosh/issues/420), but until that's complete, you'll want to add the above line to these two locations on the the Cloud Controller VM:
+This is currently being [worked on](https://github.com/cloudfoundry/bosh/issues/420), but until that's complete, you'll want to add the above line to these two locations on the Cloud Controller VM:
 
 * Line 55 of `/var/vcap/packages/director/gem_home/gems/bosh_openstack_cpi-1.5.0.pre.978/lib/cloud/openstack/cloud.rb`
 * Line 32 of `/var/vcap/packages/registry/gem_home/gems/bosh_registry-1.5.0.pre.978/lib/bosh_registry/instance_manager/openstack.rb`
