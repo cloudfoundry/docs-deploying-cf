@@ -25,10 +25,10 @@ For example, if you select the domain name *cloud.example.com*, Cloud Foundry de
 
 ## <a id="deployment-env-prep"></a> Prepare the Deployment Environment ##
 
-Ruby 1.9.3 and git (1.8 or later) are prerequisites for the following
+Ruby 1.9.3 or higher and Git 1.8 or higher are prerequisites for the following
 steps.
 
-1. After you install Ruby and git, install the `bundler` RubyGem:
+1. After you install Ruby and Git, install the `bundler` RubyGem:
 
     <pre class="terminal">
     $ gem install bundler
@@ -47,8 +47,12 @@ steps.
     ~~~
     source 'https://rubygems.org'
     ruby "1.9.3"
+
     gem "bosh_cli_plugin_aws"
     ~~~
+	<p class='note'><strong>Note</strong>: The Ruby version that you specify in 
+    your <code>Gemfile</code> must match the Ruby version that you have 
+    installed.</p> 	
 
 1. Run `bundle install` to install the gems you specified in the `Gemfile`.
 
