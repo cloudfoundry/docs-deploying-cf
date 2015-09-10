@@ -115,74 +115,68 @@ manifest with the stub file that you created in [Step 1: Create Stub File](#crea
 
 To rotate your SSL certificates, keys, and certificate authorities, you must perform the following steps. 
 
-1. Add the certificates, keys, and certificate authorities that you want to rotate to your stub file. You must use the same stub file that you used in [Step 2: Generate Deployment Manifest](#manifest).
+1. Add the certificates, keys, and certificate authorities that you want to rotate to your stub file. You must use the same stub file that you used in [Step 2: Generate Deployment Manifest](#manifest).<br><br>When updating, the agent\_key, server\_key, and ca\_cert should initially have new information above the existing certifications. Do not remove the existing ones.
 
-When updating, the agent_key, server_key, and ca_cert should initially have new information above the existing certifications. Do not remove the existing ones.
-
-```yaml
-server_cert: |
-  ----BEGIN CERTIFICATE----
-    ...
-    New Server Certificate
-    ...
-  ----END CERTIFICATE----
-  ----BEGIN CERTIFICATE----
-    ...
-    New CA Certificate
-    ...
-  ----END CERTIFICATE----
-  ----BEGIN CERTIFICATE----
-    ...
-    Old Server Certificate
-    ...
-  ----END CERTIFICATE----
-  ----BEGIN CERTIFICATE----
-    ...
-    Old CA Certificate
-    ...
-  ----END CERTIFICATE----
-```
-
-
-```yaml
-server_key:
-  ----BEGIN CERTIFICATE----
-    ...
-    New Server Certificate
-    ...
-  ----END CERTIFICATE----
-  ----BEGIN CERTIFICATE----
-    ...
-    Old Server Certificate
-    ...
-  ----END CERTIFICATE----
-```
-
+    ```yaml
+  server_cert: |
+      ----BEGIN CERTIFICATE----
+      ...
+      New Server Certificate
+      ...
+      ----END CERTIFICATE----
+      ----BEGIN CERTIFICATE----
+      ...
+      New CA Certificate
+      ...
+      ----END CERTIFICATE----
+      ----BEGIN CERTIFICATE----
+      ...
+      Old Server Certificate
+      ...
+      ----END CERTIFICATE----
+      ----BEGIN CERTIFICATE----
+      ...
+      Old CA Certificate
+      ...
+      ----END CERTIFICATE----
+    ```
+    ```yaml
+  server_key: |
+      ----BEGIN CERTIFICATE----
+      ...
+      New Server Certificate
+      ...
+      ----END CERTIFICATE----
+      ----BEGIN CERTIFICATE----
+      ...
+      Old Server Certificate
+      ...
+      ----END CERTIFICATE----
+    ```
 1. Use the instructions for your infrastructure to generate a deployment manifest with your edited stub file, as described in [Step 2: Generate Deployment Manifest](#manifest).
 
 1. Deploy Cloud Foundry using this manifest.
 
-1. After you have deployed Cloud Foundry with the new manifest, you can remove the old certificates and keys.
+1. After you have deployed Cloud Foundry with the new manifest, remove the old certificates and keys.
 
-```yaml
-server_cert: |
-  ----BEGIN CERTIFICATE----
-    ...
-    New Server Certificate
-    ...
-  ----END CERTIFICATE----
-  ----BEGIN CERTIFICATE----
-    ...
-    New CA Certificate
-    ...
-  ----END CERTIFICATE----
+    ```yaml
+  server_cert: |
+      ----BEGIN CERTIFICATE----
+      ...
+      New Server Certificate
+      ...
+      ----END CERTIFICATE----
+      ----BEGIN CERTIFICATE----
+      ...
+      New CA Certificate
+      ...
+      ----END CERTIFICATE----
 ```
-
-```yaml
-server_key:
-  ----BEGIN CERTIFICATE----
-    ...
-    New Server Certificate
-    ...
-  ----END CERTIFICATE----
-```
+    ```yaml
+  server_key: |
+      ----BEGIN CERTIFICATE----
+      ...
+      New Server Certificate
+      ...
+      ----END CERTIFICATE----
+    ```
