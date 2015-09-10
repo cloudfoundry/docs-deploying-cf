@@ -59,29 +59,38 @@ We strongly recommend that you configure Consul to be secure.
         properties:
           consul:
             encrypt_keys: 
-			- RANDOM-16-BYTE-BASE64-ENCODED-VALUE
+            - RANDOM-16-BYTE-BASE64-ENCODED-VALUE
             ca_cert: |
               -----BEGIN CERTIFICATE-----
-              ...
+              ###########################################################
+              #######           Your CA Certificate               #######
+              ###########################################################
               -----END CERTIFICATE-----
             agent_cert: |
-              -----BEGIN CERTIFICATE-----
-              ...
-              -----END CERTIFICATE-----
+              ----BEGIN CERTIFICATE----
+              ###########################################################
+              #######           Your Agent Certificate            #######
+              ###########################################################
+              ----END CERTIFICATE----
             agent_key: |
-              -----BEGIN RSA PRIVATE KEY-----
-              ...
-              -----END RSA PRIVATE KEY-----
+              ----BEGIN CERTIFICATE----
+              ###########################################################
+              #######           Your Agent Key                    #######
+              ###########################################################
+              ----END CERTIFICATE----
             server_cert: |
-              -----BEGIN CERTIFICATE-----
-              ...
-              -----END CERTIFICATE-----
+              ----BEGIN CERTIFICATE----
+              ###########################################################
+              #######           Your Server Certificate           #######
+              ###########################################################
+              ----END CERTIFICATE----
             server_key: |
-              -----BEGIN RSA PRIVATE KEY-----
-              ...
-              -----END RSA PRIVATE KEY-----
+              ----BEGIN CERTIFICATE----
+              ###########################################################
+              #######           Your  Server Key                  #######
+              ###########################################################
+              ----END CERTIFICATE----
         ```
-    
     1. Copy the contents of the files in the `./consul-certs` directory to 
     the `consul-stub.yml` file. 
     You generated these files in a previous step, [Generate SSL Certificates  and Keys](#generate-certs).
@@ -115,43 +124,67 @@ manifest with the stub file that you created in [Step 1: Create Stub File](#crea
 
 To rotate your SSL certificates, keys, and certificate authorities, you must perform the following steps. 
 
-1. Add the certificates, keys, and certificate authorities that you want to rotate to your stub file. You must use the same stub file that you used in [Step 2: Generate Deployment Manifest](#manifest).<br><br>When updating, the agent\_key, server\_key, and ca\_cert should initially have new information above the existing certifications. Do not remove the existing ones.
+1. Add the certificates, keys, and certificate authorities that you want to rotate to your stub file. You must use the same stub file that you used in [Step 2: Generate Deployment Manifest](#manifest).<br><br>You must add your `agent_key`, `server_key`, and `ca_cert` above the existing certificates. Do not remove the existing certificates.
 
     ```yaml
-  server_cert: |
-      ----BEGIN CERTIFICATE----
-      ...
-      New Server Certificate
-      ...
-      ----END CERTIFICATE----
-      ----BEGIN CERTIFICATE----
-      ...
-      New CA Certificate
-      ...
-      ----END CERTIFICATE----
-      ----BEGIN CERTIFICATE----
-      ...
-      Old Server Certificate
-      ...
-      ----END CERTIFICATE----
-      ----BEGIN CERTIFICATE----
-      ...
-      Old CA Certificate
-      ...
-      ----END CERTIFICATE----
-    ```
-    ```yaml
-  server_key: |
-      ----BEGIN CERTIFICATE----
-      ...
-      New Server Certificate
-      ...
-      ----END CERTIFICATE----
-      ----BEGIN CERTIFICATE----
-      ...
-      Old Server Certificate
-      ...
-      ----END CERTIFICATE----
+    properties:
+      consul:
+        encrypt_keys: 
+        - RANDOM-16-BYTE-BASE64-ENCODED-VALUE
+        ca_cert: |
+          -----BEGIN CERTIFICATE-----
+          ###########################################################
+          #######           Your New CA Certificate           #######
+          ###########################################################
+          -----END CERTIFICATE-----
+          -----BEGIN CERTIFICATE-----
+          ###########################################################
+          #######           Your Old CA Certificate           #######
+          ###########################################################
+          -----END CERTIFICATE-----
+        agent_cert: |
+          ----BEGIN CERTIFICATE----
+          ###########################################################
+          #######           Your New Agent Certificate        #######
+          ###########################################################
+          ----END CERTIFICATE----
+          ----BEGIN CERTIFICATE----
+          ###########################################################
+          #######           Your Old Agent Certificate        #######
+          ###########################################################
+          ----END CERTIFICATE----
+        agent_key: |
+          ----BEGIN CERTIFICATE----
+          ###########################################################
+          #######           Your New Agent Key                #######
+          ###########################################################
+          ----END CERTIFICATE----
+          ----BEGIN CERTIFICATE----
+          ###########################################################
+          #######           Your Old Agent Key              #######
+          ###########################################################
+          ----END CERTIFICATE----
+        server_cert: |
+          ----BEGIN CERTIFICATE----
+          ###########################################################
+          #######           Your New Server Certificate       #######
+          ###########################################################
+          ----END CERTIFICATE----
+          ----BEGIN CERTIFICATE----
+          ###########################################################
+          #######           Your Old Server Certificate       #######
+          ###########################################################
+        server_key: |
+          ----BEGIN CERTIFICATE----
+          ###########################################################
+          #######           Your New Server Key               #######
+          ###########################################################
+          ----END CERTIFICATE----
+          ----BEGIN CERTIFICATE----
+          ###########################################################
+          #######           Your Old Server Key               #######
+          ###########################################################
+          ----END CERTIFICATE----
     ```
 1. Use the instructions for your infrastructure to generate a deployment manifest with your edited stub file, as described in [Step 2: Generate Deployment Manifest](#manifest).
 
@@ -160,23 +193,43 @@ To rotate your SSL certificates, keys, and certificate authorities, you must per
 1. After you have deployed Cloud Foundry with the new manifest, remove the old certificates and keys.
 
     ```yaml
-  server_cert: |
-      ----BEGIN CERTIFICATE----
-      ...
-      New Server Certificate
-      ...
-      ----END CERTIFICATE----
-      ----BEGIN CERTIFICATE----
-      ...
-      New CA Certificate
-      ...
-      ----END CERTIFICATE----
-```
-    ```yaml
-  server_key: |
-      ----BEGIN CERTIFICATE----
-      ...
-      New Server Certificate
-      ...
-      ----END CERTIFICATE----
+    properties:
+      consul:
+        encrypt_keys: 
+        - RANDOM-16-BYTE-BASE64-ENCODED-VALUE
+        ca_cert: |
+          -----BEGIN CERTIFICATE-----
+          ###########################################################
+          #######           Your New CA Certificate           #######
+          ###########################################################
+          -----END CERTIFICATE-----
+        agent_cert: |
+          ----BEGIN CERTIFICATE----
+          ###########################################################
+          #######           Your New Agent Certificate        #######
+          ###########################################################
+          ----END CERTIFICATE----
+        agent_key: |
+          ----BEGIN CERTIFICATE----
+          ###########################################################
+          #######           Your New Agent Key                #######
+          ###########################################################
+          ----END CERTIFICATE----
+        server_cert: |
+          ----BEGIN CERTIFICATE----
+          ###########################################################
+          #######           Your New Server Certificate       #######
+          ###########################################################
+          ----END CERTIFICATE----
+          ----BEGIN CERTIFICATE----
+          ###########################################################
+          #######           Your New CA Certificate           #######
+          ###########################################################
+          ----END CERTIFICATE----
+        server_key: |
+          ----BEGIN CERTIFICATE----
+          ###########################################################
+          #######           Your New Server Key               #######
+          ###########################################################
+          ----END CERTIFICATE----
     ```
