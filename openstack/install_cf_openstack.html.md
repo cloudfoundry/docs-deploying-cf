@@ -137,26 +137,26 @@ Create a manifest stub file named `cf-stub.yml`.
     $ git clone https://github.com/cloudfoundry/cf-release.git
     </pre>
 
-1. Use the `update` helper script to update the `cf-release` submodules.
+1. Use the `scripts/update` helper to update the `cf-release` submodules.
 
     <pre class="terminal">
     $ cd cf-release
-    $ ./update
+    $ ./scripts/update
     </pre>
 
 1. Install [spiff](https://github.com/cloudfoundry-incubator/spiff).
 
 1. Run the following spiff command from the `cf-release` directory to create a deployment manifest named `cf-deployment.yml`:
 
-    `generate_deployment_manifest INFRASTRUCTURE MANIFEST-STUB > cf-deployment.yml`
+    `scripts/generate_deployment_manifest INFRASTRUCTURE MANIFEST-STUB > cf-deployment.yml`
 
     Replace INFRASTRUCTURE with `openstack` and replace MANIFEST-STUB with the name and location of your `cf-stub.yml file`. For example:
 
     <pre class="terminal">
-	$ ./generate_deployment_manifest openstack cf-stub.yml > cf-deployment.yml
+	$ ./scripts/generate_deployment_manifest openstack cf-stub.yml > cf-deployment.yml
     </pre>
 
-    <p class="note"><strong>Note</strong>: <code>generate_deployment_manifest</code> can accept a list of stub files. For example: <code>generate_deployment_manifest openstack cf-stub.yml cf-consul.yml > cf-dm.yml</code></p>
+    <p class="note"><strong>Note</strong>: <code>scripts/generate_deployment_manifest</code> can accept a list of stub files. For example: <code>scripts/generate_deployment_manifest openstack cf-stub.yml cf-consul.yml > cf-dm.yml</code></p>
 
     <p class="note"><strong>Note</strong>: The <code>cf-deployment.yml</code> uses the default OpenStack flavor names of <code>m1.small</code>, <code>m1.medium</code>, <code>m1.large</code>, and <code>m1.xlarge</code>. If your OpenStack instance uses alternate names for these flavors, change the default flavor names in <code>cf-deployment.yml</code> to match the alternate names that your instance uses.</p>
 

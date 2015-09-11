@@ -47,16 +47,16 @@ b02f8ab5-b63c-4f08-b144-89f96810a022
     $ git clone https://github.com/cloudfoundry/cf-release.git
     </pre>
 
-1. Use the `update` helper script to update the `cf-release` submodules.
+1. Use the `scripts/update` helper to update the `cf-release` submodules.
 
     <pre class="terminal">
     $ cd cf-release
-    $ ./update
+    $ ./scripts/update
     </pre>
 
 1. Install [spiff](https://github.com/cloudfoundry-incubator/spiff).
 
-1. From the `cf-release` directory, use the `generate_deployment_manifest
+1. From the `cf-release` directory, use the `scripts/generate_deployment_manifest
 INFRASTRUCTURE MANIFEST-STUB > cf-deployment.yml` command to create a deployment
 manifest named `cf-deployment.yml`.
 
@@ -64,7 +64,7 @@ manifest named `cf-deployment.yml`.
     name and location of your `cf-stub.yml file`. For example:
 
     <pre class="terminal">
-    $ ./generate_deployment_manifest warden cf-stub.yml > cf-deployment.yml
+    $ ./scripts/generate_deployment_manifest warden cf-stub.yml > cf-deployment.yml
     </pre>
 
 1. Run `bosh target` to target the BOSH Director.
