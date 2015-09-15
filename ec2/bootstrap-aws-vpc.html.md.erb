@@ -62,11 +62,12 @@ steps.
 
 1. Create a file named `bosh_environment` and add the following contents,
 replacing the values in each line to match your configuration.
-cat
-    Note the following:
+<br><br>
+    Use the following information to complete the `bosh_environment` file:
     * The values that you add for `BOSH_VPC_DOMAIN` and `BOSH_VPC_SUBDOMAIN` must correspond to the DNS domain name that you set up when configuring Route 53. The example below uses `my-subdomain.example.com`.
-    * The values that you add for `BOSH_AWS_ACCESS_KEY_ID` and `BOSH_SECRET_ACCESS_KEY` are the [AWS credentials](http://bosh.io/docs/deploy-microbosh-to-aws.html#credentials) you established when you deployed MicroBOSH to AWS.
-    * For the `BOSH_VPC_PRIMARY_AZ` and `BOSH_VPC_SECONDARY_AZ` properties, choose an availability zone that is listed as "operating normally" in the Health Status section of the [AWS Console](https://console.aws.amazon.com/ec2/v2/home?region=us-east-1) for your region.
+    * The values that you add for `BOSH_AWS_ACCESS_KEY_ID` and `BOSH_SECRET_ACCESS_KEY` are the [AWS credentials](http://bosh.io/docs/deploy-microbosh-to-aws.html#credentials) that you established when you deployed MicroBOSH to AWS.
+    * For the `BOSH_AWS_REGION` property, use your AWS region. The example below uses `us-east-1`.
+    * For the `BOSH_VPC_PRIMARY_AZ` and `BOSH_VPC_SECONDARY_AZ` properties, choose an availability zone that is listed as "operating normally" in the Health Status section of the [AWS Console](https://console.aws.amazon.com/ec2/v2/home?region=us-east-1) for your region. The example below uses `us-east-1a` and `us-east-1b`.
 
     ~~~
     export BOSH_VPC_DOMAIN=example.com
@@ -78,11 +79,7 @@ cat
     export BOSH_VPC_SECONDARY_AZ=us-east-1b
     ~~~
 
-    <p class="note"><strong>Note</strong>: The following steps only support deployment to the <code>us-east-1</code> region of AWS.<br><br>
-To deploy MicroBOSH to a different region, see <a href="https://gist.github.com/danhigham/5804252">this guide</a>.</p>
-
-
-1. Run `source bosh_environment` to set the environment variables required for deploying to AWS.
+1. Run `source bosh_environment` to set the environment variables required for deploying Cloud Foundry to AWS.
 
     <pre class="terminal">
     $ source bosh_environment
