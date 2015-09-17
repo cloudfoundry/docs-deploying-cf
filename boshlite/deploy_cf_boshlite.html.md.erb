@@ -21,24 +21,6 @@ stemcell to the BOSH Director.
     $ bosh upload stemcell bosh-stemcell-2776-warden-boshlite-ubuntu-trusty-go_agent.tgz
     </pre>
 
-##<a id="create-stub"></a>Create a Deployment Manifest Stub ##
-
-For BOSH Lite, the minimum information required in a manifest stub is the BOSH
-Director UUID.
-Create a manifest stub file named `cf-stub.yml` with the following contents:
-
-<pre class="terminal">
----
-director_uuid: DIRECTOR-UUID
-</pre>
-
-Use `bosh status --uuid` to view the BOSH Director UUID.
-
-<pre class="terminal">
-$ bosh status --uuid
-b02f8ab5-b63c-4f08-b144-89f96810a022
-</pre>
-
 ##<a id="deploy-cf"></a>Deploy Cloud Foundry##
 
 1. Clone the `cf-release` GitHub repository.
@@ -56,29 +38,18 @@ b02f8ab5-b63c-4f08-b144-89f96810a022
 
 1. Install [spiff](https://github.com/cloudfoundry-incubator/spiff).
 
-1. From the `cf-release` directory, use the `scripts/generate_deployment_manifest
-INFRASTRUCTURE MANIFEST-STUB > cf-deployment.yml` command to create a deployment
-manifest named `cf-deployment.yml`.
-
-    Replace INFRASTRUCTURE with `warden`, and replace MANIFEST-STUB with the
-    name and location of your `cf-stub.yml file`. For example:
+1. Run `bosh target 192.168.50.4` to target the BOSH Director.
 
     <pre class="terminal">
-    $ ./scripts/generate_deployment_manifest warden cf-stub.yml > cf-deployment.yml
-    </pre>
-
-1. Run `bosh target` to target the BOSH Director.
-
-    <pre class="terminal">
-    $ bosh target
+    $ bosh target 192.168.50.4
     Current target is https://192.168.50.4:25555 (Bosh Lite Director)
     </pre>
 
-1. Use `bosh deployment MANIFEST-NAME` to set your deployment to the generated
-manifest. Replace MANIFEST-NAME with the name of your deployment manifest.
+1. Use the `scripts/generate-bosh-lite-dev-manifest` command to create a bosh-lite deployment
+manifest and set it as the current BOSH deployment
 
     <pre class="terminal">
-    $ bosh deployment cf-deployment.yml
+    $ ./scripts/generate-bosh-lite-dev-manifest
     </pre>
 
 1. Run `bosh create release` to create a Cloud Foundry release.
