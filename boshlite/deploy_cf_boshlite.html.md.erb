@@ -21,6 +21,32 @@ stemcell to the BOSH Director.
     $ bosh upload stemcell bosh-stemcell-2776-warden-boshlite-ubuntu-trusty-go_agent.tgz
     </pre>
 
+##<a id="create-stub"></a>Create a Deployment Manifest Stub ##
+
+When deploying bosh-lite to a local machine, the only information required in a manifest stub is the BOSH Director UUID.
+However, if you are deploying bosh-lite to AWS then there is an additional change that needs to be made to the system domain.
+By default BOSH Lite's system domain points to `bosh-lite.com` which resolves to a local host address of `10.244.0.34`.
+When deploying to AWS, this domain property can be updated to one of two values.
+
+1) The domain you've set up for this Cloud Foundry Instance.
+
+2) You can use the public IP addressed assigned to your vagrantb box .xip.io ( i.e YOUR_PUBLIC_IP.xip.io ). For information on xip.io see [here](http://xip.io/).
+
+<pre class="terminal">
+---
+director_uuid: DIRECTOR-UUID
+
+properties: # This is required for AWS deployments
+  domain: YOUR_CLOUD_FOUNDRY_DOMAIN
+</pre>
+
+Use `bosh status --uuid` to view the BOSH Director UUID.
+
+<pre class="terminal">
+$ bosh status --uuid
+b02f8ab5-b63c-4f08-b144-89f96810a022
+</pre>
+
 ##<a id="deploy-cf"></a>Deploy Cloud Foundry##
 
 1. Clone the `cf-release` GitHub repository.
