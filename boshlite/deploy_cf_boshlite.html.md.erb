@@ -23,22 +23,15 @@ stemcell to the BOSH Director.
 
 ##<a id="create-stub"></a>Create a Deployment Manifest Stub ##
 
-When deploying bosh-lite to a local machine, the only information required in a manifest stub is the BOSH Director UUID.
-However, if you are deploying bosh-lite to AWS then there is an additional change that needs to be made to the system domain.
-By default BOSH Lite's system domain points to `bosh-lite.com` which resolves to a local host address of `10.244.0.34`.
-When deploying to AWS, this domain property can be updated to one of two values.
+If you deploy BOSH Lite to a local machine, you must provide the BOSH Director UUID in a manifest stub. If you deploy BOSH Lite to AWS, you must also make a change to the system domain.
 
-1) The domain you've set up for this Cloud Foundry Instance.
+By default, BOSH Lite uses the system domain `bosh-lite.com`, which resolves to the local host address `10.244.0.34`.
 
-2) You can use the public IP addressed assigned to your vagrantb box .xip.io ( i.e YOUR_PUBLIC_IP.xip.io ). For information on xip.io see [here](http://xip.io/).
+When deploying to AWS, you must update this domain property to one of the following two values:
 
-<pre class="terminal">
----
-director_uuid: DIRECTOR-UUID
+- The domain that you set up for this Cloud Foundry nnstance.
 
-properties: # This is required for AWS deployments
-  domain: YOUR_CLOUD_FOUNDRY_DOMAIN
-</pre>
+- The public IP address that you assigned to your vagrant box concatenated with `.xip.io`: `YOUR_PUBLIC_IP.xip.io`. For more information on xip.io, see [http://xip.io/](http://xip.io/).
 
 Use `bosh status --uuid` to view the BOSH Director UUID.
 
@@ -46,6 +39,16 @@ Use `bosh status --uuid` to view the BOSH Director UUID.
 $ bosh status --uuid
 b02f8ab5-b63c-4f08-b144-89f96810a022
 </pre>
+
+Example manifest stub:
+
+```
+---
+director_uuid: DIRECTOR-UUID
+
+properties: # Required for AWS deployments
+  domain: YOUR_CLOUD_FOUNDRY_DOMAIN
+```
 
 ##<a id="deploy-cf"></a>Deploy Cloud Foundry##
 
