@@ -24,13 +24,25 @@ stemcell to the BOSH Director.
 ##<a id="create-stub"></a>Create a Deployment Manifest Stub ##
 
 When deploying bosh-lite to a local machine, the only information required in a manifest stub is the BOSH Director UUID.
-However, if you are deploying bosh-lite to AWS then there is an additional change that needs to be made to the system domain.
+
+However, if you are deploying bosh-lite to AWS then you must specify a system domain as well.
+
 By default BOSH Lite's system domain points to `bosh-lite.com` which resolves to a local host address of `10.244.0.34`.
 When deploying to AWS, this domain property can be updated to one of two values.
 
-1) The domain you've set up for this Cloud Foundry Instance.
+1. The domain you've configured to point to the public IP of the bosh-lite box you just created.
 
-2) You can use the public IP addressed assigned to your vagrantb box .xip.io ( i.e YOUR_PUBLIC_IP.xip.io ). For information on xip.io see [here](http://xip.io/).
+2. The xip.io domain the corresponds to the public IP given to your bosh-lite vagrant box ( i.e `YOUR_PUBLIC_IP.xip.io` ). For information on xip.io see [here](http://xip.io/).
+
+
+Use `bosh status --uuid` to view the BOSH Director UUID.
+
+<pre class="terminal">
+$ bosh status --uuid
+b02f8ab5-b63c-4f08-b144-89f96810a022
+</pre>
+
+Create and safe your stub with the following structure:
 
 <pre class="terminal">
 ---
@@ -40,12 +52,8 @@ properties: # This is required for AWS deployments
   domain: YOUR_CLOUD_FOUNDRY_DOMAIN
 </pre>
 
-Use `bosh status --uuid` to view the BOSH Director UUID.
+Keep track of the location of this stub as it will be used later.
 
-<pre class="terminal">
-$ bosh status --uuid
-b02f8ab5-b63c-4f08-b144-89f96810a022
-</pre>
 
 ##<a id="deploy-cf"></a>Deploy Cloud Foundry##
 
@@ -76,6 +84,12 @@ manifest and set it as the current BOSH deployment
 
     <pre class="terminal">
     $ ./scripts/generate-bosh-lite-dev-manifest
+    </pre>
+
+    If you have deployed your bosh-lite to AWS you must pass in the stub you created earlier at this point:
+
+    <pre class="terminal">
+    $ ./scripts/generate-bosh-lite-dev-manifest PATH_TO_YOUR_STUB
     </pre>
 
 1. Run `bosh create release` to create a Cloud Foundry release.
