@@ -65,7 +65,7 @@ If you deploy BOSH Lite to AWS, you must provide the BOSH Director UUID and spec
       domain: YOUR_SYSTEM_DOMAIN
     ```
 
-##<a id="deploy-cf"></a>Deploy Cloud Foundry##
+##<a id="deploy-cf"></a>Deploy Cloud Foundry ##
 
 1. Clone the `cf-release` GitHub repository.
 
@@ -93,6 +93,12 @@ If you deploy BOSH Lite to AWS, you must provide the BOSH Director UUID and spec
 
     <pre class="terminal">
     $ ./scripts/generate-bosh-lite-dev-manifest  ./manifest-stub.yml
+    </pre>
+
+    If you have deployed your bosh-lite to AWS you must pass in the stub you created earlier at this point:
+
+    <pre class="terminal">
+    $ ./scripts/generate-bosh-lite-dev-manifest PATH_TO_YOUR_STUB
     </pre>
 
 1. Run `bosh create release` to create a Cloud Foundry release.
