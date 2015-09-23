@@ -98,13 +98,13 @@ properties:
 ccdb:
   roles:
   - name: ccadmin
-    password: admin_password
+    password: ccadmin_password
     tag: admin
     </code></pre></td>
     <td>Replace the <strong>roles: name:</strong> <code>ccadmin</code> with the
 		admin user name used to connect to the Cloud Controller database.
 		<br /><br />
-		Replace <code>admin_password</code> with the admin password.
+		Replace <code>ccadmin_password</code> with the Cloud Controller database admin password.
 	</td>
   </tr>
   <tr>
@@ -119,12 +119,12 @@ databases:
     <td>Replace <code>ccadmin</code> with the admin user name used to connect to
 		the Cloud Controller database.
 		<br /><br />
-		Replace the <code>ccadmin_password</code> with the admin password.
+		Replace the <code>ccadmin_password</code> with the Cloud Controller database admin password.
 		<br /><br />
 		Replace <code>uaaadmin</code> with the admin user name used to connect
 		to the UAA database.
 		<br /><br />
-		Replace <code>uaaadmin_password</code> with the admin password.
+		Replace <code>uaaadmin_password</code> with the UAA database admin password.
 	</td>
   </tr>
   <tr>
@@ -234,7 +234,7 @@ uaadb:
 	<td>Replace <code>uaaadmin</code> with the admin user name used to connect
 	to the UAA database.
 	<br /><br />
-	Replace <code>admin_password</code> with the admin password.
+	Replace <code>admin_password</code> with the UAA database admin password.
 	</td>
   </tr>
 </table>
