@@ -19,7 +19,7 @@ information about your environment.
 
 <table border="1" class="nice">
   <tr>
-    <th style="width:35%">Deployment Manifest Stub Contents</th>
+    <th>Deployment Manifest Stub Contents</th>
     <th>Editing Instructions</th>
   </tr>
   <tr>
@@ -144,7 +144,7 @@ domain: example.com
 loggregator_endpoint:
   shared_secret: loggregator_endpoint_secret</code></pre>
 	</td>
-    <td>Replace the <strong>share_secret:</strong>
+    <td>Replace the <strong>shared_secret:</strong>
 		<code>loggregator_endpoint_secret</code> with a secure secret.
 	</td>
   </tr>
@@ -219,7 +219,8 @@ jwt:
     <td><pre><code>
 scim:
   users:
-  - admin|fakepassword|scim.write,scim.read,openid,cloud_controller.admin	 </code></pre>
+  - admin|fakepassword|scim.write,scim.read,
+  openid,cloud_controller.admin	 </code></pre>
 	</td>
     <td>Replace <code>fakepassword</code> with an admin password.</td>
   </tr>
