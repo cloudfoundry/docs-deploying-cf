@@ -82,7 +82,7 @@ If you deploy BOSH Lite to AWS, you must provide the BOSH Director UUID and spec
 
 1. Install [spiff](https://github.com/cloudfoundry-incubator/spiff).
 
-1. Run `bosh target 192.168.50.4` to target the BOSH Director.
+1. Run `bosh target DIRECTOR_ADDRESS_OR_ALIAS` to target the BOSH Director.  The default Director IP when deploying BOSH Lite using the `virtualbox` Vagrant provider is `192.168.50.4`.  If you have overriden the IP, deployed using the `aws` provider, or have already [set an alias for your target](https://bosh.io/docs/sysadmin-commands.html#director), you will use a different value.
 
     <pre class="terminal">
     $ bosh target 192.168.50.4
