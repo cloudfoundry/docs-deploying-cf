@@ -31,14 +31,14 @@ If you deploy BOSH Lite to a local machine, you must provide the BOSH Director U
 
     <pre class="terminal">
     $ bosh status --uuid
-    b02f8ab5-b63c-4f08-b144-89f96810a022
+    ab01cd23-ef45-abcd6789
     </pre>
 
 1. Create a `manifest-stub.yml` file and add the BOSH Director UUID as follows:
 
     ```
     ---
-    director_uuid: DIRECTOR-UUID
+    director_uuid: ab01cd23-ef45-abcd6789 # Replace with your BOSH Director UUID
     ```
 
 ### Deploy to AWS ###
@@ -49,7 +49,7 @@ If you deploy BOSH Lite to AWS, you must provide the BOSH Director UUID and spec
 
     <pre class="terminal">
     $ bosh status --uuid
-    b02f8ab5-b63c-4f08-b144-89f96810a022
+    ab01cd23-ef45-abcd6789
     </pre>
 
 1. By default, BOSH Lite uses the system domain `bosh-lite.com`, which resolves to the local host address `10.244.0.34`. Update this system domain property to one of the following two values:
@@ -59,10 +59,10 @@ If you deploy BOSH Lite to AWS, you must provide the BOSH Director UUID and spec
 
     ```
     ---
-    director_uuid: DIRECTOR-UUID
+    director_uuid: ab01cd23-ef45-abcd6789 # Replace with your BOSH Director UUID
 
     properties: # Required for AWS deployments
-      domain: YOUR_SYSTEM_DOMAIN
+      domain: bosh-lite.com # Replace with your system domain
     ```
 
 ##<a id="deploy-cf"></a>Deploy Cloud Foundry ##
