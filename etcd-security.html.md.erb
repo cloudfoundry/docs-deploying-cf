@@ -1,0 +1,217 @@
+---
+Title: Security Configuration for Etcd
+---
+
+As of [cf-release v220](https://github.com/cloudfoundry/cf-release/releases/tag/v220), cloud foundry enables secure traffic between etcd nodes by default using encryption and mutual authentication. We strongly recommend that you configure etcd to be secure.
+
+Follow the instructions below to configure security for etcd.
+
+##<a id='create-stub'></a>Step 1: Create Stub File ##
+
+You can configure etcd to be secure or insecure. 
+We strongly recommend that you configure etcd to be secure.
+
+###<a id='secure'></a>Configure Secure Mode ###
+
+1. <a id='generate-certs'></a>Generate SSL certificates and keys:
+
+    To generate the certificates and keys that you need for etcd, we 
+    recommend using [certstrap](https://github.com/square/certstrap). 
+    The [cf-release](https://github.com/cloudfoundry/cf-release) repository 
+    contains a helper script, `scripts/generate-etcd-certs`. 
+    This script uses certstrap to initialize a certificate authority (ca), and 
+    generate the certificates and keys for etcd.
+    <br><br>
+    If you already have a ca, you may have an existing workflow. 
+    You can modify the `generate-etcd-certs` script to use your existing ca 
+    instead of generating a new one.
+    <br><br>
+    The `generate-etcd-certs` script outputs files to the `./etcd-certs` 
+    directory. 
+    You use the contents of these output files in a later step, [create and edit stub file](#stub).
+
+2. <a id='stub'></a>Create and edit stub file:
+
+    Create a stub file that includes the certificates keys and `encrypt_keys` 
+    array. 
+    You use this stub file with the `scripts/generate_deployment_manifest` script from
+    `cf-release` to generate a deployment manifest.
+    
+    1. In the `cf-release` directory, create a stub file named 
+    `etcd-stub.yml`. 
+    
+    1. Copy the following text into the `etcd-stub.yml` file: 
+
+        ```yaml
+        properties:
+          etcd:
+            ca_cert: |
+              -----begin certificate-----
+              ###########################################################
+              #######           your ca certificate               #######
+              ###########################################################
+              -----end certificate-----
+            server_cert: |
+              ----begin certificate----
+              ###########################################################
+              #######           your server certificate           #######
+              ###########################################################
+              ----end certificate----
+            client_cert: |
+              ----begin certificate----
+              ###########################################################
+              #######           your client cert                  #######
+              ###########################################################
+              ----end certificate----
+            peer_ca_cert: |
+              ----begin certificate----
+              ###########################################################
+              #######           your peer ca certificate          #######
+              ###########################################################
+              ----end certificate----
+            peer_key: |
+              ----begin certificate----
+              ###########################################################
+              #######           your peer key                     #######
+              ###########################################################
+              ----end certificate----
+        ```
+    1. Copy the contents of the files in the `./etcd-certs` directory to 
+    the `etcd-stub.yml` file. 
+    You generated these files in a previous step, [generate ssl certificates  and keys](#generate-certs).
+
+### <a id='insecure'></a>Configure Insecure Mode ###
+
+1. In the `cf-release` directory, create a stub file named `etcd-stub.yml`.
+
+2. Add the following text to the `etcd-stub.yml` file: 
+
+    ```yaml
+    properties:
+      etcd:
+        require_ssl: false
+    ```
+
+## <a id='manifest'></a>Step 2: Generate Deployment Manifest ##
+
+Use the instructions for your infrastructure to generate a deployment 
+manifest with the stub file that you created in [Step 1: Create Stub File](#create-stub):
+
+  * **aws**: [deploying cloud foundry on aws with bosh aws bootstrap](ec2/bootstrap-aws-vpc.html#deploy-cloudfoundry)
+  * **openstack**: [deploying cloud foundry on openstack using bosh](openstack/install_cf_openstack.html#deploy-cf)
+  * **vcloud**: [deploying cloud foundry on vcloud using microbosh or   bosh](vcloud/deploy_cf.html#deploy-cf)
+  * **vsphere**: [deploying cloud foundry on vsphere using bosh](vsphere/deploy_cf_vsphere.html#deploy-cf)
+
+## <a id='rotating-certs'></a>SSL Certificate, Key, and Certificate Authority Rotation
+
+To rotate your SSL certificates, keys, and certificate authorities, you must perform the following steps. 
+
+1. Add the certificates, keys, and certificate authorities that you want to rotate to your stub file. You must use the same stub file that you used in [step 2: generate deployment manifest](#manifest).<br><br>You must add your `agent_key`, `server_key`, and `ca_cert` above the existing certificates. Do not remove the existing certificates.
+
+    ```yaml
+    properties:
+      etcd:
+        encrypt_keys: 
+        - random-16-byte-base64-encoded-value
+        ca_cert: |
+          -----begin certificate-----
+          ###########################################################
+          #######           your new ca certificate           #######
+          ###########################################################
+          -----end certificate-----
+          -----begin certificate-----
+          ###########################################################
+          #######           your old ca certificate           #######
+          ###########################################################
+          -----end certificate-----
+        agent_cert: |
+          ----begin certificate----
+          ###########################################################
+          #######           your new agent certificate        #######
+          ###########################################################
+          ----end certificate----
+          ----begin certificate----
+          ###########################################################
+          #######           your old agent certificate        #######
+          ###########################################################
+          ----end certificate----
+        agent_key: |
+          ----begin certificate----
+          ###########################################################
+          #######           your new agent key                #######
+          ###########################################################
+          ----end certificate----
+          ----begin certificate----
+          ###########################################################
+          #######           your old agent key                #######
+          ###########################################################
+          ----end certificate----
+        server_cert: |
+          ----begin certificate----
+          ###########################################################
+          #######           your new server certificate       #######
+          ###########################################################
+          ----end certificate----
+          ----begin certificate----
+          ###########################################################
+          #######           your old server certificate       #######
+          ###########################################################
+        server_key: |
+          ----begin certificate----
+          ###########################################################
+          #######           your new server key               #######
+          ###########################################################
+          ----end certificate----
+          ----begin certificate----
+          ###########################################################
+          #######           your old server key               #######
+          ###########################################################
+          ----end certificate----
+    ```
+2. Use the instructions for your infrastructure to generate a deployment manifest with your edited stub file, as described in [Step 2: Generate Deployment Manifest](#manifest).
+
+3. Deploy Cloud Foundry using this manifest.
+
+4. After you have deployed Cloud Foundry with the new manifest, remove the old certificates and keys.
+
+    ```yaml
+    properties:
+      etcd:
+        encrypt_keys: 
+        - random-16-byte-base64-encoded-value
+        ca_cert: |
+          -----begin certificate-----
+          ###########################################################
+          #######           your new ca certificate           #######
+          ###########################################################
+          -----end certificate-----
+        agent_cert: |
+          ----begin certificate----
+          ###########################################################
+          #######           your new agent certificate        #######
+          ###########################################################
+          ----end certificate----
+        agent_key: |
+          ----begin certificate----
+          ###########################################################
+          #######           your new agent key                #######
+          ###########################################################
+          ----end certificate----
+        server_cert: |
+          ----begin certificate----
+          ###########################################################
+          #######           your new server certificate       #######
+          ###########################################################
+          ----end certificate----
+          ----begin certificate----
+          ###########################################################
+          #######           your new ca certificate           #######
+          ###########################################################
+          ----end certificate----
+        server_key: |
+          ----begin certificate----
+          ###########################################################
+          #######           your new server key               #######
+          ###########################################################
+          ----end certificate----
+    ```
