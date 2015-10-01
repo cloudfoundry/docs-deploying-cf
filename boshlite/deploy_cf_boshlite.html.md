@@ -21,47 +21,19 @@ stemcell to the BOSH Director.
     $ bosh upload stemcell bosh-stemcell-2776-warden-boshlite-ubuntu-trusty-go_agent.tgz
     </pre>
 
-##<a id="create-stub"></a>Create a Deployment Manifest Stub ##
+##<a id="create-stub"></a>Create a Deployment Manifest Stub for AWS ##
 
-### Deploy Locally ###
+If you deploy BOSH Lite to AWS, you must specify a system domain in a manifest stub. If you are deploying to a local VM this step is not necessary.
 
-If you deploy BOSH Lite to a local machine, you must provide the BOSH Director UUID in a manifest stub.
-
-1. Use `bosh status --uuid` to view the BOSH Director UUID.
-
-    <pre class="terminal">
-    $ bosh status --uuid
-    ab01cd23-ef45-abcd6789
-    </pre>
-
-1. Create a `manifest-stub.yml` file and add the BOSH Director UUID as follows:
-
-    ```
-    ---
-    director_uuid: ab01cd23-ef45-abcd6789 # Replace with your BOSH Director UUID
-    ```
-
-### Deploy to AWS ###
-
-If you deploy BOSH Lite to AWS, you must provide the BOSH Director UUID and specify a system domain in a manifest stub.
-
-1. Use `bosh status --uuid` to view the BOSH Director UUID.
-
-    <pre class="terminal">
-    $ bosh status --uuid
-    ab01cd23-ef45-abcd6789
-    </pre>
-
-1. By default, BOSH Lite uses the system domain `bosh-lite.com`, which resolves to the local host address `10.244.0.34`. Update this system domain property to one of the following two values:
+1. By default, BOSH Lite uses the system domain `bosh-lite.com`, which resolves to the local host address `10.244.0.34`. Update the system domain property to one of the following two values:
     - The domain that you configured to point to the public IP address of the BOSH Lite box that you just created.
     - The `xip.io` domain the corresponds to the public IP address given to your BOSH Lite vagrant box: `YOUR_PUBLIC_IP.xip.io`. For more information about xip.io, see [http://xip.io/](http://xip.io/).
-    - Create a `manifest-stub.yml` file and add the BOSH Director UUID and system domain as follows:
+
+1. Create a manifest stub file and add the BOSH Director UUID and system domain as follows:
 
     ```
     ---
-    director_uuid: ab01cd23-ef45-abcd6789 # Replace with your BOSH Director UUID
-
-    properties: # Required for AWS deployments
+    properties:
       domain: bosh-lite.com # Replace with your system domain
     ```
 
@@ -89,16 +61,16 @@ If you deploy BOSH Lite to AWS, you must provide the BOSH Director UUID and spec
     Current target is https://192.168.50.4:25555 (Bosh Lite Director)
     </pre>
 
-1. Use the `scripts/generate-bosh-lite-dev-manifest PATH-TO-MANIFEST-STUB`  command to create a deployment manifest and set it as the current BOSH deployment. Replace `PATH-TO-MANIFEST-STUB` in this command with the path and name of the manifest stub that you created in the [Create a Deployment Manifest Stub](#create-stub) step.
+1. Use the `scripts/generate-bosh-lite-dev-manifest` command to create a deployment manifest and set it as the current BOSH deployment. 
 
     <pre class="terminal">
-    $ ./scripts/generate-bosh-lite-dev-manifest  ./manifest-stub.yml
+    $ ./scripts/generate-bosh-lite-dev-manifest
     </pre>
 
-    If you have deployed your bosh-lite to AWS you must pass in the stub you created earlier at this point:
+    If you have deployed your bosh-lite to AWS you must pass in the stub you [created earlier](#create-stub):
 
     <pre class="terminal">
-    $ ./scripts/generate-bosh-lite-dev-manifest PATH_TO_YOUR_STUB
+    $ ./scripts/generate-bosh-lite-dev-manifest PATH-TO-MANIFEST-STUB
     </pre>
 
 1. Run `bosh create release` to create a Cloud Foundry release.
