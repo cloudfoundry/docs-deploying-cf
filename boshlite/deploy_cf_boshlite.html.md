@@ -99,9 +99,9 @@ Install the [Cloud Foundry CLI](https://github.com/cloudfoundry/cli) and run the
 
 <pre class="terminal">
 $ # If using the AWS provider for your BOSH Lite VM, use https://api.BOSH-LITE-PUBLIC-IP.xip.io
-$ #   instead of https://api.10.244.0.3.xip.io
+$ #   instead of https://api.bosh-lite.com
 $ # If not using AWS, but behind a proxy, make sure to run 'export no_proxy=192.168.50.4,xip.io'
-$ cf api --skip-ssl-validation https://api.10.244.0.34.xip.io
+$ cf api --skip-ssl-validation https://api.bosh-lite.com
 $ cf auth admin admin
 $ cf create-org test-org
 $ cf target -o test-org
