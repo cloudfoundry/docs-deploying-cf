@@ -107,7 +107,7 @@ $ cf create-space test-space
 $ cf target -s test-space
 </pre>
 
-If you're behind a proxy, you may need to include `bosh-lite.com` to your `no_proxy` environment variable.
+If you are behind a proxy, you may need to add `bosh-lite.com` to your `no_proxy` environment variable.
 
 You can now run commands such as `cf push`.
 
