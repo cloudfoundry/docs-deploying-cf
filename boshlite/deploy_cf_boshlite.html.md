@@ -98,16 +98,16 @@ Director.
 Install the [Cloud Foundry CLI](https://github.com/cloudfoundry/cli) and run the following commands to verify your deployment:
 
 <pre class="terminal">
-$ # If using the AWS provider for your BOSH Lite VM, use https://api.BOSH-LITE-PUBLIC-IP.xip.io
-$ #   instead of https://api.10.244.0.3.xip.io
-$ # If not using AWS, but behind a proxy, make sure to run 'export no_proxy=192.168.50.4,xip.io'
-$ cf api --skip-ssl-validation https://api.10.244.0.34.xip.io
+$ cf api --skip-ssl-validation https://api.bosh-lite.com  #  If deploying BOSH-Lite to AWS, use 
+$                                                         #  https://api.BOSH-LITE-PUBLIC-IP.xip.io instead
 $ cf auth admin admin
 $ cf create-org test-org
 $ cf target -o test-org
 $ cf create-space test-space
 $ cf target -s test-space
 </pre>
+
+If you're behind a proxy, you may need to include `bosh-lite.com` to your `no_proxy` environment variable.
 
 You can now run commands such as `cf push`.
 
