@@ -17,8 +17,9 @@ Run `bosh stemcells` to view stemcells that are active in your MicroBOSH deploym
 1. Select and upload a recent release:
 
     <pre class="terminal">
-    $ bosh upload release ~/cf-deployment/cf-release/releases/cf-193.yml
+    $ bosh upload release ~/cf-deployment/cf-release/releases/cf-NNNN.yml
     </pre>
+	<p class ='note'><strong>Note</strong>: You must replace <code>NNNN</code> in the above command with a release number. Cloud Foundry recommends that you use the highest release number in the <code>cf-releases/releases</code> directory.</p>
 
 1. To confirm that the release was successful:
 
