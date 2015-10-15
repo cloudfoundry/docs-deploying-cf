@@ -41,7 +41,7 @@ The `[]` is an empty array in Ruby. You might see a long list of servers being d
 
 <p class="note"><strong>Note</strong>: It is recommended that you deploy BOSH and Cloud Foundry in a dedicated tenancy. This way, it is easier to keep track of the servers, volumes, security groups, and networks that you create. It also allows you to manage user access.</p>
 
-For more information on OpenStack APIs, see the [OpenStack API Quick Start Guide](http://docs.openstack.org/api/quick-start/content/).
+For more information about OpenStack APIs, see the [OpenStack API Quick Start Guide](http://docs.openstack.org/api/quick-start/content/).
 
 
 ## <a id="metadata_service"></a> Can you access OpenStack metadata service from a virtual machine? ##
