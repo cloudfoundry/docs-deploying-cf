@@ -28,7 +28,7 @@ Logged in as 'admin'
 ##<a id="uuid"></a>Record the BOSH Director UUID ##
 
 Use the `bosh status` command to view information about your BOSH deployment.
-Record the UUID of the BOSH Director. You use the UUID when [Customizing the Cloud Foundry Deployment Manifest Stub for vSphere](../cf-stub-vsphere.html).
+Record the UUID of the BOSH Director. You use the UUID when [Customizing the Cloud Foundry Deployment Manifest Stub for vSphere](cf-stub-vsphere.html).
 
 <pre class="terminal">
 $ bosh status
@@ -67,7 +67,7 @@ stemcell to the BOSH Director.
 
 ##<a id="create-stub"></a>Create a Deployment Manifest Stub ##
 
-Create a manifest stub file named `cf-stub.yml`. [Customize the manifest stub](../cf-stub-vsphere.html) for your environment.
+Create a manifest stub file named `cf-stub.yml`. [Customize the manifest stub](cf-stub-vsphere.html) for your environment.
 
 ##<a id="deploy-cf"></a>Deploy Cloud Foundry##
 
