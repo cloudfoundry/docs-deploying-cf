@@ -59,5 +59,5 @@ Open in a browser: [http://env.1.2.3.4.xip.io](http://env.1.2.3.4.xip.io/)
 
 Success!
 
-###[Return to Index](./index.html)
+###[Return to Index](../index.html)
 
