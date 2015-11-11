@@ -37,6 +37,7 @@ your deployment directory.
     In the template, you must replace the following properties:
     * `REPLACE_WITH_AZ`
     * `REPLACE_WITH_BOSH_SECURITY_GROUP`
+    * `REPLACE_WITH_BOSH_STEMCELL_VERSION`
     * `REPLACE_WITH_DIRECTOR_ID`
     * `REPLACE_WITH_ELASTIC_IP`
     * `REPLACE_WITH_PRIVATE_SUBNET_ID`
@@ -47,6 +48,8 @@ your deployment directory.
 
     We describe replacing these properties in [Step 2: Configure AWS for Your Cloud Foundry Deployment](#config-aws).
 
+<p class="note"><strong>Note</strong>: `PASSWORD` must be replaced with appropriate passwords throughout the manifest.</p>
+
 1. Run `bosh status --uuid` to retrieve your BOSH Director ID.
 Update `REPLACE_WITH_DIRECTOR_ID` in the example manifest with this value.
 
@@ -56,6 +59,7 @@ To configure your AWS account for Cloud Foundry:
 
 1. [Create a NAT VM](#create-nat-vm)
 1. [Update the BOSH Security Group](#update-bosh-sec-group)
+1. [Update the BOSH Stemcell version](#update-bosh-stemcell-version)
 1. [Create a Subnet for Cloud Foundry Deployment](#create-cf-subnet)
 1. [Configure your Cloud Foundry System Domain](#config-cf-dns)
 
@@ -104,6 +108,27 @@ To configure your AWS account for Cloud Foundry:
 1. Click **Save**.
 1. Update `REPLACE_WITH_BOSH_SECURITY_GROUP` in your manifest with the name of the "bosh" security group. 
     <p class="note"><strong>Note</strong>: You must add the name of the security group to the manifest, not the security group ID.</p>
+
+###<a id="update-bosh-stemcell-version"></a> Update the Bosh Stemcell Version
+
+1. Run `bosh stemcells` to determine the installed stemcells. 
+    <pre class='terminal'>
+    $ bosh stemcells
+
+    +-----------------------------------------+---------+--------------+
+    | Name                                    | Version | CID          |
+    +-----------------------------------------+---------+--------------+
+    | bosh-aws-xen-hvm-ubuntu-trusty-go\_agent | 2751    | ami-cc27a1a4 |
+    | bosh-aws-xen-centos-go\_agent            | 2710    | ami-a0a674c8 |
+    +-----------------------------------------+---------+--------------+
+
+    (*) Currently in-use
+
+    Stemcells total: 2
+    </pre>
+<p class="note"><strong>Note</strong>: Alternatively, download the latest stemcells from [latest stemcells](https://bosh.io/stemcells).</p>
+
+1. Replace `REPLACE_WITH_BOSH_STEMCELL_VERSION` in the example manifest with the BOSH stemcell version that you downloaded.  
 
 ###<a id="create-cf-subnet"></a> Create a Subnet for Cloud Foundry Deployment
 
