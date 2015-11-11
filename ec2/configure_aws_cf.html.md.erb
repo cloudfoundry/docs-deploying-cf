@@ -2,7 +2,7 @@
 title: Configuring AWS for Cloud Foundry
 ---
 
-This topic leverages the AWS and Cloud Foundry components defined and deployed in the [Deploying MicroBOSH to AWS](http://bosh.io/docs/deploy-microbosh-to-aws.html) topic.
+This topic leverages the Amazon Web Services (AWS) and Cloud Foundry components defined and deployed in the [Deploying MicroBOSH to AWS](http://bosh.io/docs/deploy-microbosh-to-aws.html) topic.
 
 ## <a id="create-cf-manifest"></a>Step 1: Create a Deployment Manifest
 
@@ -22,19 +22,17 @@ Create a manifest for your deployment as follows:
     $ mkdir ~/cf-deployment
     </pre>
 
-1. Move into the `cf-deployment` directory and clone the cloudfoundry/cf-release
-repo.
+1. In the `cf-deployment` directory, clone the [cloudfoundry/cf-release](https://github.com/cloudfoundry/cf-release.git)
+repository from GitHub .
 
     <pre class='terminal'>
     $ git clone https://github.com/cloudfoundry/cf-release.git
     </pre>
 
-1. Navigate to the example_manifests subdirectory to retrieve the
-`minimal-aws.yml` template.
-Copy and paste the template into a text editor and save the edited manifest to
-your deployment directory.
-
-    In the template, you must replace the following properties:
+1. In the `cf-deployment` directory, navigate to the `example_manifests` sub-directory. 
+Copy the `minimal-aws.yml` file to your deployment directory. 
+<br><br> 
+    Open the `minimal-aws.yml` file from your deployment directory in a text editor. To use this file as a manifest, you must replace the following properties:
     * `REPLACE_WITH_AZ`
     * `REPLACE_WITH_BOSH_SECURITY_GROUP`
     * `REPLACE_WITH_BOSH_STEMCELL_VERSION`
@@ -48,7 +46,7 @@ your deployment directory.
 
     We describe replacing these properties in [Step 2: Configure AWS for Your Cloud Foundry Deployment](#config-aws).
 
-<p class="note"><strong>Note</strong>: `PASSWORD` must be replaced with appropriate passwords throughout the manifest.</p>
+<p class="note"><strong>Note</strong>: You must replace <code>PASSWORD</code> with appropriate passwords throughout the manifest.</p>
 
 1. Run `bosh status --uuid` to retrieve your BOSH Director ID.
 Update `REPLACE_WITH_DIRECTOR_ID` in the example manifest with this value.
@@ -126,7 +124,7 @@ To configure your AWS account for Cloud Foundry:
 
     Stemcells total: 2
     </pre>
-<p class="note"><strong>Note</strong>: Alternatively, download the latest stemcells from [latest stemcells](https://bosh.io/stemcells).</p>
+<p class="note"><strong>Note</strong>: Alternatively, download the latest stemcell from [https://bosh.io/stemcells](https://bosh.io/stemcells).</p>
 
 1. Replace `REPLACE_WITH_BOSH_STEMCELL_VERSION` in the example manifest with the BOSH stemcell version that you downloaded.  
 
