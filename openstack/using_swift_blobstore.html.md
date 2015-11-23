@@ -13,8 +13,6 @@ Controller's blobstore, the Cloud Controller generates temporary URLs pointing
 to the required files and provides them to the DEA.
 The DEA can use the URLs to download the files, execute staging tasks, then deliver back the results. To help ensure data security, the generated URLs are valid for a limited amount of time.
 
-<p class='note'><strong>Note</strong>: This feature depends on the Cloud Controller using the <strong>fog</strong> gem version 1.16.0 or higher.</p>
-
 ## OpenStack Prerequisites ##
 
 To use the temporary URL feature, the OpenStack user needs the **ResellerAdmin** role.
