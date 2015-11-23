@@ -1,14 +1,14 @@
 ---
-title: Deploying Wordpress using MicroBOSH
+title: Deploying Wordpress using BOSH
 ---
 
-This guide describes the process for deploying [Wordpress](http://wordpress.org/) as an application using MicroBOSH.
+This guide describes the process for deploying [Wordpress](http://wordpress.org/) as an application using BOSH.
 
 ## <a id="prerequisites"></a>Prerequisites ##
 
-### <a id="microbosh"></a>MicroBOSH ###
+### <a id="bosh_environment"></a>BOSH environment ###
 
-MicroBOSH should be deployed and targeted. See the steps in [Deploying MicroBOSH on Openstack](../../bosh/deploy-microbosh-to-openstack.html).
+BOSH Director should be deployed and targeted. See the steps in [Initializing BOSH environment on OpenStack](../../bosh/init-openstack.html).
 
 ### <a id="openstack_security_groups"></a>OpenStack Security Groups ###
 
@@ -33,7 +33,7 @@ cd ~/bosh-workspace/releases
 git clone git://github.com/cloudfoundry/bosh-sample-release.git
 </pre>
 
-Upload the BOSH sample release to the MicroBOSH Director:
+Upload the BOSH sample release to the BOSH Director:
 
 <pre class="terminal">
 cd ~/bosh-workspace/releases/bosh-sample-release
@@ -72,7 +72,7 @@ To confirm that the BOSH sample release has been loaded into your BOSH Director 
 
 ### <a id="manifest_file"></a>Create Manifest File ###
 
-Using the `deployments` directory we created when we [deployed MicroBOSH](../../bosh/deploy-microbosh-to-openstack.html), create a `wordpress-openstack` subdirectory:
+Using the `deployments` directory we created when we [initialized the BOSH environment](../../bosh/init-openstack.html), create a `wordpress-openstack` subdirectory:
 
 <pre class="terminal">
 mkdir -p ~/bosh-workspace/deployments/wordpress-openstack
@@ -93,9 +93,9 @@ cp ~/bosh-workspace/releases/bosh-sample-release/examples/wordpress-openstack-ma
 
 Adapt the `wordpress-openstack.yml` file to your environment settings. Search for the tag `# CHANGE`:
 
-* The `director_uuid` option set the [BOSH Director](http://bosh.io/docs/terminology.html#director) to use. We will use the MicroBOSH Director UUID. You can get it running the command `bosh status`.
+* The `director_uuid` option set the [BOSH Director](http://bosh.io/docs/terminology.html#director) to use. We will use the BOSH Director UUID. You can get it running the command `bosh status`.
 * The `instance_type` option set the OpenStack flavor used for the compilation vms (at the `compilation` section) and jobs vms (at the `resource_pools` section). The `flavor_name` **must** have ephemeral disk (check the [validate your OpenStack](validate_openstack.html) guide).
-* The `security_groups` option set the security groups used by vms, and **must** be existing security groups. We will use the `microbosh_security_group` we created when we [deployed MicroBOSH](../../bosh/deploy-microbosh-to-openstack.html) and the `wordpress_security_group` we created [previously](#openstack_security_groups).
+* The `security_groups` option set the security groups used by vms, and **must** be existing security groups. We will use the `bosh` security group we created when we [initialized the BOSH environment](../../bosh/init-openstack.html) and the `wordpress_security_group` we created [previously](#openstack_security_groups).
 * The `allocated_floating_ip` allows us to associate a floating IP address to the Wordpress webserver and **must** be a previously allocated floating ip (check the [prerequisites](#openstack_floating_ip) section).
 
 If you are using the new [OpenStack Networking](http://www.openstack.org/software/openstack-networking/) component, you must also adapt the below settings:
@@ -133,7 +133,7 @@ This command will output:
     Compiling deployment manifest...
     Cannot get current deployment information from director, possibly a new deployment
     Please review all changes carefully
-    Deploying `wordpress-openstack.yml' to `microbosh-openstack' (type 'yes' to continue): yes
+    Deploying `wordpress-openstack.yml' to `bosh' (type 'yes' to continue): yes
 
     Director task 7
 
@@ -205,7 +205,7 @@ This command will output:
     Finished	2013-06-18 18:14:55 UTC
     Duration	00:18:39
 
-    Deployed `wordpress-openstack.yml' to `microbosh-openstack'
+    Deployed `wordpress-openstack.yml' to `bosh'
 
 To confirm that the Wordpress has been deployed use the `bosh deployments` command:
 
