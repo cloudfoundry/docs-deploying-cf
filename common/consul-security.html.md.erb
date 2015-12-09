@@ -4,40 +4,34 @@ title: Security Configuration for Consul
 
 <strong><%= modified_date %></strong>
 
-As of [cf-release v217](https://github.com/cloudfoundry/cf-release/releases/tag/v217), Cloud Foundry enables secure traffic between Consul agents by default using encryption and mutual authentication. We strongly recommend that you configure Consul to be secure.
+As of [cf-release v217](https://github.com/cloudfoundry/cf-release/releases/tag/v217),
+Cloud Foundry enables secure traffic between Consul agents by default using
+encryption and mutual authentication. Follow the instructions below to configure
+security for Consul.  You can configure Consul to be secure or insecure, but we
+strongly recommend that you configure Consul to be secure.
 
-Follow the instructions below to configure security for Consul.
-
-##<a id='create-stub'></a>Step 1: Create Stub File ##
-
-You can configure Consul to be secure or insecure. 
-We strongly recommend that you configure Consul to be secure.
-
-###<a id='secure'></a>Configure Secure Mode ###
+##<a id='secure'></a>Configure Secure Mode ##
 
 1. <a id='generate-certs'></a>Generate SSL Certificates and Keys:
 
-    To generate the certificates and keys that you need for Consul, we 
-    recommend using [certstrap](https://github.com/square/certstrap). 
-    The [cf-release](https://github.com/cloudfoundry/cf-release) repository 
-    contains a helper script, `scripts/generate-consul-certs`. 
-    This script uses certstrap to initialize a certificate authority (CA), and 
+    To generate the certificates and keys that you need for Consul, we
+    recommend using [certstrap](https://github.com/square/certstrap).
+    The [cf-release](https://github.com/cloudfoundry/cf-release) repository
+    contains a helper script, `scripts/generate-consul-certs`.
+    This script uses certstrap to initialize a certificate authority (CA), and
     generate the certificates and keys for Consul.
     <br><br>
-    If you already have a CA, you may have an existing workflow. 
-    You can modify the `generate-consul-certs` script to use your existing CA 
+    If you already have a CA, you may have an existing workflow.
+    You can modify the `generate-consul-certs` script to use your existing CA
     instead of generating a new one.
     <br><br>
-    The `generate-consul-certs` script outputs files to the `./consul-certs` 
-    directory. 
-    You use the contents of these output files in a later step, [Create and Edit Stub File](#stub).
+    The `generate-consul-certs` script outputs files to the `./consul-certs`
+    directory.
 
 2. <a id='encrypt-keys'></a>Generate Gossip Encryption Keys:
 
-    Run `cat /dev/urandom | head -c 16 | base64` to generate and display a 
-    random 16-byte Base64-encoded value. 
-    You use the generated value as a Gossip encryption key array, 
-    `encrypt_keys`, in a later step, [Create and Edit Stub File](#stub).
+    Run `cat /dev/urandom | head -c 16 | base64` to generate and display a
+    random 16-byte Base64-encoded value.
     <br><br>
     Example:
     <pre class='terminal'>
@@ -45,93 +39,43 @@ We strongly recommend that you configure Consul to be secure.
     8b9IJjXH5aN2Z9A5H8HAmg==
     </pre>
 
-3. <a id='stub'></a>Create and Edit Stub File:
+3. <a id='stub'></a>Update Your Stub File:
 
-    Create a stub file that includes the certificates keys and `encrypt_keys` 
-    array. 
-    You use this stub file with the `scripts/generate_deployment_manifest` script from
-    `cf-release` to generate a deployment manifest.
-    
-    1. In the `cf-release` directory, create a stub file named 
-    `consul-stub.yml`. 
-    
-    1. Copy the following text into the `consul-stub.yml` file: 
+    Copy the contents of the files in the `./consul-certs` directory, as well as
+    the value for your Gossip encryption key, into your stub.
 
-        ```yaml
-        properties:
-          consul:
-            encrypt_keys: 
-            - RANDOM-16-BYTE-BASE64-ENCODED-VALUE
-            ca_cert: |
-              -----BEGIN CERTIFICATE-----
-              ###########################################################
-              #######           Your CA Certificate               #######
-              ###########################################################
-              -----END CERTIFICATE-----
-            agent_cert: |
-              ----BEGIN CERTIFICATE----
-              ###########################################################
-              #######           Your Agent Certificate            #######
-              ###########################################################
-              ----END CERTIFICATE----
-            agent_key: |
-              ----BEGIN CERTIFICATE----
-              ###########################################################
-              #######           Your Agent Key                    #######
-              ###########################################################
-              ----END CERTIFICATE----
-            server_cert: |
-              ----BEGIN CERTIFICATE----
-              ###########################################################
-              #######           Your Server Certificate           #######
-              ###########################################################
-              ----END CERTIFICATE----
-            server_key: |
-              ----BEGIN CERTIFICATE----
-              ###########################################################
-              #######           Your Server Key                   #######
-              ###########################################################
-              ----END CERTIFICATE----
-        ```
-    1. Copy the contents of the files in the `./consul-certs` directory to 
-    the `consul-stub.yml` file. 
-    You generated these files in a previous step, [Generate SSL Certificates  and Keys](#generate-certs).
+## <a id='insecure'></a>Configure Insecure Mode ##
 
-    1. Replace RANDOM-16-BYTE-BASE64-ENCODED-VALUE with the 
-    `encrypt_keys` value that you generated in a previous step, [Generate Gossip  Encryption Keys](#encrypt-keys).
+1. Remove all the key- and ceritificate-related properties for Consul in your
+stub.
 
-### <a id='insecure'></a>Configure Insecure Mode ###
-
-1. In the `cf-release` directory, create a stub file named `consul-stub.yml`.
-
-1. Add the following text to the `consul-stub.yml` file: 
+1. Add the following property to your stub:
 
     ```yaml
     properties:
+      ...
       consul:
+        ...
         require_ssl: false
     ```
 
-## <a id='manifest'></a>Step 2: Generate Deployment Manifest ##
-
-Use the instructions for your infrastructure to generate a deployment 
-manifest with the stub file that you created in [Step 1: Create Stub File](#create-stub):
-
-  * **AWS**: [Deploying Cloud Foundry on AWS with BOSH AWS Bootstrap](../ec2/bootstrap-aws-vpc.html#deploy-cloudfoundry)
-  * **OpenStack**: [Deploying Cloud Foundry on OpenStack using BOSH](../openstack/install_cf_openstack.html#deploy-cf)
-  * **vCloud**: [Deploying Cloud Foundry on vCloud using MicroBOSH or   BOSH](../vcloud/deploy_cf.html#deploy-cf)
-  * **vSphere**: [Deploying Cloud Foundry on vSphere using BOSH](../vsphere/deploy_cf_vsphere.html#deploy-cf)
-
 ## <a id='rotating-certs'></a>SSL Certificate, Key, and Certificate Authority Rotation
 
-To rotate your SSL certificates, keys, and certificate authorities, you must perform the following steps. 
+To rotate your SSL certificates, keys, and certificate authorities, you must
+perform the following steps.
 
-1. Add the certificates, keys, and certificate authorities that you want to rotate to your stub file. You must use the same stub file that you used in [Step 2: Generate Deployment Manifest](#manifest).<br><br>You must add your `agent_key`, `server_key`, and `ca_cert` above the existing certificates. Do not remove the existing certificates.
+1. Add the certificates, keys, and certificate authorities that you want to
+rotate to your stub file.<br><br>You must add your new `agent_key`,
+`server_key`, and `ca_cert` above the existing certificates. Do not remove the
+existing certificates.
 
     ```yaml
+    ...
     properties:
+      ...
       consul:
-        encrypt_keys: 
+        ...
+        encrypt_keys:
         - RANDOM-16-BYTE-BASE64-ENCODED-VALUE
         ca_cert: |
           -----BEGIN CERTIFICATE-----
@@ -188,16 +132,18 @@ To rotate your SSL certificates, keys, and certificate authorities, you must per
           ###########################################################
           ----END CERTIFICATE----
     ```
-1. Use the instructions for your infrastructure to generate a deployment manifest with your edited stub file, as described in [Step 2: Generate Deployment Manifest](#manifest).
+1. Use the instructions for your infrastructure to generate a deployment
+manifest with your edited stub file.
 
 1. Deploy Cloud Foundry using this manifest.
 
-1. After you have deployed Cloud Foundry with the new manifest, remove the old certificates and keys.
+1. After you have deployed Cloud Foundry with the new manifest, remove the old
+certificates and keys.
 
     ```yaml
     properties:
       consul:
-        encrypt_keys: 
+        encrypt_keys:
         - RANDOM-16-BYTE-BASE64-ENCODED-VALUE
         ca_cert: |
           -----BEGIN CERTIFICATE-----

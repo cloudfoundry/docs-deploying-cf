@@ -4,6 +4,23 @@ title: Set up vCloud Air or vCloud Virtual Data Center Resources
 
 <strong><%= modified_date %></strong>
 
+This topic is intended to help you get started with open source Cloud Foundry
+on vCloud Air or on a supported vCloud Director (vCD) deployment (5.1+).
+Note that these instructions emphasize simplicity, not security, scale, or
+other production considerations.
+
+The goal of these instructions is to help you deploy an environment that looks
+like the following diagram:
+
+![vCloud Air / vCloud Director Cloud Foundry deployment](vcloud_images/vcloud_cf_deployment_vms.png)
+
+Specifically:
+
+* We deploy to a private network.
+* We deploy a jump box VM in the private network. We carry out all other deployment from the jump box VM.
+* We provide outbound connectivity for all VMs from the private network to a public network.
+* We provide inbound access to the jump box VM and to the Cloud Foundry instance from the public network.
+
 ## <a id="prerequisites"></a>Prerequisites ##
 
 ### vCloud Air ###
@@ -58,10 +75,11 @@ If you want to add a network in vCloud Air, or if you need to in vCloud Director
 4. Then choose to add an external direct network or an external routed network. For security and better usage of IP resources, the external routed network is recommended. For adding routed network detailed steps, please refer this link:
  [Create an External Routed Organization vDC Network](http://pubs.vmware.com/vcd-51/index.jsp#com.vmware.vcloud.admin.doc_51/GUID-6E69AF88-31E0-4DD8-A79E-E8E4B6F68878.html).
 
-
 ### Plan your IP address allocation ###
 
-You will be using the private network created above for your deployment. The diagram in the [Overview](index.html) illustrates this. You should plan the use of your **private IP addresses** as follows:
+You will be using the private network created above for your deployment. The
+diagram at the top of this page illustrates this. You should plan the use of
+your **private IP addresses** as follows:
 
 1. Assign an IP address for the jump box VM
 2. Assign a second IP address for MicroBOSH
@@ -76,14 +94,13 @@ You will need two **public IP addresses** for this deployment. These are used as
 * One for connectivity to the jump box
 * One for all user connectivity to the Cloud Foundry instance
 
-
 ### Wildcard domains ###
 
 In general, we use a wildcard domain to map all apps and services running on a Cloud Foundry instance to its public IP address (i.e. the public IP address of HAProxy in the deployment described in this documentation, or the IP address of a load balancer if that's being used). For example, if a Cloud Foundry instance uses the wildcard domain `*.mycf.com`, and the application `foo` is deployed to it, the URL `foo.mycf.com` can be used to access the foo application.
 
 The system services are made available in the same way - `api.mycf.com`, `console.mycf.com`, etc., may all be used. This can lead to some phishing opportunities, however. For example, someone could pretend to be a legitimate system service and create `change_your_password.mycf.com` or `sign_up_with_credit_card.mycf.com`. To avoid this, Cloud Foundry supports two domains, one for system applications and one for general applications. Only administrators of the system can deploy applications to the system domain.
 
-These instructions explain a deployment using a single wildcard domain for both applications and system services. It is straightforward to use separate domains if you wish, by modifying the Cloud Foundry manifest file used in [Deploying Cloud Foundry](deploy_cf.html).
+These instructions explain a deployment using a single wildcard domain for both applications and system services. It is straightforward to use separate domains if you wish, when [creating the Cloud Foundry deployment manifest](../common/create_a_manifest.html).
 
 Even when using a single wildcard domain, we recommend that you use different subdomain names for your system domain and your app domain. Doing so prevents apps from creating routes that overlap and conflict with system routes.
 
@@ -104,13 +121,11 @@ We have found two ways to work around this:
 
 The vShield Edge Load Balancer is the simpler of the two to set up and so the following sections detail the steps used to set up the network environment using that approach.
 
-
 ### Configuring the vShield Edge Gateway ###
 
 The following sections require you to configure the vShield Edge Gateway. To do so, in the vCloud Director UI go to the `Administration` button on the top row, then `Cloud Resources`, then `Virtual Datacenters`, then pick your virtual datacenter. Choose the `Edge Gateways` tab, select the gateway being used and click on the gear to select `Edge gateway services`.
 
 ![vCloud Edge Gateway](/vcloud_images/vcloud_edge_gateway.png)
-
 
 ### Allow all VMs to connect outbound to the internet ###
 
@@ -120,7 +135,6 @@ We allow all private network VMs access to the internet to allow installation of
 2. Set up a firewall rule allowing outbound traffic from all private / internal addresses to all external addresses.
 
 ![vcloud_source_nat](/vcloud_images/vcloud_source_nat.png)
-
 
 ### Set up SSH inbound to the jump box ###
 
@@ -163,7 +177,7 @@ This should look as follows when complete:
 
 ## <a id="jumpbox"></a>Set up a jump box ##
 
-As illustrated in the diagram in the [Overview](index.html) section, Cloud Foundry installation on vCloud Air / vCloud Director is simplest if you create a machine within the target vDC (a **jump box** VM) from which you drive the rest of the installation process. We typically use Ubuntu 12.04 for this machine, and configure it with 1GB memory, 1GHz vCPU and 16GB storage (You will need to have around 8 GB of free disk space for the bosh_cli if you plan to use it to deploy CF releases. You'll need around 3 GB free disk space in /tmp)
+As illustrated at the top of this document, Cloud Foundry installation on vCloud Air / vCloud Director is simplest if you create a machine within the target vDC (a **jump box** VM) from which you drive the rest of the installation process. We typically use Ubuntu 12.04 for this machine, and configure it with 1GB memory, 1GHz vCPU and 16GB storage (You will need to have around 8 GB of free disk space for the bosh_cli if you plan to use it to deploy CF releases. You'll need around 3 GB free disk space in /tmp)
 
 The rest of this documentation assumes you have created this machine in the target vDC.
 
@@ -175,10 +189,6 @@ The rest of this documentation assumes you have created this machine in the targ
 
 		sudo apt-get -y install libsqlite3-dev genisoimage libxslt-dev libxml2-dev whois openssl bind9 libpq-dev libmysqlclient-dev
 
-
 ## <a id="bosh-cli"></a> Install BOSH CLI ##
 
 Refer to the [BOSH Command Line Interface](../../bosh/bosh-cli.html) topic for installation instructions.
-
-## <a id="next-step"></a> Next Step ##
-When you're finished setting up, move on to the next step - [deploying MicroBOSH](../../bosh/deploy_microbosh_to_vcloud.html)
