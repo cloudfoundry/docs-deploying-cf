@@ -5,7 +5,7 @@ title: Deploying Cloud Foundry using BOSH
 <strong><%= modified_date %></strong>
 
 This topic describes the process for deploying Cloud Foundry using BOSH. It
-assumes you have already targetted your BOSH Director, created a manifest, and
+assumes you have already targeted your BOSH Director, created a manifest, and
 set it as your deployment.
 
 ##<a id="stemcell"></a>Upload a Stemcell ##
@@ -13,7 +13,7 @@ set it as your deployment.
 1. Open [https://bosh.io/stemcells](https://bosh.io/stemcells) in a web browser
 to view a list of publicly available BOSH stemcells.
 
-1. Choose a BOSH stemcell for your IaaS and click the build number to download.
+1. Choose a BOSH stemcell for your IaaS and **click** the build number to download.
 
 1. In a terminal window, run `bosh upload stemcell STEMCELL-PATH` to upload the
 stemcell to the BOSH Director.
@@ -73,7 +73,7 @@ should show as **running**.
     $ curl api.subdomain.domain/info
     </pre>
 
-    If `curl` succeeds, it should return the JSON-formatted information.  If
+    If `curl` succeeds, it should return the JSON-formatted information. If
     `curl` does not succeeds, check your networking and make sure your domain
   	has an NS record for your subdomain.
 
@@ -103,6 +103,8 @@ an administrator.
 * If you make change to your manifest, run `bosh deploy` to update your Cloud
 Foundry deployment with these changes.
 
-* If you make changes to the `cf-release` directory, run
-`bosh create release && bosh upload release && bosh deploy` to update your Cloud
-Foundry deployment with these changes.
+* If you make changes to the `cf-release` directory, update your Cloud
+Foundry deployment with these changes:
+<pre class="terminal">
+$ bosh create release && bosh upload release && bosh deploy
+</pre>

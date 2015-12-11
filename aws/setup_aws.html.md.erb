@@ -6,9 +6,7 @@ title: Setting up an AWS Environment for Cloud Foundry with BOSH AWS Bootstrap
 
 ## <a id="domain-prep"></a> Prepare a Domain ##
 
-1. Select a DNS domain name for your Cloud Foundry instance. For example, if you
-select the domain name *cloud.example.com*, Cloud Foundry deploys each of your
-applications as *APP-NAME.cloud.example.com*.
+1. Select a DNS domain name for your Cloud Foundry instance. For example, if you select the domain name *cloud.example.com*, Cloud Foundry deploys each of your applications as `APP-NAME.cloud.example.com`.
 
 1. Create an AWS Route 53 Hosted Zone for your domain on the
 [AWS Route 53 control panel](https://console.aws.amazon.com/route53).
@@ -16,8 +14,8 @@ applications as *APP-NAME.cloud.example.com*.
 1. Select the checkbox for a hosted zone to view the **Hosted Zone Details**
 panel. The panel displays the **Name Servers** section, which contains a list of
 addresses to which you must delegate DNS authority for your domain. For example,
-if you selected the domain name *cloud.example.com*, each address in
-**Name Servers** should become an NS record in the DNS server for *example.com*.
+if you selected the domain name `cloud.example.com`, each address in
+**Name Servers** should become an NS record in the DNS server for `example.com`.
 
 <%= image_tag("aws_images/hostedzone.png") %>
 
@@ -91,6 +89,9 @@ replacing the values in each line to match your configuration.
 
 1. Run `source bosh_environment` to set the environment variables required for
 the AWS bootstrap tool.
+<pre class="terminal">
+    $ source bosh_environment
+</pre>
 
 1. Run `bosh aws create` to create a VPC Internet Gateway, VPC subnets,
 three RDS databases, and a NAT VM for Cloud Foundry subnet routing.

@@ -7,7 +7,7 @@ title: Security Configuration for Consul
 As of [cf-release v217](https://github.com/cloudfoundry/cf-release/releases/tag/v217),
 Cloud Foundry enables secure traffic between Consul agents by default using
 encryption and mutual authentication. Follow the instructions below to configure
-security for Consul.  You can configure Consul to be secure or insecure, but we
+security for Consul. You can configure Consul to be secure or insecure, but we
 strongly recommend that you configure Consul to be secure.
 
 ##<a id='secure'></a>Configure Secure Mode ##
@@ -32,8 +32,6 @@ strongly recommend that you configure Consul to be secure.
 
     Run `cat /dev/urandom | head -c 16 | base64` to generate and display a
     random 16-byte Base64-encoded value.
-    <br><br>
-    Example:
     <pre class='terminal'>
     $ cat /dev/urandom | head -c 16 | base64
     8b9IJjXH5aN2Z9A5H8HAmg==
@@ -135,7 +133,7 @@ existing certificates.
 1. Use the instructions for your infrastructure to generate a deployment
 manifest with your edited stub file.
 
-1. Deploy Cloud Foundry using this manifest.
+1. Deploy Cloud Foundry using this deployment manifest.
 
 1. After you have deployed Cloud Foundry with the new manifest, remove the old
 certificates and keys.

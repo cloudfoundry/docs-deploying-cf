@@ -7,14 +7,12 @@ title: Log Drain Blacklist Configuration
 The `doppler` component allows application log drains. An application developer
 deploying their app to Cloud Foundry can bind a drain to a log analysis service.
 
-Your Cloud Foundry installation's performance can be affected if the application
-developer attempts to bind that drain to an internal Cloud Foundry component.
+The performance of your Cloud Foundry installation can be affected if the application developer attempts to bind a drain to an internal Cloud Foundry component.
 
-To guard against this, you can blacklist the range of IP addresses that apps
-can bind drains to.
+To prevent this event, blacklist the range of IP addresses that apps can use for binding drains.
 
 To blacklist an IP address range, add the `doppler.blacklisted_syslog_ranges`
-property to your stub (or create an additional stub). Specify starting and
+property to your stub, or create an additional stub. Specify starting and
 ending IP addresses for each IP address range.
 
 Example stub:

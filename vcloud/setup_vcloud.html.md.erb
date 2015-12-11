@@ -4,10 +4,10 @@ title: Set up vCloud Air or vCloud Virtual Data Center Resources
 
 <strong><%= modified_date %></strong>
 
-This topic is intended to help you get started with open source Cloud Foundry
+This topic describes getting started with open source Cloud Foundry
 on vCloud Air or on a supported vCloud Director (vCD) deployment (5.1+).
-Note that these instructions emphasize simplicity, not security, scale, or
-other production considerations.
+
+<pre class="note"><strong>Note</strong>: These instructions emphasize simplicity, not security, scale, or any other production considerations.</pre>
 
 The goal of these instructions is to help you deploy an environment that looks
 like the following diagram:
@@ -17,7 +17,7 @@ like the following diagram:
 Specifically:
 
 * We deploy to a private network.
-* We deploy a jump box VM in the private network. We carry out all other deployment from the jump box VM.
+* We deploy a jump box virtual machine (VM) in the private network. We carry out all other deployment from the jump box VM.
 * We provide outbound connectivity for all VMs from the private network to a public network.
 * We provide inbound access to the jump box VM and to the Cloud Foundry instance from the public network.
 
