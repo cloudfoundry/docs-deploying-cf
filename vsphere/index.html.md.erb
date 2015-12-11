@@ -1,0 +1,21 @@
+---
+title: Deploying Cloud Foundry on vSphere
+---
+
+<strong><%= modified_date %></strong>
+
+## Environment Setup ##
+
+* Make sure your vSphere installation meets the
+[hardware requirements](hardware_spec.html)
+* VMs will be provisioned via vCenter; make sure you have credentials with
+sufficient [vCenter user permissions](vcenter_user_privileges.html).
+
+## Deploy BOSH ##
+
+* Initialize [BOSH on vSphere](https://bosh.io/docs/init-vsphere.html).
+
+## Deploy Cloud Foundry ##
+
+* [Create a deployment manifest for Cloud Foundry](../common/create_a_manifest.html).
+* [Deploy](../common/deploy.html)

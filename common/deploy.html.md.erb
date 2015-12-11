@@ -1,0 +1,110 @@
+---
+title: Deploying Cloud Foundry using BOSH
+---
+
+<strong><%= modified_date %></strong>
+
+This topic describes the process for deploying Cloud Foundry using BOSH. It
+assumes you have already targeted your BOSH Director, created a manifest, and
+set it as your deployment.
+
+##<a id="stemcell"></a>Upload a Stemcell ##
+
+1. Open [https://bosh.io/stemcells](https://bosh.io/stemcells) in a web browser
+to view a list of publicly available BOSH stemcells.
+
+1. Choose a BOSH stemcell for your IaaS and **click** the build number to download.
+
+1. In a terminal window, run `bosh upload stemcell STEMCELL-PATH` to upload the
+stemcell to the BOSH Director.
+
+##<a id="create-release"></a>Build the Cloud Foundry Release##
+
+1. Change into the `cf-release` directory that you cloned when you created the
+manifest and run the update script to fetch all the submodules.
+
+    <pre class="terminal">
+    $ cd cf-release
+    $ ./scripts/update
+    </pre>
+
+1. Use `bosh create release` to create a Cloud Foundry release.
+This command prompts you for a development release name.
+
+##<a id="upload-release"></a>Upload the Cloud Foundry Release##
+
+Use `bosh upload release` to upload the generated release to the BOSH
+Director.
+
+##<a id="deploy"></a>Deploy!##
+
+Use `bosh deploy` to deploy the uploaded Cloud Foundry release.
+
+## <a id="verify"></a>Verify the Deployment ##
+
+1. Run `bosh vms`. This command provides an overview of the virtual machines
+that BOSH manages as part of the current deployment. The state of every VM
+should show as **running**.
+
+    <pre class="terminal">
+    	$ bosh vms
+
+    	+-----------------------------+---------+------------------+---------------+
+    	| Job/index                   | State   | Resource Pool    | IPs           |
+    	+-----------------------------+---------+------------------+---------------+
+    	| nfs_server/0                | running | nfs_server       | 10.146.21.174 |
+    	| ccdb/0                      | running | ccdb             | 10.146.21.175 |
+    	| cloud_controller/0          | running | cloud_controller | 10.146.21.176 |
+    	| collector/0                 | running | collector        | 10.146.21.178 |
+    	| health_manager/0            | running | health_manager   | 10.146.21.173 |
+    	| nats/0                      | running | nats             | 10.146.21.172 |
+    	| router/0                    | running | router           | 10.146.21.171 |
+    	| syslog/0                    | running | syslog           | 10.146.21.177 |
+    	| uaa/0                       | running | uaa              | 10.146.21.180 |
+    	| uaadb/0                     | running | uaadb            | 10.146.21.179 |
+    	| dea/0                       | running | dea              | 10.146.21.181 |
+    	| saml_login/0                | running | saml_login       | 10.146.21.181 |
+    	+-----------------------------+---------+------------------+---------------+
+    </pre>
+
+1. Use `curl` to test the API endpoint of your Cloud Foundry installation.
+
+    <pre class="terminal">
+    $ curl api.subdomain.domain/info
+    </pre>
+
+    If `curl` succeeds, it should return the JSON-formatted information. If
+    `curl` does not succeeds, check your networking and make sure your domain
+  	has an NS record for your subdomain.
+
+1. You should be able to target your Cloud Foundry installation with the
+[cf Command Line Interface (CLI)](/devguide/installcf/index.html) and log in as
+an administrator.
+
+    The user name is `admin` and the password is specified in the deployment
+    manifest:
+
+    ```
+    properties:
+      ...
+      uaa:
+        ...
+        scim:
+          ...
+          users:
+          - admin|ADMIN_PASSWORD|...
+    ```
+
+    For more information about managing organizations, spaces, users, and
+    applications, refer to the [cf CLI](/devguide/installcf/index.html) topic.
+
+##<a id="update-cf"></a>Update Cloud Foundry##
+
+* If you make change to your manifest, run `bosh deploy` to update your Cloud
+Foundry deployment with these changes.
+
+* If you make changes to the `cf-release` directory, update your Cloud
+Foundry deployment with these changes:
+<pre class="terminal">
+$ bosh create release && bosh upload release && bosh deploy
+</pre>

@@ -1,0 +1,18 @@
+---
+title: Deploying Cloud Foundry on vCloud Air or vCloud Director
+---
+
+<strong><%= modified_date %></strong>
+
+## Environment Setup ##
+
+* Configure a [virtual datacenter](setup_vcloud.html) for the installation. This configuration will also instruct you to deploy a jump box in your virtual datacenter from which you will drive the rest of the installation.
+
+## Deploy BOSH ##
+
+* Initialize [BOSH on vCloud](https://http://bosh.io/docs/init-vcloud.html).
+
+## Deploy Cloud Foundry ##
+
+* [Create a deployment manifest for Cloud Foundry](../common/create_a_manifest.html).
+* [Deploy](../common/deploy.html)
