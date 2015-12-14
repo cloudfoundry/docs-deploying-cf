@@ -1,0 +1,314 @@
+---
+title: First Contact -- Quick Start Guide
+---
+
+This guide is opinionated and fast-paced. It takes you and your favorite beverage from zero to `cf push` in `$x` minutes. In the time it takes to enjoy your latté you will have:
+
+1. A minimal instance of Cloud Foundry running locally
+2. An example app, pushed and scaled to the cloud
+3. The overwhelming satisfaction of making good choices in your life.
+
+Let's dig in.
+
+## <a id='prerequisites'></a> Prerequisites
+
+* **6GB of available RAM. **
+<p class="note"><strong>Note</strong>: If your machine has 8GB of RAM, you are going to have a bad time. It is _possible_ if you quit everything else, but not recommended. Use a 16GB machine for it to work well.
+</p>
+
+* Xcode with CLI tools and signed license (be sure to install first, then install the CLI dev tools from menus: Xcode, Open Developer Tool (sic), More Developer Tools..., logging into Apple's site, and choosing the CLI option that matches your OS X version - or just install Xcode from the App store, then:
+    $ xcode-select --install
+ It will pop up a window. You don't need "Get Xcode"; just "Install".
+    
+* [VirtualBox](https://www.virtualbox.org/wiki/Downloads) or 'brew install virtualbox', 'brew install virtualbox-extension-pack' if using homebrew (see http://brew.sh).
+    $ brew install caskroom/cask/brew-cask
+    $ brew cask install virtualbox
+* [Vagrant](https://www.vagrantup.com/downloads.html) or 'brew install vagrant'.
+    $ brew cask install vagrant
+* Ruby 2.1.7 or 'brew install ruby'. (brew install ruby installs a newer ruby - maybe instead:
+    $ brew install rbenv
+    $ rbenv install 2.2.1
+    $ rbenv rehash
+    $ export PATH="$HOME/.rbenv/versions/$(cat .rbenv/version)/bin:$HOME/.rbenv/shims:$PATH"
+wget: 
+    $ brew install wget
+Spiff:    
+To install [Spiff](https://github.com/cloudfoundry-incubator/spiff) for Linux:    
+    $ wget --directory-prefix ~/workspace $(curl -s https://api.github.com/repos/cloudfoundry-incubator/spiff/releases/latest | grep 'browser_' | grep linux | cut -d\" -f4)
+    
+For Mac:
+    $ wget --directory-prefix ~/workspace $(curl -s https://api.github.com/repos/cloudfoundry-incubator/spiff/releases/latest | grep 'browser_' | grep darwin | cut -d\" -f4)
+    
+Prepare spiff for use:
+    $ unzip -d ~/workspace ~/workspace/spiff*
+    $ export PATH=$PATH:~/workspace
+    
+### <a id='install-bosh-cli'></a>Install the BOSH CLI
+
+First ensure you're using the expected ruby:
+    $ ruby -v
+ruby 2.2.1p85 (2015-02-26 revision 49769) [x86_64-darwin14]
+
+And make sure you have libyaml:
+    
+    $ brew install libyaml  
+
+This may take a while; go enjoy a beverage of your choice.
+$ gem install --no-doc --no-ri bundler bosh_cli bosh_cli_plugin_micro
+
+## <a id="deploy-bosh-lite"></a>Deploying BOSH Lite
+
+Reference documentation: https://github.com/cloudfoundry/bosh-lite
+Alternate reference doc: http://mariash.github.io/learn-bosh
+NOTE: Just use these as "fill-in" references, but follow steps below for best results.
+
+### <a id="start-bosh-host"></a>Starting BOSH host
+
+$ mkdir -p ~/workspace
+$ cd ~/workspace
+$ git clone https://github.com/cloudfoundry/bosh-lite
+$ cd ~/workspace/bosh-lite
+$ vagrant up
+
+### <a id="target-bosh-director"></a>Targeting BOSH Director for CF Deploy
+
+
+$ bosh target 192.168.50.4
+Target set to `Bosh Lite Director'
+Your username: admin
+Enter password: _admin_
+Logged in as `admin'
+$ 
+(It will only ask for the username and password if they aren't in $HOME/.bosh_config.)
+
+Sidebar or footnote for troubleshooting:
+
+Possible error message:
+
+$ bosh target 192.168.50.4
+Cannot talk to director at `https://192.168.50.4:25555', please set correct target
+$
+
+Retry if needed; sometimes it times out.
+
+$ bosh target 192.168.50.4
+[WARNING] cannot access director, trying 4 more times...
+
+Target set to `Bosh Lite Director'
+$ 
+
+
+Sometimes it may mean vagrant has stopped working correctly. To fix:
+
+$ vagrant reload
+[...]
+==> default: Machine already provisioned
+[...]
+$
+
+If that doesn't help & if you are starting over completely, you may want to remove these (at your own risk):
+
+$ rm -rf VirtualBox\ VMs/
+$ rm -rf .vagrant.d/
+$ rm -rf .bosh*
+$
+
+
+## <a id="deploy-bosh-lite"></a> Deploying Cloud Foundry on BOSH Lite
+
+$ cd ~/workspace
+$ git clone https://github.com/cloudfoundry/cf-release.git
+$ cd ~/workspace/bosh-lite
+$ ./bin/provision_cf
+
+You are now deploying a highly complex sophisticated distributed platform. While robust and useful, it is not going to be speedy. This script is going to clone many things from github and then download more things from "blobstore". It may take a long while to run; go get a beverage of your choice. It's idempotent; if it times out, try again. If you're using a Mac, run `caffeinate` to keep it from falling asleep, which can interrupt the installation. 
+
+[Link to a great cf summit video to watch while you wait -- Casey West]
+
+
+$ ./bin/provision_cf
++ STEMCELL_SOURCE=http://bosh-jenkins-artifacts.s3.amazonaws.com/bosh-stemcell/warden
++ STEMCELL_FILE=latest-bosh-stemcell-warden.tgz
+[..]
++ bosh -n target 192.168.50.4
+Target set to `Bosh Lite Director'
++ bosh -n -u admin -p admin upload stemcell --skip-if-exists latest-bosh-stemcell-warden.tgz
+Acting as user 'admin' on 'Bosh Lite Director'
+Verifying stemcell...
+[...]
+Director task 1
+  Started update stemcell
+  Started update stemcell > Extracting stemcell archive. Done (00:00:04)
+  Started update stemcell > Verifying stemcell manifest. Done (00:00:00)
+  Started update stemcell > Checking if this stemcell already exists. Done (00:00:00)
+  Started update stemcell > Uploading stemcell bosh-warden-boshlite-ubuntu-trusty-go_agent/389 to the cloud
+[...]
+Release info
+------------
+Name:    cf
+Version: 221
+[...]
+Uploading release
+release.tgz:   100% |ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo|   2.2GB  31.5MB/s Time: 00:01:11
+
+Director task 2
+  Started extracting release > Extracting release. Done (00:00:21)
+  Started verifying manifest > Verifying manifest. Done (00:00:00)
+  Started resolving package dependencies > Resolving package dependencies. Done (00:00:00)
+  Started creating new packages
+[...]
+  Started release has been created > cf/221. Done (00:00:00)
+[...]
+Task 2 done
+[...]
+---------
+Director task 3
+[...]
+  Started preparing deployment > Binding releases. Done (00:00:00)
+[...]
+Task 3 done
+[...]
+Deployed `cf-warden' to `Bosh Lite Director'
+$
+
+Typical errors that require a retry of `provision_cf` include "System call error while talking to director: Broken pipe - SSL_connect" and "Cannot talk to director at `https://192.168.50.4:25555', please set correct target".
+
+
+## <a id="install-cf-cli"></a>Installing & configuring the `cf` CLI
+
+First, install `cf` from https://github.com/cloudfoundry/cli/releases/latest. Then:
+
+$ bin/add-route
++ old_ips=10.244.0.0/19
++ ips=10.244.0.0/16
++ gw=192.168.50.4
++ echo 'Adding the following route entry to your local route table to enable direct container access: 10.244.0.0/16 via 192.168.50.4. Your sudo password may be required.'
+++ uname
++ '[' Darwin = Darwin ']'
++ sudo route delete -net 10.244.0.0/19 192.168.50.4
+Password:
+route: writing to routing socket: not in table
+delete net 10.244.0.0: gateway 192.168.50.4: not in table
++ sudo route delete -net 10.244.0.0/16 192.168.50.4
+route: writing to routing socket: not in table
+delete net 10.244.0.0: gateway 192.168.50.4: not in table
++ sudo route add -net 10.244.0.0/16 192.168.50.4
+add net 10.244.0.0: gateway 192.168.50.4
+$ 
+
+
+$ cf api --skip-ssl-validation https://api.bosh-lite.com 
+Setting api endpoint to https://api.bosh-lite.com...
+OK
+API endpoint:   https://api.bosh-lite.com (API version: 2.40.0)   
+Not logged in. Use 'cf login' to log in.
+$ 
+       (This used to be https://api.10.244.0.34.xip.io, but was replaced with api.bosh-lite.com in version 219)
+
+
+$ cf login
+API endpoint: https://api.bosh-lite.com
+Email> admin
+Password> admin
+Authenticating...
+OK
+API endpoint:   https://api.bosh-lite.com (API version: 2.40.0)   
+User:           admin   
+No org or space targeted, use 'cf target -o ORG -s SPACE'
+$ 
+
+
+$ cf create-org myorg
+Creating org myorg as admin...
+OK
+TIP: Use 'cf target -o myorg' to target new org
+$ 
+
+
+$ cf target -o myorg
+API endpoint:   https://api.bosh-lite.com (API version: 2.40.0)   
+User:           admin   
+Org:            myorg   
+Space:          No space targeted, use 'cf target -s SPACE'   
+$ 
+
+
+$ cf create-space myspace  #lol
+Creating space myspace in org myorg as admin...
+OK
+Assigning role SpaceManager to user admin in org myorg / space myspace as admin...
+OK
+Assigning role SpaceDeveloper to user admin in org myorg / space myspace as admin...
+OK
+TIP: Use 'cf target -o "myorg" -s "myspace"' to target new space
+$ 
+
+
+
+$ cf target -s myspace
+API endpoint:   https://api.bosh-lite.com (API version: 2.40.0)   
+User:           admin   
+Org:            myorg   
+Space:          myspace   
+$ 
+
+## <a id="deploy-app"></a>Deploying an App
+
+### Creating a simple test app
+
+Create a project directory.
+
+$ mkdir -p ~/workspace/cfenv
+$ cd ~/workspace/cfenv
+
+Create this `Gemfile` in the project directory:
+
+source 'https://rubygems.org'
+
+gem 'sinatra'
+gem 'sinatra-contrib'
+
+Create this `app.rb` in the project directory:
+
+    require 'sinatra'
+    require 'sinatra/json'
+
+    get '/' do
+      json instance: ENV['CF_INSTANCE_INDEX']
+    end
+
+### Creating a deployment manifest
+
+Create this `manifest.yml` in the project directory:
+
+    ---
+    applications:
+    - name: cfenv
+      memory: 32M
+      command: bundle exec ruby ./app.rb
+
+### Run bundle (otherwise you don't get a lockfile etc.)
+     $ bundle
+
+### Pushing the app
+
+$ cf push
+
+Now you can open http://cfenv.bosh-lite.com/ (was http://cfenv.10.244.0.34.xip.io/) to see the JSON API in the app.
+
+## <a id="scale-app"></a>Scaling an App
+
+$ cf scale -i 10 cfenv
+$ cf app cfenv
+
+Now you can reload http://cfenv.api.bosh-lite.com to see the instance index change as the load balancer chooses different instances.
+
+## <a id="next-steps"></a>Next Steps
+
+...How to shut down your cluster then restart it?
+$ cd ~/workspace/bosh-lite
+$ vagrant halt
+
+To destroy the VM
+$ cd ~/workspace/bosh-lite
+$ vagrant destroy
