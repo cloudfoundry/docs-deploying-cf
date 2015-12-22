@@ -17,15 +17,18 @@ necessary.
 By default, BOSH Lite uses the system domain `bosh-lite.com`, which resolves
 to the address `10.244.0.34`. Update the system domain property to one of the
 following two values:
+
   - The domain that you configured to point to the public IP address of the
   BOSH-Lite box that you previously created.
   - The `xip.io` domain the corresponds to the public IP address given to your
   BOSH-Lite vagrant box: `YOUR_PUBLIC_IP.xip.io`. For more information about
   xip.io, see [xip.io](http://xip.io/).
 
+```
     ---
     properties:
       domain: bosh-lite.com # Replace with your system domain
+```
 
 ##<a id="clone"></a>Clone the cf-release GitHub Repository ##
 
