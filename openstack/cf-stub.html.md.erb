@@ -37,7 +37,7 @@ director_uuid: DIRECTOR_UUID
 meta:
   environment: ENVIRONMENT
     </code></pre></td>
-    <td>Replace <code>ENVIRONMENT</code> with an arbitrary name describing your environment, e.g. <code>aws-prod</code>.
+    <td>Replace <code>ENVIRONMENT</code> with an arbitrary name describing your environment, e.g. <code>openstack-prod</code>.
     </td>
   </tr>
   <tr>
@@ -243,7 +243,7 @@ jobs:
           SSL_CERTIFICATE_SIGNED_BY_PRIVATE_KEY
           -----END CERTIFICATE-----
     </code></pre></td>
-    <td>Replace <code>RSA_PRIVATE_KEY</code> and <code>SSL_CERTIFICATE_SIGNED_BY_PRIVATE_KEY</code> with the PEM-encoded pirvate key and certificate associated with the system domain and apps domains you've configured to terminate at the floating IP associated with the <code>ha_proxy</code> job.
+    <td>Replace <code>RSA_PRIVATE_KEY</code> and <code>SSL_CERTIFICATE_SIGNED_BY_PRIVATE_KEY</code> with the PEM-encoded private key and certificate associated with the system domain and apps domains you've configured to terminate at the floating IP associated with the <code>ha_proxy</code> job.
     </td>
   </tr>
 </table>
