@@ -21,223 +21,229 @@ information about your environment.
 
 <table border="1" class="nice">
   <tr>
-    <th>Deployment Manifest Stub Contents</th>
+    <th style="width:35%">Deployment Manifest Stub Contents</th>
     <th>Editing Instructions</th>
   </tr>
   <tr>
-    <td><pre><code>director_uuid: DIRECTOR_UUID</code></pre></td>
+    <td><pre><code>
+director_uuid: DIRECTOR_UUID
+    </code></pre></td>
     <td>Replace <code>DIRECTOR_UUID</code> with the BOSH Director UUID. Use
-    <code>bosh status</code> to view the BOSH Director UUID.</td>
-  </tr>
-  <tr>
-    <td><pre><code>
-  floating_static_ips:
-  - 0.0.0.0	  </code></pre>
-	</td>
-    <td>
-		Replace the <strong>floating_static_ips:</strong> <code>0.0.0.0</code>
-			with an existing static IP address for your OpenStack floating network.
-			This is assigned to the ha_proxy job to receive incoming traffic.
-	</td>
-  </tr>
-  <tr>
-    <td><pre><code>
-networks:
-- name: cf1
-  subnets:
-    - cloud_properties:
-      static:
-      - 0.0.0.0 - 0.0.0.25
-	  </code></pre>
-	</td>
-    <td>Replace the <strong>cf1 subnets: cloud_properties: static:</strong>
-	<code>0.0.0.0 - 0.0.0.25</code> IP address range with a range of at least 26
-		consecutive IP addresses on your private network and generally complete
-		this network section with <code>net_id</code> mapped to an existing
-		OpenStack network UUID, and security_groups, similarly to the
-		bosh/micro-bosh configuration.
-	</td>
-  </tr>
-  <tr>
-    <td><pre><code>
-properties:
-  cc:
-    droplets:
-      droplet_directory_key: the_key
-    buildpacks:
-      buildpack_directory_key: bd_key
-    staging_upload_user: username
-    staging_upload_password: password
-    bulk_api_password: password
-    db_encryption_key: the_key
-	  </code></pre>
-	</td>
-    <td>Replace the <strong>droplet_directory_key:</strong> <code>the key</code>
-		with the directory (bucket) used to store droplets.
-		<br /><br />
-		Replace the <strong>buildpack_directory_key:</strong>
-		<code>bd_key</code> with the directory (bucket) used to store
-		buildpacks.
-		<br /><br />
-		Replace the <strong>staging_upload_user:</strong>
-		<code>username</code> with the account user name used to upload files to
-		the Cloud Controller.
-		<br /><br />
-		Replace the <strong>staging_upload_password:</strong>
-		<code>password</code> with the password of the account used to upload
-		files to the Cloud Controller.
-		<br /><br />
-		Replace the <strong>bulk_api_password:</strong> <code>password</code>
-		with the password used to access the bulk_api.
-		<br /><br />
-		Replace the <strong>db_encryption_key:</strong> <code>the_key</code>
-		with a secure key you generate to encrypt sensitive values in the Cloud
-		Controller database.
+    <code>bosh status --uuid</code> to view the BOSH Director UUID.
     </td>
   </tr>
   <tr>
     <td><pre><code>
-ccdb:
-  roles:
-  - name: ccadmin
-    password: ccadmin_password
-    tag: admin
+meta:
+  environment: ENVIRONMENT
     </code></pre></td>
-    <td>Replace the <strong>roles: name:</strong> <code>ccadmin</code> with the
-		admin user name used to connect to the Cloud Controller database.
-		<br /><br />
-		Replace <code>ccadmin_password</code> with the Cloud Controller database admin password.
-	</td>
+    <td>Replace <code>ENVIRONMENT</code> with an arbitrary name describing your environment, e.g. <code>aws-prod</code>.
+    </td>
   </tr>
   <tr>
     <td><pre><code>
-databases:
-  roles:
-  - name: ccadmin
-    password: ccadmin_password
-  - name: uaaadmin
-    password: uaaadmin_password
-	 </code></pre></td>
-    <td>Replace <code>ccadmin</code> with the admin user name used to connect to
-		the Cloud Controller database.
-		<br /><br />
-		Replace the <code>ccadmin_password</code> with the Cloud Controller database admin password.
-		<br /><br />
-		Replace <code>uaaadmin</code> with the admin user name used to connect
-		to the UAA database.
-		<br /><br />
-		Replace <code>uaaadmin_password</code> with the UAA database admin password.
-	</td>
+  floating_static_ips:
+  - 173.1.1.1
+    </code></pre></td>
+    <td>Replace <code>173.1.1.1</code> with an existing static IP address for your 
+    OpenStack floating network. This is assigned to the <code>ha_proxy</code> job 
+    to receive incoming traffic.
+    </td>
   </tr>
   <tr>
     <td><pre><code>
-dea_next:
-  disk_mb: 2048
-  memory_mb: 1024
-	 </code></pre></td>
-    <td>Do not change these values.</td>
-  </tr>
-  <td><pre><code>
-domain: example.com
-	</code></pre></td>
-  <td>Replace <code>example.com</code> with your domain.</td>
-  <tr>
-    <td><pre><code>
-loggregator_endpoint:
-  shared_secret: loggregator_endpoint_secret</code></pre>
-	</td>
-    <td>Replace the <strong>shared_secret:</strong>
-		<code>loggregator_endpoint_secret</code> with a secure secret.
-	</td>
-  </tr>
-  <tr>
-    <td><pre><code>
-nats:
-  user: nats_user
-  password: nats_password
-	 </code></pre>
-	</td>
-    <td>Replace <code>nats_user</code> and <code>nats_password</code> with a
-		secure user name and password for NATS access.
-	</td>
+networks:
+  - name: floating
+    type: vip
+    cloud_properties:
+      net_id: NET_ID
+      security_groups: []
+  - name: cf1
+    type: manual
+    subnets:
+    - range: 10.10.0.0/24
+      gateway: 10.10.0.1
+      reserved:
+      - 10.10.0.2 - 10.10.0.100
+      - 10.10.0.200 - 10.10.0.254
+      dns:
+      - 8.8.8.8
+      static:
+      - 10.10.0.125 - 10.10.0.175
+      cloud_properties:
+        net_id: NET_ID
+        security_groups: ["cf"]
+    </code></pre></td>
+    <td>Update the values for <code>range</code>, <code>reserved</code>, <code>static</code>, and <code>gateway</code> to reflect the available networks/IPs in your OpenStack network.  Replace <code>NET_ID</code> with the network ID of your OpenStack network.
+    <br/><br/>
+    This also assumes that you have a security group <code>cf</code> suitable for your Cloud Foundry VMs. Change this too if the name of your security group is different.
+    </td>
   </tr>
   <tr>
     <td><pre><code>
-router:
-  status:
-    user: router_user
-    password: router_password</code></pre>
-	</td>
-    <td>Replace <code>router_user</code> and <code>router_password</code> with a
-		secure user name and password for router access.
-	</td>
+properties:
+  domain: DOMAIN
+  system_domain: SYSTEM_DOMAIN
+  system_domain_organization: SYSTEM_DOMAIN_ORGANIZATION
+  app_domains:
+   - APP_DOMAIN
+    </code></pre></td>
+    <td>Replace <code>DOMAIN</code> and <code>SYSTEM_DOMAIN</code> with the domain you have configured for accessing system components (e.g. the Cloud Controllers will be reachable at <code>api.SYSTEM_DOMAIN</code>).
+    <br/><br/>
+    Pick any name you like for the <code>SYSTEM_DOMAIN_ORGANIZATION</code>, this organization will be created and configured to own the <code>SYSTEM_DOMAIN</code>.
+    <br/><br/>
+    Replace <code>APP_DOMAIN</code> with the default root domain you want associated with applications pushed to your Cloud Foundry installation.
+    </td>
   </tr>
   <tr>
     <td><pre><code>
-uaa:
-  admin:
-    client_secret: admin_secret
-  batch:
-    username: batch_username
-    password: batch_password
   cc:
-    client_secret: cc_client_secret
-  clients:
-    app-direct:
-      secret: app-direct_secret
-    developer_console:
-      secret: developer_console_secret
-    login:
-      secret: login_client_secret
-    notifications:
-      secret: notification_secret
-    servicesmgmt:
-      secret: service_mgmt_secret
-    space-mail:
-      secret: space-mail_secret
-    support-services:
-      secret: support-services_secret
-	 </code></pre>
-	</td>
-    <td>Replace <code>batch_username</code> and
-		<code>batch_password</code> with a secure user name and password.
-		<br /><br />
-		Generate secure keys for each <code>secret</code> and replace them.
-	</td>
-  </tr>
-  <tr>
-    <td><pre><code>
-jwt:
-  verification_key: vk
-  signing_key: sk
-	 </code></pre>
-	</td>
-    <td>Replace <code>vk</code> with an RSA Public Key.
-      	<br /><br />
-		Replace <code>sk</code> with an RSA Private Key.
-	</td>
-  </tr>
-  <tr>
-    <td><pre><code>
-scim:
-  users:
-  - admin|fakepassword|scim.write,scim.read,
-  openid,cloud_controller.admin	 </code></pre>
-	</td>
-    <td>Replace <code>fakepassword</code> with an admin password.</td>
-  </tr>
-  <tr>
-    <td><pre><code>
-uaadb:
-  roles:
-  - name: uaaadmin
-    password: admin_password
-    tag: admin
+    staging_upload_user: STAGING_UPLOAD_USER
+    staging_upload_password: STAGING_UPLOAD_PASSWORD
+    bulk_api_password: BULK_API_PASSWORD
+    db_encryption_key: CCDB_ENCRYPTION_KEY
     </code></pre></td>
-	<td>Replace <code>uaaadmin</code> with the admin user name used to connect
-	to the UAA database.
-	<br /><br />
-	Replace <code>admin_password</code> with the UAA database admin password.
-	</td>
+    <td>Replace <code>STAGING_UPLOAD_USER</code> with the account user name used to upload files to the Cloud Controller.
+    <br /><br />
+    Replace <code>STAGING_UPLOAD_PASSWORD</code> with the password of the account used to upload files to the Cloud Controller.
+    <br /><br />
+    Replace <code>BULK_API_PASSWORD</code>
+    with the password used to access the bulk_api.
+    <br /><br />
+    Replace <code>CCDB_ENCRYPTION_KEY</code>
+    with a secure key that you generate to encrypt sensitive values in the
+    Cloud Controller database.
+    </td>
+  </tr>
+  <tr>
+    <td><pre><code>
+  consul:
+    encrypt_keys:
+      - CONSUL_ENCRYPT_KEY
+    ca_cert: CONSUL_CA_CERT
+    server_cert: CONSUL_SERVER_CERT
+    server_key: CONSUL_SERVER_KEY
+    agent_cert: CONSUL_AGENT_CERT
+    agent_key: CONSUL_AGENT_KEY
+    </code></pre></td>
+    <td>See the instructions on <a href="../common/consul-security.html">security configuration for consul</a>.
+    </td>
+  </tr>
+  <tr>
+    <td><pre><code>
+  loggregator_endpoint:
+    shared_secret: LOGGREGATOR_ENDPOINT_SHARED_SECRET
+    </code></pre></td>
+    <td>Replace <code>LOGGREGATOR_ENDPOINT_SHARED_SECRET</code> with any secure secret.
+    </td>
+  </tr>
+  <tr>
+    <td><pre><code>
+  nats:
+    user: NATS_USER
+    password: NATS_PASSWORD
+    </code></pre></td>
+    <td>Replace <code>NATS_USER</code> and
+    <code>NATS_PASSWORD</code> with a secure username and password. Cloud Foundry components will use this to communicate with each other over the NATS message bus.
+    </td>
+  </tr>
+  <tr>
+    <td><pre><code>
+  router:
+    status:
+      user: ROUTER_USER
+      password: ROUTER_PASSWORD
+    </code></pre></td>
+    <td>Replace <code>ROUTER_USER</code> and
+    <code>ROUTER_PASSWORD</code> with a secure username and password.
+    </td>
+  </tr>
+  <tr>
+    <td><pre><code>
+  uaa:
+    admin:
+      client_secret: ADMIN_SECRET
+    cc:
+      client_secret: CC_CLIENT_SECRET
+    clients:
+      cc_routing:
+        secret: CC_ROUTING_SECRET
+      cloud_controller_username_lookup:
+        secret: CLOUD_CONTROLLER_USERNAME_LOOKUP_SECRET
+      doppler:
+        secret: DOPPLER_SECRET
+      gorouter:
+        secret: GOROUTER_SECRET
+      tcp_emitter:
+        secret: TCP-EMITTER-SECRET
+      tcp_router:
+        secret: TCP-ROUTER-SECRET
+      login:
+        secret: LOGIN_CLIENT_SECRET
+      notifications:
+        secret: NOTIFICATIONS_CLIENT_SECRET
+    </code></pre></td>
+    <td>Replace all the <code>*_SECRET</code>s with secure secrets.
+    </td>
+  </tr>
+  <tr>
+    <td><pre><code>
+    jwt:
+      verification_key: JWT_VERIFICATION_KEY
+      signing_key: JWT_SIGNING_KEY
+    </code></pre></td>
+    <td>Replace <code>JWT_SIGNING_KEY</code> with an RSA private key, and <code>JWT_VERIFICATION_KEY</code> with the corresponding RSA public key.
+    </td>
+  </tr>
+  <tr>
+    <td><pre><code>
+    scim:
+      users:
+        - admin|ADMIN_PASSWORD|scim.write,scim.read,o...
+    </code></pre></td>
+    <td>Replace <code>ADMIN_PASSWORD</code> with a secure password. This will be the password for the Admin user of your Cloud Foundry installation.
+    </td>
+  </tr>
+  <tr>
+    <td><pre><code>
+  ccdb:
+    roles:
+    - name: ccadmin
+      password: CCDB_PASSWORD
+  uaadb:
+    roles:
+      - name: uaaadmin
+        password: UAADB_PASSWORD
+  databases:
+    roles:
+    - name: ccadmin
+      password: CCDB_PASSWORD
+    - name: uaaadmin
+      password: UAADB_PASSWORD
+    </code></pre></td>
+    <td>Replace <code>CCDB_PASSWORD</code> and <code>UAADB_PASSWORD</code> with secure passwords.
+    </td>
+  </tr>
+  <tr>
+    <td><pre><code>
+jobs:
+  - name: ha_proxy_z1
+    networks:
+      - name: cf1
+        default:
+        - dns
+        - gateway
+    properties:
+      ha_proxy:
+        ssl_pem: |
+          -----BEGIN RSA PRIVATE KEY-----
+          RSA_PRIVATE_KEY
+          -----END RSA PRIVATE KEY-----
+          -----BEGIN CERTIFICATE-----
+          SSL_CERTIFICATE_SIGNED_BY_PRIVATE_KEY
+          -----END CERTIFICATE-----
+    </code></pre></td>
+    <td>Replace <code>RSA_PRIVATE_KEY</code> and <code>SSL_CERTIFICATE_SIGNED_BY_PRIVATE_KEY</code> with the PEM-encoded pirvate key and certificate associated with the system domain and apps domains you've configured to terminate at the floating IP associated with the <code>ha_proxy</code> job.
+    </td>
   </tr>
 </table>
