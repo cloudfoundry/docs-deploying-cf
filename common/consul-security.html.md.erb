@@ -28,14 +28,11 @@ strongly recommend that you configure Consul to be secure.
     The `generate-consul-certs` script outputs files to the `./consul-certs`
     directory.
 
-2. <a id='encrypt-keys'></a>Generate Gossip Encryption Keys:
+2. <a id='encrypt-keys'></a>Choose Gossip Encryption Keys:
 
-    Run `cat /dev/urandom | head -c 16 | base64` to generate and display a
-    random 16-byte Base64-encoded value.
-    <pre class='terminal'>
-    $ cat /dev/urandom | head -c 16 | base64
-    8b9IJjXH5aN2Z9A5H8HAmg==
-    </pre>
+    Choose an encryption key for use in the serf gossip protocol. This can be an
+    arbitrary string value as it will be converted into a 16-byte Base64-encoded
+    value for consumption by the consul process.
 
 3. <a id='stub'></a>Update Your Stub File:
 
