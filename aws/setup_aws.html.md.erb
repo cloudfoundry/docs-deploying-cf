@@ -4,71 +4,82 @@ title: Setting up an AWS Environment for Cloud Foundry with BOSH AWS Bootstrap
 
 <strong><%= modified_date %></strong>
 
+This topic describes how to set up an environment for Cloud Foundry&reg; on Amazon Web Services (AWS) using `bosh aws create`, a command-line bootstrap tool that creates all of the structures that underlie a Cloud Foundry deployment on AWS.
+
+## <a id='prereqs'></a>Prerequisites
+
+To complete this tutorial, you need:
+
+- An [Amazon Web Services](http://aws.amazon.com) (AWS) account with Virtual Private Cloud (VPC)
+
+- The [BOSH CLI](https://bosh.io/docs/bosh-cli.html) installed on your machine
+
+- [Ruby] (https://www.ruby-lang.org/en/documentation/installation/) 1.9.3 or higher installed on your machine
+
 ## <a id="domain-prep"></a> Prepare a Domain ##
 
 1. Select a DNS domain name for your Cloud Foundry instance. For example, if you select the domain name *cloud.example.com*, Cloud Foundry deploys each of your applications as `APP-NAME.cloud.example.com`.
 
-1. Create an AWS Route 53 Hosted Zone for your domain on the
-[AWS Route 53 control panel](https://console.aws.amazon.com/route53).
+1. From the AWS [Route 53 dashboard](https://console.aws.amazon.com/route53), click **Hosted zones** and then the **Create Hosted Zone** button. Under **Domain Name** enter the domain name you chose above, for AWS to host. Under **Type** choose **Public Hosted Zone**. AWS will create four NS (nameserver) records for your hosted zone. Record their values.
+<p class='note'><strong>Note</strong>: You can also find your NS server values by selecting your domain under the <strong>Hosted zones</strong> tab.</p>
 
-1. Select the checkbox for a hosted zone to view the **Hosted Zone Details**
-panel. The panel displays the **Name Servers** section, which contains a list of
-addresses to which you must delegate DNS authority for your domain. For example,
-if you selected the domain name `cloud.example.com`, each address in
-**Name Servers** should become an NS record in the DNS server for `example.com`.
+1. From your domain registrar, delegate DNS authority for your hosted zone to the four Amazon Route 53 nameservers generated above. Paste in the new NS server values to replace your registrar's nameserver records for the domain. 
 
 <%= image_tag("aws_images/hostedzone.png") %>
 
 ## <a id="deployment-env-prep"></a> Prepare the Deployment Environment ##
 
-Ruby 1.9.3 or higher and Git 1.8 or higher are prerequisites for the following
-steps.
-
-1. After you install Ruby and Git, install the `bundler` RubyGem:
+1. Install the `bundler` RubyGem:
 
     <pre class="terminal">
     $ gem install bundler
     </pre>
 
-1. Create a deployments directory with a sub-directory for your deployment.
+1. Create a `deployments` directory.
 
     <pre class="terminal">
     $ mkdir deployments
+    </pre>
+
+1. From your `deployments` directory, make a sub-directory `cf-example` to hold the gems and configuration information that bosh needs to create your environment.
+
+    <pre class="terminal">
     $ cd deployments
     $ mkdir cf-example
     </pre>
 
-1. In the `cf-example` sub-directory, create a file named `Gemfile` with the following contents:
+1. In the `cf-example` sub-directory, create a file named `Gemfile` modeled after the following contents, but with the `ruby` argument matching the Ruby version that you are running:
 
     ~~~
     source 'https://rubygems.org'
-    ruby "1.9.3"
+    ruby "2.2.2"
 
     gem "bosh_cli_plugin_aws"
     ~~~
-	<p class='note'><strong>Note</strong>: The Ruby version that you specify in
-    your <code>Gemfile</code> must match the Ruby version that you have
-    installed.</p>
+	
 
-1. Run `bundle install` to install the gems you specified in the `Gemfile`.
+1. Run `bundle install` to install the gem you specified in the `Gemfile` and its dependencies. 
 
     <pre class="terminal">
     $ bundle install
+
+    ...
+
+    Bundle complete! 1 Gemfile dependency, 85 gems now installed.
+    Use `bundle show [gemname]` to see where a bundled gem is installed.
     </pre>
 
+1. Generate a set of AWS access key credentials. To do this, create an IAM user from the **Identity and Access Management** (IAM) Dashboard, which will generate access keys automatically. Or to generate credentials for an existing user, choose the user under **Users**, select the **Security Credentials** tab, and click **Create Access Key**. Click **Show User Security Credentials** and record both the Access Key ID and Secret Access Key.
+
+1. Make sure the user from the previous step has permissions to create an environment for Cloud Foundry on AWS. Select the **Permissions** tab on the user's page, click **Attach Policy**, select the checkbox next to **AdministratorAccess**, and click **Attach Policy** at lower right.
+<p class="note"><strong>Note:</strong> For more security, you can restrict the IAM user to a finer-grained set of permissions, but generally Administrator permissions will do.</p>
+
 1. Create a file named `bosh_environment` and add the following contents,
-replacing the values in each line to match your configuration.
-<br><br>
-    Use the following information to complete the `bosh_environment` file:
-    * The values that you add for `BOSH_VPC_DOMAIN` and `BOSH_VPC_SUBDOMAIN`
+replacing the values in each line to match your configuration:
+    * The values for `BOSH_VPC_DOMAIN` and `BOSH_VPC_SUBDOMAIN`
     must correspond to the DNS domain name that you set up when configuring
     Route 53. The example below uses `my-subdomain.example.com`.
-    * Get a set of AWS access key credentials and use them for the
-    `BOSH_AWS_ACCESS_KEY_ID` and `BOSH_SECRET_ACCESS_KEY` properties. The best
-    practice is to create an IAM user rather than using your root account
-    credentials. If you want to be extra cautious, you can restrict the IAM
-    user to a very fine-grained set of permissions, but generally
-    "Administrator" permissions will do.
+    * For `BOSH_AWS_ACCESS_KEY_ID` and `BOSH_SECRET_ACCESS_KEY`, use the key pair you created above as AWS access key credentials. 
     * For the `BOSH_AWS_REGION` property, use your AWS region. The example below
     uses `us-east-1`.
     * For the `BOSH_VPC_PRIMARY_AZ` and `BOSH_VPC_SECONDARY_AZ` properties,
@@ -88,7 +99,7 @@ replacing the values in each line to match your configuration.
     ~~~
 
 1. Run `source bosh_environment` to set the environment variables required for
-the AWS bootstrap tool.
+the AWS bootstrap tool, `bosh aws create`.
 <pre class="terminal">
     $ source bosh_environment
 </pre>
@@ -103,23 +114,30 @@ This command generates two receipt files, `aws_rds_receipt.yml` and
     Executing migration CreateKeyPairs
     allocating 1 KeyPair(s)
     Executing migration CreateVpc
-    . . .
+    
+    ...
+    
     details in S3 receipt: aws_rds_receipt and file: aws_rds_receipt.yml
     Executing migration CreateS3
     creating bucket xxxx-bosh-blobstore
     creating bucket xxxx-bosh-artifacts
     </pre>
 
-    <p class="note"><strong>Note</strong>: RDS database creation may take 20 or more minutes.</p>
+    <p class="note"><strong>Note</strong>: RDS database creation may take 20 or more minutes.
+    </p>
+
+    <p class="note"><strong>Note</strong>: If the <code>bosh aws create</code> command returns an error message, you can use <code>bosh aws destroy</code> to <a href="#destroy-environment">destroy your AWS environment</a>. This  wipes the slate clean for running <code>bosh aws create</code> again, but note that it also destroys other structures in your AWS account.
+    </p>
 
 ## <a id="destroy-environment"></a>Destroying the AWS Environment ##
 
-1. Use `bosh aws destroy` to destroy your AWS environment.
-
-    <table style="width: 60%;"><tr><td>
-    <strong>WARNING</strong>: The command <code>bosh aws destroy</code> destroys
+***<p class="tip">WARNING: The command <code>bosh aws destroy</code> destroys
     everything in your AWS account, including all S3 buckets and all instances.
     Do not use this command unless you want to lose <strong>everything</strong>
     in your AWS account, including objects and files unrelated to your Cloud
-    Foundry deployment.
-    </td></tr></table>
+    Foundry deployment.</p>***
+
+1. Run `bosh aws destroy` to destroy your AWS environment. This command deletes all buckets, VPCs, key pairs, Elastic IPs, security groups, and other structures in your account.
+
+
+    

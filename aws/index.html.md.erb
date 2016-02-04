@@ -22,3 +22,402 @@ instances. For a simpler deployment, check out the
 
 * [Create a deployment manifest for Cloud Foundry](../common/create_a_manifest.html).
 * [Deploy](../common/deploy.html)!
+
+
+*** BEGIN PASTE FROM HAYDON RYAN AWS CF Creation From Scratch FEB 2015 ***
+
+---
+
+
+<!---
+'https://github.com/cloudfoundry/internal-docs/blob/master/aws/initial_manual_configuration.md'
+-->
+
+
+
+# Preparation
+
+- [ ] 1.  Sign up for a AWS account. You will also need a domain registered in your name or organization like pivotal.io, pcfdev.com or deepcloudsouth.com. 
+- [ ] 2. Submit a support request to increase the instance count to 50 in the region you are deploying to.  This may take a day or you can call and ask them to force it through.
+
+### IAM - Create User for the Environment
+- [ ] 3. Sign in to AWS and select IAM.  Create a new user name with the name pcfinstall.  Record access and secret keys as we will need them soon.
+- [ ] 4. Click IAM - go to groups, create a power user group. The permissions will be setup to do everything in AWS except for IAM.
+- [ ] 5. Click power user and add the pcfinstall user to that group.
+- [ ] 6. Create a Certificate policy and add to power user to create server certificates.
+
+  ```json
+  {
+     "Version": "2012-10-17",
+     "Statement": [
+      {
+        "Sid": "Stmt1397085279000",
+        "Effect": "Allow",
+        "Action": [
+          "iam:GetServerCertificate",
+          "iam:ListServerCertificates",
+          "iam:ListSigningCertificates",
+          "iam:UpdateServerCertificate",
+          "iam:UpdateSigningCertificate",
+          "iam:UploadServerCertificate",
+          "iam:UploadSigningCertificate"
+        ],
+        "Resource": [
+          "*"
+        ]
+      }
+    ]
+  }
+  ```
+
+- [ ] 7. Note that the Json below is how to add permissions to delete certificates. (Not needed in the install)
+
+  ```json
+  {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Sid": "Stmt1397087309000",
+        "Effect": "Allow",
+        "Action": [
+          "iam:DeleteServerCertificate",
+          "iam:DeleteSigningCertificate"
+        ],
+        "Resource": [
+          "*"
+        ]
+      }
+    ]
+  }
+  ```
+
+
+### Manually setup subdomain and NS delegation records with Route53
+- [ ] 8. Using Route 53 create two hosted zones. One for your domain (example.com) and the second one (cloud.example.com) for the subdomain.
+  - [ ] Click Create Hosted Zone
+  - [ ] Enter the domain name - i.e. example.com
+  - [ ] Click Create Hosted Zone for the cloud subdomain
+  - [ ] Enter the domain name - i.e. cloud.example.com
+  - Note this guide assumes that you will be using a whole domain (example.com) as your CF on AWS installation.  It is possible to use only a subdomain by doing a DNS redirect using the delegation set.[see for more detailed examples on AWS Route 53](http://docs.cloudfoundry.org/deploying/ec2/bootstrap-aws-vpc.html)
+
+### Setup a Jumpbox and provision it for the correct software
+ - [ ] 9. Create a Jumpbox VM by going to Instances and create instance. This is an EC2 instance that will be used to drive the deployment of microbosh and Cloud Foundry. Jumpbox is in the default VPC.You need to be able to ssh into the jumpbox VM.
+  - Choose the latest Amazon Linux AMI (HVM), 
+  - Choose an Instance type - basically the jump box can be low performing as it does not have an implication on how fast your cloud runs.
+  - Enable termination protection on the VM + select auto assign public IP. 
+  - Continue through to add storage, and change the size to at least 32GB of Magnetic EBS and un-tick delete on Termination. 
+  - Jump to the end and create a new key pair when prompted by security with the name ec2-user.
+  - Download the Key pair
+  - Open the inbound ssh traffic by clicking on the instance in EC2, going to security group and selecting inbound and adding a rule to allow all traffic on port 22.
+  - run ```ssh-add ec2-user.pem``` to add the identity to your SSH chain
+  - Name the instance jumpbox-z1
+  - Login to jumpbox-z1 ```ssh -i <PATH_OF_CERTIFICATE>/ec2-user.pem  ec2-user@<PUBLIC_IP_OF_JUMPBOX>```
+
+- [ ] 10. Install `bosh_cli`, `bosh_cli_plugin_micro` and `bosh_cli_plugin_aws`.
+  - Tip - There are many dependancies that are required for the installation of the bosh cli and plugins. After the jumpbox is setup capture a snapshot for use with other AWS CF installs. This step will take atleast a couple of hours.
+
+  ```shell
+
+  # Create a .gemrc file in your $HOME dir. that contains
+  echo "install: --no-ri --no-rdoc
+  update:  --no-ri --no-rdoc
+  " >~/.gemrc
+
+  # Install Dependencies
+  sudo yum groupinstall 'Development Tools'
+  sudo yum -y install -y git gcc ruby-devel libxml2 libxml2-devel libxslt libxslt-devel postgresql postgresql-devel mysql-server mysql-devel sqlite-devel golang gcc-c++  pcre-devel xz-devel
+
+  gem install nokogiri -- --use-system-libraries
+
+  # Install version 1.9.3-p547 using RVM or RBENV package managers
+  wget -O chruby-0.3.8.tar.gz https://github.com/postmodern/chruby/archive/v0.3.8.tar.gz
+  tar -xzvf chruby-0.3.8.tar.gz
+  cd chruby-0.3.8/
+  sudo make install
+
+  # Setup chruby Ruby etc
+  sudo ./scripts/setup.sh
+  #add to ~/.bashrc
+  source /usr/local/share/chruby/chruby.sh
+
+  #and run at command line
+  source /usr/local/share/chruby/chruby.sh
+
+  # Switch to ruby version 1.9.3-p547 locally
+  ruby-install ruby 1.9.3
+
+  chruby 1.9.3
+  chruby #check that you have ruby 1.9.3
+
+  gem install -V bosh_cli # -V for verbose output
+
+  # Plugin required for deploying MicroBOSH
+  #gem install -V bosh_cli_plugin_micro
+
+  # Plugin required for 'bosh aws create' and bootstrap commands
+  #gem install -V bosh_cli_plugin_aws
+  cd ~/workspace
+
+  git clone git@github.com:pivotalservices/bosh.git # This is to get around the pull request issue shown later.
+  cd ~/workspace/bosh
+  bundle install
+  ```
+
+
+- [ ] 11. Install Spiff for linux https://github.com/cloudfoundry-incubator/spiff/releases. Unzip and  copy this to /usr/bin
+
+  ```
+  cd ~/workspace
+  wget https://github.com/cloudfoundry-incubator/spiff/releases/download/v1.0.3/spiff_linux_amd64.zip
+  unzip spiff_linux_amd64.zip
+  sudo mv spiff /usr/local/bin
+  rm spiff_linux_amd64.zip
+  ````
+
+ - [ ] 12. Create a bosh_environment file 
+  ```
+  export BOSH_VPC_DOMAIN=example.com
+  export BOSH_VPC_SUBDOMAIN=my-subdomain
+  export BOSH_AWS_ACCESS_KEY_ID=AWS_ACCESS_KEY_ID
+  export BOSH_AWS_SECRET_ACCESS_KEY=AWS_SECRET_ACCESS_KEY
+  export BOSH_AWS_REGION=my-aws-region
+  export BOSH_VPC_PRIMARY_AZ=us-east-1a   # see note below
+  export BOSH_VPC_SECONDARY_AZ=us-east-1d # see note below
+  ```
+
+ - [ ] 13. Modify bosh_environment file to include the correct VPC domain, subdomain, access keys from the IAM account, Availability Zones. Add the following properties as well
+
+  ```
+  export BOSH_OVERRIDE_MICRO_STEMCELL_AMI=ami-63f4b853
+  export BOSH_OVERRIDE_LIGHT_STEMCELL_URL=http://url_for_stemcell
+  ```
+
+  Please note that the `BOSH_OVERRIDE_MICRO_STEMCELL_AMI` should point to an AMI that is published for your region.
+
+ - [ ] 14.  Source the Bosh Environment 
+  ```
+  source bosh_environment
+  ```
+
+- [ ] 15. Run the `bosh aws create` command. On successful execution this command generates the following files aws_rds_bosh_receipt.yml, aws_rds_receipt.yml, aws_route53_receipt.yml and aws_vpc_receipt.yml.
+  - If bosh aws create runs into errors you can run `bosh aws destroy` to cleanup the VPC account, however MAKE SURE YOU DO NOT DELETE VPCs this way otherwise it will delete your default VPC. You can use this command to clean everything else except NS and SOA records. Note the Splat C name and A Records can be removed.  Remove the Non-default VPC Manually.
+  - If you chose to cleanup manually then these are the artifacts you will need to delete from the AWS console - VPC created, EC2 Instances spawned, ELBs, S3 buckets, Route 53 DNS records, RDS DBs created, Security groups, Key pairs, Subnets & IP addresses
+
+  NOTE: make sure that this pull request has been either incorporated into the cli or changes made manually.  [https://github.com/cloudfoundry/bosh/pull/688/files](https://github.com/cloudfoundry/bosh/pull/688/files)
+
+  - __Tip__: if you get the error:
+
+  ```
+  Executing migration CreateMoreUniqueS3Buckets
+  creating bucket cloud-pcfdev-com-bosh-blobstore
+  creating bucket cloud-pcfdev-com-bosh-artifacts
+  /Users/kelapr/.rbenv/versions/1.9.3-p547/lib/ruby/gems/1.9.1/gems/aws-sdk-1.44.0/lib/aws/core/client.rb:375:in return_or_raise: Your previous request to create the named bucket succeeded and you already own it. (AWS::S3::Errors::BucketAlreadyOwnedByYou)
+      from /Users/kelapr/.rbenv/versions/1.9.3-p547/lib/ruby/gems/1.9.1/gems/aws-sdk-1.44.0/lib/aws/core/client.rb:476:in client_request
+  ```
+
+  Dan Highman has created a [patch](https://github.com/danhigham/bosh/commit/6d27fe6c2ff10e83e3003842f0c0d4021fbd5fc6)  that solves this issue, the changes should be committed back to Bosh shortly.
+   
+- [ ] 16. After a successful bosh aws create command execution modify the bosh security group inbound and outbound ports as documented here http://docs.cloudfoundry.org/bosh/deploy-microbosh-to-aws.html
+
+  TIP: If you get an error deleting dhcp_options edit the file ```bosh_cli_plugin_aws-1.2765.0/lib/bosh_cli_plugin_aws/vpc.rb``` and comment out line 171
+  
+  ```
+   def create_dhcp_options(options)
+          default_dhcp_opts = @aws_vpc.dhcp_options
+  
+          new_dhcp_options = @ec2.dhcp_options.create(options)
+          new_dhcp_options.associate(vpc_id)
+          #say "\tcreated and associated DHCP options #{new_dhcp_options.id}".make_green
+  
+          #default_dhcp_opts.delete # have to comment out this line otherwise bosh aws create tries to delete teh default dhcp options!
+        end
+  ```
+  
+  
+  TIP: if you get the error: 
+  
+  ```
+  creating bucket cloud-pcfdev-com-bosh-artifacts
+  /home/ec2-user/.gem/ruby/1.9.3/gems/aws-sdk-1.44.0/lib/aws/core/client.rb:375:in 'return_or_raise': Your previous request to create the named bucket succeeded and you already own it. (AWS::S3::Errors::BucketAlreadyOwnedByYou)
+  ```
+  Then edit the file ```bosh_cli_plugin_aws/migrations/20130529212130_create_more_unique_s3_buckets.rb``` and add the line 
+  ```
+  next if s3.bucket_exists?(bucket) # here the check of existing bucket
+  ```
+  
+  after line 21 
+  
+  ```
+       buckets.each_key do |bucket|
+         say "creating bucket #{bucket}"
+        next if s3.bucket_exists?(bucket) # here the check of existing bucket
+         s3.create_bucket(bucket)
+       end
+  ```
+      
+# Deploying MicroBOSH
+      
+- [ ] 17. We will use the microbosh stemcell AMI as a base for our region listed below For other regions just clone one of the AMIs listed below.
+    ```
+    us-west-2 : ami-63f4b853
+    ap-southeast-1 : ami-1a614048
+    ap-northeast-1 : ami-95d4e294
+    ```
+ 
+- [ ] 18.  If not done already modify the line in bosh_environment to have the correct AMI: `export BOSH_OVERRIDE_MICRO_STEMCELL_AMI=<amifromabove>`
+- [ ] 19.  Modify the bosh security group based on guidance here http://docs.cloudfoundry.org/bosh/deploy-microbosh-to-aws.html
+- [ ] 20. ```source bosh_environment```
+ 
+- [ ] 21. Log into the Jump box. Deploy MicroBOSH! by using the command `bosh aws bootstrap micro`. Remember the username and password set during micro-deploy will be needed later when deploying the release.
+    ```shell
+    bosh aws bootstrap micro
+  
+    # Logged in as hm
+    Enter username:micro
+    Enter password:makeithappen
+    ```
+ 
+- [ ] 22. Remember to save the output of this command and check it into Github. If for some reason the deploy process gets stuck or fails, you can check the log file located at `~/bosh-workspace/deployments/microbosh-openstack/bosh_micro_deploy.log`, 
+    - if you have issues make sure that the aws_route53.yml receipt file has current EIPs for each of the entries. Need to make sure that the EIPs DO EXIST and are UNASSOCIATED.
+    - If the ami mentioned in the bosh_environment is not found please find the correct microbosh AMI by refererring to section _Find the correct MicroBOSH Stemcell_ of http://docs.cloudfoundry.org/deploying/ec2/deploy_aws_micro_bosh.html
+      
+### Deploying Cloud Foundry
+
+- [ ] 1. Clone the cf-release GitHub repository.
+  ```
+  cd ~/workspace
+  git clone https://github.com/cloudfoundry/cf-release.git  
+  cd ~/workspace/cf-release
+  git checkout tags/v190
+  ```
+- [ ] 2. Check that the template for cf-release has been updated to support non standard region deployments - Note this will NOT have been done for releases prior to v193.
+  ```
+  vim ~/workspace/cf-release/templates/cf-infrastructure-aws.yml
+  ```
+  Check that the fog_config section is as follows (if not, edit the file)
+  ```
+    fog_config:
+       provider: AWS
+       aws_access_key_id: (( properties.template_only.aws.access_key_id ))
+       aws_secret_access_key: (( properties.template_only.aws.secret_access_key ))
+       region: us-east-1
+  ```
+
+- [ ] 3. Check that the installed version is at least spiff 1.0.3 
+  ```
+  spiff -v
+  ```
+
+- [ ] 4. The following automatically finds the latest public stemcell and
+	downloads it.  You can do this manually by using ```bosh public stemcells``` command to view a list of available public stem cells and then perform step 5.
+
+  ```
+  STEMCELL="$(bosh public stemcells | awk '/aws/ && /trusty-go_agent/ && /ubuntu/' | grep -v light | cut -d'|' -f2  | cut -d' ' -f2 |tr '-' ' ' |sort -k3 -r  |tr ' ' '-' | head -1)"
+
+  if [ ! -f "$STEMCELL" ]; then
+    echo "$STEMCELL does not exists"
+    bosh download public stemcell $STEMCELL
+  fi
+
+  bosh upload stemcell $STEMCELL
+  ``` 
+
+- [ ] 5. Upload the latest release (ls the cf-release/releases directory)
+
+  ```
+  bosh upload release ../cf-release/releases/cf-190.yml  #in this case it was 190
+  ```  
+
+- [ ] 6. Create Deployment stub. Clone [https://github.com/haydonryan/bosh-aws-stub-generator](https://github.com/haydonryan/bosh-aws-stub-generator) that will take your receipt files from the previous step and generate a stub.  If you are using self signed SSL certificates then replace $SELF_SIGNED_SSL below with true. $DEPLOYMENT_NAME is the name you wish to call the deployment.  This will appear when you use bosh to query what deployments exist.
+
+  ```
+  cd ~/workspace
+  git clone https://github.com/haydonryan/bosh-aws-stub-generator
+  cd bosh-aws-stub-generator
+  cp ~/workspace/your_working_directory/aws*.yml .
+  ./generate_stub.rb $DEPLOYMENT_NAME $SELF_SIGNED_SSL >~/workspace/your_working_directory/cf-aws-stub.yml
+
+  ```
+
+
+- [ ] 7. Replace cf-stub.yml with the name and location of your cf-stub.yml file. For example:
+    ```
+    $ ./generate_deployment_manifest aws cf-stub.yml > cf-aws-deployment.yml
+    ```
+
+- [ ] 8. Checkin the generated manifest into Github.
+
+- [ ] 9.  Use bosh target to target the BOSH Director:
+
+    ```
+    bosh target
+    Current target is https://x.x.x.x:25555 (micro-xxxxxx)
+    ```
+
+- [ ] 10. Upload a stemcell for the CF deployment. Note this stemcell name and version needs to match the one listed in the manifest `stemcell:name` and `stemcell:version`
+    ```
+    bosh public stemcells
+    bosh download public stemcell bosh-stemcell-2427-aws-xen-ubuntu.tgz
+    bosh upload stemcell ./bosh-stemcell-2427-aws-xen-ubuntu.tgz
+    ```
+
+- [ ] 13. Deploy a release of cloud foundry
+    ```
+    bosh deployment cf-release/cf-aws-deployment.yml
+    bosh deploy
+    ```
+
+- [ ] 14. Watch the deploy output in debug mode by issuing the following command in a shell parallel to the cf deploy
+    ```
+    bosh task XX --debug
+    ```  
+
+- [ ] 15.  If you encounter any errors during the deploy follow guidance here on advanced [troubleshooting](http://docs.pivotal.io/pivotalcf/customizing/trouble-advanced.html) with BOSH. SSHing into the containers is very helpful in understanding if a particular job is not working correctly.
+
+### Validation
+
+- [ ] 1. Sample set of commands to validate if the CF deployment is working
+    ```
+    cf login -a http://api.cloud.rohitkelapure.com --skip-ssl-validation -u admin -p makeithappen
+    cf create-org development
+    cf create-space alpha
+    cf target -o development -s alpha
+    # Now you are ready to push your first app
+    # After the app is pushed you should be able to access at
+    # http://HOSTNAME.SUBDOMAIN.DOMAIN like
+    # say http://microservices.cloud.rohitkelapure.com/
+    ```
+
+- [ ] 2. Checkin the correct final release deployment (cf-aws-deployment.yml) into Github along with all the supporting files used for (bosh_environment) and generated after the deploy of microbosh and CF.  (receipt files, Key-Pairs, pem files, cf-stub.yml) etc.,
+
+
+### User Acceptance Testing
+CF Release contains a full acceptance test suite that can be run as an errand.  For this to run you must have a section in your stub properties:
+
+```
+properties:
+  acceptance_tests:
+      api: api.cloud.pcfdev.com
+      apps_domain: cloud.pcfdev.com
+      admin_user: admin
+      admin_password: <<youradminpassword>>
+      nodes: 4
+      skip_ssl_validation: true
+```
+
+The CATs (CF Acceptance Tests) that can be used to validate the install.  These tests will uncover any issues that have occurred, and it is recommended that unless the test suite passes (or you fully understand why a particular test has failed) that you correct any errors that occur.  
+
+```
+$ bosh run errand acceptance_tests
+# When the test run successfully you should expect to see
+Errand 'acceptance_tests' completed successfully (exit code 0)
+```
+
+For more information on CATs please see [https://github.com/cloudfoundry/cf-acceptance-tests](https://github.com/cloudfoundry/cf-acceptance-tests).
+
+
+### Locking Down Security
+In the default setup of CF on AWS - the Bosh micro is accessible to the outside world.  A fully locked down setup would consist of only the Jumpbox and Amazon Internet Gateway being accessible from the internet.  Consider locking this down.  Note this will FORCE all updates to CF etc, and operations to be conducted through the jump box! 
+
+
+---
