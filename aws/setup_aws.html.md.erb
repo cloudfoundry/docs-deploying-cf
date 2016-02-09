@@ -12,9 +12,11 @@ To complete this tutorial, you need:
 
 - An [Amazon Web Services](http://aws.amazon.com) (AWS) account with Virtual Private Cloud (VPC)
 
-- The [BOSH CLI](https://bosh.io/docs/bosh-cli.html) installed on your machine
+- The [BOSH CLI](https://bosh.io/docs/bosh-cli.html) and [bosh-init](http://bosh.cloudfoundry.org/docs/install-bosh-init.html) installed on your machine
 
 - [Ruby] (https://www.ruby-lang.org/en/documentation/installation/) 1.9.3 or higher installed on your machine
+
+- Sufficiently high instance limits (or no instance limits) on your AWS account. Installing Cloud Foundry requires more than the default 20 concurrent instances.
 
 ## <a id="domain-prep"></a> Prepare a Domain ##
 
@@ -137,7 +139,7 @@ This command generates two receipt files, `aws_rds_receipt.yml` and
     in your AWS account, including objects and files unrelated to your Cloud
     Foundry deployment.</p>***
 
-1. Run `bosh aws destroy` to destroy your AWS environment. This command deletes all buckets, VPCs, key pairs, Elastic IPs, security groups, and other structures in your account.
+1. Run `bosh aws destroy` to destroy your AWS environment. This command prompts you to delete EC2 instances, EBS volumes, RDS databases, S3 buckets, VPCs, key pairs, Elastic IPs, security groups, and NS/SOA records in your account.
 
 
     

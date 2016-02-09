@@ -4,10 +4,7 @@ title: Customizing the Cloud Foundry Deployment Manifest Stub for AWS
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to customize the Cloud Foundry deployment manifest stub
-for AWS.
-After you complete this task, use the `scripts/generate_deployment_manifest` script in
-the `cf-release` repository to generate your Cloud Foundry deployment manifest.
+This topic describes how to create the Cloud Foundry deployment manifest stub for AWS. The manifest stub is a YAML configuration file that the script `generate_deployment_manifest` combines with other configuration files in the `cf-release` repository to generate your Cloud Foundry deployment manifest.
 
 Save a copy of the manifest stub as a YAML file in your deployment directory.
 Follow the [editing instructions](#editing) to customize the manifest stub with
@@ -72,7 +69,9 @@ networks:
           - cf
         subnet: (( properties.template_only.aws.subnet_ids.cf2 ))
 	  </code></pre></td>
-    <td>This example assumes you have two subnets in your AWS VPC with CIDRs <code>10.10.16.0/20</code> and <code>10.10.80.0/20</code> respectively. Update the values for <code>range</code>, <code>reserved</code>, <code>static</code>, and <code>gateway</code> accordingly if the CIDRs for your subnets are different.
+    <td>If you used <code>bosh aws create</code> to set up your AWS environment, this section needs no changes.
+    <br/><br/>
+    This example assumes you have two subnets in your AWS VPC with CIDRs <code>10.10.16.0/20</code> and <code>10.10.80.0/20</code> respectively. Update the values for <code>range</code>, <code>reserved</code>, <code>static</code>, and <code>gateway</code> accordingly if the CIDRs for your subnets are different.
     <br/><br/>
     This also assumes that you have a security group <code>cf</code> suitable for your Cloud Foundry VMs. Change this too if the name of your security group is different.
 	  </td>
@@ -95,6 +94,8 @@ properties:
     Replace <code>ZONE_1</code> and <code>ZONE_2</code> with two EC2 Availability Zones that you want to distribute your deployment across.
     <br/><br/>
     Replace <code>SUBNET_ID_1</code> and <code>SUBNET_ID_2</code> with the VPC subnet IDs corresponding to the subnets configured in the <code>networks</code> section above.
+    <br/><br/>
+    If you used <code>bosh aws create</code>, the key and zone values are in  the <code>bosh_environment</code> file that you originally bootstrapped from and the subnet IDs will correspond to the subnets cf1 and cf2 already created.
     </td>
   </tr>
   <tr>
@@ -105,12 +106,14 @@ properties:
   app_domains:
    - APP_DOMAIN
 	  </code></pre></td>
-    <td>Replace <code>DOMAIN</code> and <code>SYSTEM_DOMAIN</code> with the domain you have configured for accessing system components (e.g. the Cloud Controllers will be reachable at <code>api.SYSTEM_DOMAIN</code>).
+    <td>Replace <code>DOMAIN</code> with your registered root domain. Example: "cf-app.com." Replace <code>SYSTEM_DOMAIN</code> with the subdomain you have configured for accessing system components. Example: "cloud-09."
     <br/><br/>
-    Pick any name you like for the <code>SYSTEM_DOMAIN_ORGANIZATION</code>, this organization will be created and configured to own the <code>SYSTEM_DOMAIN</code>.
+    Pick any name you like for the <code>SYSTEM_DOMAIN_ORGANIZATION</code>, this organization will be created and configured to own the <code>SYSTEM_DOMAIN</code>. 
     <br/><br/>
-    Replace <code>APP_DOMAIN</code> with the default root domain you want associated with applications pushed to your Cloud Foundry installation.
-	  </td>
+    Replace <code>APP_DOMAIN</code> with the full domain you want associated with applications pushed to your Cloud Foundry installation. Example: "cloud-09.cf-app.com."
+	  <br/><br/>
+    If you used <code>bosh aws create</code>, these values are in the <code>bosh_environment</code> file.
+   </td>
   </tr>
   <tr>
     <td><pre><code>
@@ -127,7 +130,9 @@ properties:
     <td>Replace <code>DROPLET_DIRECTORY_KEY</code> with the directory (bucket) used to store droplets.
     <br /><br />
     Replace <code>BUILDPACK_DIRECTORY_KEY</code> with the directory (bucket) used to store
-    buildpacks.
+    buildpacks. 
+    <br /><br />
+    If you used <code>bosh aws create</code>, find the <strong>S3 Dashboard</strong>, select the bucket with "blobstore" in the name, click "Properties," and use the <code>Endpoint</code> for the two values above. Example: "cloud09-cf-app-com-bosh-blobstore.s3-website-us-west-1.amazonaws.com."
     <br /><br />
     Replace <code>STAGING_UPLOAD_USER</code> with the account user name used to upload files to the Cloud Controller.
     <br /><br />
@@ -139,6 +144,8 @@ properties:
     Replace <code>CCDB_ENCRYPTION_KEY</code>
     with a secure key that you generate to encrypt sensitive values in the
     Cloud Controller database.
+    <br/><br/>
+    You can use any values for user, passwords, and key depending on your security needs.
     </td>
   </tr>
   <tr>
@@ -156,6 +163,8 @@ properties:
     port: CCDB_PORT
     </code></pre></td>
     <td>This assumes you are using an external MySQL or PostgreSQL database service like Amazon RDS for your Cloud Controller database, and have already provisioned this. Replace <code>CCDB_SCHEME</code>, <code>CCDB_USER</code>, <code>CCDB_USER_NAME</code>, <code>CCDB_PASSWORD</code>, <code>CCDB_ADDRESS</code>, and <code>CCDB_PORT</code> with the appropriate values.
+    <br/><br/>
+    If you used <code>bosh aws create</code>, these values are in the <code>aws_rds_bosh_receipt.yml</code> file that it generated.
 	</td>
   </tr>
   <tr>
@@ -170,6 +179,8 @@ properties:
     agent_key: CONSUL_AGENT_KEY
 	  </code></pre></td>
     <td>See the instructions on <a href="../common/consul-security.html">security configuration for consul</a>.
+    <br/><br/>
+    You can use any values for keys and certs depending on your security needs.
 	  </td>
   </tr>
   <tr>
@@ -178,6 +189,8 @@ properties:
     shared_secret: LOGGREGATOR_ENDPOINT_SHARED_SECRET
     </code></pre></td>
     <td>Replace <code>LOGGREGATOR_ENDPOINT_SHARED_SECRET</code> with any secure secret.
+    <br/><br/>
+    You can use any value for secret depending on your security needs.
 	  </td>
   </tr>
   <tr>
@@ -188,6 +201,8 @@ properties:
 	  </code></pre></td>
     <td>Replace <code>NATS_USER</code> and
 		<code>NATS_PASSWORD</code> with a secure username and password. Cloud Foundry components will use this to communicate with each other over the NATS message bus.
+    <br/><br/>
+    You can use any values for username and password depending on your security needs.
 	  </td>
   </tr>
   <tr>
@@ -199,6 +214,8 @@ properties:
 	  </code></pre></td>
     <td>Replace <code>ROUTER_USER</code> and
     <code>ROUTER_PASSWORD</code> with a secure username and password.
+    <br/><br/>
+    You can use any values for username and password depending on your security needs.
 	  </td>
   </tr>
   <tr>
@@ -224,6 +241,8 @@ properties:
     </code></pre></td>
     <td>Replace all the <code>*_SECRET</code>s with secure secrets.
 	  </td>
+    <br/><br/>
+    You can use any values for secrets depending on your security needs.
   </tr>
   <tr>
     <td><pre><code>
@@ -242,6 +261,8 @@ properties:
     </code></pre></td>
     <td>Replace <code>ADMIN_PASSWORD</code> with a secure password. This will be the password for the Admin user of your Cloud Foundry installation.
     </td>
+    <br/><br/>
+    You can use any value for password depending on your security needs.
   </tr>
   <tr>
     <td><pre><code>
@@ -258,6 +279,8 @@ properties:
     port: UAADB_PORT
 	  </code></pre></td>
     <td>This assumes you are using an external MySQL or PostgreSQL database service like Amazon RDS for your UAA database, and have already provisioned this. Replace <code>UAADB_SCHEME</code>, <code>UAADB_USER</code>, <code>UAADB_USER_NAME</code>, <code>UAADB_PASSWORD</code>, <code>UAADB_ADDRESS</code>, and <code>UAADB_PORT</code> with the appropriate values.
+    <br/><br/>
+    If you used <code>bosh aws create</code>, these values are in the <code>aws_rds_bosh_receipt.yml</code> file that it generated.
 	</td>
   </tr>
 </table>
