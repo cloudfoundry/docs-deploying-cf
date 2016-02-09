@@ -38,6 +38,8 @@ $ git clone https://github.com/cloudfoundry/cf-release.git
 
 ##<a id="generate-manifest"></a>Generate the Manifest ##
 
+1. Ensure that ruby-2.1.8 is installed with [rbenv](https://github.com/rbenv/rbenv#installation).  `rbenv install 2.1.8`
+1. Ensure that bundler is installed.  `gem install bundler`
 1. Install [spiff](https://github.com/cloudfoundry-incubator/spiff).
 
 1. Use the `scripts/generate-bosh-lite-dev-manifest` command to create a
