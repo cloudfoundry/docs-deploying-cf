@@ -106,14 +106,12 @@ properties:
   app_domains:
    - APP_DOMAIN
 	  </code></pre></td>
-    <td>Replace <code>DOMAIN</code> with your registered root domain. Example: "cf-app.com." Replace <code>SYSTEM_DOMAIN</code> with the subdomain you have configured for accessing system components. Example: "cloud-09."
+    <td>Replace <code>DOMAIN</code>, <code>SYSTEM_DOMAIN</code>, and <code>APP_DOMAIN</code> with the full domain you want associated with applications pushed to your Cloud Foundry installation. Example: "cloud-09.cf-app.com."
     <br/><br/>
-    Pick any name you like for the <code>SYSTEM_DOMAIN_ORGANIZATION</code>, this organization will be created and configured to own the <code>SYSTEM_DOMAIN</code>. 
+    If you used <code>bosh aws create</code>, this value comes from concatenating the <code>BOSH_VPC_SUBDOMAIN</code> and <code>BOSH_VPC_DOMAIN</code> values in the <code>bosh_environment</code> file.
     <br/><br/>
-    Replace <code>APP_DOMAIN</code> with the full domain you want associated with applications pushed to your Cloud Foundry installation. Example: "cloud-09.cf-app.com."
-	  <br/><br/>
-    If you used <code>bosh aws create</code>, these values are in the <code>bosh_environment</code> file.
-   </td>
+    Pick any name you like for the <code>SYSTEM_DOMAIN_ORGANIZATION</code>. This organization will be created and configured to own the <code>SYSTEM_DOMAIN</code>.
+    </td>
   </tr>
   <tr>
     <td><pre><code>
@@ -250,7 +248,8 @@ properties:
       verification_key: JWT_VERIFICATION_KEY
       signing_key: JWT_SIGNING_KEY
     </code></pre></td>
-    <td>Replace <code>JWT_SIGNING_KEY</code> with an RSA private key, and <code>JWT_VERIFICATION_KEY</code> with the corresponding RSA public key.
+    <td>Replace <code>JWT_SIGNING_KEY</code> with an RSA private key, and <code>JWT_VERIFICATION_KEY</code> with the corresponding RSA public key.<br/>
+    Paste in the full keys, including the "BEGIN" and "END" delimiter lines.
     </td>
   </tr>
   <tr>
