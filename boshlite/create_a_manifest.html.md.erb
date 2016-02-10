@@ -37,11 +37,9 @@ $ git clone https://github.com/cloudfoundry/cf-release.git
 </pre>
 
 ##<a id="generate-manifest"></a>Generate the Manifest ##
-
-1. Ensure that ruby-2.1.8 is installed with [rbenv](https://github.com/rbenv/rbenv#installation).  `rbenv install 2.1.8`
-1. Ensure that bundler is installed.  `gem install bundler`
+1. Install the Ruby version listed in the `cf-release/ruby_version` file of the cf-release repository. You can manage your Ruby versions using `rvm`, `rbenv`, or `chruby`.
+1. Run `gem install bundler` to install `bundler`.  
 1. Install [spiff](https://github.com/cloudfoundry-incubator/spiff).
-
 1. Use the `scripts/generate-bosh-lite-dev-manifest` command to create a
 deployment manifest and set it as the current BOSH deployment.
 
@@ -49,9 +47,7 @@ deployment manifest and set it as the current BOSH deployment.
     $ cd cf-release
     $ ./scripts/generate-bosh-lite-dev-manifest
     </pre>
-
 1. (Optional) If you have deployed your BOSH-Lite to AWS, or have otherwise created any stubs with custom configuration, you should pass them as additional arguments:
-
     <pre class="terminal">
     $ ./scripts/generate-bosh-lite-dev-manifest PATH-TO-STUB ...
     </pre>
