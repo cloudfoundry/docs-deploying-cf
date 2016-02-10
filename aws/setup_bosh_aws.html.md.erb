@@ -6,9 +6,9 @@ This document shows how to create a BOSH deployment manifest and pass it to `bos
 
 ## <a id="regenerate-keypair"></a>Step 1: Regenerate a Key Pair
 
-1. From the **EC2 Dashboard**, select **Key Pairs**, select the key pair named `bosh`, and click **Delete**.
+1. From the **EC2 Dashboard**, select **Key Pairs**, select the key pair named **bosh**, and click **Delete**.
 
-2. Click `Create Key Pair`. When prompted for the name, enter `bosh`. This will download the file `bosh.pem` into your Downloads directory. You need this Private Key file on your local machine to deploy BOSH.
+2. Click **Create Key Pair**. When prompted for the name, enter `bosh`. This will download the file `bosh.pem` into your Downloads directory. You need this private key file on your local machine to deploy BOSH.
 
 3. Change the permissions on `bosh.pem` to user read-write access only.
 
@@ -24,11 +24,9 @@ This document shows how to create a BOSH deployment manifest and pass it to `bos
 
 ## <a id="create-manifest"></a>Step 2: Create a Deployment Manifest
 
-1. Create a deployment manifest file named `bosh.yml` in the deployment directory based on the template below.
-
-    In the template, you must replace properties as follows:
-    * `ELASTIC-IP`:In the **EC2 Dashboard** under **Elastic IPs**, use the Elastic IP with the Instance associated with `bosh`. Example: "52.9.107.126."
-    * `SUBNET-ID`: In the **VPC Dashboard** tab **Subnets**, use the Subnet ID for the subnet named `bosh1`. Example: "subnet-2f58134a."
+1. Create a deployment manifest file named `bosh.yml` in the deployment directory based on the template below. Replace six properties listed in the file as follows:
+    * `ELASTIC-IP`:In the **EC2 Dashboard** under **Elastic IPs**, use the Elastic IP with the Instance associated with **bosh**. Example: "52.9.107.126."
+    * `SUBNET-ID`: In the **VPC Dashboard** tab **Subnets**, use the Subnet ID for the subnet named "bosh1." Example: "subnet-2f58134a."
     * `AVAILABILITY-ZONE` and `REGION`: Use the values from the `bosh_environment` file you created in the [previous step](./setup_aws.html).
     * `ACCESS-KEY-ID` and `SECRET-ACCESS-KEY`: Use the values from your `bosh_environment` file.
 
@@ -207,7 +205,7 @@ cloud_provider:
     No deployments
     </pre>
 
-1. Save the deployment state file left in your deployment directory so you can later update/delete your Director. See [Using bosh-init](http://bosh.io/docs/using-bosh-init.html#deployment-state) for more details.
+1. Save the deployment state file in your deployment directory so you can later update or delete your bosh Director component. See [Using bosh-init](http://bosh.io/docs/using-bosh-init.html#deployment-state) for more details.
 
-For more information about deploying BOSH on AWS without running `bosh aws create` see [Initializing BOSH environment on AWS](http://bosh.io/docs/init-aws.html).
+For information about deploying BOSH on AWS without running `bosh aws create` see [Initializing BOSH environment on AWS](http://bosh.io/docs/init-aws.html).
 
