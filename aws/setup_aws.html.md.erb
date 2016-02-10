@@ -8,15 +8,17 @@ This topic describes how to set up an environment for Cloud Foundry&reg; on Amaz
 
 ## <a id='prereqs'></a>Prerequisites
 
-To complete this tutorial, you need:
+To complete this step, you need:
 
 - An [Amazon Web Services](http://aws.amazon.com) (AWS) account with Virtual Private Cloud (VPC)
 
-- The [BOSH CLI](https://bosh.io/docs/bosh-cli.html) and [bosh-init](http://bosh.cloudfoundry.org/docs/install-bosh-init.html) installed on your machine
+- The [BOSH CLI](https://bosh.io/docs/bosh-cli.html) installed on your machine
 
 - [Ruby] (https://www.ruby-lang.org/en/documentation/installation/) 1.9.3 or higher installed on your machine
 
-- Sufficiently high instance limits (or no instance limits) on your AWS account. Installing Cloud Foundry requires more than the default 20 concurrent instances.
+- Sufficiently high instance limits (or no instance limits) on your AWS account. Installing Cloud Foundry using this bootstrap tool designates 28 concurrent instances as component VMs.
+
+<p class="note"><strong>Note</strong>: You can deploy Cloud Foundry in an infinite number of topologies, using fewer than 20 virtual machines, or many more.</p>
 
 ## <a id="domain-prep"></a> Prepare a Domain ##
 
