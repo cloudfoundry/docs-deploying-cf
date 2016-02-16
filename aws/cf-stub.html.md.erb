@@ -151,7 +151,7 @@ properties:
   ccdb:
     db_scheme: CCDB_SCHEME
     roles:
-      - tag: CCDB_USER
+      - tag: admin
         name: CCDB_USER_NAME
         password: CCDB_PASSWORD
     databases:
@@ -160,7 +160,7 @@ properties:
     address: CCDB_ADDRESS
     port: CCDB_PORT
     </code></pre></td>
-    <td>This assumes you are using an external MySQL or PostgreSQL database service like Amazon RDS for your Cloud Controller database, and have already provisioned this. Replace <code>CCDB_SCHEME</code>, <code>CCDB_USER</code>, <code>CCDB_USER_NAME</code>, <code>CCDB_PASSWORD</code>, <code>CCDB_ADDRESS</code>, and <code>CCDB_PORT</code> with the appropriate values.
+    <td>This assumes you are using an external MySQL or PostgreSQL database service like Amazon RDS for your Cloud Controller database, and have already provisioned this. Replace <code>CCDB_SCHEME</code>, <code>CCDB_USER_NAME</code>, <code>CCDB_PASSWORD</code>, <code>CCDB_ADDRESS</code>, and <code>CCDB_PORT</code> with the appropriate values.
     <br/><br/>
     If you used <code>bosh aws create</code>, you can find these values in the generated file <code>aws_rds_bosh_receipt.yml</code>.
 	</td>
@@ -268,7 +268,7 @@ properties:
   uaadb:
     db_scheme: UAADB_SCHEME
     roles:
-      - tag: UAADB_USER
+      - tag: admin
         name: UAADB_USER_NAME
         password: UAADB_USER_PASSWORD
     databases:
@@ -277,7 +277,7 @@ properties:
     address: UAADB_ADDRESS
     port: UAADB_PORT
 	  </code></pre></td>
-    <td>This assumes you are using an external MySQL or PostgreSQL database service like Amazon RDS for your UAA database, and have already provisioned this. Replace <code>UAADB_SCHEME</code>, <code>UAADB_USER</code>, <code>UAADB_USER_NAME</code>, <code>UAADB_PASSWORD</code>, <code>UAADB_ADDRESS</code>, and <code>UAADB_PORT</code> with the appropriate values.
+    <td>This assumes you are using an external MySQL or PostgreSQL database service like Amazon RDS for your UAA database, and have already provisioned this. Replace <code>UAADB_SCHEME</code>, <code>UAADB_USER_NAME</code>, <code>UAADB_PASSWORD</code>, <code>UAADB_ADDRESS</code>, and <code>UAADB_PORT</code> with the appropriate values.
     <br/><br/>
     If you used <code>bosh aws create</code>, you can find these values in the generated file <code>aws_rds_bosh_receipt.yml.
 	</td>
