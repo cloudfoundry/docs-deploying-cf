@@ -10,15 +10,29 @@ a similar fashion. This example includes several steps that may be expensive and
 instances. For a simpler deployment, check out the
 [Minimal AWS](https://github.com/cloudfoundry/cf-release/tree/master/example_manifests) instructions.
 
-## Environment Setup ##
+## <a id='prereqs'></a>Prerequisites
+
+To complete this deployment, you need:
+
+- An [Amazon Web Services](http://aws.amazon.com) (AWS) account with Virtual Private Cloud (VPC)
+
+- The [BOSH CLI](https://bosh.io/docs/bosh-cli.html) and [bosh-init](https://bosh.io/docs/install-bosh-init.html) installed on your machine
+
+- [Ruby] (https://www.ruby-lang.org/en/documentation/installation/) 1.9.3 or higher installed on your machine
+
+- Sufficiently high instance limits (or no instance limits) on your AWS account. Installing Cloud Foundry using this bootstrap tool configures a production environment with more than 20 component VM instances.
+
+<p class="note"><strong>Note</strong>: You can deploy Cloud Foundry in an infinite number of topologies, including a <a href="../boshlite/">local development environment</a> on Vagrant or a <a href="https://github.com/cloudfoundry/cf-release/tree/master/example_manifests">minimal AWS configuration</a>.</p>
+
+##<a id="env-setup"></a> Environment Setup ##
 
 * [Step 1](setup_aws.html): Use the BOSH AWS Bootstrap tool `bosh aws create` to create an environment on AWS that includes a VPC and other structures that support BOSH.
 
-## Deploy BOSH ##
+## <a id="deploy-bosh"></a> Deploy BOSH ##
 
 * [Step 2](setup_bosh_aws.html) Create a manifest for BOSH, and pass it to `bosh-init` to deploy BOSH in your environment.
 
-## Deploy Cloud Foundry ##
+## <a id="deploy-cf"></a> Deploy Cloud Foundry ##
 
 * [Step 3](../common/create_a_manifest.html) Create a deployment manifest for Cloud Foundry.
 * [Step 4](../common/deploy.html) Deploy!

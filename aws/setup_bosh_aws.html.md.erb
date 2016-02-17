@@ -4,22 +4,13 @@ title: Deploying BOSH on AWS
 
 This document shows how to create a BOSH deployment manifest and pass it to `bosh-init` to deploy BOSH into the Amazon Web Services (AWS) environment you created in the [previous step](./setup_aws.html).
 
-## <a id="regenerate-keypair"></a>Step 1: Regenerate a Key Pair
+## <a id="copy-keypair"></a>Step 1: Copy the RSA Private Key
+`bosh aws create` generated an RSA private key file. To deploy BOSH, you need this file in your deployment directory.
 
-1. From the **EC2 Dashboard**, select **Key Pairs**, select the key pair named **bosh**, and click **Delete**.
-
-2. Click **Create Key Pair**. When prompted for the name, enter `bosh`. This will download the file `bosh.pem` into your Downloads directory. You need this private key file on your local machine to deploy BOSH.
-
-3. Change the permissions on `bosh.pem` to user read-write access only.
+1. Copy the RSA private key file, `id_rsa_bosh`, to the `cf-example` directory you created in the [previous step](./setup_aws.html).
 
     <pre class='terminal'>
-    $ chmod 400 bosh.pem
-    </pre>
-
-4. Move `bosh.pem` into the `cf-example` directory you created in the [previous step](./setup_aws.html).
-
-    <pre class='terminal'>
-    $ mv ~/Downloads/bosh.pem ~/deployments/cf-example
+    $ cp ~/.ssh/id_rsa_bosh ~/deployments/cf-example
     </pre>
 
 ## <a id="create-manifest"></a>Step 2: Create a Deployment Manifest

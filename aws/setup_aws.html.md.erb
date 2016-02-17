@@ -6,19 +6,9 @@ title: Setting up an AWS Environment for Cloud Foundry with BOSH AWS Bootstrap
 
 This topic describes how to set up an environment for Cloud Foundry&reg; on Amazon Web Services (AWS) using `bosh aws create`, a command-line bootstrap tool that creates all of the structures that underlie a Cloud Foundry deployment on AWS.
 
-## <a id='prereqs'></a>Prerequisites
-
-To complete this step, you need:
-
-- An [Amazon Web Services](http://aws.amazon.com) (AWS) account with Virtual Private Cloud (VPC)
-
-- The [BOSH CLI](https://bosh.io/docs/bosh-cli.html) installed on your machine
-
-- [Ruby] (https://www.ruby-lang.org/en/documentation/installation/) 1.9.3 or higher installed on your machine
-
-- Sufficiently high instance limits (or no instance limits) on your AWS account. Installing Cloud Foundry using this bootstrap tool designates 28 concurrent instances as component VMs.
-
-<p class="note"><strong>Note</strong>: You can deploy Cloud Foundry in an infinite number of topologies, using fewer than 20 virtual machines, or many more.</p>
+If `bosh aws create` does not complete successfully, or you otherwise need to back out, you can clean up the AWS environment with a companion [destroy command](#destroy-environment). 
+<p class="note"><strong>Note</strong>: The destroy command cleans up everything in your AWS account, not just the structures created by `bosh aws create`.
+</p>   
 
 ## <a id="domain-prep"></a> Prepare a Domain ##
 
@@ -130,10 +120,10 @@ This command generates two receipt files, `aws_rds_receipt.yml` and
     <p class="note"><strong>Note</strong>: RDS database creation may take 20 or more minutes.
     </p>
 
-    <p class="note"><strong>Note</strong>: If the <code>bosh aws create</code> command returns an error message, you can use <code>bosh aws destroy</code> to <a href="#destroy-environment">destroy your AWS environment</a>. This  wipes the slate clean for running <code>bosh aws create</code> again, but note that it also destroys other structures in your AWS account.
-    </p>
+    <p class="note"><strong>Note</strong>: If the <code>bosh aws create</code> command returns an error, you can destroy the AWS environment, as described in the next section.</p>
 
 ## <a id="destroy-environment"></a>Destroying the AWS Environment ##
+You can use <code>bosh aws destroy</code> to wipe the slate clean for running <code>bosh aws create</code> again, or as a teardown tool.
 
 ***<p class="tip">WARNING: The command <code>bosh aws destroy</code> destroys
     everything in your AWS account, including all S3 buckets and all instances.
@@ -142,6 +132,4 @@ This command generates two receipt files, `aws_rds_receipt.yml` and
     Foundry deployment.</p>***
 
 1. Run `bosh aws destroy` to destroy your AWS environment. This command prompts you to delete EC2 instances, EBS volumes, RDS databases, S3 buckets, VPCs, key pairs, Elastic IPs, security groups, and NS/SOA records in your account.
-
-
     
