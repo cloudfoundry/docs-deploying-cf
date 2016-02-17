@@ -69,7 +69,7 @@ networks:
           - cf
         subnet: (( properties.template_only.aws.subnet_ids.cf2 ))
 	  </code></pre></td>
-    <td>If you used <code>bosh aws create</code> to set up your AWS environment, this section needs no changes.
+    <td>If you used <code>bosh aws create</code> to set up your AWS environment, change the IP addresses here if needed to fit the subnet range from your bosh.yml file.
     <br/><br/>
     This example assumes you have two subnets in your AWS VPC with CIDRs <code>10.10.16.0/20</code> and <code>10.10.80.0/20</code> respectively. Update the values for <code>range</code>, <code>reserved</code>, <code>static</code>, and <code>gateway</code> accordingly if the CIDRs for your subnets are different.
     <br/><br/>
