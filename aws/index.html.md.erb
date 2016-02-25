@@ -4,10 +4,9 @@ title: Deploying Cloud Foundry on AWS
 
 <strong><%= modified_date %></strong>
 
-The following steps document the process for deploying Cloud Foundry on AWS in
-a production setup. For instance, Pivotal Web Services has been provisioned in
-a similar fashion. This example includes several steps that may be expensive and time-consuming, such as provisioning AWS Relational Database Service (RDS)
-instances. For a simpler deployment, check out the
+The following steps document an example procedure for deploying Cloud Foundry on AWS in
+a production environment. The process includes several steps that may be expensive and time-consuming, such as provisioning AWS Relational Database Service (RDS)
+instances. For a simpler deployment, refer to the
 [Minimal AWS](https://github.com/cloudfoundry/cf-release/tree/master/example_manifests) instructions.
 
 ## <a id='prereqs'></a>Prerequisites
@@ -20,9 +19,9 @@ To complete this deployment, you need:
 
 - [Ruby] (https://www.ruby-lang.org/en/documentation/installation/) 1.9.3 or higher installed on your machine
 
-- Sufficiently high instance limits (or no instance limits) on your AWS account. Installing Cloud Foundry using this bootstrap tool configures a production environment with more than 20 component VM instances.
+- Sufficiently high instance limits on your AWS account. Installing Cloud Foundry using this bootstrap tool configures a production environment with more than 20 component VM instances.
 
-<p class="note"><strong>Note</strong>: You can deploy Cloud Foundry in an infinite number of topologies, including a <a href="../boshlite/">local development environment</a> on Vagrant or a <a href="https://github.com/cloudfoundry/cf-release/tree/master/example_manifests">minimal AWS configuration</a>.</p>
+<p class="note"><strong>Note</strong>: You can deploy Cloud Foundry in smaller topologies, including a <a href="../boshlite/">local development environment</a> on Vagrant or a <a href="https://github.com/cloudfoundry/cf-release/tree/master/example_manifests">minimal AWS configuration</a>.</p>
 
 ##<a id="env-setup"></a> Environment Setup ##
 
@@ -30,9 +29,9 @@ To complete this deployment, you need:
 
 ## <a id="deploy-bosh"></a> Deploy BOSH ##
 
-* [Step 2](setup_bosh_aws.html) Create a manifest for BOSH, and pass it to `bosh-init` to deploy BOSH in your environment.
+* [Step 2](setup_bosh_aws.html): Create a manifest for BOSH, and pass it to `bosh-init` to deploy BOSH in your environment.
 
 ## <a id="deploy-cf"></a> Deploy Cloud Foundry ##
 
-* [Step 3](../common/create_a_manifest.html) Create a deployment manifest for Cloud Foundry.
-* [Step 4](../common/deploy.html) Deploy!
+* [Step 3](../common/create_a_manifest.html): Create a deployment manifest for Cloud Foundry.
+* [Step 4](../common/deploy.html): Deploy!
