@@ -190,16 +190,6 @@ properties:
   </tr>
   <tr>
     <td><pre><code>
-    sslCertificate: UAA_SSL_CERTIFICATE
-    sslPrivateKey: UAA_SSL_PRIVATE_KEY
-    </code></pre></td>
-    <td>Replace <code>UAA_SSL_PRIVATE_KEY</code> with a PEM-encoded RSA private key, and <code>UAA_SSL_CERTIFICATE</code> with the corresponding SSL certificate<br/>
-    Paste in the full keys, including the "BEGIN" and "END" delimiter lines.<br/>
-    In order to turn ssl off, set <code>uaa.ssl.port</code> to -1 and leave these two properties blank. 
-    </td>
-  </tr>
-  <tr>
-    <td><pre><code>
     scim:
       users:
         - admin|ADMIN_PASSWORD|scim.write,scim.read,o...
