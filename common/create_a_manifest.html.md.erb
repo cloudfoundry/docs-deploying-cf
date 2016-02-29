@@ -64,10 +64,9 @@ deployment manifest named `cf-deployment.yml`. Replace `IAAS` with either `aws`,
 	  $ ./scripts/generate_deployment_manifest vsphere ../cf-stub.yml > cf-deployment.yml
     </pre>
 
-    <p class="note"><strong>Note</strong>: The `generate_deployment_manifest` script can accept multiple stub files. For example, the following command passes two stub files to the script: <br/>
-
-    <pre class="terminal">$ ./scripts/generate_deployment_manifest vsphere cf-stub.yml cf-consul.yml > cf-deployment.yml
-    </pre></p>
+    <p class="note"><strong>Note</strong>: The <code>generate_deployment_manifest</code> script can accept multiple stub files. For example, the following command passes two stub files to the script: <br/>
+    <code>generate_deployment_manifest vsphere cf-stub.yml cf-consul.yml > cf-deployment.yml
+    </code></p>
 
 1. Set your deployment to the generated manifest.
 
