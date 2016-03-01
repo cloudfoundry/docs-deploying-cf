@@ -2,29 +2,33 @@
 title: Deploying BOSH on AWS
 ---
 
-This document shows how to create a BOSH deployment manifest and pass it to `bosh-init` to deploy BOSH into the Amazon Web Services (AWS) environment you created in the [previous step](./setup_aws.html).
+In the [previous step](./setup_aws.html) you prepared an AWS environment for BOSH. This document shows how to deploy BOSH into your AWS environment by creating a deployment manifest and passing it to `bosh-init`.
 
-## <a id="copy-keypair"></a>Step 1: Copy the RSA Private Key
-`bosh aws create` generated an RSA private key file. To deploy BOSH, you need this file in your deployment directory.
+## <a id="copy-keypair"></a>Copy the RSA Private Key
+When `bosh aws create` prepared your AWS environment, it generated an RSA private key file and saved it into your `~/.ssh` directory. To deploy BOSH, you need this file in your deployment directory.
 
-1. Copy the RSA private key file, `id_rsa_bosh`, to the `cf-example` directory you created in the [previous step](./setup_aws.html).
+Copy the RSA private key file, `id_rsa_bosh`, to the `cf-example` directory you created in the [previous step](./setup_aws.html).
 
-    <pre class='terminal'>
-    $ cp ~/.ssh/id_rsa_bosh ~/deployments/cf-example
-    </pre>
+<pre class='terminal'>
+$ cp ~/.ssh/id_rsa_bosh ~/deployments/cf-example
+</pre>
 
-## <a id="create-manifest"></a>Step 2: Create a Deployment Manifest
+## <a id="create-manifest"></a>Create a Deployment Manifest
 
-1. Create a deployment manifest file named `bosh.yml` in the deployment directory. Copy the YAML code from the [AWS BOSH manifest template](http://bosh.io/docs/init-aws.html#create-manifest) in the BOSH documentation. Replace properties listed in the file as follows:
-    * `ELASTIC-IP`:In the **EC2 Dashboard** under **Elastic IPs**, use the Elastic IP with the Instance associated with **bosh**. Example: "52.9.107.126."
-    * `SUBNET-ID`: In the **VPC Dashboard** tab **Subnets**, use the Subnet ID for the subnet named "bosh1." Example: "subnet-2f58134a."
+1. Log into the AWS Console.
+
+1. Create a deployment manifest file named `bosh.yml` in the deployment directory. For its contents, copy the YAML code from the [AWS BOSH manifest template](http://bosh.io/docs/init-aws.html#create-manifest) in the BOSH documentation. 
+
+1. Replace properties listed in the file as follows:
+    * `ELASTIC-IP`:In the **EC2 Dashboard** under **Elastic IPs**, use the Elastic IP with the Instance associated with **bosh**. Example: "52.9.107.126".
+    * `SUBNET-ID`: In the **VPC Dashboard** tab **Subnets**, use the Subnet ID for the subnet named "bosh1." Example: "subnet-2f58134a".
     * `AVAILABILITY-ZONE` and `REGION`: Use the values from the `bosh_environment` file you created in the [previous step](./setup_aws.html).
     * `ACCESS-KEY-ID` and `SECRET-ACCESS-KEY`: Use the values from your `bosh_environment` file.
     * Replace all predefined passwords with passwords of your choice.</p>
 
-## <a id="deploy"></a> Step 3: Deploy
+## <a id="deploy"></a>Deploy BOSH
 
-1. Check that [bosh-init](http://bosh.cloudfoundry.org/docs/install-bosh-init.html) and the [BOSH CLI](https://bosh.io/docs/bosh-cli.html) are installed on your machine.
+1. Confirm that [bosh-init](http://bosh.cloudfoundry.org/docs/install-bosh-init.html) and the [BOSH CLI](https://bosh.io/docs/bosh-cli.html) are installed on your machine.
 
 1. Run `bosh-init deploy ./bosh.yml` to start the deployment process.
 
@@ -44,13 +48,7 @@ This document shows how to create a BOSH deployment manifest and pass it to `bos
     Your username: admin
     Enter password: *****
     Logged in as 'admin'
-
-    $ bosh vms
-
-    No deployments
     </pre>
 
-1. Save the deployment state file in your deployment directory so you can later update or delete your bosh Director component. See [Using bosh-init](http://bosh.io/docs/using-bosh-init.html#deployment-state) for more details.
-
-For information about deploying BOSH on AWS without running `bosh aws create` see [Initializing BOSH environment on AWS](http://bosh.io/docs/init-aws.html).
+For information about deploying BOSH on AWS without running `bosh aws create`, see the [Initializing BOSH environment on AWS](http://bosh.io/docs/init-aws.html) topic.
 

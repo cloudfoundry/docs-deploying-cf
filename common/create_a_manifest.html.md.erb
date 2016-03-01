@@ -5,13 +5,13 @@ title: Create a Deployment Manifest for Cloud Foundry
 <strong><%= modified_date %></strong>
 
 This topic describes the process for creating a manifest to deploy Cloud Foundry
-using BOSH. It requires you to have already initialized BOSH.
+using BOSH. It requires you to have already deployed BOSH.
 
 ##<a id="target"></a>Target the BOSH Director ##
 
 Use the `bosh target` command with the address of the BOSH Director to
 connect to the BOSH Director. Log in with the default user name and password,
-`admin` and `admin`, or use the user name and password that you set when you
+`admin` and `admin`, or use the username and password that you set when you
 installed BOSH.
 
 <pre class="terminal">
@@ -44,10 +44,12 @@ environment. Consult the instructions that are specific to your IaaS:
 
 Additionally, you may want to configure blacklists of IP ranges to prevent
 future apps deployed to your Cloud Foundry installation from attempting to
-drain syslogs to internal Cloud Foundry components.  See
-[Log Drain Blacklist Configuration](log_drain_blacklists.html) for further information.
+drain syslogs to internal Cloud Foundry components.  See the
+[Log Drain Blacklist Configuration](log_drain_blacklists.html) topic for more information.
 
 ##<a id="clone"></a>Clone the cf-release GitHub Repository ##
+
+Use `git clone` to copy the latest Cloud Foundry configuration files onto your machine.
 
 <pre class="terminal">
 $ git clone https://github.com/cloudfoundry/cf-release.git
@@ -61,14 +63,14 @@ $ git clone https://github.com/cloudfoundry/cf-release.git
 deployment manifest named `cf-deployment.yml`. Replace `IAAS` with either `aws`, `openstack`, or `vsphere`.  Note that `vsphere` works for vSphere, vCloud Air, and vCloud Director. Replace `MANIFEST-STUB` with the location of your `cf-stub.yml` file. For example:
 
     <pre class="terminal">
-	  $ ./scripts/generate_deployment_manifest vsphere ../cf-stub.yml > cf-deployment.yml
+	$ ./scripts/generate_deployment_manifest vsphere ../cf-stub.yml > cf-deployment.yml
     </pre>
 
     <p class="note"><strong>Note</strong>: The <code>generate_deployment_manifest</code> script can accept multiple stub files. For example, the following command passes two stub files to the script: <br/>
     <code>generate_deployment_manifest vsphere cf-stub.yml cf-consul.yml > cf-deployment.yml
     </code></p>
 
-1. Set your deployment to the generated manifest.
+1. Use the `bosh deployment` command to set your deployment to the generated manifest.
 
     <pre class="terminal">
     $ bosh deployment cf-deployment.yml
