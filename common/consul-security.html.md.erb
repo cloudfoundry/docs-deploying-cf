@@ -96,16 +96,16 @@ existing certificates.
           ###########################################################
           ----END CERTIFICATE----
         agent_key: |
-          ----BEGIN CERTIFICATE----
+          -----BEGIN RSA PRIVATE KEY-----
           ###########################################################
           #######           Your New Agent Key                #######
           ###########################################################
-          ----END CERTIFICATE----
-          ----BEGIN CERTIFICATE----
+          -----END RSA PRIVATE KEY-----
+          -----BEGIN RSA PRIVATE KEY-----
           ###########################################################
           #######           Your Old Agent Key                #######
           ###########################################################
-          ----END CERTIFICATE----
+          -----END RSA PRIVATE KEY-----
         server_cert: |
           ----BEGIN CERTIFICATE----
           ###########################################################
@@ -117,16 +117,16 @@ existing certificates.
           #######           Your Old Server Certificate       #######
           ###########################################################
         server_key: |
-          ----BEGIN CERTIFICATE----
+          -----BEGIN RSA PRIVATE KEY-----
           ###########################################################
           #######           Your New Server Key               #######
           ###########################################################
-          ----END CERTIFICATE----
-          ----BEGIN CERTIFICATE----
+          -----END RSA PRIVATE KEY-----
+          -----BEGIN RSA PRIVATE KEY-----
           ###########################################################
           #######           Your Old Server Key               #######
           ###########################################################
-          ----END CERTIFICATE----
+          -----END RSA PRIVATE KEY-----
     ```
 1. Use the instructions for your infrastructure to generate a deployment
 manifest with your edited stub file.
@@ -154,11 +154,11 @@ certificates and keys.
           ###########################################################
           ----END CERTIFICATE----
         agent_key: |
-          ----BEGIN CERTIFICATE----
+          -----BEGIN RSA PRIVATE KEY-----
           ###########################################################
           #######           Your New Agent Key                #######
           ###########################################################
-          ----END CERTIFICATE----
+          -----END RSA PRIVATE KEY-----
         server_cert: |
           ----BEGIN CERTIFICATE----
           ###########################################################
@@ -171,9 +171,9 @@ certificates and keys.
           ###########################################################
           ----END CERTIFICATE----
         server_key: |
-          ----BEGIN CERTIFICATE----
+          -----BEGIN RSA PRIVATE KEY-----
           ###########################################################
           #######           Your New Server Key               #######
           ###########################################################
-          ----END CERTIFICATE----
+          -----END RSA PRIVATE KEY-----
     ```
