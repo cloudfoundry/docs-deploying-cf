@@ -1,5 +1,6 @@
 ---
 title: Customizing the Cloud Foundry Deployment Manifest Stub for AWS
+owner: Runtime
 ---
 
 <strong><%= modified_date %></strong>
@@ -128,7 +129,7 @@ properties:
     <td>Replace <code>DROPLET_DIRECTORY_KEY</code> with the directory (bucket) used to store droplets.
     <br /><br />
     Replace <code>BUILDPACK_DIRECTORY_KEY</code> with the directory (bucket) used to store
-    buildpacks. 
+    buildpacks.
     <br /><br />
     If you used <code>bosh aws create</code>, find the <strong>S3 Dashboard</strong>, select the bucket with "blobstore" in the name, click <strong>Properties</strong>, and use the <code>Endpoint</code> for the two values above. Example: "cloud09-cf-app-com-bosh-blobstore.s3-website-us-west-1.amazonaws.com."
     <br /><br />

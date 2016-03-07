@@ -1,5 +1,6 @@
 ---
 title: Bootstrapping an AWS Environment for Cloud Foundry
+owner: Runtime
 ---
 
 <style>
@@ -17,9 +18,9 @@ title: Bootstrapping an AWS Environment for Cloud Foundry
 
 This topic describes how to set up an environment for Cloud Foundry on Amazon Web Services (AWS) using `bosh aws create`. This command-line bootstrap tool creates all of the structures that underlie your deployment.
 
-The `bosh aws create` command creates many structures within AWS. If it does not complete successfully, or you want to abort the process, you can clean up the AWS environment with a companion [destroy command](#destroy-environment). 
+The `bosh aws create` command creates many structures within AWS. If it does not complete successfully, or you want to abort the process, you can clean up the AWS environment with a companion [destroy command](#destroy-environment).
 <p class="note"><strong>Note</strong>: The destroy command deletes all user-created structures in your AWS account, not just the ones created by `bosh aws create`.
-</p>   
+</p>
 
 ## <a id="domain-prep"></a> Prepare a Domain ##
 
@@ -66,9 +67,9 @@ The `bosh aws create` command creates many structures within AWS. If it does not
 
     gem "bosh_cli_plugin_aws"
     ~~~
-	
 
-1. Run `bundle install` to install the `bosh_cli_plugin_aws` gem and its dependencies. 
+
+1. Run `bundle install` to install the `bosh_cli_plugin_aws` gem and its dependencies.
 
     <pre class="terminal">
     $ bundle install
@@ -79,15 +80,15 @@ The `bosh aws create` command creates many structures within AWS. If it does not
     Use `bundle show [gemname]` to see where a bundled gem is installed.
     </pre>
 
-1. <a id="generate-credentials"></a>Generate a set of AWS access key credentials from the **Identity and Access Management** (IAM) Dashboard, under **Users**. 
-    * For a new user, click **Create New Users** and enter a user name. 
+1. <a id="generate-credentials"></a>Generate a set of AWS access key credentials from the **Identity and Access Management** (IAM) Dashboard, under **Users**.
+    * For a new user, click **Create New Users** and enter a user name.
     * For an existing user, choose the user, select the **Security Credentials** tab, and click **Create Access Key**.
 
 1. Click **Show User Security Credentials** and record both the Access Key ID and Secret Access Key.
 
-1. Make sure your user has permissions to create an environment for Cloud Foundry on AWS. 
-    * Select the **Permissions** tab on the user's page. 
-    * Click **Attach Policy**. 
+1. Make sure your user has permissions to create an environment for Cloud Foundry on AWS.
+    * Select the **Permissions** tab on the user's page.
+    * Click **Attach Policy**.
     * Select the checkbox next to **AdministratorAccess**. This setting provides your user with full access to AWS services and resources.
     * Click **Attach Policy** at lower right.
 <p class="note"><strong>Note:</strong> For more security, you can restrict the IAM user to a finer-grained set of permissions, but generally Administrator permissions will do.</p>
@@ -105,7 +106,7 @@ replacing the values in each line to match your configuration as described below
     * The values for `BOSH_VPC_DOMAIN` and `BOSH_VPC_SUBDOMAIN`
     must correspond to the DNS domain name that you set up when <a href="#domain-prep">configuring
     Route 53</a>. This example uses `my-subdomain.example.com`.
-    * For `BOSH_AWS_ACCESS_KEY_ID` and `BOSH_SECRET_ACCESS_KEY`, use the key pair you <a href="#generate-credentials">created above</a> as AWS access key credentials. 
+    * For `BOSH_AWS_ACCESS_KEY_ID` and `BOSH_SECRET_ACCESS_KEY`, use the key pair you <a href="#generate-credentials">created above</a> as AWS access key credentials.
     * For the `BOSH_AWS_REGION` property, use your AWS region. This example
     uses `us-east-1`.
     * For the `BOSH_VPC_PRIMARY_AZ` and `BOSH_VPC_SECONDARY_AZ` properties,
@@ -131,9 +132,9 @@ This command generates two receipt files, `aws_rds_receipt.yml` and
     Executing migration CreateKeyPairs
     allocating 1 KeyPair(s)
     Executing migration CreateVpc
-    
+
     ...
-    
+
     details in S3 receipt: aws_rds_receipt and file: aws_rds_receipt.yml
     Executing migration CreateS3
     creating bucket xxxx-bosh-blobstore
@@ -171,4 +172,4 @@ This command prompts you to delete EC2 instances, EBS volumes, RDS databases, S3
 </p>
 
 
-    
+

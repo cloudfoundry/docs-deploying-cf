@@ -1,5 +1,6 @@
 ---
 title: Deploying BOSH on AWS
+owner: Runtime
 ---
 
 In the [previous step](./setup_aws.html) you prepared an AWS environment for BOSH. This document shows how to deploy BOSH into your AWS environment by creating a deployment manifest and passing it to `bosh-init`.
@@ -17,7 +18,7 @@ $ cp ~/.ssh/id_rsa_bosh ~/deployments/cf-example
 
 1. Log into the AWS Console.
 
-1. Create a deployment manifest file named `bosh.yml` in the deployment directory. For its contents, copy the YAML code from the [AWS BOSH manifest template](http://bosh.io/docs/init-aws.html#create-manifest) in the BOSH documentation. 
+1. Create a deployment manifest file named `bosh.yml` in the deployment directory. For its contents, copy the YAML code from the [AWS BOSH manifest template](http://bosh.io/docs/init-aws.html#create-manifest) in the BOSH documentation.
 
 1. Replace properties listed in the file as follows:
     * `ELASTIC-IP`:In the **EC2 Dashboard** under **Elastic IPs**, use the Elastic IP with the Instance associated with **bosh**. Example: "52.9.107.126".
