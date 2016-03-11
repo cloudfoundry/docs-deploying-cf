@@ -58,6 +58,16 @@ $ git clone https://github.com/cloudfoundry/cf-release.git
 
 ##<a id="generate-manifest"></a>Generate the Manifest ##
 
+Ensure that you have the most up-to-date version of the Cloud Foundry code and all required submodules.
+
+1. From the `cf-release` directory that you cloned when you created the
+manifest, run the update script to fetch all the submodules.
+
+    <pre class="terminal">
+    $ cd cf-release
+    $ ./scripts/update
+    </pre>
+
 1. Install [spiff](https://github.com/cloudfoundry-incubator/spiff).
 
 1. The following command, run from the `cf-release` directory, creates a deployment manifest named `cf-deployment.yml`.

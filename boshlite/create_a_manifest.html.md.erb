@@ -1,6 +1,6 @@
 ---
 title: Create a Deployment Manifest for Cloud Foundry on BOSH-Lite
-owner: owner: Runtime
+owner: Runtime
 ---
 
 <strong><%= modified_date %></strong>
@@ -38,6 +38,17 @@ $ git clone https://github.com/cloudfoundry/cf-release.git
 </pre>
 
 ##<a id="generate-manifest"></a>Generate the Manifest ##
+
+Ensure that you have the most up-to-date version of the Cloud Foundry code and all required submodules.
+
+1. From the `cf-release` directory that you cloned when you created the
+manifest, run the update script to fetch all the submodules.
+
+    <pre class="terminal">
+    $ cd cf-release
+    $ ./scripts/update
+    </pre>
+
 1. Install the Ruby version listed in the `cf-release/ruby_version` file of the cf-release repository. You can manage your Ruby versions using `rvm`, `rbenv`, or `chruby`.
 1. Run `gem install bundler` to install `bundler`.
 1. Install [spiff](https://github.com/cloudfoundry-incubator/spiff).

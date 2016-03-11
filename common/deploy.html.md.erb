@@ -26,16 +26,6 @@ bosh upload stemcell ~/downloads/light-bosh-stemcell-3202-aws-xen-hvm-ubuntu-tru
 
 ##<a id="create-release"></a>Build the Cloud Foundry Release##
 
-Ensure that you have the most up-to-date version of the Cloud Foundry code and all required submodules. Then run `bosh create release` to prepare the full release on your machine before deploying it to your environment.
-
-1. From the `cf-release` directory that you cloned when you created the
-manifest, run the update script to fetch all the submodules.
-
-    <pre class="terminal">
-    $ cd cf-release
-    $ ./scripts/update
-    </pre>
-
 1. Use `bosh create release` to create a Cloud Foundry release.
 After some processing, this command prompts you for a development release name. The release names correspond to the files in `cf-release/releases`.
 
