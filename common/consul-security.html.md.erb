@@ -44,8 +44,7 @@ security for Consul.
 To rotate your SSL certificates, keys, and certificate authorities, you must
 perform the following steps.
 
-1. Append the CA certificate to the ca_cert field. Do not remove old CA certificate.
-   Then deploy Cloud Foundry using your updated manifest.
+1. Append the CA certificate to the `ca_cert` field. Do not remove old CA certificate. Deploy Cloud Foundry using your updated manifest.
 
     ```yaml
     ...
@@ -93,8 +92,7 @@ perform the following steps.
    ```
 
 2. Replace the old server and agent certificates and keys with the new
-   certificates and keys.
-   Then deploy Cloud Foundry using your updated manifest.
+   certificates and keys. Deploy Cloud Foundry using your updated manifest.
 
     ```yaml
     ...
@@ -141,8 +139,7 @@ perform the following steps.
           -----END RSA PRIVATE KEY-----
    ```
 
-3. Remove your old CA Certificate.
-   Then deploy Cloud Foundry using your updated manifest.
+3. Remove your old CA Certificate. Deploy Cloud Foundry using your updated manifest.
 
     ```yaml
     ...
