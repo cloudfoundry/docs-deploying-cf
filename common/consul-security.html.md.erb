@@ -5,13 +5,11 @@ owner: Release Integration
 
 <strong><%= modified_date %></strong>
 
-As of [cf-release v217](https://github.com/cloudfoundry/cf-release/releases/tag/v217),
-Cloud Foundry enables secure traffic between Consul agents by default using
+Cloud Foundry requires traffic to be secure between Consul agents by using
 encryption and mutual authentication. Follow the instructions below to configure
-security for Consul. You can configure Consul to be secure or insecure, but we
-strongly recommend that you configure Consul to be secure.
+security for Consul.
 
-##<a id='secure'></a>Configure Secure Mode ##
+##<a id='secure'></a>Security Configuration ##
 
 1. <a id='generate-certs'></a>Generate SSL Certificates and Keys:
 
@@ -41,30 +39,110 @@ strongly recommend that you configure Consul to be secure.
     Copy the contents of the files in the `./consul-certs` directory, as well as
     the value for your Gossip encryption key, into your stub.
 
-## <a id='insecure'></a>Configure Insecure Mode ##
-
-1. Remove all the key- and certificate-related properties for Consul in your
-stub.
-
-1. Add the following property to your stub:
-
-    ```yaml
-    properties:
-      ...
-      consul:
-        ...
-        require_ssl: false
-    ```
-
 ## <a id='rotating-certs'></a>SSL Certificate, Key, and Certificate Authority Rotation
 
 To rotate your SSL certificates, keys, and certificate authorities, you must
 perform the following steps.
 
-1. Add the certificates, keys, and certificate authorities that you want to
-rotate to your stub file.<br><br>You must add your new `agent_key`,
-`server_key`, and `ca_cert` above the existing certificates. Do not remove the
-existing certificates.
+1. Append the CA certificate to the ca_cert field. Do not remove old CA certificate.
+   Then deploy Cloud Foundry using your updated manifest.
+
+    ```yaml
+    ...
+    properties:
+      ...
+      consul:
+        ...
+        encrypt_keys:
+        - RANDOM-SECRET-VALUE
+        ca_cert: |
+          -----BEGIN CERTIFICATE-----
+          ###########################################################
+          #######           Your Old CA Certificate           #######
+          ###########################################################
+          -----END CERTIFICATE-----
+          -----BEGIN CERTIFICATE-----
+          ###########################################################
+          #######           Your New CA Certificate           #######
+          ###########################################################
+          -----END CERTIFICATE-----
+        agent_cert: |
+          ----BEGIN CERTIFICATE----
+          ###########################################################
+          #######           Your Old Agent Certificate        #######
+          ###########################################################
+          ----END CERTIFICATE----
+        agent_key: |
+          -----BEGIN RSA PRIVATE KEY-----
+          ###########################################################
+          #######           Your Old Agent Key                #######
+          ###########################################################
+          -----END RSA PRIVATE KEY-----
+        server_cert: |
+          ----BEGIN CERTIFICATE----
+          ###########################################################
+          #######           Your Old Server Certificate       #######
+          ###########################################################
+          ----END CERTIFICATE----
+        server_key: |
+          -----BEGIN RSA PRIVATE KEY-----
+          ###########################################################
+          #######           Your Old Server Key               #######
+          ###########################################################
+          -----END RSA PRIVATE KEY-----
+   ```
+
+2. Replace the old server and agent certificates and keys with the new
+   certificates and keys.
+   Then deploy Cloud Foundry using your updated manifest.
+
+    ```yaml
+    ...
+    properties:
+      ...
+      consul:
+        ...
+        encrypt_keys:
+        - RANDOM-SECRET-VALUE
+        ca_cert: |
+          -----BEGIN CERTIFICATE-----
+          ###########################################################
+          #######           Your Old CA Certificate           #######
+          ###########################################################
+          -----END CERTIFICATE-----
+          -----BEGIN CERTIFICATE-----
+          ###########################################################
+          #######           Your New CA Certificate           #######
+          ###########################################################
+          -----END CERTIFICATE-----
+        agent_cert: |
+          ----BEGIN CERTIFICATE----
+          ###########################################################
+          #######           Your New Agent Certificate        #######
+          ###########################################################
+          ----END CERTIFICATE----
+        agent_key: |
+          -----BEGIN RSA PRIVATE KEY-----
+          ###########################################################
+          #######           Your New Agent Key                #######
+          ###########################################################
+          -----END RSA PRIVATE KEY-----
+        server_cert: |
+          ----BEGIN CERTIFICATE----
+          ###########################################################
+          #######           Your New Server Certificate       #######
+          ###########################################################
+          ----END CERTIFICATE----
+        server_key: |
+          -----BEGIN RSA PRIVATE KEY-----
+          ###########################################################
+          #######           Your New Server Key               #######
+          ###########################################################
+          -----END RSA PRIVATE KEY-----
+   ```
+
+3. Remove your old CA Certificate.
+   Then deploy Cloud Foundry using your updated manifest.
 
     ```yaml
     ...
@@ -80,74 +158,6 @@ existing certificates.
           #######           Your New CA Certificate           #######
           ###########################################################
           -----END CERTIFICATE-----
-          -----BEGIN CERTIFICATE-----
-          ###########################################################
-          #######           Your Old CA Certificate           #######
-          ###########################################################
-          -----END CERTIFICATE-----
-        agent_cert: |
-          ----BEGIN CERTIFICATE----
-          ###########################################################
-          #######           Your New Agent Certificate        #######
-          ###########################################################
-          ----END CERTIFICATE----
-          ----BEGIN CERTIFICATE----
-          ###########################################################
-          #######           Your Old Agent Certificate        #######
-          ###########################################################
-          ----END CERTIFICATE----
-        agent_key: |
-          -----BEGIN RSA PRIVATE KEY-----
-          ###########################################################
-          #######           Your New Agent Key                #######
-          ###########################################################
-          -----END RSA PRIVATE KEY-----
-          -----BEGIN RSA PRIVATE KEY-----
-          ###########################################################
-          #######           Your Old Agent Key                #######
-          ###########################################################
-          -----END RSA PRIVATE KEY-----
-        server_cert: |
-          ----BEGIN CERTIFICATE----
-          ###########################################################
-          #######           Your New Server Certificate       #######
-          ###########################################################
-          ----END CERTIFICATE----
-          ----BEGIN CERTIFICATE----
-          ###########################################################
-          #######           Your Old Server Certificate       #######
-          ###########################################################
-        server_key: |
-          -----BEGIN RSA PRIVATE KEY-----
-          ###########################################################
-          #######           Your New Server Key               #######
-          ###########################################################
-          -----END RSA PRIVATE KEY-----
-          -----BEGIN RSA PRIVATE KEY-----
-          ###########################################################
-          #######           Your Old Server Key               #######
-          ###########################################################
-          -----END RSA PRIVATE KEY-----
-    ```
-1. Use the instructions for your infrastructure to generate a deployment
-manifest with your edited stub file.
-
-1. Deploy Cloud Foundry using this deployment manifest.
-
-1. After you have deployed Cloud Foundry with the new manifest, remove the old
-certificates and keys.
-
-    ```yaml
-    properties:
-      consul:
-        encrypt_keys:
-        - RANDOM-SECRET-VALUE
-        ca_cert: |
-          -----BEGIN CERTIFICATE-----
-          ###########################################################
-          #######           Your New CA Certificate           #######
-          ###########################################################
-          -----END CERTIFICATE-----
         agent_cert: |
           ----BEGIN CERTIFICATE----
           ###########################################################
@@ -166,15 +176,10 @@ certificates and keys.
           #######           Your New Server Certificate       #######
           ###########################################################
           ----END CERTIFICATE----
-          ----BEGIN CERTIFICATE----
-          ###########################################################
-          #######           Your New CA Certificate           #######
-          ###########################################################
-          ----END CERTIFICATE----
         server_key: |
           -----BEGIN RSA PRIVATE KEY-----
           ###########################################################
           #######           Your New Server Key               #######
           ###########################################################
           -----END RSA PRIVATE KEY-----
-    ```
+   ```
