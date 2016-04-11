@@ -107,7 +107,7 @@ properties:
   app_domains:
    - APP_DOMAIN
 	  </code></pre></td>
-    <td>Replace <code>DOMAIN</code>, <code>SYSTEM_DOMAIN</code>, and <code>APP_DOMAIN</code> with the full domain you want associated with applications pushed to your Cloud Foundry installation. You must have already acquired these domains and configured some DNS records (for example, on Route53) so that these domains resolve to your load balancer (typically ELBs or HAProxys). Example: "cloud-09.cf-app.com."
+    <td>Replace <code>DOMAIN</code>, <code>SYSTEM_DOMAIN</code>, and <code>APP_DOMAIN</code> with the full domain you want associated with applications pushed to your Cloud Foundry installation. You must have already acquired these domains and configured their DNS records on Route53 dashboard in AWS so that these domains resolve to your load balancer. Example: "cloud-09.cf-app.com."
     <br/><br/>
     If you used <code>bosh aws create</code>, this value comes from concatenating the <code>BOSH_VPC_SUBDOMAIN</code> and <code>BOSH_VPC_DOMAIN</code> values in the <code>bosh_environment</code> file.
     <br/><br/>
@@ -122,9 +122,10 @@ properties:
     bulk_api_password: BULK_API_PASSWORD
     db_encryption_key: CCDB_ENCRYPTION_KEY
 	  </code></pre></td>
-    The Cloud Controller has an API endpoint used by stagers to upload staged droplets, and the endpoint requires basic authentication. Generate a username and password, and replace <code>STAGING_UPLOAD_USER</code> and <code>STAGING_UPLOAD_PASSWORD</code> with those values.
+    <td>
+    The Cloud Controller API endpoint requires basic authentication. Replace <code>STAGING_UPLOAD_USER</code> and <code>STAGING_UPLOAD_PASSWORD</code> with a username and password.
     <br /><br />
-    Replace <code>BULK_API_PASSWORD</code> with a password of your choosing. The password used by Health Manager to access the Cloud Controller's bulk API.
+    Replace <code>BULK_API_PASSWORD</code> with a password of your choosing. Health Manager uses this password to access the Cloud Controller bulk API.
     <br /><br />
     Replace <code>CCDB_ENCRYPTION_KEY</code>
     with a secure key that you generate to encrypt sensitive values in the
@@ -146,11 +147,11 @@ properties:
     port: CCDB_PORT
     </code></pre></td>
     <td>
-      This section of the stub defines how the Cloud Controller should connect to its database. The values you place here will depend on how the database has been set up.
+      This section of the stub defines how the Cloud Controller connects to its database. The values depend on how you deployed your database.
       <br /><br />
-      If you used <code>bosh aws create</code>, you can find the necessary values in the generated file <code>aws_rds_bosh_receipt.yml</code>. The database is an Amazon RDS instance, and the <code>CCDB_*</code> values in the stub must match the scheme, username, password, address, and port defined by AWS.
+      If you used <code>bosh aws create</code>, find the necessary values in the generated file <code>aws_rds_bosh_receipt.yml</code>. The database is an Amazon RDS instance, and the <code>CCDB_*</code> values in the stub must match the scheme, username, password, address, and port defined by AWS.
       <br /><br />
-      If you deployed your database some other way -- for example, using the <code>postgres</code> job in cf-release -- the <code>CCDB_*</code> values must match the configuration of the database node.
+      If you deployed your database without <code>bosh aws create</code>, such as using the <code>postgres</code> job in cf-release, the <code>CCDB_*</code> values must match the configuration of the database node.
 	  </td>
   </tr>
   <tr>
@@ -181,8 +182,8 @@ properties:
     user: NATS_USER
     password: NATS_PASSWORD
 	  </code></pre></td>
-    <td>Generate a username and secure password, and replace <code>NATS_USER</code> and
-		<code>NATS_PASSWORD</code> with those values. Cloud Foundry components will use this to communicate with each other over the NATS message bus.
+    <td>Replace <code>NATS_USER</code> and
+		<code>NATS_PASSWORD</code> with a username and secure password. Cloud Foundry components use these credentials to communicate with each other over the NATS message bus.
 	  </td>
   </tr>
   <tr>
@@ -193,8 +194,8 @@ properties:
       password: ROUTER_PASSWORD
 	  </code></pre></td>
     <td>
-      Generate a username and secure password, and replace <code>ROUTER_USER</code> and
-  		<code>ROUTER_PASSWORD</code> with those values.
+      Replace <code>ROUTER_USER</code> and
+  		<code>ROUTER_PASSWORD</code> with a username and secure password.
 	  </td>
   </tr>
   <tr>
@@ -228,7 +229,7 @@ properties:
       signing_key: JWT_SIGNING_KEY
     </code></pre></td>
     <td>Generate a PEM-encoded RSA key pair, and replace <code>JWT_SIGNING_KEY</code> with the private key, and <code>JWT_VERIFICATION_KEY</code> with the corresponding public key.<br/>
-    Paste in the full keys, including the "BEGIN" and "END" delimiter lines.
+    Paste in the full keys, including the <code>BEGIN</code> and <code>END</code> delimiter lines.
     </td>
   </tr>
   <tr>
@@ -237,7 +238,7 @@ properties:
       users:
         - admin|ADMIN_PASSWORD|scim.write,scim.read,o...
     </code></pre></td>
-    <td>Generate a secure password and replace <code>ADMIN_PASSWORD</code> with that value. This will be the password for the Admin user of your Cloud Foundry installation.
+    <td>Generate a secure password and replace <code>ADMIN_PASSWORD</code> with that value to set the password for the Admin user of your Cloud Foundry installation.
     </td>
   </tr>
   <tr>
@@ -255,11 +256,11 @@ properties:
     port: UAADB_PORT
 	  </code></pre></td>
     <td>
-      This section of the stub defines how the UAA should connect to its database. The values you place here will depend on how the database has been set up.
+      This section of the stub defines how the UAA connects to its database. The values depend on how you deployed your database.
       <br /><br />
       If you used <code>bosh aws create</code>, you can find the necessary values in the generated file <code>aws_rds_bosh_receipt.yml</code>. The database is an Amazon RDS instance, and the <code>UAADB_*</code> values in the stub must match the scheme, username, password, address, and port defined by AWS.
       <br /><br />
-      If you deployed your database some other way -- for example, using the <code>postgres</code> job in cf-release -- the <code>UAADB_*</code> values must match the configuration of the database node.
+      If you deployed your database without <code>bosh aws create</code>, such as using the <code>postgres</code> job in cf-release, the <code>CCDB_*</code> values must match the configuration of the database node.
 	  </td>
   </tr>
 </table>
