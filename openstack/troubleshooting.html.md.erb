@@ -5,52 +5,52 @@ owner: Release Integration
 
 <strong><%= modified_date %></strong>
 
-Here are a few tips that may be helpful if you're looking to deploy Cloud Foundry on OpenStack
+This topic describes helpful tips to deploy Cloud Foundry on OpenStack.
 
 ## Self-signed SSL Certificates
-If you're using self-signed SSL certificates to secure your OpenStack installation, Fog (via Excon) will throw exceptions. Please have a look at these two topics to add your self-signed certificates to the OpenStack CPI and to the VMs deployed with your Director:
-  * The BOSH OpenStack CPI can use a chain of trusted certificates to validate the certificate of your OpenStack endpoints with a property called [`ca_cert`](http://bosh.io/docs/openstack-self-signed-endpoints.html)
-  * The BOSH Director can add a chain of trusted certificates to all VMs deployed with that Director with a property called [`trusted_certs`](http://bosh.io/docs/trusted-certs.html).
+View these two topics to add your self-signed certificates to the OpenStack CPI and to the virtual machines (VMs) deployed with your BOSH Director:
+
+* The BOSH OpenStack CPI uses a [chain of trusted certificates](http://bosh.io/docs/openstack-self-signed-endpoints.html) to validate the certificate of your OpenStack endpoints with a property called <code>ca_cert</code>.
+* The BOSH Director adds [chain of trusted certificates](http://bosh.io/docs/trusted-certs.html) to all VMs deployed with that Director with a property called <code>trusted_certs</code>.
 
 
 ## GRE Tunnels
-If you're using OpenStack's GRE Tunnel networking, the default MTU of 1500 won't allow machines to properly communicate.  Warden is setup out of the box to use that same 1500 MTU, so you'll need to change that.
+If you are using OpenStack's GRE Tunnel networking, the default MTU of 1500 does not allow machines to properly communicate.  Warden is setup out of the box to use 1500 of MTU. Modify the MTU by changing the configuration file for your Cloud Foundry deployment.  
 
-This is done in the configuration file for your Cloud Foundry deployment.  Simply add the MTU into your dea_next block:
+Change the MTU in your `dea_next` block:
 
 ```
 dea_next:
   mtu: 1454
 ```
 
-Use bosh deploy to push these changes out and then reboot your Warden / DEA VM.
+Use `bosh deploy` to push these changes and then reboot your Warden / DEA VM.
 
 ## NFS and Cloud Controller
 
 If you get the following error when deploying an app to Cloud Foundry you may have an NFS related issue with the Cloud Controller:
+<pre class='terminal'>
+$ The app package is invalid: failed synchronizing resource pool File exists - /var/vcap/nfs/shared
+</pre>
 
-```
-The app package is invalid: failed synchronizing resource pool File exists - /var/vcap/nfs/shared
-```
+To confirm that this is related to a broken or incomplete NFS mount, SSH into the `cloud_controller_ng` job and checking the existence of the `/var/vcap/nfs/shared` folder:
 
-To confirm that this is related to a broken/incomplete NFS mount, SSH into the `cloud_controller_ng` job and checking the existence of the `/var/vcap/nfs/shared` folder:
-
-```
+<pre class='terminal'>
 $ bosh ssh cloud_controller/0 "ls -l /var/vcap/nfs/shared"
 ...
 ls: cannot access /var/vcap/nfs/shared: Stale NFS file handle"
-```
+</pre>
 
-Try the following ideas to resolve this.
+Try the following options to resolve this issue:
 
-1. (Recommended) Restart the `cloud_controller` (or `api`) jobs with the BOSH CLI `bosh restart cloud_controller`
+1. (Recommended) Restart the `cloud_controller`, or `api`, jobs with the BOSH CLI `bosh restart cloud_controller`.
 2. Manually recreate the NFS mount on the `cloud_controller` job server:
 
-```
-$ bosh ssh cloud_controller/0
-root:~# umount /var/vcap/nfs
-root:~# mount -t nfs 0.nfs.default.cf.microbosh:/var/vcap/store /var/vcap/nfs
-```
+	<pre class='terminal'>
+	$ bosh ssh cloud_controller/0
+	root:~# umount /var/vcap/nfs
+	root:~# mount -t nfs 0.nfs.default.cf.microbosh:/var/vcap/store /var/vcap/nfs
+	</pre>
 
-Replace `0.nfs.default.cf.microbosh` above with the static IP or DNS host of the job instance running the `debian_nfs_server`.
+	Replace `0.nfs.default.cf.microbosh` above with the static IP or DNS host of the job instance running the `debian_nfs_server`.
 
