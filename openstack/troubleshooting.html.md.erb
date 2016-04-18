@@ -7,19 +7,11 @@ owner: Release Integration
 
 Here are a few tips that may be helpful if you're looking to deploy Cloud Foundry on OpenStack
 
-## Self Signed SSL Certificates
-If you're using Self Signed SSL Certificates to secure your OpenStack installation, Fog (via Excon) will throw exceptions.  Excon requires you to disable SSL verification for Self Signed certs using the following:
+## Self-signed SSL Certificates
+If you're using self-signed SSL certificates to secure your OpenStack installation, Fog (via Excon) will throw exceptions. Please have a look at these two topics to add your self-signed certificates to the OpenStack CPI and to the VMs deployed with your Director:
+  * The BOSH OpenStack CPI can use a chain of trusted certificates to validate the certificate of your OpenStack endpoints with a property called [`ca_cert`](http://bosh.io/docs/openstack-self-signed-endpoints.html)
+  * The BOSH Director can add a chain of trusted certificates to all VMs deployed with that Director with a property called [`trusted_certs`](http://bosh.io/docs/trusted-certs.html).
 
-```
-Excon.defaults[:ssl_verify_peer] = false
-```
-
-This is currently being [worked on](https://github.com/cloudfoundry/bosh/issues/420), but until that's complete, you'll want to add the above line to these two locations on the Cloud Controller VM:
-
-* Line 55 of `/var/vcap/packages/director/gem_home/gems/bosh_openstack_cpi-1.5.0.pre.978/lib/cloud/openstack/cloud.rb`
-* Line 32 of `/var/vcap/packages/registry/gem_home/gems/bosh_registry-1.5.0.pre.978/lib/bosh_registry/instance_manager/openstack.rb`
-
-You must restart service to get the code re-init once you've made the changes.
 
 ## GRE Tunnels
 If you're using OpenStack's GRE Tunnel networking, the default MTU of 1500 won't allow machines to properly communicate.  Warden is setup out of the box to use that same 1500 MTU, so you'll need to change that.
