@@ -8,10 +8,10 @@ In the [previous step](./setup_aws.html) you prepared an AWS environment for BOS
 ## <a id="copy-keypair"></a>Copy the RSA Private Key
 When `bosh aws create` prepared your AWS environment, it generated an RSA private key file and saved it into your `~/.ssh` directory. To deploy BOSH, you need this file in your deployment directory.
 
-Copy the RSA private key file, `id_rsa_bosh`, to the `cf-example` directory you created in the [previous step](./setup_aws.html).
+Copy the RSA private key file, `id_rsa_bosh`, to the `cf-example` directory you created in the [previous step](./setup_aws.html) and rename it as `bosh.pem`.
 
 <pre class='terminal'>
-$ cp ~/.ssh/id_rsa_bosh ~/deployments/cf-example
+$ cp ~/.ssh/id_rsa_bosh ~/deployments/cf-example/bosh.pem
 </pre>
 
 ## <a id="create-manifest"></a>Create a Deployment Manifest
