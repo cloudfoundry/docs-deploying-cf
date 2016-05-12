@@ -161,7 +161,8 @@ properties:
     <code>blobstore_type</code> equal to either "fog" or "webdav". If not explicitly configured, "fog" will be used as the default.
     <br /><br />
     When using "fog" for a particular blobstore, you may configure a <code>fog_connection</code> hash, which will be passed through to the fog gem as-is. This can
-    be used to configure fog to use <a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html">AWS IAM Profiles</a>.
+    be used to configure fog to use <a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html">AWS IAM Profiles</a>. Note, your BOSH director must
+    be <a href="https://bosh.io/docs/aws-iam-instance-profiles.html">configured to use IAM instance profiles</a>.
     <br /><br />
     When using "webdav" for a particular blobstore, it can be configured with a <code>webdav_config</code> hash. Replace <code>WEBDAV_PUBLIC_ENDPOINT</code> with the public URL
     that resolves to your WebDAV installation. Replace <code>WEBDAV_PRIVATE_ENDPOINT</code> with a URL routable on your internal network. This will default to "https://blobstore.service.cf.internal"
