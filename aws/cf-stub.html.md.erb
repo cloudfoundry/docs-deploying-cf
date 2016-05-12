@@ -133,11 +133,6 @@ properties:
     </td>
   </tr>
   <tr>
-    <td colspan=2>
-      Cloud Controller uses four blobstores, <code>buildpacks</code>, <code>droplets</code>, <code>packages</code>, and <code>resource_pool</code>. Each blobstore can be configured with <code>blobstore_type</code> equal to either "fog" or "webdav". If not explicitly configured, "fog" will be used as the default. When using "fog" for a particular blobstore, you may configure a <code>fog_connection</code> hash, which will be passed through to the fog gem as-is.
-    </td>
-  </tr>
-  <tr>
     <td><pre><code>
 cc:
   buildpacks:
@@ -162,7 +157,12 @@ cc:
     fog_connection: \*fog_connection
     </code></pre></td>
     <td>
-      Fog can be configured to use an `AWS_ACCESS_KEY` and `AWS_SECRET_ACCESS_KEY`. These credentials should be assigned an IAM policy that allows all S3 actions on each of the buckets in the example.
+      <p>Cloud Controller uses four blobstores: <code>buildpacks</code>, <code>droplets</code>, <code>packages</code>, and <code>resource_pool</code>. Each blobstore can be configured with <code>blobstore_type</code> equal to either <code>fog</code> or <code>webdav</code>. If not explicitly configured, <code>fog</code> will be used as the default. When using <code>fog</code> for a particular blobstore, you may configure a <code>fog_connection</code> hash, which will be passed through to the fog gem as-is.</p>
+
+      <p>Fog can be configured to use an <code>AWS_ACCESS_KEY</code> and <code>AWS_SECRET_ACCESS_KEY</code>. These credentials should be assigned an IAM policy that allows all S3 actions on each of the buckets in the example.</p>   
+    </td>
+  </tr>
+  <tr>
     </td>
   </tr>
 
@@ -190,11 +190,11 @@ cc:
     fog_connection: \*fog_connection
     </code></pre></td>
     <td>
-       Fog can be configured to use <a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html">AWS IAM Instance Profiles</a>.
+       To configure fog to use <a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html">AWS IAM Instance Profiles</a>, perform the following steps:
        <br/><br/>
-       1. Follow the <a href="http://bosh.io/docs/aws-iam-instance-profiles.html#director-with-s3-blobstore">AWS CPI and Director configured with an S3 blobstore instructions</a>
+       1. Complete the steps documented in the <a href="http://bosh.io/docs/aws-iam-instance-profiles.html#director-with-s3-blobstore">AWS CPI and Director configured with an S3 blobstore instructions</a> section of the BOSH documentation.
        <br/><br/>
-       2. Configure an additional `cloud-controller` IAM role that gives access to both the BOSH S3 buckets and the Cloud Controller S3 buckets:
+       2. In the AWS console, configure an additional <code>cloud-controller</code> IAM role that gives access to both the BOSH S3 buckets and the Cloud Controller S3 buckets:
           <pre><code>
 {
 "Version": "2012-10-17",
@@ -216,7 +216,7 @@ cc:
 }]
 }
           </pre></code>
-       3. In your Cloud Foundry deployment manifest, configure a resource pool to use the `cloud-controller` IAM role:
+       3. In your Cloud Foundry deployment manifest, configure a resource pool to use the <code>cloud-controller</code> IAM role:
          <pre><code>
 resource_pools:
 - name: cloud-controller-resource-pool
@@ -226,7 +226,7 @@ resource_pools:
     instance_type: c3.large
     iam_instance_profile: cloud-controller
          </pre></code>
-       4. Assign all Cloud Controller jobs (api_z\*) and Cloud Controller Worker jobs (api_worker_z\*) to the `cloud-controller-resource-pool`
+       4. Assign all Cloud Controller jobs (<code>api_z\*</code>) and Cloud Controller Worker jobs (<code>api_worker_z\*</code>) to the <code>cloud-controller-resource-pool</code>.
     </td>
   </tr>
 
@@ -267,14 +267,13 @@ cc:
     droplet_directory_key: cc-resources
     webdav_config: \*webdav_config
     </code></pre></td>
-    <td>
-      When using "webdav" for a particular blobstore, it can be configured with a <code>webdav_config</code> hash.
-      Replace <code>WEBDAV_BASIC_AUTH_USER</code> and <code>WEBDAV_BASIC_AUTH_PASSWORD</code> with Basic AUTH credentials that Cloud Controller can use to talk your WebDAV installation.
-      Replace <code>WEBDAV_SECRET</code> with a secret phrase used to sign URLs.
-      Replace <code>WEBDAV_CERT</code>, <code>WEBDAV_PRIVATE_KEY</code>, and <code>WEBDAV_CA_CERT_BUNDLE</code> with proper TLS configuration that will be used for the internal blobstore.
-      Replace <code>WEBDAV_PUBLIC_ENDPOINT</code> with the public URL (e.g. https://blobstore.SYSTEM_DOMAIN) that resolves to your WebDAV installation.
-      Replace <code>WEBDAV_PRIVATE_ENDPOINT</code> with a URL routable on your internal network. This will default to "https://blobstore.service.cf.internal" if not set.
-      Replace <code>WEBDAV_BASIC_AUTH_USER</code> and <code>WEBDAV_BASIC_AUTH_PASSWORD</code> with Basic AUTH credentials that Cloud Controller can use to talk your WebDAV installation.
+    <td>When using WebDAV for a particular blobstore, it can be configured with a <code>webdav_config</code> hash. Perform the following steps:<br/><br/>
+      1. Replace <code>WEBDAV_BASIC_AUTH_USER</code> and <code>WEBDAV_BASIC_AUTH_PASSWORD</code> with Basic AUTH credentials that Cloud Controller can use to talk your WebDAV installation.<br/><br/>
+      2. Replace <code>WEBDAV_SECRET</code> with a secret phrase used to sign URLs.<br/><br/>
+      3. Replace <code>WEBDAV_CERT</code>, <code>WEBDAV_PRIVATE_KEY</code>, and <code>WEBDAV_CA_CERT_BUNDLE</code> with proper TLS configuration that will be used for the internal blobstore.<br/><br/>
+      4. Replace <code>WEBDAV_PUBLIC_ENDPOINT</code> with the public URL (e.g. `https://blobstore.SYSTEM_DOMAIN`) that resolves to your WebDAV installation.<br/><br/>
+      5. Replace <code>WEBDAV_PRIVATE_ENDPOINT</code> with a URL routable on your internal network. This will default to `https://blobstore.service.cf.internal` if not set.<br/><br/>
+      6. Replace <code>WEBDAV_BASIC_AUTH_USER</code> and <code>WEBDAV_BASIC_AUTH_PASSWORD</code> with Basic AUTH credentials that Cloud Controller can use to talk your WebDAV installation.
     </td>
   </tr>
   <tr>
