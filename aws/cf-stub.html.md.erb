@@ -121,15 +121,51 @@ properties:
     staging_upload_password: STAGING_UPLOAD_PASSWORD
     bulk_api_password: BULK_API_PASSWORD
     db_encryption_key: CCDB_ENCRYPTION_KEY
-	  </code></pre></td>
+    </code></pre>
+
+    <code></pre>
+    BLOBSTORE:
+      blobstore_type: fog
+      fog_connection:
+        aws_access_key_id: AWS_ACCESS_KEY
+        aws_secret_access_key: AWS_SECRET_ACCESS_KEY
+        provider: AWS
+        region: us-east-1
+    BLOBSTORE:
+      blobstore_type: fog
+      fog_connection:
+        provider: AWS
+        region: us-east-1
+        use_iam_profile: true
+    </code></pre></td>
+
+    <code></pre>
+    BLOBSTORE:
+      blobstore_type: webdav
+      webdav_config:
+        public_endpoint: WEBDAV_PUBLIC_ENDPOINT
+        private_endpoint: WEBDAV_PRIVATE_ENDPOINT
+        username: WEBDAV_BASIC_AUTH_USER
+        password: WEBDAV_BASIC_AUTH_PASSWORD
+        ca_cert: WEBDAV_CERT
+    </code></pre></td>
     <td>
     The Cloud Controller API endpoint requires basic authentication. Replace <code>STAGING_UPLOAD_USER</code> and <code>STAGING_UPLOAD_PASSWORD</code> with a username and password of your choosing.
     <br /><br />
     Replace <code>BULK_API_PASSWORD</code> with a password of your choosing. Health Manager uses this password to access the Cloud Controller bulk API.
     <br /><br />
     Replace <code>CCDB_ENCRYPTION_KEY</code>
-    with a secure key that you generate to encrypt sensitive values in the
-    Cloud Controller database.
+    with a secure key that you generate to encrypt sensitive values in the Cloud Controller database.
+    <br /><br />
+    Cloud Controller uses four blobstores, <code>buildpacks</code>, <code>droplets</code>, <code>packages</code>, and <code>resource_pool</code>. These blobstores can be configured with
+    <code>blobstore_type</code> equal to either "fog" or "webdav". If not explicitly configured, "fog" will be used as the default.
+    <br /><br />
+    When using "fog" for a particular blobstore, you may configure a <code>fog_connection</code> hash, which will be passed through to the fog gem as-is. This can
+    be used to configure fog to use <a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html">AWS IAM Profiles</a>.
+    <br /><br />
+    When using "webdav" for a particular blobstore, it can be configured with a <code>webdav_config</code> hash. Replace <code>WEBDAV_PUBLIC_ENDPOINT</code> with the public URL
+    that resolves to your WebDAV installation. Replace <code>WEBDAV_PRIVATE_ENDPOINT</code> with a URL routable on your internal network. This will default to "https://blobstore.service.cf.internal"
+    if not set. Replace <code>WEBDAV_BASIC_AUTH_USER</code> and <code>WEBDAV_BASIC_AUTH_PASSWORD</code> with Basic AUTH credentials that Cloud Controller can use to talk your WebDAV installation.
     </td>
   </tr>
   <tr>
