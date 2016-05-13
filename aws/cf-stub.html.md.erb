@@ -372,7 +372,9 @@ To configure Fog blobstores to use <a href="http://docs.aws.amazon.com/IAM/lates
 }]
 }
 </pre></code>
-3. In your Cloud Foundry deployment manifest, configure a resource pool to use the <code>cloud-controller</code> IAM role:
+If you are using the AWS console, an IAM Role is automatically assigned to an IAM Instance Profile with the same name, <code>cloud_controller</code>. If you are not using the AWS console, you must create an IAM Instance Profile with a single assigned IAM Role.
+
+3. In your Cloud Foundry deployment manifest, configure a resource pool to use the <code>cloud-controller</code> IAM Instance Profile:
   <pre><code>
   resource\_pools:
   \- name: cloud-controller-resource-pool
