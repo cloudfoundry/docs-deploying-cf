@@ -78,13 +78,12 @@ networks:
   <tr>
     <td><pre><code>
 properties:
-  domain: DOMAIN
   system_domain: SYSTEM_DOMAIN
   system_domain_organization: SYSTEM_DOMAIN_ORGANIZATION
   app_domains:
    - APP_DOMAIN
     </code></pre></td>
-    <td>Replace <code>DOMAIN</code>, <code>SYSTEM_DOMAIN</code>, and <code>APP_DOMAIN</code> with the full domain you want associated with applications pushed to your Cloud Foundry installation. You must have already acquired these domains and configured their DNS records so that these domains resolve to your load balancer. Example: "cloud-09.cf-app.com."
+    <td>Replace <code>SYSTEM_DOMAIN</code> and <code>APP_DOMAIN</code> with the full domain you want associated with applications pushed to your Cloud Foundry installation. You must have already acquired these domains and configured their DNS records so that these domains resolve to your load balancer. Example: "cloud-09.cf-app.com."
     <br/><br/>
     Pick any name you like for the <code>SYSTEM_DOMAIN_ORGANIZATION</code>, this organization will be created and configured to own the <code>SYSTEM_DOMAIN</code>.
     </td>
