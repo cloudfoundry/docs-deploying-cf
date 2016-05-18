@@ -78,13 +78,12 @@ networks:
   <tr>
     <td><pre><code>
 properties:
-  domain: DOMAIN
   system_domain: SYSTEM_DOMAIN
   system_domain_organization: SYSTEM_DOMAIN_ORGANIZATION
   app_domains:
    - APP_DOMAIN
     </code></pre></td>
-    <td>Replace <code>DOMAIN</code> and <code>SYSTEM_DOMAIN</code> with the domain you have configured for accessing system components (e.g. the Cloud Controllers will be reachable at <code>api.SYSTEM_DOMAIN</code>).
+    <td>Replace <code>SYSTEM_DOMAIN</code> with the domain you have configured for accessing system components (e.g. the Cloud Controllers will be reachable at <code>api.SYSTEM_DOMAIN</code>).
     <br/><br/>
     Pick any name you like for the <code>SYSTEM_DOMAIN_ORGANIZATION</code>, this organization will be created and configured to own the <code>SYSTEM_DOMAIN</code>.
     <br/><br/>

@@ -101,13 +101,12 @@ properties:
   </tr>
   <tr>
     <td><pre><code>
-  domain: DOMAIN
   system_domain: SYSTEM_DOMAIN
   system_domain_organization: SYSTEM_DOMAIN_ORGANIZATION
   app_domains:
    - APP_DOMAIN
 	  </code></pre></td>
-    <td>Replace <code>DOMAIN</code>, <code>SYSTEM_DOMAIN</code>, and <code>APP_DOMAIN</code> with the full domain you want associated with applications pushed to your Cloud Foundry installation. You must have already acquired these domains and configured their DNS records on Route53 dashboard in AWS so that these domains resolve to your load balancer. Example: "cloud-09.cf-app.com."
+    <td>Replace <code>SYSTEM_DOMAIN</code> and <code>APP_DOMAIN</code> with the full domain you want associated with applications pushed to your Cloud Foundry installation. You must have already acquired these domains and configured their DNS records on Route53 dashboard in AWS so that these domains resolve to your load balancer. Example: "cloud-09.cf-app.com."
     <br/><br/>
     If you used <code>bosh aws create</code>, this value comes from concatenating the <code>BOSH_VPC_SUBDOMAIN</code> and <code>BOSH_VPC_DOMAIN</code> values in the <code>bosh_environment</code> file.
     <br/><br/>
