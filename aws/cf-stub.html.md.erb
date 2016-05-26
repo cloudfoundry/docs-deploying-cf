@@ -106,9 +106,11 @@ properties:
   app_domains:
    - APP_DOMAIN
 	  </code></pre></td>
-    <td>Replace <code>SYSTEM_DOMAIN</code> and <code>APP_DOMAIN</code> with the full domain you want associated with applications pushed to your Cloud Foundry installation. You must have already acquired these domains and configured their DNS records on Route53 dashboard in AWS so that these domains resolve to your load balancer. Example: "cloud-09.cf-app.com."
+    <td>Replace <code>SYSTEM_DOMAIN</code> and <code>APP_DOMAIN</code> with the full domain you want associated with applications pushed to your Cloud Foundry installation. You must have already acquired these domains and configured their DNS records on Route53 dashboard in AWS so that these domains resolve to your load balancer. Example: `cloud-09.cf-app.com.`
     <br/><br/>
     If you used <code>bosh aws create</code>, this value comes from concatenating the <code>BOSH_VPC_SUBDOMAIN</code> and <code>BOSH_VPC_DOMAIN</code> values in the <code>bosh_environment</code> file.
+    <br/><br/>
+    Note that one domain property cannot extend the other. You can set your <code>system_domain</code> to <code>sys.domain.com</code> and your <code>app_domains</code> to <code>apps.domain.com</code>, but you cannot set your <code>system_domain</code> to <code>domain.com</code> and your <code>apps_domains</code> to <code>apps.domain.com</code>.
     <br/><br/>
     Pick any name you like for the <code>SYSTEM_DOMAIN_ORGANIZATION</code>. This organization will be created and configured to own the <code>SYSTEM_DOMAIN</code>.
     </td>
