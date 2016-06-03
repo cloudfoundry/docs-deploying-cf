@@ -52,27 +52,6 @@ $ bosh deploy
 that BOSH manages as part of the current deployment. The state of every VM
 should show as **running**.
 
-    <pre class="terminal">
-    $ bosh vms
-
-    +-----------------------------+---------+------------------+---------------+
-    | Job/index                   | State   | Resource Pool    | IPs           |
-    +-----------------------------+---------+------------------+---------------+
-    | nfs_server/0                | running | nfs_server       | 10.146.21.174 |
-    | ccdb/0                      | running | ccdb             | 10.146.21.175 |
-    | cloud_controller/0          | running | cloud_controller | 10.146.21.176 |
-    | collector/0                 | running | collector        | 10.146.21.178 |
-    | health_manager/0            | running | health_manager   | 10.146.21.173 |
-    | nats/0                      | running | nats             | 10.146.21.172 |
-    | router/0                    | running | router           | 10.146.21.171 |
-    | syslog/0                    | running | syslog           | 10.146.21.177 |
-    | uaa/0                       | running | uaa              | 10.146.21.180 |
-    | uaadb/0                     | running | uaadb            | 10.146.21.179 |
-    | dea/0                       | running | dea              | 10.146.21.181 |
-    | saml_login/0                | running | saml_login       | 10.146.21.181 |
-    +-----------------------------+---------+------------------+---------------+
-    </pre>
-
 1. Use `curl` to test the API endpoint of your Cloud Foundry installation at `api.YOUR-SYSTEM-DOMAIN/info`.
 
     <pre class="terminal">
