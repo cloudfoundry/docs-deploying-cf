@@ -72,6 +72,8 @@ should show as **running**.
     If `curl` succeeds, it should return specific JSON-formatted information about your deployment. If `curl` does not succeed, check your networking and make sure your domain
   	has an NS record for your subdomain.
 
+    If you don't know `YOUR-SYSTEM-DOMAIN` for your Cloud Foundry installation, check the `system_domain` property in your deployment manifest.
+
 1. You should be able to target your Cloud Foundry installation with the [cf Command Line Interface (CLI)](../../cf-cli/index.html) and log in as an administrator. The username is `admin` and the password is specified in the deployment manifest:
 
     ```
