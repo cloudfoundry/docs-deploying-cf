@@ -5,21 +5,27 @@ owner: Release Integration
 
 <strong><%= modified_date %></strong>
 
-This topic describes the process for deploying Cloud Foundry using BOSH. It
-assumes you have already targeted your BOSH Director, created a Cloud Foundry manifest, and
-set it as your deployment.
+This topic describes the process for deploying Cloud Foundry using BOSH. 
+It assumes you have already targeted your BOSH Director, created a Cloud 
+Foundry manifest, and set it as your deployment.
 
 ##<a id="stemcell"></a>Upload a Stemcell ##
 
-A stemcell is a versioned image of a bare-minimum OS skeleton, wrapped with IaaS-specific packaging. Deploying Cloud Foundry starts with specifying a stemcell, which BOSH installs on each component VM.
+A stemcell is a versioned image of a bare-minimum OS skeleton, wrapped with 
+IaaS-specific packaging. 
+Deploying Cloud Foundry starts with specifying a stemcell, which BOSH installs 
+on each component VM.
 
 1. Open [https://bosh.io/stemcells](https://bosh.io/stemcells) in a web browser
 to view the current list of publicly available BOSH stemcells.
 
-1. Choose a BOSH stemcell for your IaaS and **click** the build number to download it to your computer. It downloads as a gzipped tar archive which you should not unzip.
+1. Choose a BOSH stemcell for your IaaS and **click** the build number to 
+download it to your computer. The stemcell downloads as a gzipped tar archive 
+which you should not unzip.
 
 1. In a terminal window, run `bosh upload stemcell STEMCELL-PATH` to upload your
-stemcell to the BOSH Director, where `STEMCELL-PATH` is the location of your downloaded stemcell file.
+stemcell to the BOSH Director, where `STEMCELL-PATH` is the location of your 
+downloaded stemcell file.
 <pre class="terminal">
 bosh upload stemcell ~/downloads/light-bosh-stemcell-3202-aws-xen-hvm-ubuntu-trusty-go_agent.tgz
 </pre>
@@ -72,7 +78,7 @@ should show as **running**.
     If `curl` succeeds, it should return specific JSON-formatted information about your deployment. If `curl` does not succeed, check your networking and make sure your domain
   	has an NS record for your subdomain.
 
-    If you don't know `YOUR-SYSTEM-DOMAIN` for your Cloud Foundry installation, check the `system_domain` property in your deployment manifest.
+    If you do not know `YOUR-SYSTEM-DOMAIN` for your Cloud Foundry installation, examine the `system_domain` property in your deployment manifest.
 
 1. You should be able to target your Cloud Foundry installation with the [cf Command Line Interface (CLI)](../../cf-cli/index.html) and log in as an administrator. The username is `admin` and the password is specified in the deployment manifest:
 
