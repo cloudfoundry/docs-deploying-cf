@@ -82,17 +82,13 @@ networks:
 properties:
   template_only:
     aws:
-      access_key_id: AWS_ACCESS_KEY
-      secret_access_key: AWS_SECRET_ACCESS_KEY
       availability_zone: ZONE_1
       availability_zone2: ZONE_2
       subnet_ids:
         cf1: SUBNET_ID_1
         cf2: SUBNET_ID_2
 	  </code></pre></td>
-    <td>Replace <code>AWS_ACCESS_KEY</code> and <code>AWS_SECRET_ACCESS_KEY</code> with AWS credentials to allow Cloud Controller to manage assets in the S3 buckets you have prepared for this deployment.
-    <br/><br/>
-    Replace <code>ZONE_1</code> and <code>ZONE_2</code> with two EC2 Availability Zones that you want to distribute your deployment across.
+    <td>Replace <code>ZONE_1</code> and <code>ZONE_2</code> with two EC2 Availability Zones that you want to distribute your deployment across.
     <br/><br/>
     Replace <code>SUBNET_ID_1</code> and <code>SUBNET_ID_2</code> with the VPC subnet IDs corresponding to the subnets configured in the <code>networks</code> section above.
     <br/><br/>
@@ -100,6 +96,54 @@ properties:
     </td>
   </tr>
   <tr>
+    <td><pre><code>
+buildpacks:
+  blobstore_type: fog
+  buildpack_directory_key: YOUR_AWS_BUILDPACK_BUCKET
+  fog_connection:
+    blobstore_timeout: 5
+    aws_access_key_id: AWS_ACCESS_KEY
+    aws_secret_access_key: AWS_SECRET_ACCESS_KEY
+    provider: AWS
+    region: us-east-1
+droplets:
+  blobstore_type: fog
+  droplet_directory_key: YOUR_AWS_DROPLET_BUCKET
+  fog_connection:
+    blobstore_timeout: 5
+    aws_access_key_id: AWS_ACCESS_KEY
+    aws_secret_access_key: AWS_SECRET_ACCESS_KEY
+    provider: AWS
+    region: us-east-1
+packages:
+  blobstore_type: fog
+  app_package_directory_key: YOUR_AWS_PACKAGE_BUCKET
+  fog_connection:
+    blobstore_timeout: 5
+    aws_access_key_id: AWS_ACCESS_KEY
+    aws_secret_access_key: AWS_SECRET_ACCESS_KEY
+    provider: AWS
+    region: us-east-1
+resource_pool:
+  blobstore_type: fog
+  resource_directory_key: YOUR_AWS_RESOURCE_BUCKET
+  fog_connection:
+    blobstore_timeout: 5
+    aws_access_key_id: AWS_ACCESS_KEY
+    aws_secret_access_key: AWS_SECRET_ACCESS_KEY
+    provider: AWS
+    region: us-east-1
+    </code></pre></td>
+    <td>Cloud Controller uses four blobstores: <code>buildpacks</code>, <code>droplets</code>, <code>packages</code>, and <code>resource_pool</code>.
+    <br/><br/>
+    Replace `AWS_ACCESS_KEY` and `AWS_SECRET_ACCESS_KEY` with your AWS credentials, and `YOUR_AWS_BUILDPACK_BUCKET`, `YOUR_AWS_DROPLET_BUCKET`, `YOUR_AWS_PACKAGE_BUCKET`, `YOUR_AWS_RESOURCE_BUCKET` with the names of your AWS buckets. In the AWS console, you must assign your credentials an IAM policy that allows all S3 actions on all of these buckets.
+    <br/><br/>
+    To provide further configuration, create a <code>fog_connection</code> hash to pass through to the Fog gem.
+    <br/><br/>
+    Review the <a href="#alternative-blobstores">Alternative Blobstore Configurations</a> section to configure blobstores using AWS IAM Instance Profiles or WebDAV.
+    </td>
+    </tr>
+    <tr>
     <td><pre><code>
   system_domain: SYSTEM_DOMAIN
   system_domain_organization: SYSTEM_DOMAIN_ORGANIZATION
@@ -130,8 +174,6 @@ properties:
       <br /><br />
       Replace <code>CCDB_ENCRYPTION_KEY</code>
       with a secure key that you generate to encrypt sensitive values in the Cloud Controller database.
-      <br /><br />
-      Cloud Controller uses four blobstores: <code>buildpacks</code>, <code>droplets</code>, <code>packages</code>, and <code>resource_pool</code>. You can edit your manifest stub to configure each blobstore in one of three ways: a blobstore that uses the Fog Ruby gem with AWS credentials, a blobstore that uses the Fog Ruby gem with AWS IAM Instance Profiles, or a blobstore that uses the WebDAV protocol. Review the <a href="#config-blobstores">Configuring Blobstores</a> section for more information.
     </td>
   </tr>
   <tr>
@@ -280,46 +322,9 @@ properties:
   </tr>
 </table>
 
-##<a id="config-blobstores"></a>Configuring Blobstores
+##<a id="alternative-blobstores"></a>Alternate Blobstore Configurations
 
-To configure your blobstores, you must edit the manifest stub.
-
-Cloud Controller uses four blobstores: <code>buildpacks</code>, <code>droplets</code>, <code>packages</code>, and <code>resource_pool</code>. By default, the blobstores use the Fog Ruby gem. To configure a blobstore to use the WebDAV protocol instead, follow the steps under the <a href="#webdav">WebDAV</a> section below.
-
-You can configure your blobstores to use Fog with AWS credentials, Fog with IAM Instance Profiles, or the WebDAV protocol.
-
-###<a id="fog-aws-creds"></a> Fog with AWS Credentials
-
-To use Fog blobstores with AWS credentials, perform the following steps:
-
-1. Insert the following configuration into your manifest stub under `properties.cc`: 
-
-    ```
-    cc:
-      buildpacks:
-        blobstore_type: fog
-        buildpack_directory_key: YOUR-AWS-BLOBSTORE-BUCKET
-        fog_connection: &fog_connection
-          aws_access_key_id: AWS_ACCESS_KEY
-          aws_secret_access_key: AWS_SECRET_ACCESS_KEY
-          provider: AWS
-          region: us-east-1
-      droplets:
-        blobstore_type: fog
-        droplet_directory_key: YOUR-AWS-DROPLET-BUCKET
-        fog_connection: *fog_connection
-      packages:
-        blobstore_type: fog
-        app_package_directory_key: YOUR-AWS-PACKAGE-BUCKET
-        fog_connection: *fog_connection
-      resource_pool:
-        blobstore_type: fog
-        droplet_directory_key: YOUR-AWS-RESOURCE-BUCKET
-        fog_connection: *fog_connection
-    ```
-2. Replace `AWS_ACCESS_KEY` and `AWS_SECRET_ACCESS_KEY` with your AWS credentials, and `YOUR-AWS-BLOBSTORE-BUCKET`, `YOUR-AWS-DROPLET-BUCKET`, `YOUR-AWS-PACKAGE-BUCKET`, `YOUR-AWS-RESOURCE-BUCKET` with the names of your AWS buckets. In the AWS console, you must assign your credentials an IAM policy that allows all S3 actions on all of these buckets.
-
-3. To provide further configuration, create a <code>fog_connection</code> hash to pass through to the Fog gem.
+You can also configure your blobstores to use Fog with IAM Instance Profiles or the WebDAV protocol.
 
 ###<a id="fog-aws-iam"></a> Fog with IAM Instance Profiles
 
@@ -331,27 +336,27 @@ To configure Fog blobstores to use <a href="http://docs.aws.amazon.com/IAM/lates
     cc:
       buildpacks:
         blobstore_type: fog
-        buildpack_directory_key: YOUR-AWS-BLOBSTORE-BUCKET
+        buildpack_directory_key: YOUR_AWS_BUILDPACK_BUCKET
         fog_connection: &fog_connection
           provider: AWS
           region: us-east-1
           use_iam_profile: true
       droplets:
         blobstore_type: fog
-        droplet_directory_key: YOUR-AWS-DROPLET-BUCKET
+        droplet_directory_key: YOUR_AWS_DROPLET_BUCKET
         fog_connection: *fog_connection
       packages:
         blobstore_type: fog
-        app_package_directory_key: YOUR-AWS-PACKAGE-BUCKET
+        app_package_directory_key: YOUR_AWS_PACKAGE_BUCKET
         fog_connection: *fog_connection
       resource_pool:
         blobstore_type: fog
-        droplet_directory_key: YOUR-AWS-RESOURCE-BUCKET
+        droplet_directory_key: YOUR_AWS_RESOURCE_BUCKET
         fog_connection: *fog_connection
     ```
-1. Replace `YOUR-AWS-BLOBSTORE-BUCKET`, `YOUR-AWS-DROPLET-BUCKET`, `YOUR-AWS-PACKAGE-BUCKET`, `YOUR-AWS-RESOURCE-BUCKET` with the names of your AWS buckets. To provide further configuration, create a <code>fog_connection</code> hash to pass through to the Fog gem.
+1. Replace `YOUR_AWS_BUILDPACK_BUCKET`, `YOUR_AWS_DROPLET_BUCKET`, `YOUR_AWS_PACKAGE_BUCKET`, `YOUR_AWS_RESOURCE_BUCKET` with the names of your AWS buckets. To provide further configuration, create a <code>fog_connection</code> hash to pass through to the Fog gem.
 1. Complete the steps documented in the <a href="http://bosh.io/docs/aws-iam-instance-profiles.html#director-with-s3-blobstore">AWS CPI and Director configured with an S3 blobstore instructions</a> section of the BOSH documentation.
-2. In the AWS console, configure an additional <code>cloud-controller</code> IAM role that gives access to both the BOSH S3 buckets and the Cloud Controller S3 buckets specified in your manifest stub:
+1. In the AWS console, configure an additional <code>cloud-controller</code> IAM role that gives access to both the BOSH S3 buckets and the Cloud Controller S3 buckets specified in your manifest stub:
 <pre><code>
 {
 "Version": "2012-10-17",
@@ -361,21 +366,21 @@ To configure Fog blobstores to use <a href="http://docs.aws.amazon.com/IAM/lates
   "Resource": [
     "arn:aws:s3:::BOSH\_BUCKET\_NAME",
     "arn:aws:s3:::BOSH\_BUCKET\_NAME/\*",
-    "arn:aws:s3:::YOUR-AWS-BLOBSTORE-BUCKET",
-    "arn:aws:s3:::YOUR-AWS-BLOBSTORE-BUCKET/\*",
-    "arn:aws:s3:::YOUR-AWS-DROPLET-BUCKET",
-    "arn:aws:s3:::YOUR-AWS-DROPLET-BUCKET/\*",
-    "arn:aws:s3:::YOUR-AWS-PACKAGE-BUCKET",
-    "arn:aws:s3:::YOUR-AWS-PACKAGE-BUCKET/\*",
-    "arn:aws:s3:::YOUR-AWS-RESOURCE-BUCKET",
-    "arn:aws:s3:::YOUR-AWS-RESOURCE-BUCKET/\*",
+    "arn:aws:s3:::YOUR_AWS_BUILDPACK_BUCKET",
+    "arn:aws:s3:::YOUR_AWS_BUILDPACK_BUCKET/\*",
+    "arn:aws:s3:::YOUR_AWS_DROPLET_BUCKET",
+    "arn:aws:s3:::YOUR_AWS_DROPLET_BUCKET/\*",
+    "arn:aws:s3:::YOUR_AWS_PACKAGE_BUCKET",
+    "arn:aws:s3:::YOUR_AWS_PACKAGE_BUCKET/\*",
+    "arn:aws:s3:::YOUR_AWS_RESOURCE_BUCKET",
+    "arn:aws:s3:::YOUR_AWS_RESOURCE_BUCKET/\*",
   ]
 }]
 }
 </pre></code>
 If you are using the AWS console, an IAM Role is automatically assigned to an IAM Instance Profile with the same name, <code>cloud-controller</code>. If you are not using the AWS console, you must create an IAM Instance Profile with a single assigned IAM Role.
 
-3. In your Cloud Foundry deployment manifest, configure a resource pool to use the <code>cloud-controller</code> IAM Instance Profile:
+1. In your Cloud Foundry deployment manifest, configure a resource pool to use the <code>cloud-controller</code> IAM Instance Profile:
   <pre><code>
   resource\_pools:
   \- name: cloud-controller-resource-pool
@@ -385,7 +390,7 @@ If you are using the AWS console, an IAM Role is automatically assigned to an IA
           instance\_type: c3.large
           iam\_instance\_profile: cloud-controller
   </code></pre>
-4. Assign all Cloud Controller jobs (<code>api\_z\*</code>) and Cloud Controller Worker jobs (<code>api\_worker\_z\*</code>) to the <code>cloud-controller-resource-pool</code>.
+1. Assign all Cloud Controller jobs (<code>api\_z\*</code>) and Cloud Controller Worker jobs (<code>api\_worker\_z\*</code>) to the <code>cloud-controller-resource-pool</code>.
 
 ###<a id="webdav"></a>WebDAV
 
@@ -437,5 +442,5 @@ To configure your blobstores to use the WebDAV protocol, perform the following s
       * Replace <code>WEBDAV\_PUBLIC\_ENDPOINT</code> with the public URL (e.g. https://blobstore.SYSTEM_DOMAIN) that resolves to your WebDAV installation.
       * Replace <code>WEBDAV\_PRIVATE\_ENDPOINT</code> with a URL routable on your internal network. This defaults to https://blobstore.service.cf.internal if not set.
       * Replace <code>WEBDAV\_BASIC\_AUTH\_USER</code> and <code>WEBDAV\_BASIC\_AUTH\_PASSWORD</code> with Basic AUTH credentials that Cloud Controller can use to talk your WebDAV installation.
-1. To provide further configuration, create a <code>webnav\_config</code> hash.
+1. To provide further configuration, create a <code>webdav\_config</code> hash.
 
