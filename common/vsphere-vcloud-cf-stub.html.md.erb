@@ -10,6 +10,8 @@ for vSphere, vCloud Air, or vCloud Director.  Follow the
 [editing instructions](#editing) to customize the manifest stub with information
 about your environment.
 
+vSphere defaults to using an internal WebDAV blobstore for the Cloud Controller. For alternative blobstore configurations, see <a href="/deploying/common/cc-blobstore-config.html">Cloud Controller Blobstore Configuration</a>.
+
 ##<a id="stub"></a>Cloud Foundry Deployment Manifest Stub ##
 
 <%= yield_for_code_snippet from: 'cloudfoundry/cf-release', at: 'cf-stub-vsphere' %>
