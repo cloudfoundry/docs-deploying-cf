@@ -37,7 +37,7 @@ To use Fog blobstores with AWS credentials, perform the following steps:
         fog_connection: *fog_connection
       resource_pool:
         blobstore_type: fog
-        droplet_directory_key: YOUR-AWS-RESOURCE-BUCKET
+        resource_directory_key: YOUR-AWS-RESOURCE-BUCKET
         fog_connection: *fog_connection
     ```
 1. Replace `AWS_ACCESS_KEY` and `AWS_SECRET_ACCESS_KEY` with your AWS credentials, and `YOUR-AWS-BUILDPACK-BUCKET`, `YOUR-AWS-DROPLET-BUCKET`, `YOUR-AWS-PACKAGE-BUCKET`, `YOUR-AWS-RESOURCE-BUCKET` with the names of your AWS buckets. In the AWS console, you must assign your credentials an IAM policy that allows all S3 actions on all of these buckets.
@@ -69,7 +69,7 @@ To configure Fog blobstores to use <a href="http://docs.aws.amazon.com/IAM/lates
         fog_connection: *fog_connection
       resource_pool:
         blobstore_type: fog
-        droplet_directory_key: YOUR-AWS-RESOURCE-BUCKET
+        resource_directory_key: YOUR-AWS-RESOURCE-BUCKET
         fog_connection: *fog_connection
     ```
 1. Replace `YOUR-AWS-BUILDPACK-BUCKET`, `YOUR-AWS-DROPLET-BUCKET`, `YOUR-AWS-PACKAGE-BUCKET`, `YOUR-AWS-RESOURCE-BUCKET` with the names of your AWS buckets. To provide further configuration, create a <code>fog_connection</code> hash to pass through to the Fog gem.
@@ -150,7 +150,7 @@ To configure your blobstores to use the WebDAV protocol, perform the following s
         webdav_config: *webdav_config
       resource_pool:
         blobstore_type: webdav
-        droplet_directory_key: cc-resources
+        resource_directory_key: cc-resources
         webdav_config: *webdav_config
     ```
 
