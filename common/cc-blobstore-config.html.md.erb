@@ -114,7 +114,7 @@ If you are using the AWS console, an IAM Role is automatically assigned to an IA
 
 To configure your blobstores to use the WebDAV protocol, perform the following steps:
 
-1. Be sure your deployment manifest has a single instance of the blobstore job. At the time of this writing, you can find a working example in the [example bosh-lite manifest](https://github.com/cloudfoundry/cf-release/blob/49a94e2/spec/fixtures/bosh-lite/cf-manifest.yml#L297-L329).
+1. Ensure your deployment manifest has a single instance of the blobstore job. For a working example, see the [example bosh-lite manifest](https://github.com/cloudfoundry/cf-release/blob/49a94e2/spec/fixtures/bosh-lite/cf-manifest.yml#L297-L329).
 1. Insert the following configuration into your manifest under `properties.blobstore` and `properties.cc`:
 
     ```
@@ -158,8 +158,8 @@ To configure your blobstores to use the WebDAV protocol, perform the following s
       * Replace <code>WEBDAV\_BASIC\_AUTH\_USER</code> and <code>WEBDAV\_BASIC\_AUTH\_PASSWORD</code> with Basic AUTH credentials that Cloud Controller can use to talk your WebDAV installation.
       * Replace <code>WEBDAV\_SECRET</code> with a secret phrase used to sign URLs.
       * Replace <code>WEBDAV\_CERT</code>, <code>WEBDAV\_PRIVATE\_KEY</code>, and <code>WEBDAV\_CA\_CERT\_BUNDLE</code> with proper TLS configuration that will be used for the internal blobstore.
-      * Replace <code>WEBDAV\_PUBLIC\_ENDPOINT</code> with the public URL (e.g. https://blobstore.SYSTEM_DOMAIN) that resolves to your WebDAV installation.
-      * Replace <code>WEBDAV\_PRIVATE\_ENDPOINT</code> with a URL routable on your internal network. This defaults to https://blobstore.service.cf.internal if not set.
+      * Replace <code>WEBDAV\_PUBLIC\_ENDPOINT</code> with the public URL (e.g. `https://blobstore.SYSTEM_DOMAIN`) that resolves to your WebDAV installation.
+      * Replace <code>WEBDAV\_PRIVATE\_ENDPOINT</code> with a URL routable on your internal network. This defaults to `https://blobstore.service.cf.internal` if not set.
       * Replace <code>WEBDAV\_BASIC\_AUTH\_USER</code> and <code>WEBDAV\_BASIC\_AUTH\_PASSWORD</code> with Basic AUTH credentials that Cloud Controller can use to talk your WebDAV installation.
 1. To provide further configuration, create a <code>webnav\_config</code> hash.
 
