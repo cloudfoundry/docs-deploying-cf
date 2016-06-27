@@ -183,10 +183,9 @@ perform the following steps.
 
 ## <a id='rotating-encryption-key'></a> Encryption Key Rotation
 
-To rotate your encryption key, you must perform the following steps.
+To rotate your encryption key, perform the following steps:
 
-1. Insert the new encrypt key above the old encrypt key in the `encrypt_keys` field. Do not remove old encrypt key. 
-Deploy Cloud Foundry using your updated manifest.
+1. Insert the new encryption key above the old encryption key in the `encrypt_keys` field of your manifest. Do not remove old encryption key. 
 
     ```yaml
     ...
@@ -200,7 +199,9 @@ Deploy Cloud Foundry using your updated manifest.
         ...
    ```
 
-2. Remove the old encrypt and deploy Cloud Foundry using your updated manifest.
+1. Deploy Cloud Foundry using your updated manifest.
+
+1. Remove the old encryption key from your manifest.
 
     ```yaml
     ...
@@ -212,3 +213,4 @@ Deploy Cloud Foundry using your updated manifest.
         - NEW-ENCRYPT-KEY
         ...
    ```
+1. Deploy Cloud Foundry using your updated manifest.
