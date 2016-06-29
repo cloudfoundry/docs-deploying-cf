@@ -40,7 +40,7 @@ To use Fog blobstores with AWS credentials, perform the following steps:
         resource_directory_key: YOUR-AWS-RESOURCE-BUCKET
         fog_connection: *fog_connection
     ```
-1. Replace `AWS_ACCESS_KEY` and `AWS_SECRET_ACCESS_KEY` with your AWS credentials, and `YOUR-AWS-BUILDPACK-BUCKET`, `YOUR-AWS-DROPLET-BUCKET`, `YOUR-AWS-PACKAGE-BUCKET`, `YOUR-AWS-RESOURCE-BUCKET` with the names of your AWS buckets. We recommend you to not use dots (`.`) in your AWS bucket names. In the AWS console, you must assign your credentials an IAM policy that allows all S3 actions on all of these buckets.
+1. Replace `AWS_ACCESS_KEY` and `AWS_SECRET_ACCESS_KEY` with your AWS credentials, and `YOUR-AWS-BUILDPACK-BUCKET`, `YOUR-AWS-DROPLET-BUCKET`, `YOUR-AWS-PACKAGE-BUCKET`, `YOUR-AWS-RESOURCE-BUCKET` with the names of your AWS buckets. Do not use periods (`.`) in your AWS bucket names. In the AWS console, you must assign your credentials an IAM policy that allows all S3 actions on all of these buckets.
 
 1. Further configuration can be provided through the <code>fog_connection</code> hash, which is passed through to the Fog gem.
 
@@ -72,7 +72,7 @@ To configure Fog blobstores to use <a href="http://docs.aws.amazon.com/IAM/lates
         resource_directory_key: YOUR-AWS-RESOURCE-BUCKET
         fog_connection: *fog_connection
     ```
-1. Replace `YOUR-AWS-BUILDPACK-BUCKET`, `YOUR-AWS-DROPLET-BUCKET`, `YOUR-AWS-PACKAGE-BUCKET`, `YOUR-AWS-RESOURCE-BUCKET` with the names of your AWS buckets. We recommend you to not use dots (`.`) in your AWS bucket names. To provide further configuration, create a <code>fog_connection</code> hash to pass through to the Fog gem.
+1. Replace `YOUR-AWS-BUILDPACK-BUCKET`, `YOUR-AWS-DROPLET-BUCKET`, `YOUR-AWS-PACKAGE-BUCKET`, `YOUR-AWS-RESOURCE-BUCKET` with the names of your AWS buckets. Do not use periods (`.`) in your AWS bucket names. To provide further configuration, create a <code>fog_connection</code> hash to pass through to the Fog gem.
 1. Complete the steps documented in the <a href="http://bosh.io/docs/aws-iam-instance-profiles.html#director-with-s3-blobstore">AWS CPI and Director configured with an S3 blobstore instructions</a> section of the BOSH documentation.
 1. In the AWS console, configure an additional <code>cloud-controller</code> IAM role that gives access to both the BOSH S3 buckets and the Cloud Controller S3 buckets specified in your manifest:
 <pre><code>
