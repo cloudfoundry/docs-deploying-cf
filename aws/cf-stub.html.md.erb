@@ -153,7 +153,7 @@ properties:
       <br /><br />
       If you used <code>bosh aws create</code>, find the necessary values in the generated file <code>aws_rds_bosh_receipt.yml</code>. The database is an Amazon RDS instance, and the <code>CCDB_*</code> values in the stub must match the scheme, username, password, address, and port defined by AWS.
       <br /><br />
-      If you deployed your database without <code>bosh aws create</code>, such as using the <code>postgres</code> job in cf-release, the <code>CCDB_*</code> values must match the configuration of the database node.
+      If you deployed your database without <code>bosh aws create</code>, such as using the <code>postgres</code> job in cf-release, the <code>CCDB_*</code> values must match the configuration of the database node. When using a Postgres database, make sure that the Postgres database has the required extensions available for Cloud Foundry (<code>uuid-ossp</code>, <code>pgcrypto</code> and <code>citext</code>).
 	  </td>
   </tr>
   <tr>
@@ -262,7 +262,7 @@ properties:
       <br /><br />
       If you used <code>bosh aws create</code>, you can find the necessary values in the generated file <code>aws_rds_bosh_receipt.yml</code>. The database is an Amazon RDS instance, and the <code>UAADB_*</code> values in the stub must match the scheme, username, password, address, and port defined by AWS.
       <br /><br />
-      If you deployed your database without <code>bosh aws create</code>, such as using the <code>postgres</code> job in cf-release, the <code>CCDB_*</code> values must match the configuration of the database node.
+      If you deployed your database without <code>bosh aws create</code>, such as using the <code>postgres</code> job in cf-release, the <code>CCDB_*</code> values must match the configuration of the database node. When using a Postgres database, make sure that the Postgres database has the required extensions available for Cloud Foundry (<code>uuid-ossp</code>, <code>pgcrypto</code> and <code>citext</code>).
 	  </td>
   </tr>
   <tr>
