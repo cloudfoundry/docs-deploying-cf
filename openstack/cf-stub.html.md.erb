@@ -115,6 +115,27 @@ properties:
   </tr>
   <tr>
     <td><pre><code>
+  blobstore:
+    admin_users:
+      - username: blobstore-username
+        password: blobstore-password
+        secure_link:
+            secret: blobstore-secret
+        tls:
+            port: 443
+            cert: BLOBSTORE_TLS_CERT
+            private_key: BLOBSTORE_PRIVATE_KEY
+            ca_cert: BLOBSTORE_CA_CERT
+    </code></pre></td>
+    <td>Replace blobstore-username and blobstore-username with a username and password of your choosing.
+    <br /><br />
+    Replace blobstore-secret with secure secret of your choosing.
+    <br /><br />
+    Replace BLOBSTORE_TLS_CERT BLOBSTORE_PRIVATE_KEY and BLOBSTORE_CA_CERT with that you generate.
+    </td>
+  </tr>
+  <tr>
+    <td><pre><code>
   consul:
     encrypt_keys:
       - CONSUL_ENCRYPT_KEY
@@ -142,8 +163,8 @@ properties:
     password: NATS_PASSWORD
     </code></pre></td>
     <td>Replace <code>NATS_USER</code> and
-		<code>NATS_PASSWORD</code> with a username and secure password of your choosing. Cloud Foundry components use these credentials to communicate with each other over the NATS message bus.
-	  </td>
+        <code>NATS_PASSWORD</code> with a username and secure password of your choosing. Cloud Foundry components use these credentials to communicate with each other over the NATS message bus.
+      </td>
   </tr>
   <tr>
     <td><pre><code>
@@ -154,8 +175,8 @@ properties:
     </code></pre></td>
     <td>
       Replace <code>ROUTER_USER</code> and
-  		<code>ROUTER_PASSWORD</code> with a username and secure password of your choosing.
-	  </td>
+        <code>ROUTER_PASSWORD</code> with a username and secure password of your choosing.
+      </td>
   </tr>
   <tr>
     <td><pre><code>
