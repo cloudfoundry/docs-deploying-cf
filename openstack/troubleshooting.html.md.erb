@@ -46,11 +46,11 @@ Try the following options to resolve this issue:
 1. (Recommended) Restart the `cloud_controller`, or `api`, jobs with the BOSH CLI `bosh restart cloud_controller`.
 2. Manually recreate the NFS mount on the `cloud_controller` job server:
 
-	<pre class='terminal'>
-	$ bosh ssh cloud_controller/0
-	root:~# umount /var/vcap/nfs
-	root:~# mount -t nfs 0.nfs.default.cf.microbosh:/var/vcap/store /var/vcap/nfs
-	</pre>
+    <pre class='terminal'>
+    $ bosh ssh cloud_controller/0
+    root:~# umount /var/vcap/nfs
+    root:~# mount -t nfs 0.nfs.default.cf.microbosh:/var/vcap/store /var/vcap/nfs
+    </pre>
 
-	Replace `0.nfs.default.cf.microbosh` above with the static IP or DNS host of the job instance running the `debian_nfs_server`.
+    Replace `0.nfs.default.cf.microbosh` above with the static IP or DNS host of the job instance running the `debian_nfs_server`.
 
