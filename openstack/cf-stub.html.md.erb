@@ -119,13 +119,13 @@ properties:
     admin_users:
       - username: blobstore-username
         password: blobstore-password
-        secure_link:
-            secret: blobstore-secret
-        tls:
-            port: 443
-            cert: BLOBSTORE_TLS_CERT
-            private_key: BLOBSTORE_PRIVATE_KEY
-            ca_cert: BLOBSTORE_CA_CERT
+    secure_link:
+        secret: blobstore-secret
+    tls:
+        port: 443
+        cert: BLOBSTORE_TLS_CERT
+        private_key: BLOBSTORE_PRIVATE_KEY
+        ca_cert: BLOBSTORE_CA_CERT
     </code></pre></td>
     <td>Replace blobstore-username and blobstore-username with a username and password of your choosing.
     <br /><br />
