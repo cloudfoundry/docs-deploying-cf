@@ -21,7 +21,7 @@ $ cp ~/.ssh/id_rsa_bosh ~/deployments/cf-example
 1. Create a deployment manifest file named `bosh.yml` in the deployment directory. For its contents, copy the YAML code from the [AWS BOSH manifest template](http://bosh.io/docs/init-aws.html#create-manifest) in the BOSH documentation.
 
 1. Replace properties listed in the file as follows:
-    * `ELASTIC-IP`:In the **EC2 Dashboard** under **Elastic IPs**, use the Elastic IP with the Instance associated with **bosh**. Example: "52.9.107.126".
+    * `ELASTIC-IP`:In the **EC2 Dashboard** under **Elastic IPs**, use the Elastic IP with the Instance associated with **bosh**. Example: "203.0.113.126".
     * `SUBNET-ID`: In the **VPC Dashboard** tab **Subnets**, use the Subnet ID for the subnet named "bosh1." Example: "subnet-2f58134a".
     * `AVAILABILITY-ZONE` and `REGION`: Use the values from the `bosh_environment` file you created in the [previous step](./setup_aws.html).
     * `ACCESS-KEY-ID` and `SECRET-ACCESS-KEY`: Use the values from your `bosh_environment` file.
@@ -43,7 +43,7 @@ $ cp ~/.ssh/id_rsa_bosh ~/deployments/cf-example
 1. Use `bosh target ELASTIC-IP` to log into your new BOSH Director. The default username and password are `admin` and `admin`.
 
     <pre class="terminal">
-    $ bosh target 54.175.20.129
+    $ bosh target 198.51.100.129
 
     Target set to 'bosh'
     Your username: admin

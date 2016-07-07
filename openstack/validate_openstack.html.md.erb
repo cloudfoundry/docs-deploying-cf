@@ -117,14 +117,14 @@ Create a security group for your virtual machines called **ping-test**.
 
 From your OpenStack dashboard, create two VMs and open the console into one of them through the **Console** tab on its **Instance Detail** page. Make sure that you put these virtual machines into the **ping-test** security group. Wait for the terminal to appear and login.
 
-Look at the list of instances in the OpenStack dashboard and find the IP address of the other virtual machine. At the prompt, issue the following command (assuming your instance receives the IP address <code>172.16.1.2</code>:
+Look at the list of instances in the OpenStack dashboard and find the IP address of the other virtual machine. At the prompt, issue the following command (assuming your instance receives the IP address <code>198.51.100.2</code>:
 
 <pre class="terminal">
-$ ping 172.16.1.2
-PING 172.16.1.2 (172.16.1.2) 56(84) bytes of data.
-64 bytes from 172.16.1.2: icmp_seq=1 ttl=64 time=0.095 ms
-64 bytes from 172.16.1.2: icmp_seq=2 ttl=64 time=0.048 ms
-64 bytes from 172.16.1.2: icmp_seq=3 ttl=64 time=0.080 ms
+$ ping 198.51.100.2
+PING 198.51.100.2 (198.51.100.2) 56(84) bytes of data.
+64 bytes from 198.51.100.2: icmp_seq=1 ttl=64 time=0.095 ms
+64 bytes from 198.51.100.2: icmp_seq=2 ttl=64 time=0.048 ms
+64 bytes from 198.51.100.2: icmp_seq=3 ttl=64 time=0.080 ms
 ...
 
 </pre>

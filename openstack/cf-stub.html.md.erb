@@ -7,14 +7,17 @@ owner: Release Integration
 
 This topic describes how to customize the Cloud Foundry deployment manifest stub
 for OpenStack.
-After you complete this task, use the `scripts/generate_deployment_manifest` script in
-the `cf-release` repository to generate your Cloud Foundry deployment manifest.
+After you complete this task, use the `scripts/generate_deployment_manifest` 
+script in the `cf-release` repository to generate your Cloud Foundry deployment 
+manifest.
 
 Save a copy of the manifest stub as a YAML file in your deployment directory.
 Follow the [editing instructions](#editing) to customize the manifest stub with
 information about your environment.
 
-OpenStack defaults to using an internal WebDAV blobstore for the Cloud Controller. For alternative blobstore configurations, see <a href="/deploying/common/cc-blobstore-config.html">Cloud Controller Blobstore Configuration</a> and <a href="/deploying/openstack/using_swift_blobstore.html">Using OpenStack Swift as a Cloud Foundry Blobstore</a>
+OpenStack defaults to using an internal WebDAV blobstore for the Cloud 
+Controller. 
+For alternative blobstore configurations, see the <a href="/deploying/common/cc-blobstore-config.html">Cloud Controller Blobstore Configuration</a> and <a href="/deploying/openstack/using_swift_blobstore.html">Using OpenStack Swift as a Cloud Foundry Blobstore</a> topics.
 
 ##<a id="stub"></a>Cloud Foundry Deployment Manifest Stub for OpenStack ##
 
@@ -46,10 +49,9 @@ meta:
   <tr>
     <td><pre><code>
   floating_static_ips:
-  - 173.1.1.1
+  - 198.51.100.1
     </code></pre></td>
-    <td>Replace <code>173.1.1.1</code> with an existing static IP address for your
-    OpenStack floating network. This is assigned to the <code>ha_proxy</code> job
+    <td>Replace <code>198.51.100.1</code> with an existing static IP address for your OpenStack floating network. This is assigned to the <code>ha_proxy</code> job
     to receive incoming traffic.
     </td>
   </tr>
