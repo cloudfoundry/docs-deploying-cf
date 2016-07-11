@@ -71,13 +71,13 @@ manifest, run the update script to fetch all the submodules.
 1. Install [spiff](https://github.com/cloudfoundry-incubator/spiff).
 
 1. The following command, run from the `cf-release` directory, creates a deployment manifest named `cf-deployment.yml`.
-	<pre class="terminal">
-	$ ./scripts/generate\_deployment\_manifest IAAS MANIFEST-STUB > cf-deployment.yml
-	</pre>
+    <pre class="terminal">
+    $ ./scripts/generate\_deployment\_manifest IAAS MANIFEST-STUB > cf-deployment.yml
+    </pre>
 Replace `IAAS` with either `aws`, `openstack`, or `vsphere`.  Note that `vsphere` works for vSphere, vCloud Air, and vCloud Director. Replace `MANIFEST-STUB` with the location of your `cf-stub.yml` file. For example:
 
     <pre class="terminal">
-	$ ./scripts/generate_deployment_manifest vsphere ../cf-stub.yml > cf-deployment.yml
+    $ ./scripts/generate_deployment_manifest vsphere ../cf-stub.yml > cf-deployment.yml
     </pre>
 
     <p class="note"><strong>Note</strong>: The <code>generate_deployment_manifest</code> script can accept multiple stub files. For example, the following command passes two stub files to the script: <br/>

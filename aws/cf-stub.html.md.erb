@@ -71,13 +71,13 @@ networks:
         security_groups:
           - cf
         subnet: (( properties.template_only.aws.subnet_ids.cf2 ))
-	  </code></pre></td>
+      </code></pre></td>
     <td>If you used <code>bosh aws create</code> to set up your AWS environment, change the IP addresses here if needed to fit the subnet range from your bosh.yml file.
     <br/><br/>
     This example assumes you have two subnets in your AWS VPC with CIDRs <code>10.10.16.0/20</code> and <code>10.10.80.0/20</code> respectively. Update the values for <code>range</code>, <code>reserved</code>, <code>static</code>, and <code>gateway</code> accordingly if the CIDRs for your subnets are different.
     <br/><br/>
     This also assumes that you have a security group <code>cf</code> suitable for your Cloud Foundry VMs. Change this too if the name of your security group is different.
-	  </td>
+      </td>
   </tr>
   <tr>
     <td><pre><code>
@@ -91,7 +91,7 @@ properties:
       subnet_ids:
         cf1: SUBNET_ID_1
         cf2: SUBNET_ID_2
-	  </code></pre></td>
+      </code></pre></td>
     <td>Replace <code>AWS_ACCESS_KEY</code> and <code>AWS_SECRET_ACCESS_KEY</code> with AWS credentials to allow Cloud Controller to manage assets in the S3 buckets you have prepared for this deployment.
     <br/><br/>
     Replace <code>ZONE_1</code> and <code>ZONE_2</code> with two EC2 Availability Zones that you want to distribute your deployment across.
@@ -107,7 +107,7 @@ properties:
   system_domain_organization: SYSTEM_DOMAIN_ORGANIZATION
   app_domains:
    - APP_DOMAIN
-	  </code></pre></td>
+      </code></pre></td>
     <td>Replace <code>SYSTEM_DOMAIN</code> with the domain to be used for all system components. For instance, the Cloud Controller API will be reachable via <code>api.SYSTEM_DOMAIN</code>. Replace <code>APP_DOMAIN</code> with the domain you want associated with applications pushed to your Cloud Foundry installation. For instance, if you push <code>my-app</code> it will be reachable via <code>my-app.APP_DOMAIN</code>.
     <br/><br/>
     It is generally advised to have separate values for <code>SYSTEM_DOMAIN</code> and <code>APP_DOMAIN</code>, e.g. <code>sys.cloud-09.cf-app.com</code> and <code>apps.cloud-09.cf-app.com</code>. For simple deployments, you can use the same domain for both, e.g. <code>cloud-09.cf-app.com</code>. However, you cannot have one domain property extend the other, e.g. you cannot have your <code>SYSTEM_DOMAIN</code> set to <code>cloud-09.cf-app.com</code> and your <code>APP_DOMAIN</code> set to <code>apps.cloud-09.cf-app.com</code>.
@@ -154,7 +154,7 @@ properties:
       If you used <code>bosh aws create</code>, find the necessary values in the generated file <code>aws_rds_bosh_receipt.yml</code>. The database is an Amazon RDS instance, and the <code>CCDB_*</code> values in the stub must match the scheme, username, password, address, and port defined by AWS.
       <br /><br />
       If you deployed your database without <code>bosh aws create</code>, such as using the <code>postgres</code> job in cf-release, the <code>CCDB_*</code> values must match the configuration of the database node. If you are using PostgreSQL, your database must have the required extensions available for Cloud Foundry: <code>uuid-ossp</code>, <code>pgcrypto</code>, and <code>citext</code>. The <code>db_scheme</code> for a PostgreSQL database is <code>postgresql</code>, not <code>postgres</code>.
-	  </td>
+      </td>
   </tr>
   <tr>
     <td><pre><code>
@@ -166,9 +166,9 @@ properties:
     server_key: CONSUL_SERVER_KEY
     agent_cert: CONSUL_AGENT_CERT
     agent_key: CONSUL_AGENT_KEY
-	  </code></pre></td>
+      </code></pre></td>
     <td>See the instructions on <a href="../common/consul-security.html">security configuration for consul</a>.
-	  </td>
+      </td>
   </tr>
   <tr>
     <td><pre><code>
@@ -176,17 +176,17 @@ properties:
     shared_secret: LOGGREGATOR_ENDPOINT_SHARED_SECRET
     </code></pre></td>
     <td>Generate a string secret and replace <code>LOGGREGATOR_ENDPOINT_SHARED_SECRET</code>.
-	  </td>
+      </td>
   </tr>
   <tr>
     <td><pre><code>
   nats:
     user: NATS_USER
     password: NATS_PASSWORD
-	  </code></pre></td>
+      </code></pre></td>
     <td>Replace <code>NATS_USER</code> and
-		<code>NATS_PASSWORD</code> with a username and secure password of your choosing. Cloud Foundry components use these credentials to communicate with each other over the NATS message bus.
-	  </td>
+        <code>NATS_PASSWORD</code> with a username and secure password of your choosing. Cloud Foundry components use these credentials to communicate with each other over the NATS message bus.
+      </td>
   </tr>
   <tr>
     <td><pre><code>
@@ -194,11 +194,11 @@ properties:
     status:
       user: ROUTER_USER
       password: ROUTER_PASSWORD
-	  </code></pre></td>
+      </code></pre></td>
     <td>
       Replace <code>ROUTER_USER</code> and
-  		<code>ROUTER_PASSWORD</code> with a username and secure password of your choosing.
-	  </td>
+        <code>ROUTER_PASSWORD</code> with a username and secure password of your choosing.
+      </td>
   </tr>
   <tr>
     <td><pre><code>
@@ -222,7 +222,7 @@ properties:
         secret: NOTIFICATIONS_CLIENT_SECRET
     </code></pre></td>
     <td>Replace all the <code>*_SECRET</code>s with secure secrets that you generate.
-	  </td>
+      </td>
   </tr>
   <tr>
     <td><pre><code>
@@ -256,14 +256,14 @@ properties:
         name: uaadb
     address: UAADB_ADDRESS
     port: UAADB_PORT
-	  </code></pre></td>
+      </code></pre></td>
     <td>
       This section of the stub defines how the UAA connects to its database. The values depend on how you deployed your database.
       <br /><br />
       If you used <code>bosh aws create</code>, find the necessary values in the generated file <code>aws_rds_bosh_receipt.yml</code>. The database is an Amazon RDS instance, and the <code>UAADB_*</code> values in the stub must match the scheme, username, password, address, and port defined by AWS.
       <br /><br />
       If you deployed your database without <code>bosh aws create</code>, such as using the <code>postgres</code> job in cf-release, the <code>UAADB_*</code> values must match the configuration of the database node. If you are using PostgreSQL, your database must have the required extensions available for Cloud Foundry: <code>uuid-ossp</code>, <code>pgcrypto</code>, and <code>citext</code>. The <code>db_scheme</code> for a PostgreSQL database is <code>postgresql</code>, not <code>postgres</code>.
-	  </td>
+      </td>
   </tr>
   <tr>
     <td><pre><code>
