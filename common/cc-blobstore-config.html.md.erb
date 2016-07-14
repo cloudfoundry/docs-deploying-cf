@@ -122,12 +122,12 @@ To configure your blobstores to use the WebDAV protocol, perform the following s
       admin_users:
       - password: WEBDAV_BASIC_AUTH_PASSWORD
         username: WEBDAV_BASIC_AUTH_USER
-      port: 80
+      port: 8080
       secure_link:
         secret: WEBDAV_SECRET
       tls:
         cert: WEBDAV_CERT
-        port: 443
+        port: 4443
         private_key: WEBDAV_PRIVATE_KEY
         ca_cert: WEBDAV_CA_CERT_BUNDLE
     cc:
@@ -159,7 +159,7 @@ To configure your blobstores to use the WebDAV protocol, perform the following s
       * Replace <code>WEBDAV\_SECRET</code> with a secret phrase used to sign URLs.
       * Replace <code>WEBDAV\_CERT</code>, <code>WEBDAV\_PRIVATE\_KEY</code>, and <code>WEBDAV\_CA\_CERT\_BUNDLE</code> with proper TLS configuration that will be used for the internal blobstore.
       * Replace <code>WEBDAV\_PUBLIC\_ENDPOINT</code> with the public URL (e.g. `https://blobstore.SYSTEM-DOMAIN.example.com`) that resolves to your WebDAV installation.
-      * Replace <code>WEBDAV\_PRIVATE\_ENDPOINT</code> with a URL routable on your internal network. This defaults to `https://blobstore.service.cf.internal` if not set.
+      * Replace <code>WEBDAV\_PRIVATE\_ENDPOINT</code> with a URL routable on your internal network. This defaults to `https://blobstore.service.cf.internal:4443` if not set.
       * Replace <code>WEBDAV\_BASIC\_AUTH\_USER</code> and <code>WEBDAV\_BASIC\_AUTH\_PASSWORD</code> with Basic AUTH credentials that Cloud Controller can use to talk your WebDAV installation.
 1. To provide further configuration, create a <code>webnav\_config</code> hash.
 
