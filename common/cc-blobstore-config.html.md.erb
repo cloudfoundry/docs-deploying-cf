@@ -44,6 +44,42 @@ To use Fog blobstores with AWS credentials, perform the following steps:
 
 1. Further configuration can be provided through the <code>fog_connection</code> hash, which is passed through to the Fog gem.
 
+##<a id="fog-aws-sse"></a> Fog with AWS Server Side Encryption
+
+Amazon S3-Managed Encryption Keys (SSE-S3)
+
+Amazon S3 offers Server Side Encryption at rest. For more information on AWS encryption, see <a href="http://docs.aws.amazon.com/AmazonS3/latest/dev/UsingServerSideEncryption.html">here</a>.
+To configure server side encryption in your cloud foundry deployment, update your manifest to include a `fog_aws_storage_options` with `encryption` set to `AES256`, as follows:
+
+```
+cc:
+  buildpacks:
+    blobstore_type: fog
+    buildpack_directory_key: YOUR-AWS-BUILDPACK-BUCKET
+    fog_connection: &fog_connection
+      aws_access_key_id: AWS_ACCESS_KEY
+      aws_secret_access_key: AWS_SECRET_ACCESS_KEY
+      provider: AWS
+      region: us-east-1
+    fog_aws_storage_options: &fog_aws_storage_options
+      encryption: 'AES256'
+  droplets:
+    blobstore_type: fog
+    droplet_directory_key: YOUR-AWS-DROPLET-BUCKET
+    fog_connection: *fog_connection
+    fog_aws_storage_options: *fog_aws_storage_options
+  packages:
+    blobstore_type: fog
+    app_package_directory_key: YOUR-AWS-PACKAGE-BUCKET
+    fog_connection: *fog_connection
+    fog_aws_storage_options: *fog_aws_storage_options
+  resource_pool:
+    blobstore_type: fog
+    resource_directory_key: YOUR-AWS-RESOURCE-BUCKET
+    fog_connection: *fog_connection
+    fog_aws_storage_options: *fog_aws_storage_options
+```
+
 ##<a id="fog-aws-iam"></a> Fog with AWS IAM Instance Profiles
 
 To configure Fog blobstores to use <a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html">AWS IAM Instance Profiles</a>, perform the following steps:
