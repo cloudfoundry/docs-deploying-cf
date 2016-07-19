@@ -9,7 +9,11 @@ This topic describes the various options for configuring a blobstore for the Clo
 
 Cloud Controller has four types of objects that need to be stored in a blobstore: <code>buildpacks</code>, <code>droplets</code>, <code>packages</code>, and <code>resource_pool</code>. By default, the blobstore configuration uses the Fog Ruby gem, but can also use the WebDAV protocol.
 
-This document demonstrates three common blobstore configurations: Fog with AWS Credentials, Fog with AWS IAM Instance Profiles, and the WebDAV internal blobstore.
+This document demonstrates four common blobstore configurations: 
+* [Fog with AWS Credentials](#fog-aws-creds)
+* [Fog with AWS Server Side Encryption](#fog-aws-sse)
+* [Fog with AWS IAM Instance Profiles](#fog-aws-iam)
+* [WebDAV](#webdav) internal blobstore
 
 ##<a id="fog-aws-creds"></a> Fog with AWS Credentials
 
@@ -44,12 +48,13 @@ To use Fog blobstores with AWS credentials, perform the following steps:
 
 1. Further configuration can be provided through the <code>fog_connection</code> hash, which is passed through to the Fog gem.
 
-##<a id="fog-aws-sse"></a> Fog with AWS Server Side Encryption
+##<a id="fog-aws-sse"></a> Fog with AWS Server-Side Encryption
 
-Amazon S3-Managed Encryption Keys (SSE-S3)
+AWS S3 offers Server-Side Encryption at rest. For more information, see <a href="http://docs.aws.amazon.com/AmazonS3/latest/dev/UsingServerSideEncryption.html">Protecting Data Using Server-Side Encryption with Amazon S3-Managed Encryption Keys (SSE-S3)</a>.
 
-Amazon S3 offers Server Side Encryption at rest. For more information on AWS encryption, see <a href="http://docs.aws.amazon.com/AmazonS3/latest/dev/UsingServerSideEncryption.html">here</a>.
-To configure server side encryption in your cloud foundry deployment, update your manifest to include a `fog_aws_storage_options` with `encryption` set to `AES256`, as follows:
+To use Fog blobstores with AWS SSE-S3 encryption, perform the following steps:
+
+1. Insert the following configuration into your manifest under `properties.cc`:
 
 ```
 cc:
@@ -79,6 +84,10 @@ cc:
     fog_connection: *fog_connection
     fog_aws_storage_options: *fog_aws_storage_options
 ```
+
+1. Replace `AWS_ACCESS_KEY` and `AWS_SECRET_ACCESS_KEY` with your AWS credentials, and `YOUR-AWS-BUILDPACK-BUCKET`, `YOUR-AWS-DROPLET-BUCKET`, `YOUR-AWS-PACKAGE-BUCKET`, `YOUR-AWS-RESOURCE-BUCKET` with the names of your AWS buckets. Do not use periods (`.`) in your AWS bucket names. In the AWS console, you must assign your credentials an IAM policy that allows all S3 actions on all of these buckets. Further configuration can be provided through the <code>fog_connection</code> hash, which is passed through to the Fog gem.
+
+1. `fog_aws_storage_options` takes a hash with the key `encryption`. Operators can set its value to a type of encryption algorithm. In the configuration information above, `encryption` is set to `AES256` in order to enable AWS SSE-S3 encryption. Further configuration can be provided through the <code>fog_aws_storage_options</code> hash, which is passed through to the Fog gem.
 
 ##<a id="fog-aws-iam"></a> Fog with AWS IAM Instance Profiles
 
