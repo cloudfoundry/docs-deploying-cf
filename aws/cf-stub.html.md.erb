@@ -5,24 +5,29 @@ owner: Release Integration
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to create the Cloud Foundry deployment manifest for AWS. The manifest consists of two parts:
+This topic describes how to create the Cloud Foundry deployment manifest for Amazon Web Services (AWS). Before creating a manifest, you must have already [set up an environment](setup_aws.html) for Cloud Foundry on AWS and [deployed BOSH](setup_bosh_aws.html) on AWS.
 
-* The manifest stub, a YAML (.yml) configuration file.
-* 
+To create a Cloud Foundry manifest, you must perform the following steps:
 
- that the script `generate_deployment_manifest` combines with other configuration files in the `cf-release` repository to generate your Cloud Foundry deployment manifest.
+1. Use the BOSH CLI to [retrieve your BOSH Director UUID](#bosh-uuid), which you use to customize your manifest stub.
+1. Create a manifest stub in YAML format. See the [example manifest stub](#stub) for AWS below, and follow the [editing instructions](#editing) to customize it for your deployment.
+1. Use a script to combine the manifest stub with other configuration files in the `cf-release` repository to [generate your deployment manifest](#generate).
 
-Save a copy of the manifest stub as a YAML file in your deployment directory.
-Follow the [editing instructions](#editing) to customize the manifest stub with
-information about your environment.
+<p class="note"><strong>Note</strong>: AWS defaults to using Fog with AWS credentials for the Cloud Controller blobstore. For alternative blobstore configurations, see the <a href="/deploying/common/cc-blobstore-config.html">Cloud Controller Blobstore Configuration</a> topic.</p>
 
-AWS defaults to using Fog with AWS Credentials for the Cloud Controller blobstore. For alternative blobstore configurations, see <a href="/deploying/common/cc-blobstore-config.html">Cloud Controller Blobstore Configuration</a>.
+##<a id='bosh-uuid'></a> Step 1: Retrieve Your BOSH Director UUID
 
-##<a id="stub"></a>Cloud Foundry Deployment Manifest Stub for AWS ##
+<%= partial '../common/bosh_uuid' %>
+
+##<a id='stub'></a> Step 2: Create Your Manifest Stub
+
+Review the [example manifest stub](#example-stub) for AWS, and then follow the [editing instructions](#editing) to customize it for your deployment.
+
+###<a id="example-stub"></a>Cloud Foundry Deployment Manifest Stub for AWS
 
 <%= yield_for_code_snippet from: 'cloudfoundry/cf-release', at: 'cf-stub-aws' %>
 
-##<a id="editing"></a>Editing Instructions ##
+###<a id="editing"></a>Editing Instructions 
 
 <table border="1" class="nice">
   <tr>
@@ -284,6 +289,10 @@ properties:
     </td>
   </tr>
 </table>
+
+<%= partial '../common/additional_config' %>
+
+##<a id='generate'></a>Step 3: Generate Your Manifest
 
 <%= partial '../common/generic_manifest' %>
 

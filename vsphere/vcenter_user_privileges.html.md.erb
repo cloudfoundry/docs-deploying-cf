@@ -5,6 +5,12 @@ owner: Release Integration
 
 <strong><%= modified_date %></strong>
 
+This topic describes how to set up an environment for Cloud Foundry (CF) on vSphere. Before deploying CF, you must ensure that your vCenter user credentials have sufficient privileges to create CF components in vSphere.
+
+After granting the permissions described in this topic, continue preparing to deploy CF on vSphere by [initializing BOSH](https://bosh.io/docs/init-vsphere.html) and [customizing your Cloud Foundry deployment manifest](../common/vsphere-vcloud-cf-stub.html).
+
+Use the vCenter Operations Manager to ensure that you have the following user permissions:
+
 | Object                                      | Permission                               |
 | -----------                                 | ------------------------------           |
 | vCenter                                     |                                          |
