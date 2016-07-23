@@ -1,5 +1,5 @@
 ---
-title: Deploying Cloud Foundry on vSphere
+title: Preparing to Deploy on vSphere
 owner: Release Integration
 ---
 
@@ -7,15 +7,13 @@ owner: Release Integration
 
 ## Step 1: Environment Setup ##
 
-* [Privileges Required for vCenter User](vcenter_user_privileges.html): Ensure you have credentials with sufficient vCenter user permissions.
-
-<p class="note"><strong>Note</strong>: HAProxy is deployed by default as your external-facing load balancer. You can use F5 instead of HAProxy. However, setting up F5 requires advanced configuration. F5 setup instructions are not covered in this documentation.</p>
+* [Privileges Required for vCenter User](vcenter_user_privileges.html)
 
 ## Step 2: Deploy BOSH ##
 
-* [Initializing BOSH environment on vSphere](https://bosh.io/docs/init-vsphere.html).
+* [Initializing BOSH on vSphere](https://bosh.io/docs/init-vsphere.html)
 
 ## Step 3: Deploy Cloud Foundry ##
 
-* [Create a Deployment Manifest for Cloud Foundry](../common/create_a_manifest.html)
+* [Customizing the Cloud Foundry Deployment Manifest Stub for vSphere](../common/vsphere-vcloud-cf-stub.html)
 * [Deploying Cloud Foundry using BOSH](../common/deploy.html): Deploy!

@@ -5,17 +5,15 @@ owner: Release Integration
 
 <strong><%= modified_date %></strong>
 
-This topic describes the process for creating a manifest to deploy Cloud Foundry
-using BOSH-Lite. It assumes you have already setup BOSH-Lite and targeted the
-Director.
+This topic describes how to create the Cloud Foundry deployment manifest for BOSH-Lite. It assumes you have already [installed BOSH-Lite](https://github.com/cloudfoundry/bosh-lite/blob/master/README.md#install-bosh-lite) and the [BOSH CLI](https://bosh.io/docs/bosh-cli.html).
 
 ##<a id="create-stub"></a>Create a Deployment Manifest Stub (Optional for Virtualbox) ##
 
-If you deploy BOSH Lite to an AWS Vagrant VM, you must specify a system domain
+If you deploy BOSH-Lite to an AWS Vagrant VM, you must specify a system domain
 in a manifest stub. If you are deploying to a local Vagrant VM this step is not
 necessary.
 
-By default, BOSH Lite uses the system domain `bosh-lite.com`, which resolves
+By default, BOSH-Lite uses the system domain `bosh-lite.com`, which resolves
 to the address `10.244.0.34`. Update the system domain property to one of the
 following two values:
 
@@ -30,6 +28,20 @@ following two values:
     properties:
       system_domain: bosh-lite.com # Replace with your system domain
 ```
+
+##<a id='target'></a>Target Your BOSH Director
+
+Use the `bosh target` command with the address of your BOSH Director to
+connect to the BOSH Director. Log in with the default user name and password,
+`admin` and `admin`, or use the username and password that you set when you
+installed BOSH-Lite.
+<pre class="terminal">
+$ bosh target <span>https</span>://bosh.my-domain.example.com
+Target set to `bosh'
+Your username: admin
+Enter password: *****
+Logged in as 'admin'
+</pre>
 
 ##<a id="clone"></a>Clone the cf-release GitHub Repository ##
 

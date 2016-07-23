@@ -5,18 +5,29 @@ owner: Release Integration
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to customize the Cloud Foundry deployment manifest stub
-for vSphere, vCloud Air, or vCloud Director.  Follow the
-[editing instructions](#editing) to customize the manifest stub with information
-about your environment.
+This topic describes how to customize the Cloud Foundry deployment manifest stub for vSphere, vCloud Air, or vCloud Director. 
 
-vSphere defaults to using an internal WebDAV blobstore for the Cloud Controller. For alternative blobstore configurations, see <a href="/deploying/common/cc-blobstore-config.html">Cloud Controller Blobstore Configuration</a>.
+To create a Cloud Foundry manifest, you must perform the following steps:
 
-##<a id="stub"></a>Cloud Foundry Deployment Manifest Stub ##
+1. Use the BOSH CLI to [retrieve your BOSH Director UUID](#bosh-uuid), which you use to customize your manifest stub.
+1. Create a manifest stub in YAML format. See the [example manifest stub](#stub) for vSphere, vCloud Air, or vCloud Director below, and follow the [editing instructions](#editing) to customize it for your deployment.
+1. Use a script to combine the manifest stub with other configuration files in the `cf-release` repository to [generate your deployment manifest](#generate).
+
+<p class="note"><strong>Note</strong>: vSphere defaults to using an internal WebDAV blobstore for the Cloud Controller. For alternative blobstore configurations, see <a href="/deploying/common/cc-blobstore-config.html">Cloud Controller Blobstore Configuration</a>.</p>
+
+##<a id='bosh-uuid'></a> Step 1: Retrieve Your BOSH Director UUID
+
+<%= partial '../common/bosh_uuid' %>
+
+##<a id='stub'></a> Step 2: Create Your Manifest Stub
+
+Review the [example manifest stub](#example-stub), and then follow the [editing instructions](#editing) to customize it for your deployment.
+
+###<a id="example-stub"></a>Cloud Foundry Deployment Manifest Stub ##
 
 <%= yield_for_code_snippet from: 'cloudfoundry/cf-release', at: 'cf-stub-vsphere' %>
 
-##<a id="editing"></a>Editing Instructions ##
+###<a id="editing"></a>Editing Instructions ##
 
 <table border="1" class="nice">
   <tr>
@@ -252,3 +263,11 @@ jobs:
   </td>
   </tr>
 </table>
+
+<%= partial '../common/additional_config' %>
+
+<p class="note"><strong>Note</strong>: HAProxy is deployed by default as your external-facing load balancer. In vSphere, you can use F5 instead of HAProxy. However, setting up F5 requires advanced configuration. F5 setup instructions are not covered in this documentation.</p>
+
+##<a id='generate'></a>Step 3: Generate Your Manifest
+
+<%= partial '../common/generic_manifest' %>
