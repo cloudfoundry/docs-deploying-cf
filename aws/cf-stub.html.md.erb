@@ -129,6 +129,13 @@ properties:
   </tr>
   <tr>
     <td><pre><code>
+  ssl:
+    skip_cert_verify: true
+    </code></pre></td>
+    <td> Set <code>skip_cert_verify</code> to <code>true</code> to skip SSL certificate verification. If you want to use SSL certificates to secure traffic into your deployment, see the <a href="../../adminguide/securing-traffic.html">Securing Traffic into Cloud Foundry</a> topic.
+    </td>
+  <tr>
+    <td><pre><code>
   cc:
     staging_upload_user: STAGING_UPLOAD_USER
     staging_upload_password: STAGING_UPLOAD_PASSWORD
@@ -226,6 +233,10 @@ properties:
         secret: DOPPLER_SECRET
       gorouter:
         secret: GOROUTER_SECRET
+      tcp_emitter:
+        secret: TCP-EMITTER-SECRET
+      tcp_router:
+        secret: TCP-ROUTER-SECRET
       login:
         secret: LOGIN_CLIENT_SECRET
       notifications:
@@ -278,14 +289,14 @@ properties:
   <tr>
     <td><pre><code>
   hm9000:
-    ca_cert: HM9000_CA_CERT
-    server_cert: HM9000_SERVER_CERT
     server_key: HM9000_SERVER_KEY
-    agent_cert: HM9000_AGENT_CERT
-    agent_key: HM9000_AGENT_KEY
+    server_cert: HM9000_SERVER_CERT
+    client_key: HM9000_CLIENT_KEY
+    client_cert: HM9000_CLIENT_CERT
+    ca_cert: HM9000_CA_CERT
     </code></pre></td>
     <td>
-      Generate ssl certs for hm9000 and replace these values. You can use the <code>scripts/generate-hm9000-certs</code> script in the cf-release repository to generate self signed certs.
+      Generate SSL certs for HM9000 and replace these values. You can use the <code>scripts/generate-hm9000-certs</code> script in the cf-release repository to generate self signed certs.
     </td>
   </tr>
 </table>
