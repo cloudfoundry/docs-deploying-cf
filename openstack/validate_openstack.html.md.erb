@@ -135,12 +135,13 @@ Note that you can press `Ctrl-C` to exit the ping program. If you are not able t
 
 Your OpenStack might have API throttling. API throttling can cause BOSH requests to OpenStack to fail while waiting for the API throttle to expire.
 
-Use the following commands to determine if you are affected by API throttling:
+Create a VM and use the following commands to determine if you are affected by API throttling:
 
 <pre class="terminal">
 $ gem install fog
 $ fog openstack
->> 100.times { p Compute[:openstack].servers }
+>> vm = Compute[:openstack].servers.get(VM_UUID)
+>> 100.times { |i| vm.metadata.update('counter' => "#{i}") }
 </pre>
 
 If you are limited by API throttling, you will receive a 413 HTTP response.
