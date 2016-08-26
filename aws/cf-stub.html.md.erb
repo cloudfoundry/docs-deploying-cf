@@ -248,18 +248,43 @@ properties:
   <tr>
     <td><pre><code>
     jwt:
-      verification_key: JWT_VERIFICATION_KEY
-      signing_key: JWT_SIGNING_KEY
+      policy:
+        active_key_id: key-1
+        keys:
+          key-1:
+            signingKey: |
+              -----BEGIN RSA PRIVATE KEY-----
+              MIICXgIBAAKBgQDfTLadf6QgJeS2XXImEHMsa+1O7MmIt44xaL77N2K+J/JGpfV3
+              AnkyB06wFZ02sBLB7hko42LIsVEOyTuUBird/3vlyHFKytG7UEt60Fl88SbAEfsU
+              JN1i1aSUlunPS/NCz+BKwwKFP9Ss3rNImE9Uc2LMvGy153LHFVW2zrjhTwIDAQAB
+              AoGBAJDh21LRcJITRBQ3CUs9PR1DYZPl+tUkE7RnPBMPWpf6ny3LnDp9dllJeHqz
+              a3ACSgleDSEEeCGzOt6XHnrqjYCKa42Z+Opnjx/OOpjyX1NAaswRtnb039jwv4gb
+              RlwT49Y17UAQpISOo7JFadCBoMG0ix8xr4ScY+zCSoG5v0BhAkEA8llNsiWBJF5r
+              LWQ6uimfdU2y1IPlkcGAvjekYDkdkHiRie725Dn4qRiXyABeaqNm2bpnD620Okwr
+              sf7LY+BMdwJBAOvgt/ZGwJrMOe/cHhbujtjBK/1CumJ4n2r5V1zPBFfLNXiKnpJ6
+              J/sRwmjgg4u3Anu1ENF3YsxYabflBnvOP+kCQCQ8VBCp6OhOMcpErT8+j/gTGQUL
+              f5zOiPhoC2zTvWbnkCNGlqXDQTnPUop1+6gILI2rgFNozoTU9MeVaEXTuLsCQQDC
+              AGuNpReYucwVGYet+LuITyjs/krp3qfPhhByhtndk4cBA5H0i4ACodKyC6Zl7Tmf
+              oYaZoYWi6DzbQQUaIsKxAkEA2rXQjQFsfnSm+w/9067ChWg46p4lq5Na2NpcpFgH
+              waZKhM1W0oB8MX78M+0fG3xGUtywTx0D4N7pr1Tk2GTgNw==
+              -----END RSA PRIVATE KEY-----
     </code></pre></td>
-    <td>Generate a PEM-encoded RSA key pair, and replace <code>JWT_SIGNING_KEY</code> with the private key, and <code>JWT_VERIFICATION_KEY</code> with the corresponding public key. You can generate a key pair by using the command <code>ssh-keygen -f jwt-key.pem</code>. This creates <code>jwt-key.pem.pub</code>, which contains your public key, and <code>jwt-key.pem</code>, which contains your private key.<br/>
-    Paste in the full keys, including the <code>BEGIN</code> and <code>END</code> delimiter lines.
+    <td>Generate a PEM-encoded RSA key pair. This creates <code>jwt-key.pem.pub</code>, which contains your public key, and <code>jwt-key.pem</code>, which contains your private key.<br/>
+    Paste in the full key private, including the <code>BEGIN</code> and <code>END</code> delimiter lines.
+    For RSA keys, all that needs to be configured is the private key. You can configure as many keys as you wish, only one, <code>active_key_id</code>, will be used to sign tokens with.
+    The others are used for signature validation.
     </td>
   </tr>
   <tr>
     <td><pre><code>
     scim:
       users:
-        - admin|ADMIN_PASSWORD|scim.write,scim.read,o...
+      - name: admin
+        password: ADMIN_PASSWORD
+        groups:
+          - scim.write
+          - scim.read
+          - o...
     </code></pre></td>
     <td>Generate a secure password and replace <code>ADMIN_PASSWORD</code> with that value to set the password for the Admin user of your Cloud Foundry installation.
     </td>
