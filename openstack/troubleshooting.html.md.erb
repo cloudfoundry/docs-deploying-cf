@@ -28,6 +28,8 @@ Use `bosh deploy` to push these changes and then reboot your Warden / DEA VM.
 
 ## NFS and Cloud Controller
 
+<p class="note"><strong>Note</strong>: Cloud Foundry versions 231 and later use the WebDAV protocol instead of NFS.</p>
+
 If you get the following error when deploying an app to Cloud Foundry you may have an NFS related issue with the Cloud Controller:
 <pre class='terminal'>
 $ The app package is invalid: failed synchronizing resource pool File exists - /var/vcap/nfs/shared
