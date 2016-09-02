@@ -7,11 +7,13 @@ owner: Release Integration
 
 This topic helps you validate your target OpenStack in preparation for installing BOSH and deploying Cloud Foundry.
 
-You will need a running OpenStack environment. Note that only OpenStack releases newer than [Folsom](https://wiki.openstack.org/wiki/ReleaseNotes/Folsom) are supported.
+You need a running OpenStack environment. 
 
-You have two options to validate your OpenStack instance: automated or manual. For an automated validation, use the [cf-openstack-validator](https://github.com/cloudfoundry-incubator/cf-openstack-validator), maintained by the BOSH OpenStack CPI team. For manual validation, follow the steps below.
+<p class="note"><strong>Note</strong>: Cloud Foundry supports OpenStack releases newer than <a href="https://wiki.openstack.org/wiki/ReleaseNotes/Folsom">Folsom</a>.</p>
 
-The manual validation requirements listed here are considered necessary but not sufficient for BOSH to be able to use your OpenStack deployment. If you cannot perform any one of these tasks successfully, BOSH will not work; however, satisfying all these requirements does not ensure that BOSH will work.
+You can validate your OpenStack instance automatically or manually. To validate automatically, use the [cf-openstack-validator](https://github.com/cloudfoundry-incubator/cf-openstack-validator), maintained by the BOSH OpenStack CPI team. To validate manually, follow the procedures in this topic.
+
+The manual validation procedures are considered necessary but not sufficient for BOSH to be able to use your OpenStack deployment. If you cannot perform any one of these tasks successfully, BOSH will not work; however, satisfying all these requirements does not ensure that BOSH will work.
 
 See [Troubleshooting Cloud Foundry on OpenStack](./troubleshooting.html) for
 additional troubleshooting information.
