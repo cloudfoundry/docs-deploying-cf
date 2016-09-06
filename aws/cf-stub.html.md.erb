@@ -270,8 +270,8 @@ properties:
               -----END RSA PRIVATE KEY-----
     </code></pre></td>
     <td>Generate a PEM-encoded RSA key pair. This creates <code>jwt-key.pem.pub</code>, which contains your public key, and <code>jwt-key.pem</code>, which contains your private key.<br/>
-    Paste in the full key private, including the <code>BEGIN</code> and <code>END</code> delimiter lines.
-    For RSA keys, all that needs to be configured is the private key. You can configure as many keys as you wish, only one, <code>active_key_id</code>, will be used to sign tokens with.
+    You can generate a key pair by using the command <code>ssh-keygen -f jwt-key.pem</code>. This creates <code>jwt-key.pem.pub</code>, which contains your public key, and <code>jwt-key.pem</code>, which contains your private key. Paste in the full private key, including the <code>BEGIN</code> and <code>END</code> delimiter lines, under <code>signingKey</code>.</br>
+    For RSA keys, all that needs to be configured is the private key. You can configure as many keys as you wish. However, only one, <code>active_key_id</code>, will be used to sign tokens with.
     The others are used for signature validation.
     </td>
   </tr>
