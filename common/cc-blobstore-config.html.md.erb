@@ -88,7 +88,7 @@ To use Fog blobstores with AWS SSE-S3 encryption, perform the following steps:
 
 1. Replace `AWS_ACCESS_KEY` and `AWS_SECRET_ACCESS_KEY` with your AWS credentials, and `YOUR-AWS-BUILDPACK-BUCKET`, `YOUR-AWS-DROPLET-BUCKET`, `YOUR-AWS-PACKAGE-BUCKET`, `YOUR-AWS-RESOURCE-BUCKET` with the names of your AWS buckets. Do not use periods (`.`) in your AWS bucket names. In the AWS console, you must assign your credentials an IAM policy that allows all S3 actions on all of these buckets. Further configuration can be provided through the <code>fog_connection</code> hash, which is passed through to the Fog gem.
 
-1. `fog_aws_storage_options` takes a hash with the key `encryption`. Operators can set its value to a type of encryption algorithm. In the configuration information above, `encryption` is set to `AES256` in order to enable AWS SSE-S3 encryption. Further configuration can be provided through the <code>fog_aws_storage_options</code> hash, which is passed through to the Fog gem.
+1. `fog_aws_storage_options` takes a hash with the key `encryption`. Operators can set its value to a type of encryption algorithm. In the configuration information above, `encryption` is set to `AES256` in order to enable AWS SSE-S3 encryption. Further configuration can be provided through the `fog_aws_storage_options` hash, which is passed through to the Fog gem.
 
 ##<a id="fog-aws-iam"></a> Fog with AWS IAM Instance Profiles
 
