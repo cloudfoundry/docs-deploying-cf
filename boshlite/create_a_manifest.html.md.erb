@@ -24,9 +24,9 @@ following two values:
   xip.io, see [xip.io](http://xip.io/).
 
 ```
-    ---
-    properties:
-      system_domain: bosh-lite.com # Replace with your system domain
+---
+properties:
+  system_domain: bosh-lite.com # Replace with your system domain
 ```
 
 ##<a id='target'></a>Target Your BOSH Director
@@ -61,7 +61,7 @@ manifest, run the update script to fetch all the submodules.
     $ ./scripts/update
     </pre>
 
-1. Run `gem install bundler` to install `bundler`.
+1. Run `gem install bundler` to install [bundler](http://bundler.io/).
 1. Install [spiff](https://github.com/cloudfoundry-incubator/spiff).
 1. Use the `scripts/generate-bosh-lite-dev-manifest` command to create a
 deployment manifest and set it as the current BOSH deployment.
