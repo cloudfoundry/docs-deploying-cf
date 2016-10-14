@@ -51,9 +51,9 @@ To use Fog blobstores with AWS credentials, perform the following steps:
 
 ##<a id="fog-aws-sse"></a> Fog with AWS Server-Side Encryption
 
-AWS S3 offers Server-Side Encryption at rest. For more information, see <a href="http://docs.aws.amazon.com/AmazonS3/latest/dev/UsingServerSideEncryption.html">Protecting Data Using Server-Side Encryption with Amazon S3-Managed Encryption Keys (SSE-S3)</a>.
+AWS S3 offers Server-Side Encryption at rest. For more information, see <a href="http://docs.aws.amazon.com/AmazonS3/latest/dev/serv-side-encryption.html">Protecting Data Using Server-Side Encryption</a>.
 
-To use Fog blobstores with AWS SSE-S3 encryption, perform the following steps:
+<strong>AWS SSE-S3 blobstore encryption</strong>
 
 1. Insert the following configuration into your manifest under `properties.cc`:
 
@@ -89,6 +89,46 @@ To use Fog blobstores with AWS SSE-S3 encryption, perform the following steps:
 1. Replace `AWS_ACCESS_KEY` and `AWS_SECRET_ACCESS_KEY` with your AWS credentials, and `YOUR-AWS-BUILDPACK-BUCKET`, `YOUR-AWS-DROPLET-BUCKET`, `YOUR-AWS-PACKAGE-BUCKET`, `YOUR-AWS-RESOURCE-BUCKET` with the names of your AWS buckets. Do not use periods (`.`) in your AWS bucket names. In the AWS console, you must assign your credentials an IAM policy that allows all S3 actions on all of these buckets. Further configuration can be provided through the <code>fog_connection</code> hash, which is passed through to the Fog gem.
 
 1. `fog_aws_storage_options` takes a hash with the key `encryption`. Operators can set its value to a type of encryption algorithm. In the configuration information above, `encryption` is set to `AES256` in order to enable AWS SSE-S3 encryption. Further configuration can be provided through the `fog_aws_storage_options` hash, which is passed through to the Fog gem.
+
+<strong>AWS SSE-KMS blobstore encryption</strong>
+
+1. Get your KMS Key ID. For information on managing KMS keys, see <a href='http://docs.aws.amazon.com/kms/latest/developerguide/getting-started.html'>the getting started guide.</a>
+
+1. Insert the following configuration into your manifest under `properties.cc`:
+
+      ```
+      cc:
+        buildpacks:
+          blobstore_type: fog
+          buildpack_directory_key: YOUR-AWS-BUILDPACK-BUCKET
+          fog_connection: &fog_connection
+            aws_access_key_id: AWS_ACCESS_KEY
+            aws_secret_access_key: AWS_SECRET_ACCESS_KEY
+            provider: AWS
+            region: us-east-1
+          fog_aws_storage_options: &fog_aws_storage_options
+            encryption: 'aws:kms'
+            x-amz-server-side-encryption-aws-kms-key-id: "YOUR-AWS-KMS-KEY-ID"
+        droplets:
+          blobstore_type: fog
+          droplet_directory_key: YOUR-AWS-DROPLET-BUCKET
+          fog_connection: *fog_connection
+          fog_aws_storage_options: *fog_aws_storage_options
+        packages:
+          blobstore_type: fog
+          app_package_directory_key: YOUR-AWS-PACKAGE-BUCKET
+          fog_connection: *fog_connection
+          fog_aws_storage_options: *fog_aws_storage_options
+        resource_pool:
+          blobstore_type: fog
+          resource_directory_key: YOUR-AWS-RESOURCE-BUCKET
+          fog_connection: *fog_connection
+          fog_aws_storage_options: *fog_aws_storage_options
+      ```
+
+1. Replace `AWS_ACCESS_KEY` and `AWS_SECRET_ACCESS_KEY` with your AWS credentials. Replace `YOUR-AWS-BUILDPACK-BUCKET`, `YOUR-AWS-DROPLET-BUCKET`, `YOUR-AWS-PACKAGE-BUCKET`, `YOUR-AWS-RESOURCE-BUCKET` with the names of your AWS buckets. Replace `YOUR-AWS-KMS-KEY-ID` with your KMS Key ID. Do not use periods (`.`) in your AWS bucket names. In the AWS console, you must assign your credentials an IAM policy that allows all S3 actions on all of these buckets. Further configuration can be provided through the <code>fog_connection</code> hash, which is passed through to the Fog gem.
+
+1. `fog_aws_storage_options` takes a hash with the key `encryption`. Operators can set its value to a type of encryption algorithm. In the configuration information above, `encryption` is set to `aws:kms` in order to enable AWS SSE-KMS encryption. Further configuration can be provided through the `fog_aws_storage_options` hash, which is passed through to the Fog gem.
 
 ##<a id="fog-aws-iam"></a> Fog with AWS IAM Instance Profiles
 
