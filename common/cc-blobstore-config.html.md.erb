@@ -9,7 +9,7 @@ This topic describes the various options for configuring a blobstore for the Clo
 
 Cloud Controller has four types of objects that need to be stored in a blobstore: <code>buildpacks</code>, <code>droplets</code>, <code>packages</code>, and <code>resource_pool</code>. By default, the blobstore configuration uses the Fog Ruby gem, but can also use the WebDAV protocol.
 
-This document demonstrates four common blobstore configurations: 
+This document demonstrates five common blobstore configurations: 
 
 * [Fog with AWS Credentials](#fog-aws-creds)
 * [Fog with AWS Server Side Encryption](#fog-aws-sse)
@@ -157,7 +157,7 @@ If you are using the AWS console, an IAM Role is automatically assigned to an IA
   </code></pre>
 1. Assign all Cloud Controller jobs (<code>api\_z\*</code>) and Cloud Controller Worker jobs (<code>api\_worker\_z\*</code>) to the <code>cloud-controller-resource-pool</code>.
 
-##<a id="#fog-gcs"></a>Fog with Google Cloud Storage
+##<a id="fog-gcs"></a>Fog with Google Cloud Storage
 
 To configure your blobstores to use Google Cloud Storage Interoperability credentials, perform the following steps:
 
