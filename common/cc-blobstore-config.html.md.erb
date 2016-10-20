@@ -14,6 +14,7 @@ This document demonstrates four common blobstore configurations:
 * [Fog with AWS Credentials](#fog-aws-creds)
 * [Fog with AWS Server Side Encryption](#fog-aws-sse)
 * [Fog with AWS IAM Instance Profiles](#fog-aws-iam)
+* [Fog with Google Cloud Storage](#fog-gcs)
 * [WebDAV](#webdav) internal blobstore
 
 ##<a id="fog-aws-creds"></a> Fog with AWS Credentials
@@ -155,6 +156,40 @@ If you are using the AWS console, an IAM Role is automatically assigned to an IA
           iam\_instance\_profile: cloud-controller
   </code></pre>
 1. Assign all Cloud Controller jobs (<code>api\_z\*</code>) and Cloud Controller Worker jobs (<code>api\_worker\_z\*</code>) to the <code>cloud-controller-resource-pool</code>.
+
+##<a id="#fog-gcs"></a>Fog with Google Cloud Storage
+
+To configure your blobstores to use Google Cloud Storage Interoperability credentials, perform the following steps:
+
+1. Insert the following configuration into your manifest under `properties.cc`:
+
+    ```
+    cc:
+      buildpacks:
+        blobstore_type: fog
+        buildpack_directory_key: YOUR-GCS-BUILDPACK-BUCKET
+        fog_connection: &fog_connection
+          provider: Google
+          google_storage_access_key_id: GCS_ACCESS_KEY
+          google_storage_secret_access_key: GCS_SECRET_ACCESS_KEY
+      droplets:
+        blobstore_type: fog
+        droplet_directory_key: YOUR-GCS-DROPLET-BUCKET
+        fog_connection: *fog_connection
+      packages:
+        blobstore_type: fog
+        app_package_directory_key: YOUR-GCS-PACKAGE-BUCKET
+        fog_connection: *fog_connection
+      resource_pool:
+        blobstore_type: fog
+        resource_directory_key: YOUR-GCS-RESOURCE-BUCKET
+    ```
+
+1. Create an Interoperability key using these [instructions](https://cloud.google.com/storage/docs/migrating#keys)
+
+1. Replace ` GCS_ACCESS_KEY` and `GCS_SECRET_ACCESS_KEY` with your Cloud Storage credentials, and `YOUR-GCS-BUILDPACK-BUCKET`, `YOUR-GCS-DROPLET-BUCKET`, `YOUR-GCS-PACKAGE-BUCKET`, `YOUR-GCS-RESOURCE-BUCKET` with the names of your Cloud Storage buckets. Do not use periods (`.`) in your bucket names.
+
+1. Further configuration can be provided through the <code>fog_connection</code> hash, which is passed through to the Fog gem.
 
 ##<a id="webdav"></a>WebDAV
 
