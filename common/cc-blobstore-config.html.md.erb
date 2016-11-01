@@ -185,11 +185,11 @@ To configure your blobstores to use Google Cloud Storage Interoperability creden
         resource_directory_key: YOUR-GCS-RESOURCE-BUCKET
     ```
 
-1. Create an Interoperability key using these [instructions](https://cloud.google.com/storage/docs/migrating#keys)
+1. Create an Interoperability key using these [instructions](https://cloud.google.com/storage/docs/migrating#keys).
 
 1. Replace ` GCS_ACCESS_KEY` and `GCS_SECRET_ACCESS_KEY` with your Cloud Storage credentials, and `YOUR-GCS-BUILDPACK-BUCKET`, `YOUR-GCS-DROPLET-BUCKET`, `YOUR-GCS-PACKAGE-BUCKET`, `YOUR-GCS-RESOURCE-BUCKET` with the names of your Cloud Storage buckets. Do not use periods (`.`) in your bucket names.
 
-1. Further configuration can be provided through the <code>fog_connection</code> hash, which is passed through to the Fog gem.
+1. You can provide further configuration through the <code>fog_connection</code> hash, which is passed through to the Fog gem.
 
 ##<a id="webdav"></a>WebDAV
 
