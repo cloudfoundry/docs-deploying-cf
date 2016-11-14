@@ -234,7 +234,8 @@ properties:
     <td><pre><code>
     scim:
       users:
-        - admin|ADMIN_PASSWORD|scim.write,scim.read,o...
+      - name: admin
+        password: ADMIN_PASSWORD
     </code></pre></td>
     <td>Generate a secure password and replace <code>ADMIN_PASSWORD</code> with that value to set the password for the Admin user of your Cloud Foundry installation.
     </td>
