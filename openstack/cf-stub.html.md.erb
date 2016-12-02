@@ -230,7 +230,7 @@ properties:
 
     <p><code>openssl genrsa -des3 -out jwt-key.pem 2048 && openssl rsa -in jwt-key.pem -pubout > key.pub</code></p>
 
-    This process creates the <code>jwt-key.pem.pub</code> file, which contains your public key, and the <code>jwt-key.pem</code> file, which contains your private key. If you were prompted for a passphrase, you must strip it from the private key with: 
+    This process creates the <code>jwt-key.pem.pub</code> file, which contains your public key, and the <code>jwt-key.pem</code> file, which contains your private key. If you were prompted for a passphrase, you must strip it from the private key with the following command: 
 
     <p><code>openssl rsa -in jwt-key.pem -out jwt-key.pem</code></p>
     Paste in the full keys, including the <code>BEGIN</code> and <code>END</code> delimiter lines.
