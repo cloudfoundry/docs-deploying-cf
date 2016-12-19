@@ -15,6 +15,7 @@ This document demonstrates five common blobstore configurations:
 * [Fog with AWS Server Side Encryption](#fog-aws-sse)
 * [Fog with AWS IAM Instance Profiles](#fog-aws-iam)
 * [Fog with Google Cloud Storage](#fog-gcs)
+* [Fog with Azure Storage](#fog-azure)
 * [WebDAV](#webdav) internal blobstore
 
 ##<a id="fog-aws-creds"></a> Fog with AWS Credentials
@@ -230,6 +231,41 @@ To configure your blobstores to use Google Cloud Storage Interoperability creden
 1. Replace ` GCS_ACCESS_KEY` and `GCS_SECRET_ACCESS_KEY` with your Cloud Storage credentials, and `YOUR-GCS-BUILDPACK-BUCKET`, `YOUR-GCS-DROPLET-BUCKET`, `YOUR-GCS-PACKAGE-BUCKET`, `YOUR-GCS-RESOURCE-BUCKET` with the names of your Cloud Storage buckets. Do not use periods (`.`) in your bucket names.
 
 1. You can provide further configuration through the <code>fog_connection</code> hash, which is passed through to the Fog gem.
+
+##<a id="fog-azure"></a>Fog with Azure Storage
+
+To configure your blobstores to use Azure Storage credentials, perform the following steps:
+
+1. Insert the following configuration into your manifest under `properties.cc`:
+
+    ```
+    cc:
+      buildpacks:
+        blobstore_type: fog
+        buildpack_directory_key: YOUR-AZURE-BUILDPACK-CONTAINER
+        fog_connection: &fog_connection
+          provider: AzureRM
+          environment: AzureCloud
+          azure_storage_account_name: YOUR-AZURE-STORAGE-ACCOUNT-NAME
+          azure_storage_access_key: YOUR-AZURE-STORAGE-ACCESS-KEY
+      droplets:
+        blobstore_type: fog
+        droplet_directory_key: YOUR-AZURE-DROPLET-CONTAINER
+        fog_connection: *fog_connection
+      packages:
+        blobstore_type: fog
+        app_package_directory_key: YOUR-AZURE-PACKAGE-CONTAINER
+        fog_connection: *fog_connection
+      resource_pool:
+        blobstore_type: fog
+        resource_directory_key: YOUR-AZURE-RESOURCE-CONTAINER
+        fog_connection: *fog_connection
+    ```
+
+1. Replace `YOUR-AZURE-STORAGE-ACCOUNT-NAME` and `YOUR-AZURE-STORAGE-ACCESS-KEY` with your Azure Storage credentials, and `YOUR-AZURE-BUILDPACK-CONTAINER`, `YOUR-AZURE-DROPLET-CONTAINER`, `YOUR-AZURE-PACKAGE-CONTAINER`, `YOUR-AZURE-RESOURCE-CONTAINER` with the names of your Cloud Storage containers.
+
+1. You can provide further configuration through the <code>fog_connection</code> hash, which is passed through to the Fog gem.
+
 
 ##<a id="webdav"></a>WebDAV
 
