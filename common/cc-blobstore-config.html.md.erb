@@ -5,11 +5,11 @@ owner: CAPI
 
 <strong><%= modified_date %></strong>
 
-This topic describes the various options for configuring a blobstore for the Cloud Controller.
+This topic describes the options for configuring a blobstore for the Cloud Controller.
 
 Cloud Controller has four types of objects that need to be stored in a blobstore: <code>buildpacks</code>, <code>droplets</code>, <code>packages</code>, and <code>resource_pool</code>. By default, the blobstore configuration uses the Fog Ruby gem, but can also use the WebDAV protocol.
 
-This document demonstrates five common blobstore configurations: 
+This document describes five common blobstore configurations: 
 
 * [Fog with AWS Credentials](#fog-aws-creds)
 * [Fog with AWS Server Side Encryption](#fog-aws-sse)
@@ -20,7 +20,7 @@ This document demonstrates five common blobstore configurations:
 
 ##<a id="fog-aws-creds"></a> Fog with AWS Credentials
 
-To use Fog blobstores with AWS credentials, perform the following steps:
+To use Fog blobstores with AWS credentials, perform the steps below.
 
 1. Insert the following configuration into your manifest under `properties.cc`:
 
@@ -47,9 +47,11 @@ To use Fog blobstores with AWS credentials, perform the following steps:
         resource_directory_key: YOUR-AWS-RESOURCE-BUCKET
         fog_connection: *fog_connection
     ```
-1. Replace `AWS_ACCESS_KEY` and `AWS_SECRET_ACCESS_KEY` with your AWS credentials, and `YOUR-AWS-BUILDPACK-BUCKET`, `YOUR-AWS-DROPLET-BUCKET`, `YOUR-AWS-PACKAGE-BUCKET`, `YOUR-AWS-RESOURCE-BUCKET` with the names of your AWS buckets. Do not use periods (`.`) in your AWS bucket names. In the AWS console, you must assign your credentials an IAM policy that allows all S3 actions on all of these buckets.
+1. Replace `AWS_ACCESS_KEY` and `AWS_SECRET_ACCESS_KEY` with your AWS credentials.
 
-1. Further configuration can be provided through the <code>fog_connection</code> hash, which is passed through to the Fog gem.
+1. Replace `YOUR-AWS-BUILDPACK-BUCKET`, `YOUR-AWS-DROPLET-BUCKET`, `YOUR-AWS-PACKAGE-BUCKET`, and `YOUR-AWS-RESOURCE-BUCKET` with the names of your AWS buckets. Do not use periods (`.`) in your AWS bucket names. In the AWS console, you must assign your credentials an IAM policy that allows all S3 actions on all of these buckets. 
+
+1. You can provide further configuration through the <code>fog_connection</code> hash, which is passed through to the Fog gem.
 
 ##<a id="fog-aws-sse"></a> Fog with AWS Server-Side Encryption
 
@@ -88,13 +90,19 @@ AWS S3 offers Server-Side Encryption at rest. For more information, see <a href=
           fog_aws_storage_options: *fog_aws_storage_options
       ```
 
-1. Replace `AWS_ACCESS_KEY` and `AWS_SECRET_ACCESS_KEY` with your AWS credentials, and `YOUR-AWS-BUILDPACK-BUCKET`, `YOUR-AWS-DROPLET-BUCKET`, `YOUR-AWS-PACKAGE-BUCKET`, `YOUR-AWS-RESOURCE-BUCKET` with the names of your AWS buckets. Do not use periods (`.`) in your AWS bucket names. In the AWS console, you must assign your credentials an IAM policy that allows all S3 actions on all of these buckets. Further configuration can be provided through the <code>fog_connection</code> hash, which is passed through to the Fog gem.
+1. Replace `AWS_ACCESS_KEY` and `AWS_SECRET_ACCESS_KEY` with your AWS credentials.
 
-1. `fog_aws_storage_options` takes a hash with the key `encryption`. Operators can set its value to a type of encryption algorithm. In the configuration information above, `encryption` is set to `AES256` in order to enable AWS SSE-S3 encryption. Further configuration can be provided through the `fog_aws_storage_options` hash, which is passed through to the Fog gem.
+1. Replace `YOUR-AWS-BUILDPACK-BUCKET`, `YOUR-AWS-DROPLET-BUCKET`, `YOUR-AWS-PACKAGE-BUCKET`, and `YOUR-AWS-RESOURCE-BUCKET` with the names of your AWS buckets. Do not use periods (`.`) in your AWS bucket names. In the AWS console, you must assign your credentials an IAM policy that allows all S3 actions on all of these buckets. 
+
+1. You can provide further configuration through the <code>fog_connection</code> hash, which is passed through to the Fog gem.
+
+1. `fog_aws_storage_options` takes a hash with the key `encryption`. Operators can set its value to a type of encryption algorithm. In the configuration information above, `encryption` is set to `AES256` to enable AWS SSE-S3 encryption. 
+
+1. You can provide further configuration through the `fog_aws_storage_options` hash, which is passed through to the Fog gem.
 
 <strong>AWS SSE-KMS blobstore encryption</strong>
 
-1. Get your KMS Key ID. For information on managing KMS keys, see <a href='http://docs.aws.amazon.com/kms/latest/developerguide/getting-started.html'>the getting started guide.</a>
+1. Obtain your KMS Key ID. For information about managing KMS keys, see the <a href='http://docs.aws.amazon.com/kms/latest/developerguide/getting-started.html'>AWS Key Management Service Getting Started guide.</a>
 
 1. Insert the following configuration into your manifest under `properties.cc`:
 
@@ -128,13 +136,21 @@ AWS S3 offers Server-Side Encryption at rest. For more information, see <a href=
           fog_aws_storage_options: *fog_aws_storage_options
       ```
 
-1. Replace `AWS_ACCESS_KEY` and `AWS_SECRET_ACCESS_KEY` with your AWS credentials. Replace `YOUR-AWS-BUILDPACK-BUCKET`, `YOUR-AWS-DROPLET-BUCKET`, `YOUR-AWS-PACKAGE-BUCKET`, `YOUR-AWS-RESOURCE-BUCKET` with the names of your AWS buckets. Replace `YOUR-AWS-KMS-KEY-ID` with your KMS Key ID. Do not use periods (`.`) in your AWS bucket names. In the AWS console, you must assign your credentials an IAM policy that allows all S3 actions on all of these buckets. Further configuration can be provided through the <code>fog_connection</code> hash, which is passed through to the Fog gem.
+1. Replace `AWS_ACCESS_KEY` and `AWS_SECRET_ACCESS_KEY` with your AWS credentials. 
 
-1. `fog_aws_storage_options` takes a hash with the key `encryption`. Operators can set its value to a type of encryption algorithm. In the configuration information above, `encryption` is set to `aws:kms` in order to enable AWS SSE-KMS encryption. Further configuration can be provided through the `fog_aws_storage_options` hash, which is passed through to the Fog gem.
+1. Replace `YOUR-AWS-BUILDPACK-BUCKET`, `YOUR-AWS-DROPLET-BUCKET`, `YOUR-AWS-PACKAGE-BUCKET`, and `YOUR-AWS-RESOURCE-BUCKET` with the names of your AWS buckets.  Do not use periods (`.`) in your AWS bucket names. In the AWS console, you must assign your credentials an IAM policy that allows all S3 actions on all of these buckets. 
+
+1. You can provide further configuration through the <code>fog_connection</code> hash, which is passed through to the Fog gem.
+
+1. Replace `YOUR-AWS-KMS-KEY-ID` with your KMS Key ID. 
+
+1. `fog_aws_storage_options` takes a hash with the key `encryption`. Operators can set its value to a type of encryption algorithm. In the configuration information above, `encryption` is set to `aws:kms` to enable AWS SSE-KMS encryption. 
+
+1. You can provide further configuration through the `fog_aws_storage_options` hash, which is passed through to the Fog gem.
 
 ##<a id="fog-aws-iam"></a> Fog with AWS IAM Instance Profiles
 
-To configure Fog blobstores to use <a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html">AWS IAM Instance Profiles</a>, perform the following steps:
+To configure Fog blobstores to use <a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html">AWS IAM Instance Profiles</a>, perform the steps below.
 
 1. Insert the following configuration into your manifest under `properties.cc`:
 
@@ -160,47 +176,53 @@ To configure Fog blobstores to use <a href="http://docs.aws.amazon.com/IAM/lates
         resource_directory_key: YOUR-AWS-RESOURCE-BUCKET
         fog_connection: *fog_connection
     ```
-1. Replace `YOUR-AWS-BUILDPACK-BUCKET`, `YOUR-AWS-DROPLET-BUCKET`, `YOUR-AWS-PACKAGE-BUCKET`, `YOUR-AWS-RESOURCE-BUCKET` with the names of your AWS buckets. Do not use periods (`.`) in your AWS bucket names. To provide further configuration, create a <code>fog_connection</code> hash to pass through to the Fog gem.
+1. Replace `YOUR-AWS-BUILDPACK-BUCKET`, `YOUR-AWS-DROPLET-BUCKET`, `YOUR-AWS-PACKAGE-BUCKET`, and `YOUR-AWS-RESOURCE-BUCKET` with the names of your AWS buckets. Do not use periods (`.`) in your AWS bucket names. 
+
+1. To provide further configuration, create a <code>fog_connection</code> hash to pass through to the Fog gem.
+
 1. Complete the steps documented in the <a href="http://bosh.io/docs/aws-iam-instance-profiles.html#director-with-s3-blobstore">AWS CPI and Director configured with an S3 blobstore instructions</a> section of the BOSH documentation.
+
 1. In the AWS console, configure an additional <code>cloud-controller</code> IAM role that gives access to both the BOSH S3 buckets and the Cloud Controller S3 buckets specified in your manifest:
-<pre><code>
-{
-"Version": "2012-10-17",
-"Statement": [{
-  "Effect": "Allow",
-  "Action": [ "s3:\*" ],
-  "Resource": [
-    "arn:aws:s3:::BOSH\_BUCKET\_NAME",
-    "arn:aws:s3:::BOSH\_BUCKET\_NAME/\*",
-    "arn:aws:s3:::YOUR-AWS-BUILDPACK-BUCKET",
-    "arn:aws:s3:::YOUR-AWS-BUILDPACK-BUCKET/\*",
-    "arn:aws:s3:::YOUR-AWS-DROPLET-BUCKET",
-    "arn:aws:s3:::YOUR-AWS-DROPLET-BUCKET/\*",
-    "arn:aws:s3:::YOUR-AWS-PACKAGE-BUCKET",
-    "arn:aws:s3:::YOUR-AWS-PACKAGE-BUCKET/\*",
-    "arn:aws:s3:::YOUR-AWS-RESOURCE-BUCKET",
-    "arn:aws:s3:::YOUR-AWS-RESOURCE-BUCKET/\*",
-  ]
-}]
-}
-</pre></code>
+
+    ```
+    {
+      "Version": "2012-10-17",
+      "Statement": [{
+        "Effect": "Allow",
+        "Action": [ "s3:*" ],
+        "Resource": [
+          "arn:aws:s3:::BOSH_BUCKET_NAME",
+          "arn:aws:s3:::BOSH_BUCKET_NAME/*",
+          "arn:aws:s3:::YOUR-AWS-BUILDPACK-BUCKET",
+          "arn:aws:s3:::YOUR-AWS-BUILDPACK-BUCKET/*",
+          "arn:aws:s3:::YOUR-AWS-DROPLET-BUCKET",
+          "arn:aws:s3:::YOUR-AWS-DROPLET-BUCKET/*",
+          "arn:aws:s3:::YOUR-AWS-PACKAGE-BUCKET",
+          "arn:aws:s3:::YOUR-AWS-PACKAGE-BUCKET/*",
+          "arn:aws:s3:::YOUR-AWS-RESOURCE-BUCKET",
+          "arn:aws:s3:::YOUR-AWS-RESOURCE-BUCKET/*",
+        ]
+      }]
+    }
+    ```
 If you are using the AWS console, an IAM Role is automatically assigned to an IAM Instance Profile with the same name, <code>cloud-controller</code>. If you are not using the AWS console, you must create an IAM Instance Profile with a single assigned IAM Role.
 
 1. In your Cloud Foundry deployment manifest, configure a resource pool to use the <code>cloud-controller</code> IAM Instance Profile:
-  <pre><code>
-  resource\_pools:
-  \- name: cloud-controller-resource-pool
+
+    ```
+    resource_pools:
+    - name: cloud-controller-resource-pool
       network: default
       stemcell: { ... }
-      cloud\_properties:
-          instance\_type: c3.large
-          iam\_instance\_profile: cloud-controller
-  </code></pre>
-1. Assign all Cloud Controller jobs (<code>api\_z\*</code>) and Cloud Controller Worker jobs (<code>api\_worker\_z\*</code>) to the <code>cloud-controller-resource-pool</code>.
+      cloud_properties:
+        instance_type: c3.large
+        iam_instance_profile: cloud-controller
+    ```
+1. Assign all Cloud Controller jobs, identified by <code>api\_z\*</code>, and Cloud Controller Worker jobs, identified by <code>api\_worker\_z\*</code>, to the <code>cloud-controller-resource-pool</code>.
 
 ##<a id="fog-gcs"></a>Fog with Google Cloud Storage
 
-To configure your blobstores to use Google Cloud Storage Interoperability credentials, perform the following steps:
+To configure your blobstores to use Google Cloud Storage Interoperability credentials, perform the steps below.
 
 1. Insert the following configuration into your manifest under `properties.cc`:
 
@@ -226,15 +248,17 @@ To configure your blobstores to use Google Cloud Storage Interoperability creden
         resource_directory_key: YOUR-GCS-RESOURCE-BUCKET
     ```
 
-1. Create an Interoperability key using these [instructions](https://cloud.google.com/storage/docs/migrating#keys).
+1. Create an Interoperability key using the GCP  [instructions](https://cloud.google.com/storage/docs/migrating#keys).
 
-1. Replace ` GCS_ACCESS_KEY` and `GCS_SECRET_ACCESS_KEY` with your Cloud Storage credentials, and `YOUR-GCS-BUILDPACK-BUCKET`, `YOUR-GCS-DROPLET-BUCKET`, `YOUR-GCS-PACKAGE-BUCKET`, `YOUR-GCS-RESOURCE-BUCKET` with the names of your Cloud Storage buckets. Do not use periods (`.`) in your bucket names.
+1. Replace ` GCS_ACCESS_KEY` and `GCS_SECRET_ACCESS_KEY` with your Cloud Storage credentials.
+
+1. Replace `YOUR-GCS-BUILDPACK-BUCKET`, `YOUR-GCS-DROPLET-BUCKET`, `YOUR-GCS-PACKAGE-BUCKET`, and `YOUR-GCS-RESOURCE-BUCKET` with the names of your Cloud Storage buckets. Do not use periods (`.`) in your bucket names. 
 
 1. You can provide further configuration through the <code>fog_connection</code> hash, which is passed through to the Fog gem.
 
 ##<a id="fog-azure"></a>Fog with Azure Storage
 
-To configure your blobstores to use Azure Storage credentials, perform the following steps:
+To configure your blobstores to use Azure Storage credentials, perform the steps below.
 
 1. Insert the following configuration into your manifest under `properties.cc`:
 
@@ -262,16 +286,18 @@ To configure your blobstores to use Azure Storage credentials, perform the follo
         fog_connection: *fog_connection
     ```
 
-1. Replace `YOUR-AZURE-STORAGE-ACCOUNT-NAME` and `YOUR-AZURE-STORAGE-ACCESS-KEY` with your Azure Storage credentials, and `YOUR-AZURE-BUILDPACK-CONTAINER`, `YOUR-AZURE-DROPLET-CONTAINER`, `YOUR-AZURE-PACKAGE-CONTAINER`, `YOUR-AZURE-RESOURCE-CONTAINER` with the names of your Cloud Storage containers.
+1. Replace `YOUR-AZURE-STORAGE-ACCOUNT-NAME` and `YOUR-AZURE-STORAGE-ACCESS-KEY` with your Azure Storage credentials.
+
+1. Replace `YOUR-AZURE-BUILDPACK-CONTAINER`, `YOUR-AZURE-DROPLET-CONTAINER`, `YOUR-AZURE-PACKAGE-CONTAINER`, and `YOUR-AZURE-RESOURCE-CONTAINER` with the names of your Cloud Storage containers. 
 
 1. You can provide further configuration through the <code>fog_connection</code> hash, which is passed through to the Fog gem.
 
-
 ##<a id="webdav"></a>WebDAV
 
-To configure your blobstores to use the WebDAV protocol, perform the following steps:
+To configure your blobstores to use the WebDAV protocol, perform the steps below.
 
 1. Ensure your deployment manifest has a single instance of the blobstore job. For a working example, see the [example bosh-lite manifest](https://github.com/cloudfoundry/cf-release/blob/49a94e2/spec/fixtures/bosh-lite/cf-manifest.yml#L297-L329).
+
 1. Insert the following configuration into your manifest under `properties.blobstore` and `properties.cc`:
 
     ```
@@ -314,9 +340,9 @@ To configure your blobstores to use the WebDAV protocol, perform the following s
 1. Configure your WebDAV blobstores by performing the following steps:
       * Replace <code>WEBDAV\_BASIC\_AUTH\_USER</code> and <code>WEBDAV\_BASIC\_AUTH\_PASSWORD</code> with Basic AUTH credentials that Cloud Controller can use to talk your WebDAV installation.
       * Replace <code>WEBDAV\_SECRET</code> with a secret phrase used to sign URLs.
-      * Replace <code>WEBDAV\_CERT</code>, <code>WEBDAV\_PRIVATE\_KEY</code>, and <code>WEBDAV\_CA\_CERT\_BUNDLE</code> with proper TLS configuration that will be used for the internal blobstore.
-      * Replace <code>WEBDAV\_PUBLIC\_ENDPOINT</code> with the public URL (e.g. `https://blobstore.SYSTEM-DOMAIN.example.com`) that resolves to your WebDAV installation.
-      * Replace <code>WEBDAV\_PRIVATE\_ENDPOINT</code> with a URL routable on your internal network. This defaults to `https://blobstore.service.cf.internal:4443` if not set.
-      * Replace <code>WEBDAV\_BASIC\_AUTH\_USER</code> and <code>WEBDAV\_BASIC\_AUTH\_PASSWORD</code> with Basic AUTH credentials that Cloud Controller can use to talk your WebDAV installation.
-1. To provide further configuration, create a <code>webnav\_config</code> hash.
+      * Replace <code>WEBDAV\_CERT</code>, <code>WEBDAV\_PRIVATE\_KEY</code>, and <code>WEBDAV\_CA\_CERT\_BUNDLE</code> with proper TLS configuration that are used for the internal blobstore.
+      * Replace <code>WEBDAV\_PUBLIC\_ENDPOINT</code> with the public URL that resolves to your WebDAV installation. For example, `https://blobstore.SYSTEM-DOMAIN.example.com`.
+      * Replace <code>WEBDAV\_PRIVATE\_ENDPOINT</code> with a routable URL on your internal network. If not set, this defaults to `https://blobstore.service.cf.internal:4443`.
+      * Replace <code>WEBDAV\_BASIC\_AUTH\_USER</code> and <code>WEBDAV\_BASIC\_AUTH\_PASSWORD</code> with Basic AUTH credentials that Cloud Controller can use to communicate with your WebDAV installation.
 
+1. Create a <code>webnav\_config</code> hash to provide further configuration.
