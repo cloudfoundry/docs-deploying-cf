@@ -39,15 +39,14 @@ Review the [example manifest stub](#example-stub), and then follow the [editing 
 meta:
   environment: ENVIRONMENT
     </code></pre></td>
-    <td>Replace <code>ENVIRONMENT</code> with an arbitrary name describing your environment, e.g. <code>vsphere-prod</code>.
+    <td>Replace <code>ENVIRONMENT</code> with an arbitrary name describing your environment, for example <code>vsphere-prod</code>.
     </td>
   </tr>
   <tr>
     <td><pre><code>
 director_uuid: DIRECTOR_UUID
     </code></pre></td>
-    <td>Replace <code>DIRECTOR_UUID</code> with the BOSH Director UUID. Use
-    <code>bosh status --uuid</code> to view the BOSH Director UUID.
+    <td>Replace <code>DIRECTOR_UUID</code> with the BOSH Director UUID. Run the BOSH CLI command <code>bosh status --uuid</code> to view the BOSH Director UUID.
     </td>
   </tr>
   <tr>
@@ -83,9 +82,9 @@ networks:
       cloud_properties:
         name: VSPHERE_NETWORK_NAME_2
     </code></pre></td>
-    <td>This examples assumes a 2-network deployment. Replace <code>VSPHERE_NETWORK_NAME_1</code> and
+    <td>This examples assumes a two-network deployment. Replace <code>VSPHERE_NETWORK_NAME_1</code> and
     <code>VSPHERE_NETWORK_NAME_2</code> with names of networks in your vSphere datacenter. Update the values for
-    <code>range</code>, <code>reserved</code>, <code>static</code>, <code>dns</code> and <code>gateway</code> accordingly.
+    <code>range</code>, <code>reserved</code>, <code>static</code>, <code>dns</code>, and <code>gateway</code> accordingly.
     </td>
   </tr>
   <tr>
@@ -96,9 +95,9 @@ properties:
   app_domains:
    - APP_DOMAIN
     </code></pre></td>
-    <td>Replace <code>SYSTEM_DOMAIN</code> and <code>APP_DOMAIN</code> with the full domain you want associated with applications pushed to your Cloud Foundry installation. You must have already acquired these domains and configured their DNS records so that these domains resolve to your load balancer. Example: "cloud-09.cf-app.com."
+    <td>Replace <code>SYSTEM_DOMAIN</code> and <code>APP_DOMAIN</code> with the full domain you want associated with applications pushed to your Cloud Foundry installation, for example <code>cloud-09.cf-app.com</code>. You must have already acquired these domains and configured their DNS records so that these domains resolve to your load balancer.
     <br/><br/>
-    Pick any name you like for the <code>SYSTEM_DOMAIN_ORGANIZATION</code>, this organization will be created and configured to own the <code>SYSTEM_DOMAIN</code>.
+    Choose a name for the <code>SYSTEM_DOMAIN_ORGANIZATION</code>. This organization will be created and configured to own the <code>SYSTEM_DOMAIN</code>.
     </td>
   </tr>
   <tr>
@@ -115,7 +114,7 @@ properties:
     Replace <code>BULK_API_PASSWORD</code> with a password of your choosing. Health Manager uses this password to access the Cloud Controller bulk API.
     <br /><br />
     Replace <code>CCDB_ENCRYPTION_KEY</code> with a secure key that you generate to encrypt sensitive values in the Cloud Controller database. 
-    You can use any random string. For example, run the following command from a command line to generate a 32-character random string: <code>LC_ALL=C tr -dc 'A-Za-z0-9' < /dev/urandom | head -c 32 ; echo</code>.
+    You can use any random string. For example, run the following command from a command line to generate a 32-character random string: <code>LC_ALL=C tr -dc 'A-Za-z0-9' < /dev/urandom | head -c 32 ; echo</code>
     </td>
   </tr>
   <tr>
@@ -129,7 +128,7 @@ properties:
     agent_cert: CONSUL_AGENT_CERT
     agent_key: CONSUL_AGENT_KEY
     </code></pre></td>
-    <td>See the instructions on <a href="../common/consul-security.html">security configuration for consul</a>.
+    <td>See the <a href="../common/consul-security.html">Security Configuration for Consul</a> topic.
     </td>
   </tr>
   <tr>
@@ -137,7 +136,7 @@ properties:
   loggregator_endpoint:
     shared_secret: LOGGREGATOR_ENDPOINT_SHARED_SECRET
     </code></pre></td>
-    <td>Generate a string secret and replace <code>LOGGREGATOR_ENDPOINT_SHARED_SECRET</code>.
+    <td>Replace <code>LOGGREGATOR_ENDPOINT_SHARED_SECRET</code> with a secure string that you generate.
     </td>
   </tr>
   <tr>
@@ -146,8 +145,7 @@ properties:
     user: NATS_USER
     password: NATS_PASSWORD
     </code></pre></td>
-    <td>Replace <code>NATS_USER</code> and
-        <code>NATS_PASSWORD</code> with a username and secure password of your choosing. Cloud Foundry components use these credentials to communicate with each other over the NATS message bus.
+    <td>Replace <code>NATS_USER</code> and <code>NATS_PASSWORD</code> with a username and secure password of your choosing. Cloud Foundry components use these credentials to communicate with each other over the NATS message bus.
       </td>
   </tr>
   <tr>
@@ -158,8 +156,7 @@ properties:
       password: ROUTER_PASSWORD
     </code></pre></td>
     <td>
-      Replace <code>ROUTER_USER</code> and
-        <code>ROUTER_PASSWORD</code> with a username and secure password of your choosing.
+      Replace <code>ROUTER_USER</code> and <code>ROUTER_PASSWORD</code> with a username and secure password of your choosing.
       </td>
   </tr>
   <tr>
@@ -189,7 +186,7 @@ properties:
       notifications:
         secret: NOTIFICATIONS_CLIENT_SECRET
     </code></pre></td>
-    <td>Replace all the <code>*_SECRET</code>s with secure secrets that you generate.
+    <td>Replace the values for all <code>secret</code> keys with secure secrets that you generate.
     </td>
   </tr>
   <tr>
@@ -204,8 +201,8 @@ properties:
       RSA_PRIVATE_KEY
       -----END RSA PRIVATE KEY-----
     </code></pre></td>
-    <td>Generate a PEM-encoded RSA key pair, and replace <code>JWT_SIGNING_KEY</code> with the private key, and <code>JWT_VERIFICATION_KEY</code> with the corresponding public key. You can generate a key pair by using the command <code>openssl rsa -in jwt-key.pem -pubout > key.pub</code>. This process creates <code>jwt-key.pem.pub</code>, which contains your public key, and <code>jwt-key.pem</code>, which contains your private key.<br/>
-    Paste in the full keys, including the <code>BEGIN</code> and <code>END</code> delimiter lines.
+    <td>Generate a PEM-encoded RSA key pair, and replace <code>JWT_SIGNING_KEY</code> with the private key, and <code>JWT_VERIFICATION_KEY</code> with the corresponding public key. You can generate a key pair by running the command <code>openssl rsa -in jwt-key.pem -pubout > key.pub</code>. This command creates <code>jwt-key.pem.pub</code>, which contains your public key, and <code>jwt-key.pem</code>, which contains your private key.<br/>
+    Copy in the full keys, including the <code>BEGIN</code> and <code>END</code> delimiter lines.
     </td>
 
   </tr>
@@ -248,7 +245,7 @@ properties:
     agent_key: HM9000_AGENT_KEY
     </code></pre></td>
     <td>
-      Generate ssl certs for hm9000 and replace these values. You can use the <code>scripts/generate-hm9000-certs</code> script in the cf-release repository to generate self signed certs.
+      Generate SSL certificates for HM9000 and replace these values. You can use the <code>scripts/generate-hm9000-certs</code> script in the cf-release repository to generate self signed certificates.
     </td>
   </tr>
   <tr>
@@ -265,9 +262,7 @@ jobs:
         CERTIFICATE
         -----END CERTIFICATE-----
     </code></pre></td>
-    <td>Replace <code>RSA_PRIVATE_KEY</code> and <code>CERTIFICATE</code> with the private key and certificate for SSL
-    termination of the DNS domains you have pointed at the HA Proxy static IP. Typically this certificate will be for
-    wildcard subdomains of your <code>SYSTEM_DOMAIN</code> and <code>APPS_DOMAIN</code>.
+    <td>Replace <code>RSA_PRIVATE_KEY</code> and <code>CERTIFICATE</code> with the private key and certificate for SSL termination of the DNS domains you pointed at the HAProxy static IP address. Typically, this certificate is for wildcard subdomains of your <code>SYSTEM_DOMAIN</code> and <code>APPS_DOMAIN</code>.
   </td>
   </tr>
 </table>
