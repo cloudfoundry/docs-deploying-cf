@@ -146,15 +146,6 @@ This command generates two receipt files, `aws_rds_receipt.yml` and
 
     <p class="note"><strong>Note</strong>: If the <code>bosh aws create</code> command returns an error, you can destroy the AWS environment, as described in the next section.</p>
 
-1. From the AWS **EC2 Dashboard**, navigate to **Elastic IPs**.
-
-1. Click **Allocate New Address** or select an existing Elastic IP that does not already list an associated instance.
-
-1. With the IP address selected, associate it with the NAT VM instance by clicking **Actions** and selecting **Associate Address**.
-
-1. In the **Associate Address** popup, click into the **Instance** field and select the instance listed as running `cf_nat_box1`.
-<%= image_tag("aws_images/AWS-bind-IP-to-NAT.png") %>
-
 ## <a id="destroy-environment"></a>Destroy the AWS Environment ##
 You can use <code>bosh aws destroy</code> to delete all user-created structures in your AWS environment. This is useful if `bosh aws create` does not complete successfully and you want to reset your environment, or if you want to tear down your AWS structures for any other reason.
 
