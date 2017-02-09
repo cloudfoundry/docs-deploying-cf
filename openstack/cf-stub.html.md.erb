@@ -170,15 +170,63 @@ properties:
         cert: LOGGREGATOR_SYSLOGDRAINBINDER_CERT
         key: LOGGREGATOR_SYSLOGDRAINBINDER_KEY
     </code></pre></td>
-    <td>Replace <code>LOGGREGATOR_CA_CERT</code> with THIS AND THAT.<br /><br />
-        Replace <code>LOGGREGATOR_DOPPLER_CERT</code> with THIS AND THAT.<br />
-        Replace <code>LOGGREGATOR_DOPPLER_KEY</code> with THIS AND THAT.<br /><br />
-        Replace <code>LOGGREGATOR_TRAFFICCONTROLLER_CERT</code> with THIS AND THAT.<br />
-        Replace <code>LOGGREGATOR_TRAFFICCONTROLLER_KEY</code> with THIS AND THAT.<br /><br />
-        Replace <code>LOGGREGATOR_METRON_CERT</code> with THIS AND THAT.<br />
-        Replace <code>LOGGREGATOR_METRON_KEY</code> with THIS AND THAT.<br /><br />
-        Replace <code>LOGGREGATOR_SYSLOGDRAINBINDER_CERT</code> with THIS AND THAT.<br />
-        Replace <code>LOGGREGATOR_SYSLOGDRAINBINDER_KEY</code> with THIS AND THAT.<br />
+<td>To generate the certificates and keys for the Loggregator components, you need:
+  <ul> 
+    <li>The original CA certificate that was used to sign the keypairs for TLS
+        between the Cloud Controller and the Diego BBS</li>
+    <li>The <a href="https://github.com/cloudfoundry/cf-release/blob/master/scripts/generate-loggregator-certs">generate-loggregator-certs script</a> from the cf-release repo</li>
+  </ul>
+    Generate the certificates and keys for Loggregator using the generate-loggregator-certs script as follows:
+      <pre><code>$ generate-loggregator-certs CA_CERT CA_KEY</code></pre>
+    Where <code>CA_CERT</code> is the path and filename for the original CA certificate
+    and <code>CA_KEY</code> is the path and filename for the corresponding key.
+    <br>
+    For example,
+    <pre class=terminal>$ ./scripts/generate-loggregator-certs cf-ca.cert cf-ca.key</pre>
+    This script outputs a set of files that the contain the certificates and keys you need for Loggregator.
+
+    <table>
+      <tr>
+        <th>In the stub, replace&hellip;</th>
+        <th>with the contents of this file&hellip;</th>
+      </tr>
+      <tr>
+        <td><code>LOGGREGATOR_CA_CERT</code></td>
+        <td><code>loggregator-ca.crt</code></td>
+      </tr>
+      <tr>
+        <td><code>LOGGREGATOR_DOPPLER_CERT</code></td>
+        <td><code>doppler.crt</code></td>
+      </tr>
+      <tr>
+        <td><code>LOGGREGATOR_DOPPLER_KEY</code></td>
+        <td><code>doppler.key</code></td>
+      </tr>
+      <tr>
+        <td><code>LOGGREGATOR_TRAFFICCONTROLLER_CERT</code></td>
+        <td><code>trafficcontroller.crt</code></td>
+      </tr>
+      <tr>
+        <td><code>LOGGREGATOR_TRAFFICCONTROLLER_KEY</code></td>
+        <td><code>trafficontroller.key</code></td>
+      </tr>
+      <tr>
+        <td><code>LOGGREGATOR_METRON_CERT</code></td>
+        <td><code>metron.crt</code></td>
+      </tr>
+      <tr>
+        <td><code>LOGGREGATOR_METRON_KEY</code></td>
+        <td><code>metron.key</code></td>
+      </tr>
+      <tr>
+        <td><code>LOGGREGATOR_SYSLOGDRAINBINDER_CERT</code></td>
+        <td><code>syslogdrainbinder.crt</code></td>
+      </tr>
+      <tr>
+        <td><code>LOGGREGATOR_SYSLOGDRAINBINDER_KEY</code></td>
+        <td><code>syslogdrainbinder.key</code></td>
+      </tr>
+    </table>      
     </td>
   </tr>
   <tr>
