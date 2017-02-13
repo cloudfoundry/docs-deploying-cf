@@ -282,7 +282,25 @@ properties:
     <td>Generate a PEM-encoded RSA key pair, and replace <code>JWT_SIGNING_KEY</code> with the private key, and <code>JWT_VERIFICATION_KEY</code> with the corresponding public key. You can generate a key pair by running the command <code>openssl rsa -in jwt-key.pem -pubout > key.pub</code>. This command creates <code>jwt-key.pem.pub</code>, which contains your public key, and <code>jwt-key.pem</code>, which contains your private key.<br/>
     Copy in the full keys, including the <code>BEGIN</code> and <code>END</code> delimiter lines.
     </td>
-
+  </tr>
+  <tr>
+    <td><pre><code>
+    login:
+      saml:
+        serviceProviderKey:  |
+          -----BEGIN RSA PRIVATE KEY-----
+          MIICabcdefabcdefabcdefabcdef
+          MIICabcdefabcdefabcdefabcdef
+          MIICabcdefabcdefabcdefabcdef
+          MIICabcdefabcdefabcdefabcdef
+          MIICabcdefabcdefabcdefabcdef
+          MIICabcdefabcdefabcdefabcdef
+          MIICabcdefabcdefabcdefabcdef==
+          -----END RSA PRIVATE KEY-----
+    </code></pre></td>
+    <td>Generate a PEM-encoded RSA key pair. You can generate a key pair by running the command <code>openssl req -x509 -nodes -newkey rsa:2048 -days 365 -keyout key.pem -out cert.pem</code>. This command creates <code>cert.pem</code>, which contains your public key, and <code>key.pem</code>, which contains your private key. Copy in the full private key, including the <code>BEGIN</code> and <code>END</code> delimiter lines, under <code>serviceProviderKey</code>.</br>
+    For RSA keys, you only need to configure the private key.
+    </td>
   </tr>
   <tr>
     <td><pre><code>
