@@ -307,13 +307,7 @@ properties:
     <td><pre><code>
     jwt:
       verification_key: JWT_VERIFICATION_KEY
-      -----BEGIN PUBLIC KEY-----
-      PUBLIC_KEY
-      -----END PUBLIC KEY-----
       signing_key: JWT_SIGNING_KEY
-      -----BEGIN RSA PRIVATE KEY-----
-      RSA_PRIVATE_KEY
-      -----END RSA PRIVATE KEY-----
     </code></pre></td>
     <td>Generate a PEM-encoded RSA key pair, and replace <code>JWT_SIGNING_KEY</code> with the private key, and <code>JWT_VERIFICATION_KEY</code> with the corresponding public key. You can generate a key pair by running the following command:
 

@@ -341,23 +341,13 @@ properties:
   <tr>
     <td><pre><code>
     jwt:
-      policy:
-        active_key_id: key-1
-        keys:
-          key-1:
-            signingKey: |
-              -----BEGIN RSA PRIVATE KEY-----
-              MIICabcdefabcdefabcdefabcdef
-              MIICabcdefabcdefabcdefabcdef
-              MIICabcdefabcdefabcdefabcdef
-              MIICabcdefabcdefabcdefabcdef
-              MIICabcdefabcdefabcdefabcdef
-              MIICabcdefabcdefabcdefabcdef
-              MIICabcdefabcdefabcdefabcdef==
-              -----END RSA PRIVATE KEY-----
+      verification_key: JWT_VERIFICATION_KEY
+      signing_key: JWT_SIGNING_KEY
     </code></pre></td>
-    <td>Generate a PEM-encoded RSA key pair. You can generate a key pair by running the command <code>openssl rsa -in jwt-key.pem -pubout > key.pub</code>. This command creates <code>jwt-key.pem.pub</code>, which contains your public key, and <code>jwt-key.pem</code>, which contains your private key. Copy in the full private key, including the <code>BEGIN</code> and <code>END</code> delimiter lines, under <code>signingKey</code>.</br>
-    For RSA keys, you only need to configure the private key. You can configure as many keys as you wish. However, only one, <code>active_key_id</code>, will be used to sign tokens. The others keys are used for signature validation.
+    <td>Generate a PEM-encoded RSA key pair, and replace <code>JWT_SIGNING_KEY</code> with the private key, and <code>JWT_VERIFICATION_KEY</code>
+        with the corresponding public key. Generate a key pair by running the command <code>openssl rsa -in jwt-key.pem -pubout > key.pub</code>.
+        This command creates <code>jwt-key.pem.pub</code>, which contains your public key, and <code>jwt-key.pem</code>, which contains your private key.<br/>
+    Copy in the full keys, including the <code>BEGIN</code> and <code>END</code> delimiter lines.
     </td>
   </tr>
   <tr>
