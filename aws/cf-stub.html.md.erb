@@ -39,15 +39,16 @@ Review the [example manifest stub](#example-stub) for AWS, and then follow the [
 meta:
   environment: ENVIRONMENT
     </code></pre></td>
-    <td>Replace <code>ENVIRONMENT</code> with an arbitrary name describing your environment, e.g. <code>aws-prod</code>.
+    <td>Replace <code>ENVIRONMENT</code> with an arbitrary name describing your environment, for example <code>aws-prod</code>.
     </td>
   </tr>
   <tr>
     <td><pre><code>
 director_uuid: DIRECTOR_UUID
     </code></pre></td>
-    <td>Replace <code>DIRECTOR_UUID</code> with the BOSH Director UUID. Use
-    <code>bosh status --uuid</code> to view the BOSH Director UUID.
+    <td>Replace <code>DIRECTOR_UUID</code> with the BOSH Director UUID. Run the 
+      BOSH CLI command <code>bosh status --uuid</code> to view the BOSH 
+      Director UUID.
     </td>
   </tr>
   <tr>
@@ -82,11 +83,11 @@ networks:
           - cf
         subnet: (( properties.template_only.aws.subnet_ids.cf2 ))
       </code></pre></td>
-    <td>If you used <code>bosh aws create</code> to set up your AWS environment, change the IP addresses here if needed to fit the subnet range from your bosh.yml file.
+    <td>If you used <code>bosh aws create</code> to create your AWS environment, change the IP addresses here if needed to fit the subnet range defined in your `bosh.yml` file.
     <br/><br/>
-    This example assumes you have two subnets in your AWS VPC with CIDRs <code>10.10.16.0/20</code> and <code>10.10.80.0/20</code> respectively. Update the values for <code>range</code>, <code>reserved</code>, <code>static</code>, and <code>gateway</code> accordingly if the CIDRs for your subnets are different.
+    This example assumes you have two subnets in your AWS VPC with CIDRs <code>10.10.16.0/20</code> and <code>10.10.80.0/20</code>, respectively. Update the values for <code>range</code>, <code>reserved</code>, <code>static</code>, and <code>gateway</code> accordingly if the CIDRs for your subnets are different.
     <br/><br/>
-    This also assumes that you have a security group <code>cf</code> suitable for your Cloud Foundry VMs. Change this too if the name of your security group is different.
+    This example also assumes that you have a security group <code>cf</code> suitable for your Cloud Foundry VMs. Change this to the name of your security group if necessary.
       </td>
   </tr>
   <tr>
@@ -108,7 +109,7 @@ properties:
     <br/><br/>
     Replace <code>SUBNET_ID_1</code> and <code>SUBNET_ID_2</code> with the VPC subnet IDs corresponding to the subnets configured in the <code>networks</code> section above.
     <br/><br/>
-    If you used <code>bosh aws create</code>, the key and zone values are in  the <code>bosh_environment</code> file that you originally bootstrapped from and the subnet IDs correspond to the subnets cf1 and cf2 already created.
+    If you used <code>bosh aws create</code>, the key and zone values are in  the <code>bosh_environment</code> file that you originally bootstrapped from. The subnet IDs correspond to the subnets `cf1` and `cf2`.
     </td>
   </tr>
   <tr>
@@ -118,13 +119,13 @@ properties:
   app_domains:
    - APP_DOMAIN
       </code></pre></td>
-    <td>Replace <code>SYSTEM_DOMAIN</code> with the domain to be used for all system components. For instance, the Cloud Controller API will be reachable via <code>api.SYSTEM_DOMAIN</code>. Replace <code>APP_DOMAIN</code> with the domain you want associated with applications pushed to your Cloud Foundry installation. For instance, if you push <code>my-app</code> it will be reachable via <code>my-app.APP_DOMAIN</code>.
+    <td>Replace <code>SYSTEM_DOMAIN</code> with the domain to be used for all system components. For instance, the Cloud Controller API will be reachable through <code>api.SYSTEM_DOMAIN</code>. Replace <code>APP_DOMAIN</code> with the domain you want associated with applications pushed to your Cloud Foundry installation. For instance, if you push <code>my-app</code>, it will be available through <code>my-app.APP_DOMAIN</code>.
     <br/><br/>
-    It is generally advised to have separate values for <code>SYSTEM_DOMAIN</code> and <code>APP_DOMAIN</code>, e.g. <code>sys.cloud-09.cf-app.com</code> and <code>apps.cloud-09.cf-app.com</code>. For simple deployments, you can use the same domain for both, e.g. <code>cloud-09.cf-app.com</code>. However, you cannot have one domain property extend the other, e.g. you cannot have your <code>SYSTEM_DOMAIN</code> set to <code>cloud-09.cf-app.com</code> and your <code>APP_DOMAIN</code> set to <code>apps.cloud-09.cf-app.com</code>.
+    We recommend that you provide separate values for <code>SYSTEM_DOMAIN</code> and <code>APP_DOMAIN</code>, for example  <code>sys.cloud-09.cf-app.com</code> and <code>apps.cloud-09.cf-app.com</code>. For simple deployments, you can use the same domain for both, for example <code>cloud-09.cf-app.com</code>. However, you cannot have one domain property extend the other, for example you cannot have your <code>SYSTEM_DOMAIN</code> set to <code>cloud-09.cf-app.com</code> and your <code>APP_DOMAIN</code> set to <code>apps.cloud-09.cf-app.com</code>.
     <br/><br/>
-    If you used <code>bosh aws create</code>, use the same value for both, created by concatenating the <code>BOSH_VPC_SUBDOMAIN</code> and <code>BOSH_VPC_DOMAIN</code> values in the <code>bosh_environment</code> file.
+    If you used <code>bosh aws create</code>, concatenating the <code>BOSH_VPC_SUBDOMAIN</code> and <code>BOSH_VPC_DOMAIN</code> values in the <code>bosh_environment</code> file and use this concatenated string for both <code>SYSTEM_DOMAIN</code> and <code>APP_DOMAIN</code>.
     <br/><br/>
-    Pick any name you like for the <code>SYSTEM_DOMAIN_ORGANIZATION</code>. This organization will be created and configured to own the <code>SYSTEM_DOMAIN</code>.
+    Choose a name you for the <code>SYSTEM_DOMAIN_ORGANIZATION</code>. This organization will be created and configured to own the <code>SYSTEM_DOMAIN</code>.
     </td>
   </tr>
   <tr>
@@ -148,7 +149,7 @@ properties:
       Replace <code>BULK_API_PASSWORD</code> with a password of your choosing. Health Manager uses this password to access the Cloud Controller bulk API.
       <br /><br />
       Replace <code>CCDB_ENCRYPTION_KEY</code> with a secure key that you generate to encrypt sensitive values in the Cloud Controller database. 
-      You can use any random string. For example, run <code>md5 -qs "$(date)"</code> from a command line to generate a random string using the MD5 Hash Generator.
+      You can use any random string. For example, run the following command from a command line to generate a 32-character random string: <code>LC_ALL=C tr -dc 'A-Za-z0-9' < /dev/urandom | head -c 32 ; echo</code>
   </td>
   </tr>
   <tr>
@@ -168,9 +169,9 @@ properties:
     <td>
       This section of the stub defines how the Cloud Controller connects to its database. The values depend on how you deployed your database.
       <br /><br />
-      If you used <code>bosh aws create</code>, find the necessary values in the generated file <code>aws_rds_bosh_receipt.yml</code>. The database is an Amazon RDS instance, and the <code>CCDB_*</code> values in the stub must match the scheme, username, password, address, and port defined by AWS.
+      If you used <code>bosh aws create</code>, find the necessary values in the generated <code>aws_rds_bosh_receipt.yml</code> file. The database is an Amazon RDS instance, and the <code>CCDB_*</code> values in the stub must match the scheme, username, password, address, and port defined by AWS.
       <br /><br />
-      If you deployed your database without <code>bosh aws create</code>, such as using the <code>postgres</code> job in cf-release, the <code>CCDB_*</code> values must match the configuration of the database node. If you are using PostgreSQL, your database must have the required extensions available for Cloud Foundry: <code>uuid-ossp</code>, <code>pgcrypto</code>, and <code>citext</code>. The <code>db_scheme</code> for a PostgreSQL database is <code>postgresql</code>, not <code>postgres</code>.
+      If you deployed your database without <code>bosh aws create</code>, such as by using the <code>postgres</code> job in cf-release, you must set the <code>CCDB_*</code> values to match the configuration of the database node. If you are using PostgreSQL, your database must have the required extensions available for Cloud Foundry: <code>uuid-ossp</code>, <code>pgcrypto</code>, and <code>citext</code>. The <code>db_scheme</code> for a PostgreSQL database is <code>postgresql</code>, not <code>postgres</code>.
       </td>
   </tr>
   <tr>
@@ -184,8 +185,100 @@ properties:
     agent_cert: CONSUL_AGENT_CERT
     agent_key: CONSUL_AGENT_KEY
       </code></pre></td>
-    <td>See the instructions on <a href="../common/consul-security.html">security configuration for consul</a>.
+    <td>See the <a href="../common/consul-security.html">Security Configuration for Consul</a> topic.
       </td>
+  </tr>
+  <tr>
+    <td><pre><code>
+    login:
+      saml:
+        serviceProviderKey: SERVICE_PROVIDER_PRIVATE_KEY
+    </code></pre></td>
+    <td>Generate a PEM-encoded RSA key pair. You can generate a key pair by running 
+        the command <code>openssl req -x509 -nodes -newkey rsa:2048 -days 365 -keyout key.pem -out cert.pem</code>
+        This command creates <code>cert.pem</code>, which contains your public key, and <code>key.pem</code>,
+        which contains your private key. Replace <code>SERVICE_PROVIDER_PRIVATE_KEY</code> with the full private key, 
+        include the <code>BEGIN</code> and <code>END</code> delimiter lines, under <code>serviceProviderKey</code>.</br>
+        For RSA keys, you only need to configure the private key.
+    </td>
+  </tr>
+  <tr>
+    <td><pre><code>
+  loggregator:
+    tls:
+      ca_cert: LOGGREGATOR_CA_CERT
+      doppler:
+        cert: LOGGREGATOR_DOPPLER_CERT
+        key: LOGGREGATOR_DOPPLER_KEY
+      trafficcontroller:
+        cert: LOGGREGATOR_TRAFFICCONTROLLER_CERT
+        key: LOGGREGATOR_TRAFFICCONTROLLER_KEY
+      metron:
+        cert: LOGGREGATOR_METRON_CERT
+        key: LOGGREGATOR_METRON_KEY
+      syslogdrainbinder:
+        cert: LOGGREGATOR_SYSLOGDRAINBINDER_CERT
+        key: LOGGREGATOR_SYSLOGDRAINBINDER_KEY
+    </code></pre></td>
+ <td>To generate the certificates and keys for the Loggregator components, you need:
+  <ul> 
+    <li>The original CA certificate and key used to sign the keypairs for TLS
+        between the Cloud Controller and the Diego BBS</li>
+    <li>The <a href="https://github.com/cloudfoundry/cf-release/blob/master/scripts/generate-loggregator-certs">generate-loggregator-certs script</a> from the cf-release repo</li>
+  </ul>
+    Generate the certificates and keys for Loggregator using the generate-loggregator-certs script as follows:
+      <pre><code>$ generate-loggregator-certs CA_CERT CA_KEY</code></pre>
+    Where <code>CA_CERT</code> is the path and filename for the original CA certificate
+    and <code>CA_KEY</code> is the path and filename for the corresponding key.
+    <br>
+    For example,
+    <pre class=terminal>$ ./scripts/generate-loggregator-certs cf-ca.cert cf-ca.key</pre>
+    This script outputs a directory named <code>loggregator-certs</code> that contains a set of files 
+    with the certificates and keys you need for Loggregator.
+
+    <table>
+      <tr>
+        <th>In the stub, replace&hellip;</th>
+        <th>with the contents of this file&hellip;</th>
+      </tr>
+      <tr>
+        <td><code>LOGGREGATOR_CA_CERT</code></td>
+        <td><code>loggregator-ca.crt</code></td>
+      </tr>
+      <tr>
+        <td><code>LOGGREGATOR_DOPPLER_CERT</code></td>
+        <td><code>doppler.crt</code></td>
+      </tr>
+      <tr>
+        <td><code>LOGGREGATOR_DOPPLER_KEY</code></td>
+        <td><code>doppler.key</code></td>
+      </tr>
+      <tr>
+        <td><code>LOGGREGATOR_TRAFFICCONTROLLER_CERT</code></td>
+        <td><code>trafficcontroller.crt</code></td>
+      </tr>
+      <tr>
+        <td><code>LOGGREGATOR_TRAFFICCONTROLLER_KEY</code></td>
+        <td><code>trafficontroller.key</code></td>
+      </tr>
+      <tr>
+        <td><code>LOGGREGATOR_METRON_CERT</code></td>
+        <td><code>metron.crt</code></td>
+      </tr>
+      <tr>
+        <td><code>LOGGREGATOR_METRON_KEY</code></td>
+        <td><code>metron.key</code></td>
+      </tr>
+      <tr>
+        <td><code>LOGGREGATOR_SYSLOGDRAINBINDER_CERT</code></td>
+        <td><code>syslogdrainbinder.crt</code></td>
+      </tr>
+      <tr>
+        <td><code>LOGGREGATOR_SYSLOGDRAINBINDER_KEY</code></td>
+        <td><code>syslogdrainbinder.key</code></td>
+      </tr>
+    </table>      
+    </td>
   </tr>
   <tr>
     <td><pre><code>
@@ -201,8 +294,7 @@ properties:
     user: NATS_USER
     password: NATS_PASSWORD
       </code></pre></td>
-    <td>Replace <code>NATS_USER</code> and
-        <code>NATS_PASSWORD</code> with a username and secure password of your choosing. Cloud Foundry components use these credentials to communicate with each other over the NATS message bus.
+    <td>Replace <code>NATS_USER</code> and <code>NATS_PASSWORD</code> with a username and secure password of your choosing. Cloud Foundry components use these credentials to communicate with each other over the NATS message bus.
       </td>
   </tr>
   <tr>
@@ -213,8 +305,7 @@ properties:
       password: ROUTER_PASSWORD
       </code></pre></td>
     <td>
-      Replace <code>ROUTER_USER</code> and
-        <code>ROUTER_PASSWORD</code> with a username and secure password of your choosing.
+      Replace <code>ROUTER_USER</code> and <code>ROUTER_PASSWORD</code> with a username and secure password of your choosing.
       </td>
   </tr>
   <tr>
@@ -244,37 +335,19 @@ properties:
       notifications:
         secret: NOTIFICATIONS_CLIENT_SECRET
     </code></pre></td>
-    <td>Replace all the <code>*_SECRET</code>s with secure secrets that you generate.
+    <td>Replace the values for all <code>secret</code> keys with secure secrets that you generate.
       </td>
   </tr>
   <tr>
     <td><pre><code>
     jwt:
-      policy:
-        active_key_id: key-1
-        keys:
-          key-1:
-            signingKey: |
-              -----BEGIN RSA PRIVATE KEY-----
-              MIICXgIBAAKBgQDfTLadf6QgJeS2XXImEHMsa+1O7MmIt44xaL77N2K+J/JGpfV3
-              AnkyB06wFZ02sBLB7hko42LIsVEOyTuUBird/3vlyHFKytG7UEt60Fl88SbAEfsU
-              JN1i1aSUlunPS/NCz+BKwwKFP9Ss3rNImE9Uc2LMvGy153LHFVW2zrjhTwIDAQAB
-              AoGBAJDh21LRcJITRBQ3CUs9PR1DYZPl+tUkE7RnPBMPWpf6ny3LnDp9dllJeHqz
-              a3ACSgleDSEEeCGzOt6XHnrqjYCKa42Z+Opnjx/OOpjyX1NAaswRtnb039jwv4gb
-              RlwT49Y17UAQpISOo7JFadCBoMG0ix8xr4ScY+zCSoG5v0BhAkEA8llNsiWBJF5r
-              LWQ6uimfdU2y1IPlkcGAvjekYDkdkHiRie725Dn4qRiXyABeaqNm2bpnD620Okwr
-              sf7LY+BMdwJBAOvgt/ZGwJrMOe/cHhbujtjBK/1CumJ4n2r5V1zPBFfLNXiKnpJ6
-              J/sRwmjgg4u3Anu1ENF3YsxYabflBnvOP+kCQCQ8VBCp6OhOMcpErT8+j/gTGQUL
-              f5zOiPhoC2zTvWbnkCNGlqXDQTnPUop1+6gILI2rgFNozoTU9MeVaEXTuLsCQQDC
-              AGuNpReYucwVGYet+LuITyjs/krp3qfPhhByhtndk4cBA5H0i4ACodKyC6Zl7Tmf
-              oYaZoYWi6DzbQQUaIsKxAkEA2rXQjQFsfnSm+w/9067ChWg46p4lq5Na2NpcpFgH
-              waZKhM1W0oB8MX78M+0fG3xGUtywTx0D4N7pr1Tk2GTgNw==
-              -----END RSA PRIVATE KEY-----
+      verification_key: JWT_VERIFICATION_KEY
+      signing_key: JWT_SIGNING_KEY
     </code></pre></td>
-    <td>Generate a PEM-encoded RSA key pair. This creates <code>jwt-key.pem.pub</code>, which contains your public key, and <code>jwt-key.pem</code>, which contains your private key.<br/>
-    You can generate a key pair by using the command <code>openssl rsa -in jwt-key.pem -pubout > key.pub</code>. This process creates <code>jwt-key.pem.pub</code>, which contains your public key, and <code>jwt-key.pem</code>, which contains your private key. Paste in the full private key, including the <code>BEGIN</code> and <code>END</code> delimiter lines, under <code>signingKey</code>.</br>
-    For RSA keys, all that needs to be configured is the private key. You can configure as many keys as you wish. However, only one, <code>active_key_id</code>, will be used to sign tokens with.
-    The others are used for signature validation.
+    <td>Generate a PEM-encoded RSA key pair, and replace <code>JWT_SIGNING_KEY</code> with the private key, and <code>JWT_VERIFICATION_KEY</code>
+        with the corresponding public key. Generate a key pair by running the command <code>openssl rsa -in jwt-key.pem -pubout > key.pub</code>.
+        This command creates <code>jwt-key.pem.pub</code>, which contains your public key, and <code>jwt-key.pem</code>, which contains your private key.<br/>
+    Copy in the full keys, including the <code>BEGIN</code> and <code>END</code> delimiter lines.
     </td>
   </tr>
   <tr>
@@ -308,9 +381,9 @@ properties:
     <td>
       This section of the stub defines how the UAA connects to its database. The values depend on how you deployed your database.
       <br /><br />
-      If you used <code>bosh aws create</code>, find the necessary values in the generated file <code>aws_rds_bosh_receipt.yml</code>. The database is an Amazon RDS instance, and the <code>UAADB_*</code> values in the stub must match the scheme, username, password, address, and port defined by AWS.
+      If you used <code>bosh aws create</code>, find the necessary values in the generated <code>aws_rds_bosh_receipt.yml</code> file. The database is an Amazon RDS instance, and the <code>UAADB_*</code> values in the stub must match the scheme, username, password, address, and port defined by AWS.
       <br /><br />
-      If you deployed your database without <code>bosh aws create</code>, such as using the <code>postgres</code> job in cf-release, the <code>UAADB_*</code> values must match the configuration of the database node. If you are using PostgreSQL, your database must have the required extensions available for Cloud Foundry: <code>uuid-ossp</code>, <code>pgcrypto</code>, and <code>citext</code>. The <code>db_scheme</code> for a PostgreSQL database is <code>postgresql</code>, not <code>postgres</code>.
+      If you deployed your database without <code>bosh aws create</code>, such as by using the <code>postgres</code> job in cf-release, you must set the <code>UAADB_*</code> values to match the configuration of the database node. If you are using PostgreSQL, your database must have the required extensions available for Cloud Foundry: <code>uuid-ossp</code>, <code>pgcrypto</code>, and <code>citext</code>. The <code>db_scheme</code> for a PostgreSQL database is <code>postgresql</code>, not <code>postgres</code>.
       </td>
   </tr>
   <tr>
@@ -323,7 +396,7 @@ properties:
     ca_cert: HM9000_CA_CERT
     </code></pre></td>
     <td>
-      Generate SSL certs for HM9000 and replace these values. You can use the <code>scripts/generate-hm9000-certs</code> script in the cf-release repository to generate self signed certs.
+      Generate SSL certificates for HM9000 and replace these values. You can run the <code>scripts/generate-hm9000-certs</code> script in the cf-release repository to generate self-signed certificates.
     </td>
   </tr>
 </table>
