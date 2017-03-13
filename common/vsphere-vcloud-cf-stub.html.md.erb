@@ -107,16 +107,53 @@ properties:
     staging_upload_password: STAGING_UPLOAD_PASSWORD
     bulk_api_password: BULK_API_PASSWORD
     db_encryption_key: CCDB_ENCRYPTION_KEY
+    mutual_tls:
+      ca_cert: CC_MUTUAL_TLS_CA_CERT
+      public_cert: CC_MUTUAL_TLS_PUBLIC_CERT
+      private_key: CC_MUTUAL_TLS_PRIVATE_KEY
     </code></pre></td>
     <td>
-    The Cloud Controller API endpoint requires basic authentication. Replace <code>STAGING_UPLOAD_USER</code> and <code>STAGING_UPLOAD_PASSWORD</code> with a username and password of your choosing.
-    <br /><br />
-    Replace <code>BULK_API_PASSWORD</code> with a password of your choosing. Health Manager uses this password to access the Cloud Controller bulk API.
-    <br /><br />
-    Replace <code>CCDB_ENCRYPTION_KEY</code> with a secure key that you generate to encrypt sensitive values in the Cloud Controller database. 
-    You can use any random string. For example, run the following command from a command line to generate a 32-character random string: <code>LC_ALL=C tr -dc 'A-Za-z0-9' < /dev/urandom | head -c 32 ; echo</code>
+      The Cloud Controller API endpoint requires basic authentication. Replace <code>STAGING_UPLOAD_USER</code> and <code>STAGING_UPLOAD_PASSWORD</code> with a username and password of your choosing.
+      <br /><br />
+      Replace <code>BULK_API_PASSWORD</code> with a password of your choosing. Health Manager uses this password to access the Cloud Controller bulk API.
+      <br /><br />
+      Replace <code>CCDB_ENCRYPTION_KEY</code> with a secure key that you generate to encrypt sensitive values in the Cloud Controller database.
+      You can use any random string. For example, run the following command from a command line to generate a 32-character random string: <code>LC_ALL=C tr -dc 'A-Za-z0-9' < /dev/urandom | head -c 32 ; echo</code>
+      <br /><br />
+
+      To generate the certificates and keys for the <code>mutual_tls</code> section,
+      you need the <a href="https://github.com/cloudfoundry/cf-release/blob/master/scripts/generate-cf-diego-certs">generate-cf-diego-certs script</a>
+      from the cf-release repo.
+
+      Generate the certificates and keys for Cloud Controller using the generate-cf-diego-certs script as follows:
+        <pre><code>$ generate-cf-diego-certs</code></pre>
+      <br>
+      For example,
+      <pre class=terminal>$ ./scripts/generate-cf-diego-certs</pre>
+      This script outputs a directory named <code>cf-diego-certs</code> that contains a set of files
+      with the certificates and keys you need.
+
+      <table>
+        <tr>
+          <th>In the stub, replace&hellip;</th>
+          <th>with the contents of this file&hellip;</th>
+        </tr>
+        <tr>
+          <td><code>CC_MUTUAL_TLS_CA_CERT</code></td>
+          <td><code>cf-diego-ca.crt</code></td>
+        </tr>
+        <tr>
+          <td><code>CC_MUTUAL_TLS_PUBLIC_CERT</code></td>
+          <td><code>cloud_controller.crt</code></td>
+        </tr>
+        <tr>
+          <td><code>CC_MUTUAL_TLS_PRIVATE_KEY</code></td>
+          <td><code>cloud_controller.key</code></td>
+        </tr>
+      </table>
     </td>
   </tr>
+
   <tr>
     <td><pre><code>
   consul:
