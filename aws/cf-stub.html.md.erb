@@ -83,7 +83,7 @@ networks:
           - cf
         subnet: (( properties.template_only.aws.subnet_ids.cf2 ))
       </code></pre></td>
-    <td>If you used <code>bosh aws create</code> to create your AWS environment, change the IP addresses here if needed to fit the subnet range defined in your `bosh.yml` file.
+    <td>If you used <code>bosh aws create</code> to create your AWS environment, change the IP addresses here if needed to fit the subnet range defined in your <code>bosh.yml</code> file.
     <br/><br/>
     This example assumes you have two subnets in your AWS VPC with CIDRs <code>10.10.16.0/20</code> and <code>10.10.80.0/20</code>, respectively. Update the values for <code>range</code>, <code>reserved</code>, <code>static</code>, and <code>gateway</code> accordingly if the CIDRs for your subnets are different.
     <br/><br/>
@@ -109,7 +109,7 @@ properties:
     <br/><br/>
     Replace <code>SUBNET_ID_1</code> and <code>SUBNET_ID_2</code> with the VPC subnet IDs corresponding to the subnets configured in the <code>networks</code> section above.
     <br/><br/>
-    If you used <code>bosh aws create</code>, the key and zone values are in  the <code>bosh_environment</code> file that you originally bootstrapped from. The subnet IDs correspond to the subnets `cf1` and `cf2`.
+    If you used <code>bosh aws create</code>, the key and zone values are in  the <code>bosh_environment</code> file that you originally bootstrapped from. The subnet IDs correspond to the subnets <code>cf1</code> and <code>cf2</code>.
     </td>
   </tr>
 
@@ -158,17 +158,13 @@ properties:
       You can use any random string. For example, run the following command from a command line to generate a 32-character random string: <code>LC_ALL=C tr -dc 'A-Za-z0-9' < /dev/urandom | head -c 32 ; echo</code>
       <br /><br />
 
-      To generate the certificates and keys for the <code>mutual_tls</code> section,
-      you need the <a href="https://github.com/cloudfoundry/cf-release/blob/master/scripts/generate-cf-diego-certs">generate-cf-diego-certs script</a>
-      from the cf-release repo.
+      To generate the certificates and keys for the <code>mutual_tls</code> section, you need the <a href="https://github.com/cloudfoundry/cf-release/blob/master/scripts/generate-cf-diego-certs">generate-cf-diego-certs script</a> from the <code>cf-release</code> repository.
 
-      Generate the certificates and keys for Cloud Controller using the generate-cf-diego-certs script as follows:
-        <pre><code>$ generate-cf-diego-certs</code></pre>
+      Run the <code>generate-cf-diego-certs</code> script to generate the certificates and keys for Cloud Controller.
       <br>
-      For example,
+      For example, run the following in a terminal window:
       <pre class=terminal>$ ./scripts/generate-cf-diego-certs</pre>
-      This script outputs a directory named <code>cf-diego-certs</code> that contains a set of files
-      with the certificates and keys you need.
+      This script outputs a directory named <code>cf-diego-certs</code> that contains a set of files with the certificates and keys you need.
 
       <table>
         <tr>
@@ -259,21 +255,17 @@ properties:
         cert: LOGGREGATOR_SYSLOGDRAINBINDER_CERT
         key: LOGGREGATOR_SYSLOGDRAINBINDER_KEY
     </code></pre></td>
- <td>To generate the certificates and keys for the Loggregator components, you need:
+ <td>To generate the certificates and keys for the Loggregator components, you need the following:
   <ul> 
     <li>The original CA certificate and key used to sign the keypairs for TLS
         between the Cloud Controller and the Diego BBS</li>
-    <li>The <a href="https://github.com/cloudfoundry/cf-release/blob/master/scripts/generate-loggregator-certs">generate-loggregator-certs script</a> from the cf-release repo</li>
+    <li>The <a href="https://github.com/cloudfoundry/cf-release/blob/master/scripts/generate-loggregator-certs">generate-loggregator-certs script</a> from the cf-release repository</li>
   </ul>
-    Generate the certificates and keys for Loggregator using the generate-loggregator-certs script as follows:
-      <pre><code>$ generate-loggregator-certs CA_CERT CA_KEY</code></pre>
-    Where <code>CA_CERT</code> is the path and filename for the original CA certificate
-    and <code>CA_KEY</code> is the path and filename for the corresponding key.
+    Run <code>generate-loggregator-certs CA_CERT CA_KEY</code> to generate the certificates and keys for Loggregator. Replace <code>CA_CERT</code> with the path and filename for the original CA certificate, and <code>CA_KEY</code> with the path and filename for the corresponding key.
     <br>
-    For example,
+    For example, run the following in a terminal window:
     <pre class=terminal>$ ./scripts/generate-loggregator-certs cf-ca.cert cf-ca.key</pre>
-    This script outputs a directory named <code>loggregator-certs</code> that contains a set of files 
-    with the certificates and keys you need for Loggregator.
+    This script outputs a directory named <code>loggregator-certs</code> that contains a set of files with the certificates and keys you need for Loggregator.
 
     <table>
       <tr>
@@ -435,7 +427,7 @@ properties:
     ca_cert: HM9000_CA_CERT
     </code></pre></td>
     <td>
-      Generate SSL certificates for HM9000 and replace these values. You can run the <code>scripts/generate-hm9000-certs</code> script in the cf-release repository to generate self-signed certificates.
+      Generate SSL certificates for HM9000 and replace these values. You can run the <code>scripts/generate-hm9000-certs</code> script in the <code>cf-release</code> repository to generate self-signed certificates.
     </td>
   </tr>
 </table>

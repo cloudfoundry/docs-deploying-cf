@@ -21,10 +21,10 @@ This topic describes how to customize the Cloud Foundry deployment manifest for 
 
 To create a Cloud Foundry manifest, you must perform the following steps:
 
-1. Prepare workspace environment, download cf-release and install spiff.
+1. Prepare workspace environment, download cf-release and install [spiff](https://github.com/cloudfoundry-incubator/spiff).
 1.  Use the BOSH CLI to [retrieve your BOSH Director UUID](#bosh-uuid), which you use to customize your manifest stub.
 1. Create a manifest stub in YAML format.
-1. Use `spiff` to merge the manifest stub with azure IaaS configuration and other configuration files in the cf-release repository to generate your deployment manifest.
+1. Use [spiff](https://github.com/cloudfoundry-incubator/spiff) to merge the manifest stub with azure IaaS configuration and other configuration files in the `cf-release` repository to generate your deployment manifest.
 
 ##<a id='preparation'></a> Step 1: Preparation
 
@@ -36,7 +36,7 @@ To create a Cloud Foundry manifest, you must perform the following steps:
     $ export WORK_DIR=$(pwd)
     </pre>
 
-1. Clone the cf-release GitHub repository. Use `git clone` to clone the latest Cloud Foundry configuration files onto your machine.
+1. Clone the `cf-release` GitHub repository. Use `git clone` to clone the latest Cloud Foundry configuration files onto your machine.
 
     <pre class="terminal">
     $ git clone https://github.com/cloudfoundry/cf-release.git
@@ -111,7 +111,7 @@ networks:
         subnet_name: SUBNET_NAME_FOR_CLOUD_FOUNDRY
         security_group: NSG_NAME_FOR_CLOUD_FOUNDRY
     </code></pre></td>
-    <td>Update the values for <code>range</code>, <code>gateway</code>,  <code>reserved</code>, and <code>static</code> to reflect the available networks and IP addresses in your Azure network. Replace <code>VNET_NAME</code> with the virtual network name, <code>SUBNET_NAME_FOR_CLOUD_FOUNDRY</code> with the subnet name, <code>NSG_NAME_FOR_CLOUD_FOUNDRY</code> with the security group name of your Azure network.
+    <td>Update the values for <code>range</code>, <code>gateway</code>,  <code>reserved</code>, and <code>static</code> to reflect the available networks and IP addresses in your Azure network. Replace <code>VNET_NAME</code> with the virtual network name, <code>SUBNET_NAME_FOR_CLOUD_FOUNDRY</code> with the subnet name, and <code>NSG_NAME_FOR_CLOUD_FOUNDRY</code> with the security group name of your Azure network.
     </td>
   </tr>
   <tr>
@@ -120,7 +120,7 @@ properties:
   system_domain: SYSTEM_DOMAIN
   system_domain_organization: SYSTEM_DOMAIN_ORGANIZATION
     </code></pre></td>
-    <td>Replace <code>SYSTEM_DOMAIN</code> with the full domain you want associated with applications pushed to your Cloud Foundry installation. You must have already acquired these domains and configured their DNS records so that these domains resolve to your load balancer. For testing, you can use "CLOUD_FOUNDRY_PUBLIC_IP.xip.io" if you do not have a domain available. xip.io is not stable, and can sometimes fail to resolve to related IP addresses.
+    <td>Replace <code>SYSTEM_DOMAIN</code> with the full domain you want associated with applications pushed to your Cloud Foundry installation. You must have already acquired these domains and configured their DNS records so that these domains resolve to your load balancer. For testing, you can use <code>CLOUD_FOUNDRY_PUBLIC_IP.xip.io</code> if you do not have a domain available. <code>xip.io</code> is not stable, and can sometimes fail to resolve to related IP addresses.
     <br/><br/>
     Replace <code>SYSTEM_DOMAIN_ORGANIZATION</code> with your organization name. This organization will be created and configured to own the <code>SYSTEM_DOMAIN</code>.
     </td>
@@ -130,7 +130,7 @@ properties:
   ssl:
     skip_cert_verify: true
     </code></pre></td>
-    <td> Set <code>skip_cert_verify</code> to <code>true</code> to skip SSL certificate verification if you do not use a real domain and certificate. If you want to use SSL certificates to secure traffic into your deployment, see the <a href="http://docs.cloudfoundry.org/adminguide/securing-traffic.html">Securing Traffic into Cloud Foundry</a> topic.
+    <td> Set <code>skip_cert_verify</code> to <code>true</code> to skip SSL certificate verification if you do not use a real domain and certificate. If you want to use SSL certificates to secure traffic into your deployment, see the <a href="../adminguide/securing-traffic.html">Securing Traffic into Cloud Foundry</a> topic.
   </td>
   <tr>
     <td><pre><code>
@@ -167,7 +167,7 @@ properties:
     <br /><br />
     Replace <code>BLOBSTORE_SECRET</code> with a secure secret of your choosing.
     <br /><br />
-    Replace <code>BLOBSTORE_TLS_CERT</code>, <code>BLOBSTORE_PRIVATE_KEY</code>, and <code>BLOBSTORE_CA_CERT</code> with the blobstore TLS certificate, private key, and CA certificate. You can use the <code>${WORK_DIR}/cf-release/scripts/generate-blobstore-certs</code> script in the cf-release repository to generate self-signed certificates.
+    Replace <code>BLOBSTORE_TLS_CERT</code>, <code>BLOBSTORE_PRIVATE_KEY</code>, and <code>BLOBSTORE_CA_CERT</code> with the blobstore TLS certificate, private key, and CA certificate. You can use the <code>scripts/generate-blobstore-certs</code> script in the <code>cf-release</code> repository to generate self-signed certificates.
     </td>
   </tr>
   <tr>
@@ -181,7 +181,7 @@ properties:
     agent_cert: CONSUL_AGENT_CERT
     agent_key: CONSUL_AGENT_KEY
     </code></pre></td>
-    <td>See the <a href="../common/consul-security.html">Security Configuration for Consul</a> topic. You can use the <code>${WORK_DIR}/cf-release/scripts/generate-consul-certs</code> script in the cf-release repository to generate self-signed certificates.
+    <td>See the <a href="../common/consul-security.html">Security Configuration for Consul</a> topic. You can use the <code>scripts/generate-consul-certs</code> script in the <code>cf-release</code> repository to generate self-signed certificates.
     </td>
   </tr>
   <tr>
@@ -199,8 +199,8 @@ properties:
     </code></pre></td>
     <td>
       Generate SSL certs for etcd and replace these values. 
-      You can use the <code>${WORK_DIR}/cf-release/scripts/generate-etcd-certs</code> script 
-      in the cf-release repository to generate self signed certs.
+      You can use the <code>scripts/generate-etcd-certs</code> script 
+      in the <code>cf-release</code> repository to generate self signed certs.
     </td>
   </tr>
   <tr>
@@ -219,7 +219,7 @@ properties:
         key: TRAFFICCONTROLLER_KEY
     </code></pre></td>
     <td>
-       Generate SSL certs for loggregator and replace these values. You can use the <code>${WORK_DIR}/cf-release/scripts/generate-loggregator-certs</code> script in the cf-release repository to generate self signed certs.
+       Generate SSL certs for loggregator and replace these values. You can use the <code>scripts/generate-loggregator-certs</code> script in the <code>cf-release</code> repository to generate self signed certs.
     </td>
   </tr>
   <tr>
@@ -286,8 +286,8 @@ properties:
       verification_key: JWT_VERIFICATION_KEY
       signing_key: JWT_SIGNING_KEY
     </code></pre></td>
-    <td>Generate a PEM-encoded RSA key pair, and replace <code>JWT_SIGNING_KEY</code> with the private key, and <code>JWT_VERIFICATION_KEY</code> with the corresponding public key. You can generate a key pair by using the command: <code>openssl genrsa -out jwt_signing_key 2048 && openssl rsa -pubout -in jwt_signing_key -out jwt_verification_key</code>
-    Paste in the full keys with correct indentation, including the <code>BEGIN</code> and <code>END</code> delimiter lines.
+    <td>Generate a PEM-encoded RSA key pair, and replace <code>JWT_SIGNING_KEY</code> with the private key, and <code>JWT_VERIFICATION_KEY</code> with the corresponding public key. You can generate a key pair with the following command: <code>openssl genrsa -out jwt_signing_key 2048 && openssl rsa -pubout -in jwt_signing_key -out jwt_verification_key</code>
+    Copy and paste the full keys with correct indentation, including the <code>BEGIN</code> and <code>END</code> delimiter lines.
     </td>
   </tr>
   <tr>
@@ -311,7 +311,7 @@ properties:
     sslCertificate: UAA_SERVER_CERT
     sslPrivateKey: UAA_SERVER_KEY
     </code></pre></td>
-    <td>Replace <code>UAA_SERVER_CERT</code> and <code>UAA_SERVER_KEY</code> with UAA certificates. You can use the <code>${WORK_DIR}/cf-release/scripts/generate-uaa-certs</code> script in the cf-release repository to generate self-signed certificates.</td>
+    <td>Replace <code>UAA_SERVER_CERT</code> and <code>UAA_SERVER_KEY</code> with UAA certificates. You can use the <code>scripts/generate-uaa-certs</code> script in the <code>cf-release</code> repository to generate self-signed certificates.</td>
     </td>
   </tr>
   <tr>
@@ -346,7 +346,7 @@ properties:
     agent_key: HM9000_AGENT_KEY
     </code></pre></td>
     <td>
-      Generate SSL certificates for HM9000 and replace these values. You can use the <code>${WORK_DIR}/cf-release/scripts/generate-hm9000-certs</code> script in the cf-release repository to generate self-signed certificates.
+      Generate SSL certificates for HM9000 and replace these values. You can use the <code>scripts/generate-hm9000-certs</code> script in the <code>cf-release</code> repository to generate self-signed certificates.
     </td>
   </tr>
   <tr>
@@ -358,7 +358,7 @@ properties:
       serviceProviderCertificate: SAML_CERT
     </code></pre></td>
     <td>
-      Generate SSL certificates for SAML and replace these values. You can use the <code>${WORK_DIR}/cf-release/scripts/generate-certs</code> script in the cf-release repository to generate self-signed certificates.
+      Generate SSL certificates for SAML and replace these values. You can use the <code>scripts/generate-certs</code> script in the <code>cf-release</code> repository to generate self-signed certificates.
     </td>
   </tr>
   <tr>
@@ -405,4 +405,4 @@ jobs:
     $ bosh deployment ${WORK_DIR}/cf-deployment.yml
     </pre>
 
-Now you are ready to deploy Cloud Foundry. See the [Deploying Cloud Foundry](http://docs.cloudfoundry.org/deploying/common/deploy.html) topic for instructions.
+You are now ready to deploy Cloud Foundry. See the [Deploying Cloud Foundry](./common/deploy.html) topic for instructions.
