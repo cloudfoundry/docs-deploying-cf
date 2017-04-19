@@ -394,6 +394,13 @@ properties:
     </code></pre></td>
     <td>Generate a secure password and replace <code>ADMIN_PASSWORD</code> with that value to set the password for the Admin user of your Cloud Foundry installation.
     </td>
+  <tr>
+    <td><pre><code>
+    sslCertificate: UAA_SERVER_CERT
+    sslPrivateKey: UAA_SERVER_KEY
+    </code></pre></td>
+    <td>Replace <code>UAA_SERVER_CERT</code> and <code>UAA_SERVER_KEY</code> with UAA certificates. You can use the <code>scripts/generate-uaa-certs</code> script in the <code>cf-release</code> repository to generate self-signed certificates.</td>
+    </td>
   </tr>
   <tr>
     <td><pre><code>

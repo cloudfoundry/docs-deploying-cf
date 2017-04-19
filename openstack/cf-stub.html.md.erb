@@ -360,6 +360,14 @@ Run <code>generate-loggregator-certs CA_CERT CA_KEY</code> to generate the certi
   </tr>
   <tr>
     <td><pre><code>
+    sslCertificate: UAA_SERVER_CERT
+    sslPrivateKey: UAA_SERVER_KEY
+    </code></pre></td>
+    <td>Replace <code>UAA_SERVER_CERT</code> and <code>UAA_SERVER_KEY</code> with UAA certificates. You can use the <code>scripts/generate-uaa-certs</code> script in the <code>cf-release</code> repository to generate self-signed certificates.</td>
+    </td>
+  </tr>
+  <tr>
+    <td><pre><code>
   ccdb:
     roles:
     - name: ccadmin
