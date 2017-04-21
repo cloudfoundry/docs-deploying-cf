@@ -5,7 +5,7 @@ owner: Release Integration
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to create the Cloud Foundry deployment manifest for Amazon Web Services (AWS). Before creating a manifest, you must have already [set up an environment](setup_aws.html) for Cloud Foundry on AWS and [deployed BOSH](setup_bosh_aws.html) on AWS.
+This topic describes how to create the Cloud Foundry deployment manifest for Amazon Web Services (AWS). Before creating a manifest, you must have already [deployed BOSH](setup_bosh_aws.html) on AWS.
 
 To create a Cloud Foundry manifest, you must perform the following steps:
 
@@ -17,7 +17,34 @@ To create a Cloud Foundry manifest, you must perform the following steps:
 
 ##<a id='bosh-uuid'></a> Step 1: Retrieve Your BOSH Director UUID
 
-<%= partial '../common/bosh_uuid' %>
+To perform the following procedures, you must have completed the steps in the [Deploying BOSH on AWS](setup_bosh_aws.html) topic.
+
+Perform the following steps to retrieve your BOSH Director UUID:
+
+1. Log in to your BOSH Director with the username and password you [retrieved](setup_bosh_aws.html#connect-bosh-director) from `bbl`:
+  <pre class="terminal">
+  $ bosh log-in 
+  Username: YOUR-DIRECTOR-USERNAME
+  Password: YOUR-DIRECTOR-PASSWORD
+  </pre>
+1. Use the `bosh env` command to view information about your BOSH
+deployment. Record the UUID of the BOSH Director. You use the UUID when
+[customizing](#editing) the Cloud Foundry deployment manifest stub.
+  <pre class="terminal">
+  $ bosh env
+  Using environment 'example.com' as client 'admin'
+  <br>
+  Name      bosh
+  UUID      000a0f00-1111-444a-ab1a-999999999a9a
+  Version   1.3262.14.0 (00000000)
+  CPI       aws\_cpi
+  Features  compiled\_package\_cache: disabled
+              dns: enabled
+              snapshots: disabled
+  User      admin
+  <br>
+  Succeeded  
+  </pre>
 
 ##<a id='stub'></a> Step 2: Create Your Manifest Stub
 
@@ -83,12 +110,10 @@ networks:
           - cf
         subnet: (( properties.template_only.aws.subnet_ids.cf2 ))
       </code></pre></td>
-    <td>If you used <code>bosh aws create</code> to create your AWS environment, change the IP addresses here if needed to fit the subnet range defined in your <code>bosh.yml</code> file.
+    <td>This example assumes you have two subnets in your AWS VPC with CIDRs <code>10.10.16.0/20</code> and <code>10.10.80.0/20</code>, respectively. Update the values for <code>range</code>, <code>reserved</code>, <code>static</code>, and <code>gateway</code> accordingly if the CIDRs for your subnets are different.
     <br/><br/>
-    This example assumes you have two subnets in your AWS VPC with CIDRs <code>10.10.16.0/20</code> and <code>10.10.80.0/20</code>, respectively. Update the values for <code>range</code>, <code>reserved</code>, <code>static</code>, and <code>gateway</code> accordingly if the CIDRs for your subnets are different.
-    <br/><br/>
-    This example also assumes that you have a security group <code>cf</code> suitable for your Cloud Foundry VMs. Change this to the name of your security group if necessary.
-      </td>
+    To retrieve the name of your <code>security_groups</code>, display your cloud config by logging in to your BOSH Director and running the command <code>bosh cloud-config</code>. 
+    </td>
   </tr>
   <tr>
     <td><pre><code>
@@ -108,8 +133,6 @@ properties:
     Replace <code>ZONE_1</code> and <code>ZONE_2</code> with two EC2 Availability Zones that you want to distribute your deployment across.
     <br/><br/>
     Replace <code>SUBNET_ID_1</code> and <code>SUBNET_ID_2</code> with the VPC subnet IDs corresponding to the subnets configured in the <code>networks</code> section above.
-    <br/><br/>
-    If you used <code>bosh aws create</code>, the key and zone values are in  the <code>bosh_environment</code> file that you originally bootstrapped from. The subnet IDs correspond to the subnets <code>cf1</code> and <code>cf2</code>.
     </td>
   </tr>
 
@@ -123,8 +146,6 @@ properties:
     <td>Replace <code>SYSTEM_DOMAIN</code> with the domain to be used for all system components. For instance, the Cloud Controller API will be reachable through <code>api.SYSTEM_DOMAIN</code>. Replace <code>APP_DOMAIN</code> with the domain you want associated with applications pushed to your Cloud Foundry installation. For instance, if you push <code>my-app</code>, it will be available through <code>my-app.APP_DOMAIN</code>.
     <br/><br/>
     We recommend that you provide separate values for <code>SYSTEM_DOMAIN</code> and <code>APP_DOMAIN</code>, for example  <code>sys.cloud-09.cf-app.com</code> and <code>apps.cloud-09.cf-app.com</code>. For simple deployments, you can use the same domain for both, for example <code>cloud-09.cf-app.com</code>. However, you cannot have one domain property extend the other, for example you cannot have your <code>SYSTEM_DOMAIN</code> set to <code>cloud-09.cf-app.com</code> and your <code>APP_DOMAIN</code> set to <code>apps.cloud-09.cf-app.com</code>.
-    <br/><br/>
-    If you used <code>bosh aws create</code>, concatenating the <code>BOSH_VPC_SUBDOMAIN</code> and <code>BOSH_VPC_DOMAIN</code> values in the <code>bosh_environment</code> file and use this concatenated string for both <code>SYSTEM_DOMAIN</code> and <code>APP_DOMAIN</code>.
     <br/><br/>
     Choose a name you for the <code>SYSTEM_DOMAIN_ORGANIZATION</code>. This organization will be created and configured to own the <code>SYSTEM_DOMAIN</code>.
     </td>
@@ -204,9 +225,7 @@ properties:
     <td>
       This section of the stub defines how the Cloud Controller connects to its database. The values depend on how you deployed your database.
       <br /><br />
-      If you used <code>bosh aws create</code>, find the necessary values in the generated <code>aws_rds_bosh_receipt.yml</code> file. The database is an Amazon RDS instance, and the <code>CCDB_*</code> values in the stub must match the scheme, username, password, address, and port defined by AWS.
-      <br /><br />
-      If you deployed your database without <code>bosh aws create</code>, such as by using the <code>postgres</code> job in cf-release, you must set the <code>CCDB_*</code> values to match the configuration of the database node. If you are using PostgreSQL, your database must have the required extensions available for Cloud Foundry: <code>uuid-ossp</code>, <code>pgcrypto</code>, and <code>citext</code>. The <code>db_scheme</code> for a PostgreSQL database is <code>postgresql</code>, not <code>postgres</code>.
+      Set the <code>CCDB_*</code> values to match the configuration of the database node. If you are using PostgreSQL, your database must have the required extensions available for Cloud Foundry: <code>uuid-ossp</code>, <code>pgcrypto</code>, and <code>citext</code>. The <code>db_scheme</code> for a PostgreSQL database is <code>postgresql</code>, not <code>postgres</code>.
       </td>
   </tr>
   <tr>
@@ -419,9 +438,7 @@ properties:
     <td>
       This section of the stub defines how the UAA connects to its database. The values depend on how you deployed your database.
       <br /><br />
-      If you used <code>bosh aws create</code>, find the necessary values in the generated <code>aws_rds_bosh_receipt.yml</code> file. The database is an Amazon RDS instance, and the <code>UAADB_*</code> values in the stub must match the scheme, username, password, address, and port defined by AWS.
-      <br /><br />
-      If you deployed your database without <code>bosh aws create</code>, such as by using the <code>postgres</code> job in cf-release, you must set the <code>UAADB_*</code> values to match the configuration of the database node. If you are using PostgreSQL, your database must have the required extensions available for Cloud Foundry: <code>uuid-ossp</code>, <code>pgcrypto</code>, and <code>citext</code>. The <code>db_scheme</code> for a PostgreSQL database is <code>postgresql</code>, not <code>postgres</code>.
+      Set the <code>UAADB_*</code> values to match the configuration of the database node. If you are using PostgreSQL, your database must have the required extensions available for Cloud Foundry: <code>uuid-ossp</code>, <code>pgcrypto</code>, and <code>citext</code>. The <code>db_scheme</code> for a PostgreSQL database is <code>postgresql</code>, not <code>postgres</code>.
       </td>
   </tr>
   <tr>
