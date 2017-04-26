@@ -20,7 +20,9 @@ additional troubleshooting information.
 
 ## <a id="api_access"></a>Can you access the OpenStack APIs for your instance of OpenStack? ##
 
-You should verify that you have your OpenStack API credentials and can make API calls. Credentials are a combination of your user name, password, and the tenant or project your cloud is running under. Some providers also require you to set the region.
+You should verify that you have your OpenStack API credentials and can make API calls, and make sure you know wich endpoint must use(v2/v3). Credentials are a combination of your user name, password, and the tenant or project your cloud is running under. Some providers also require you to set the region.
+
+If your endpoint is v2:
 
 Create a `~/.fog` file and copy the below content:
 
@@ -34,6 +36,27 @@ Create a `~/.fog` file and copy the below content:
 </pre>
 
 <p class="note"><strong>Note</strong>: You need to include <code>/v2.0/tokens</code> in the auth URL above.</p>
+
+If your endpoint is v3 type:
+
+Create a `~/.fog` file and copy the below content:
+
+<pre class="yaml">
+:openstack:
+  :openstack_auth_url: https://HOST_IP:5000/v3/auth/tokens
+  :openstack_identity_endpoint: https://HOST_IP:5000/v3
+  :openstack_api_key: PASSWORD
+  :openstack_username: USERNAME
+  :openstack_project_name: OPENSTACK_PROJECT_NAME
+  :openstack_user_domain: OPENSTACK_DOMAIN_NAME
+  :openstack_project_domain: OPENSTACK_DOMAIN_NAME
+  :openstack_region: REGION
+  :openstack_default_key_name: NAME_OF_DEFAULT_KEYPAIR
+  :openstack_default_security_group: SECURITY_GROUP
+</pre>
+
+
+<p class="note"><strong>Note</strong>: You need to include <code>/v3.0/auth/tokens</code> in the auth URL above.  Also, make sure you are using https insted of http, you can find out the correct value in the openstack horizon dashboard.</p>
 
 Install the `fog` application in your terminal, then run it in interactive mode:
 
@@ -114,7 +137,7 @@ Create a security group for your virtual machines called **ping-test**.
 1. For **Code**, enter **-1**.
 1. For **Remote**, select **Security Group**.
 1. For **Security Group**, select **ping-test (Current)**.
-1. Click **Add**.
+1. Click **Add** type.
 
 <p class="note"><strong>Note</strong>: If your interface contains the <strong>Direction</strong> field, use the default <strong>Direction</strong> entry to create an <strong>Ingress</strong> rule. You must create an <strong>Egress</strong> rule that matches the <strong>Ingress</strong> rule settings.</p>
 
