@@ -32,8 +32,14 @@ bosh upload stemcell ~/downloads/light-bosh-stemcell-3202-aws-xen-hvm-ubuntu-tru
 
 ##<a id="create-release"></a>Build the Cloud Foundry Release##
 
-1. Use `bosh create release` to create a Cloud Foundry release.
-After some processing, this command prompts you for a development release name. The release names correspond to the files in `cf-release/releases`.
+Use `bosh create release` to create a Cloud Foundry release.
+
+<pre class="terminal">
+$ bosh create release
+</pre>
+
+After some processing, this command prompts you for a development release name.
+The release names correspond to the files in `cf-release/releases`.
 
 ##<a id="upload-release"></a>Upload the Cloud Foundry Release##
 
