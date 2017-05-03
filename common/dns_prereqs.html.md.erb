@@ -1,0 +1,63 @@
+---
+title: Setting Up DNS for Your Environment
+owner: Release Integration
+---
+
+<strong><%= modified_date %></strong>
+
+This topic describes how to set up DNS for your Cloud Foundry environment. 
+
+##<a id='domains'></a> Domains
+
+Your must create several wildcard DNS records to point to your load balancer(s) or router(s). Consult the following table.
+
+<table>
+<tr>
+<th>Protocol</th>
+<th>Example</th>
+<th>Notes</th>
+</tr>
+<tr>
+<td>TCP</td>
+<td>*.tcp.example.com</td>
+<td>This handles TCP traffic destined for the TCP Router.</td>
+</tr>
+<tr>
+<td>HTTP</td>
+<td>*.sys.example.com</td>
+<td>This is the system domain that handles HTTP traffic for system components destined for the GoRouter.</td>
+</tr>
+<tr>
+<td>HTTP</td>
+<td>*.example.com</td>
+<td>This is the app domain that handles HTTP traffic for applications destined for the GoRouter.</td>
+</tr>
+<tr>
+<td>WebSockets</td>
+<td>*.ws.example.com</td>
+<td>This is an optional domain that handles WebSocket traffic destined for the GoRouter.</td>
+</tr>
+<tr>
+<td>SSH</td>
+<td>*.ssh.example.com</td>
+<td>This is an optional domain that provides SSH access to application containers.</td>
+</tr>
+</table>
+
+<p class="note"><strong>Note</strong>: Cloud Foundry gives each application its own hostname in your app domain. With a wildcard DNS record, every hostname in your domain resolves to the IP address of your router or load balancer, and you do not need to configure an A record for each app hostname. For example, if you create a DNS record for a system domain <code>*.example.com</code> pointing to your router, every application deployed to the <code>example.com</code> domain resolves to the IP address of your router.</p>
+
+##<a id='examples'></a> Example Topologies
+
+Your exact configuration will vary significantly depending on your IaaS and your load balancing configuration. Below are two example topologies: the [first](#aws) is an Amazon Web Services (AWS) deployment using Elastic Load Balancer (ELBs), and the [second](#haproxy) uses HAProxy for load balancing.
+
+###<a id='aws'></a> AWS
+
+This topology has DNS configured to point five domains to four ELBs:
+
+<%= image_tag('aws-dns-prereq.png') %>
+
+###<a id='haproxy'></a> HAProxy
+
+This topology has DNS configured to point five domains to one HAProxy:
+
+<%= image_tag('haproxy-dns-prereq.png') %>
