@@ -166,7 +166,7 @@ properties:
     - 169.254.0.0/16
     - 10.0.0.0/16
   </code></pre></td>
-    <td></td>
+  <td>These properties determine which subnets the DEAs can reach. The `allow_networks` CIDR blocks hould match your internal subnet.</td>
   </tr>
   <tr>
     <td><pre><code>
@@ -362,7 +362,9 @@ properties:
         <td><code>LOGGREGATOR_SYSLOGDRAINBINDER_KEY</code></td>
         <td><code>syslogdrainbinder.key</code></td>
       </tr>
-    </table>      
+    </table>
+    <br>
+    To obtain the values for <code>LOGGREGATOR_STATSDINJECTOR_CERT</code> and <code>LOGGREGATOR_STATSDINJECTOR_KE</code>, run the <a href="https://github.com/cloudfoundry/cf-release/blob/master/scripts/generate-statsd-injector-certs">generate-statsd-injector-certs</a> script from the cf-release repository. See the <a href="https://github.com/cloudfoundry/cf-release/blob/master/on-tls-certificates.md#last-generate-the-certs-for-statsd-injector">documentation</a> for more information.      
     </td>
   </tr>
   <tr>
@@ -421,7 +423,8 @@ properties:
       cc-service-dashboards:
         secret: CC_SERVICE_DASHBOARDS_SECRET
     </code></pre></td>
-    <td>Replace the values for all <code>secret</code> keys with secure secrets that you generate. <br><br>You can configure container-to-container networking in this section. If you want to deploy container-to-container networking, see the <i>Enable on an IaaS</i> section of the <a href="../../devguide/deploy-apps/cf-networking.html#iaas">Administering Container-to-Container Networking</a> topic, beginning with step 4.
+    <td>You can use the <code>scripts/generate-uaa-certs</code> script in the <code>cf-release</code> repository to generate the <code>UAA_CA_CERT</code>.
+    <br>Replace the values for all <code>secret</code> keys with secure secrets that you generate. <br><br>You can configure container-to-container networking in this section. If you want to deploy container-to-container networking, see the <i>Enable on an IaaS</i> section of the <a href="../../devguide/deploy-apps/cf-networking.html#iaas">Administering Container-to-Container Networking</a> topic, beginning with step 4.
     </td>
   </tr>
   <tr>
