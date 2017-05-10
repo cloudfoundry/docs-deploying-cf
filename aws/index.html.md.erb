@@ -5,17 +5,16 @@ owner: Release Integration
 
 <strong><%= modified_date %></strong>
 
-The following steps document an example procedure for deploying Cloud Foundry on AWS. The process includes several steps that may be expensive and time-consuming, such as provisioning AWS Relational Database Service (RDS)
-instances. For a simpler deployment, refer to the
+The following steps document an example procedure for deploying Cloud Foundry on Amazon Web Services (AWS). The process includes several steps that may be expensive and time-consuming, such as provisioning AWS Relational Database Service (RDS) instances. For a simpler deployment, refer to the
 [Minimal AWS](https://github.com/cloudfoundry/cf-release/tree/master/example_manifests) instructions.
 
 ## <a id='prereqs'></a>Prerequisites
 
-To complete this deployment, you need:
+To complete this deployment, you need the following:
 
 - An [Amazon Web Services](http://aws.amazon.com) (AWS) account with Virtual Private Cloud (VPC)
 
-- Sufficiently high instance limits on your AWS account. 
+- Sufficiently high instance limits on your AWS account
 
 <p class="note"><strong>Note</strong>: You can deploy Cloud Foundry in smaller topologies, including a <a href="../boshlite/">local development environment</a> on Vagrant or a <a href="https://github.com/cloudfoundry/cf-release/tree/master/example_manifests">minimal AWS configuration</a>.</p>
 
@@ -23,7 +22,7 @@ To complete this deployment, you need:
 
 ## <a id="deploy-bosh"></a> Step 1: Deploy BOSH ##
 
-* [Deploying BOSH on AWS](setup_bosh_aws.html): Use bosh-bootloader to set up an environment for Cloud Foundry and deploy a BOSH Director.
+* [Deploying BOSH on AWS](setup_bosh_aws.html): Use [bosh-bootloader](https://github.com/cloudfoundry/bosh-bootloader) to set up an environment for Cloud Foundry and deploy a BOSH Director.
 
 ## <a id="deploy-cf"></a> Step 2: Deploy Cloud Foundry ##
 
