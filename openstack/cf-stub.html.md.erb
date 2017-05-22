@@ -420,6 +420,18 @@ Run <code>generate-loggregator-certs CA_CERT CA_KEY</code> to generate the certi
   </tr>
   <tr>
     <td><pre><code>
+  login:
+    saml:
+      serviceProviderKey: SAML_KEY
+      serviceProviderKeyPassword: ''
+      serviceProviderCertificate: SAML_CERT
+    </code></pre></td>
+    <td>
+      Generate SSL certificates for SAML and replace these values. You can use the <code>scripts/generate-certs</code> script in the <code>cf-release</code> repository to generate self-signed certificates.
+    </td>
+  </tr>
+  <tr>
+    <td><pre><code>
 jobs:
   - name: ha_proxy_z1
     networks:
