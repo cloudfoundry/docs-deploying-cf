@@ -15,8 +15,6 @@ unauthorized access.
 If a Diego [cell](../../concepts/architecture/index.html#diego-cell) needs to access these files from the Cloud Controller's blobstore, the Cloud Controller generates temporary URLs pointing to the required files and provides them to the Diego cell.
 The cell can use the URLs to download the files, execute staging tasks, and then deliver back the results. To help ensure data security, the generated URLs are valid for a limited amount of time.
 
-<p class="note"><strong>Note</strong>: In older versions of Cloud Foundry that use the Droplet Execution Agent (DEA) architecture, a DEA node hosts applications instead of a Diego cell. See the <a href="../../concepts/diego/dea-vs-diego.html">Differences Between DEA and Diego Architectures</a> topic for more information.</p>
-
 ##<a id='prereq'></a> OpenStack Prerequisites ##
 
 To use the temporary URL feature, the OpenStack user needs the **ResellerAdmin** role.

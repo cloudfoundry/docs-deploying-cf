@@ -157,18 +157,7 @@ properties:
     <td> Set <code>skip_cert_verify</code> to <code>true</code> to skip SSL certificate verification. If you want to use SSL certificates to secure traffic into your deployment, see the <a href="../../adminguide/securing-traffic.html">Securing Traffic into Cloud Foundry</a> topic.
     </td>
   </tr>
-  <tr>
-    <td><pre><code>
-  dea_next:
-    allow_networks:
-    - 10.0.0.2/32
-    deny_networks:
-    - 169.254.0.0/16
-    - 10.0.0.0/16
-  </code></pre></td>
-  <td>These properties determine which subnets the DEAs can reach. The <code>allow_networks</code> CIDR blocks hould match your internal subnet.</td>
-  </tr>
-  <tr>
+ <tr>
     <td><pre><code>
   cc:
     staging_upload_user: STAGING_UPLOAD_USER

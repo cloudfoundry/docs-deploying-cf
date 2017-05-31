@@ -19,7 +19,7 @@ If you are using OpenStack's GRE Tunnel networking, the default MTU of 1500 does
 
 ### Diego
 
-For operators deploying versions of Cloud Foundry that use the newer Diego architecture, modify the MTU by editing the `garden.network_mtu` property in your Diego manifest:
+Modify the MTU by editing the `garden.network_mtu` property in your Diego manifest:
 
 ```
 garden:
@@ -27,13 +27,3 @@ garden:
 ```
 Use `bosh deploy` to push these changes and reboot your Diego cells.
 
-### DEA
-
-For operators deploying versions of Cloud Foundry that use the older Droplet Execution Agent (DEA) architecture, modify the MTU by editing the `dea_next` property in your Cloud Foundry manifest:
-
-```
-dea_next:
-  mtu: 1454
-```
-
-Use `bosh deploy` to push these changes and reboot your Warden / DEA VM.
