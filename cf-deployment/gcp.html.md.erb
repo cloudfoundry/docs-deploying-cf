@@ -1,11 +1,11 @@
 ---
-title: Deploying BOSH on AWS
+title: Deploying BOSH on GCP
 owner: Release Integration
 ---
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to use the [bosh-bootloader](https://github.com/cloudfoundry/bosh-bootloader) command-line tool to set up an environment for Cloud Foundry on Amazon Web Services (AWS) and deploy a [BOSH Director](https://bosh.io/docs/bosh-components.html#director). 
+This topic describes how to use the [bosh-bootloader](https://github.com/cloudfoundry/bosh-bootloader) command-line tool to set up an environment for Cloud Foundry on Google Cloud Platform (GCP) and deploy a [BOSH Director](https://bosh.io/docs/bosh-components.html#director). 
 
 ## <a id='overview'></a>Overview
 
@@ -18,28 +18,10 @@ After completing this topic, you will have the following:
     <p class="note"><strong>Note</strong>: A <a href="https://bosh.io/docs/deployment-manifest.html">manifest</a> is a YAML file that defines the components and properties of a BOSH deployment.</p>
 1. A basic cloud config 
     <p class="note"><strong>Note</strong>: A <a href="https://bosh.io/docs/cloud-config.html">cloud config</a> is a YAML file that defines IaaS-specific configuration for BOSH.</p>
-1. A set of Elastic Load Balancers (ELBs)
-    <p class="note"><strong>Note</strong>: bosh-bootloader creates the ELBs, but you must still configure DNS to point your domains to the ELBs. See the <a href="dns_prereqs.html">Setting Up DNS for Your Environment</a> topic for more information.</p>
+1. A set of load balancers
+    <p class="note"><strong>Note</strong>: bosh-bootloader creates the load balancers, but you must still configure DNS to point your domains to the load balancers. See the <a href="dns_prereqs.html">Setting Up DNS for Your Environment</a> topic for more information.</p>
 
-## <a id="domain-prep"></a> Step 1: Prepare a Domain ##
-
-Perform the following steps to prepare a domain for Cloud Foundry:
-
-1. Select a DNS domain name for your Cloud Foundry instance. Cloud Foundry uses this domain name when deploying apps. For example, if you select the name `cloud.example.com`, Cloud Foundry deploys each of your apps as `APP-NAME.cloud.example.com`.
-
-1. From the AWS [Route 53 dashboard](https://console.aws.amazon.com/route53), click **Hosted zones**.
-
-1. Click **Create Hosted Zone**.
-
-1. Under **Domain Name**, enter the domain name you selected above, for AWS to host.
-
-1. Under **Type**, choose **Public Hosted Zone**. This creates four name server (NS) records for your hosted zone.
-
-1. From your domain registrar, delegate DNS authority for your hosted zone to your four Amazon Route 53 name servers. To do this, replace your registrar's NS records for the domain with the NS record values you created in the last step.
-<p class='note'><strong>Note</strong>: You can also find your NS record values by selecting your domain under the <strong>Hosted zones</strong> tab.</p>
-<%= image_tag("images/hostedzone.png") %>
-
-## <a id='downloads'></a> Step 2: Download Dependencies
+## <a id='downloads'></a> Step 1: Download Dependencies
 
 Perform the following steps to download the required dependencies for bosh-bootloader:
 
@@ -64,64 +46,47 @@ Perform the following steps to download the required dependencies for bosh-bootl
         $ sudo mv ~/Downloads/bbl-* /usr/local/bin/bbl
         </pre> 
 
-1. Install the [AWS CLI](https://aws.amazon.com/cli/).
+1. Download and install the [gcloud CLI](https://cloud.google.com/sdk/downloads).
 
-## <a id='create-iam'></a> Step 3: Create an IAM User
+## <a id='create-iam'></a> Step 2: Create an IAM Service Account
 
-Perform the following steps to create the Identity and Access Management (IAM) user that bosh-bootloader needs to interact with AWS:
+Perform the following steps to create the Identity and Access Management (IAM) service account that bosh-bootloader needs to interact with GCP:
 
-1. Configure the AWS CLI with the information and credentials from your AWS account:
-    <pre class="terminal">
-    $ aws configure
-    AWS Access Key ID [None]: YOUR-AWS-ACCESS-KEY-ID
-    AWS Secret Access Key [None]: YOUR-AWS-SECRET-ACCESS-KEY
-    Default region name [None]: YOUR-AWS-REGION
-    Default output format [None]: json
-    </pre>
-    For more information about retrieving your credentials, see [Configuring the AWS CLI](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html) in the AWS documentation.
-1. Create the IAM user for bosh-bootloader with the AWS CLI:
-    <pre class="terminal">$ aws iam create-user --user-name "bbl-user"</pre>
-1. Copy the following policy text to your clipboard:
+1. If you installed the gcloud CLI for the first time, initialize it:
+    <pre class="terminal">$ gcloud init</pre> 
 
-    ```
-    {
-        "Version": "2012-10-17",
-        "Statement": [
-            {
-                "Effect": "Allow",
-                "Action": [
-                    "ec2:*",
-                    "cloudformation:*",
-                    "elasticloadbalancing:*",
-                    "iam:*"
-                ],
-                "Resource": [
-                    "*"
-                ]
-            }
-        ]
-    }
-    ```
-1. Apply the policy:
-    <pre class="terminal">$ aws iam put-user-policy --user-name "bbl-user" \
-    --policy-name "bbl-policy" \
-    --policy-document "$(pbpaste)"</pre>
-1. Create an access key:
-    <pre class="terminal">$ aws iam create-access-key --user-name "bbl-user"</pre>
-    This command outputs an `Access Key ID` and a `Secret Access Key`. Record these values and store them in a secure place. You use them in the next section.
+1. Create the IAM service account for bosh-bootloader with the gcloud CLI:
+    <pre class="terminal">$ gcloud iam service-accounts create bbl-user --display-name "BBL"</pre>
+1. Navigate to the GCP Console and under **Project info**, retrieve your **Project ID**. 
+1. Create keys for the service account, replacing `YOUR-PROJECT-ID` with the project ID you retrieved in the previous step:
+    <pre class="terminal">$ gcloud iam service-accounts keys create \
+    --iam-account='bbl-user<span>@</span>YOUR-PROJECT-ID.iam.gserviceaccount.com' \
+    bbl-user.key.json</pre>
+    This command outputs a `bbl-user.key.json` file. Store this file in a safe and secure place.
+1. Add the Editor role to the service account:
+    <pre class="terminal">$ gcloud projects add-iam-policy-binding YOUR-PROJECT-ID \
+    --member='serviceAccount:bbl-user<span>@</span>YOUR-PROJECT-ID.iam.gserviceaccount.com' \
+    --role='roles/editor'</pre>
 
-## <a id="create-infra-bosh"></a> Step 4: Create the Infrastructure and the BOSH Director
+## <a id="create-infra-bosh"></a> Step 3: Create the Infrastructure and the BOSH Director
 
 Run the following command to create the required infrastructure and deploy a BOSH Director:
 
 <pre class="terminal">
-$ bbl up --aws-access-key-id YOUR-ACCESS-KEY-ID --aws-secret-access-key YOUR-SECRET-ACCESS-KEY --aws-region YOUR-AWS-REGION --iaas aws`
+bbl up \
+  --iaas gcp \
+  --gcp-project-id YOUR-PROJECT-ID \
+  --gcp-service-account-key PATH-TO/bbl-user.key.json \
+  --gcp-region YOUR-GCP-REGION \
+  --gcp-zone YOUR-GCP-ZONE
 </pre>
 
 Replace the placeholders as follows:
 
-* `YOUR-ACCESS-KEY-ID` and `YOUR-SECRET-ACCESS-KEY`: The credentials for the `bbl-user` you created in the previous section
-* `YOUR-AWS-REGION`: Your AWS region, such as `us-west-2`
+* `YOUR-PROJECT-ID` is your GCP project ID, retrieved in the previous section.
+* `PATH-TO` is the path to the `bbl-user.key.json` file, created in the previous section.
+* `YOUR-GCP-REGION` is your GCP region, such as `us-central1`.
+* `YOUR-GCP-ZONE` is your GCP zone, such as `us-central1-a`.
 
 The `bbl up` command takes five to eight minutes to complete. When the process finishes, it outputs a state file, `bbl-state.json`, in the present working directory.
 
@@ -135,18 +100,36 @@ https://YOUR-DIRECTOR-ADDRESS
 
 Run `bbl` to see the full list of values from the state file that you can print. You must always run `bbl` from the directory that contains `bbl-state.json`.
 
-## <a id='create-lbs'></a> Step 5: Create Load Balancers
+## <a id='create-lbs'></a> Step 4: Create Load Balancers
 
 To create your load balancers, run the following command:
 <pre class="terminal">
 $ bbl create-lbs --type cf --cert YOUR-CERT.crt --key YOUR-KEY.key --domain YOUR-SYSTEM-DOMAIN
 </pre>
 
-Replace `YOUR-CERT.crt` and `YOUR-KEY.key` with the path to your Certificate Authority (CA) certificate and key. This enables SSL/TLS termination at your load balancer.
+Replace the placeholders as follows:
+* `YOUR-CERT.crt` and `YOUR-KEY.key` are the path to your Certificate Authority (CA) certificate and key. This enables SSL/TLS termination at your load balancer.
+* `YOUR-SYSTEM-DOMAIN` is the DNS domain name for your Cloud Foundry instance. Cloud Foundry uses this domain name when deploying apps. For example, if you select the name `cloud.example.com`, Cloud Foundry deploys each of your apps as `APP-NAME.cloud.example.com`.
 
 For more information about the options for securing HTTP traffic into your Cloud Foundry (CF) deployment with SSL/TLS certificates, see the [Securing Traffic into Cloud Foundry](../../adminguide/securing-traffic.html) topic.
 
 For test and development environments, you can also generate your own CA certificate and key with a tool such as [certstrap](https://github.com/square/certstrap).
+
+## <a id='update-dns'></a> Step 5: Update DNS Records
+
+The `create-lbs` command creates an NS record in Google's CloudDNS. You can view this record by navigating to the [GCP Console and selecting **Networking > Cloud DNS**.
+
+The data associated with the record will have the following format:
+
+```
+ns-cloud-e1.googledomains.com.
+ns-cloud-e2.googledomains.com.
+...
+```
+
+From your domain registrar, delegate DNS authority for your hosted zone to the four CloudDNS name servers. To do this, replace your registrar's NS records for the domain with the NS record values listed in CloudDNS.
+
+After a few minutes, your system domain should resolve to your GCP load balancer.
 
 ## <a id="connect-bosh-director"></a> Step 6: Connect to the BOSH Director
 
