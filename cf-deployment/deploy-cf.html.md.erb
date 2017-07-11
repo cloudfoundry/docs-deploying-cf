@@ -1,0 +1,103 @@
+---
+title: Deploying Cloud Foundry 
+owner: Infrastructure
+---
+
+<strong><%= modified_date %></strong>
+
+This topic describes how to deploy Cloud Foundry using `cf-deployment`. 
+
+Before performing the procedures in this topic, ensure you have prepared your environment and deployed a BOSH Director. For more information, see the [Prepare Your Environment](index.html#prepare) section of the <em>Deploying Cloud Foundry with cf-deployment</em> topic.
+
+## <a id='clone'></a> Step 1: Clone cf-deployment
+
+Clone the `cf-deployment` repo:
+	<pre class="terminal">$ git clone http<span>s:</span>//github.com/cloudfoundry/cf-deployment.git</pre>
+
+This repo contains the canonical manifest for deploying Cloud Foundry, along with various ops files that specify operations to perform on the Cloud Foundry deployment manifest. These operations add additional functionality to your deployment.
+
+## <a id='ops-files'></a>Step 2: Select Your Ops Files
+
+Every IaaS except Google Cloud Platform (GCP) requires using IaaS-specific ops files to deploy Cloud Foundry. Ops files can also add additional functionality to your deployment.
+
+All ops files are located in the `operations` directory of the `cf-deployment` repo.
+
+### <a id='iaas-files'></a> Identify Required Ops Files
+
+Consult the following table to identify the ops files required by your IaaS. If you are deploying on GCP, you do not have any required ops files.
+
+<table>
+<tr>
+<th>Name</th>
+<th>Purpose</th>
+<th>Status</th>
+</tr>
+<tr>
+<td><code>aws.yml</code></a></td>
+<td>This ops file customizes the VM extensions for load balancers on Amazon Web Services (AWS).</td>
+<td>Required if deploying on AWS</td>
+</tr>
+<tr>
+<td><code>change-logging-port-for-aws-elb.yml</code></a></td>
+<td>This ops file changes the Loggregator port to 4443.</td>
+<td>Required if deploying on AWS</td>
+</tr>
+</table>
+
+###<a id='optional-ops-files'></a> Identify Optional Ops Files
+
+Consult the following table to identify optional ops files.
+
+<table>
+<tr>
+<th>Name</th>
+<th>Purpose</th>
+<th>Notes</th>
+</tr>
+<tr>
+<td><code>disable-router-tls-termination.yml</code></a></td>
+<td>This ops file eliminates keys related to performing TLS/SSL termination within the Gorouter job. This also eliminates the need to specify <code>((router_ssl.certificate))</code> and <code>((router_ssl.private_key))</code> as variables.</td>
+<td>Recommended for deployments where TLS/SSL termination is performed prior to the Gorouter, such as on AWS, where termination is commonly done at the ELB</td>
+</tr>
+<tr>
+<td><code>configure-default-router-group.yml</code></a></td>
+<td>This ops file allows the operator to configure reservable ports for the default TCP router group by passing the variable <code>default_router_group_reservable_ports</code>.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>enable-privileged-container-support.yml</code></a></td>
+<td>This ops file allows the operator to configure reservable ports for the default TCP router group by passing the variable <code>default_router_group_reservable_ports</code>.</td>
+<td>Required if deploying on GCP</td>
+</tr>
+</table>
+
+## <a id='upload-stemcell'></a>Step 2: Upload Stemcell
+
+1. Ensure you are logged in to your BOSH Director:
+	<pre class="terminal">$ bosh -e YOUR-ENV log-in</pre>
+1. Open the Cloud Foundry deployment manifest, `cf-deployment.yml`. In the final lines of the deployment manifest, locate the top-level property `stemcells` and retrieve the values for `os` and `version`. The following example specifies an Ubuntu Trusty 3312.12 stemcell.
+
+	```
+	stemcells:
+	- alias: default
+	  os: ubuntu-trusty
+	  version: "3421.11"
+	```
+1. Visit the stemcells [section](https://bosh.io/stemcells) of bosh.io.
+1. Locate the Ubuntu Trusty AWS stemcell that corresponds to the version specified above and copy the URL to the stemcell. 
+1. Upload the stemcell:
+	<pre class="terminal">$ bosh upload-stemcell YOUR-STEMCELL-URL</pre>
+
+## <a id='deploy'></a>Step 3: Deploy
+
+1. Deploy `cf-deployment`:
+	<pre class="terminal">
+	$ bosh -e YOUR-ENV -d cf deploy cf-deployment/cf-deployment.yml \
+	--vars-store env-repo/deployment-vars.yml \
+  	-v system_domain=YOUR-SYSTEM-DOMAIN \
+  	-o cf-deployment/operations/YOUR-OPS-FILE-1
+  	-o cf-deployment/operations/YOUR-OPS-FILE-2
+  	[...]
+  	</pre>
+
+  	When prompted to review the deployment manifest, enter `y` to continue.

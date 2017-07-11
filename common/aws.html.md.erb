@@ -16,9 +16,12 @@ After completing this topic, you will have the following:
 1. A BOSH Director instance in the Availability Zone (AZ) of your choice
 1. A set of randomly generated BOSH Director credentials
 1. A generated key pair that allows you to SSH into the BOSH Director and any instances that BOSH deploys
-1. A copy of the manifest you use to deploy the BOSH Director. A [manifest](https://bosh.io/docs/deployment-manifest.html) is a YAML file that defines the components and properties of a BOSH deployment.
-1. A basic *cloud config*. A [cloud config](https://bosh.io/docs/cloud-config.html) is a YAML file that defines IaaS-specific configuration for BOSH.
-1. A set of Elastic Load Balancers (ELBs). bosh-bootloader creates the ELBs, but you must still configure DNS to point your domains to the ELBs. See the [Setting Up DNS for Your Environment](../common/dns_prereqs.html) topic for more information.
+1. A copy of the manifest you use to deploy the BOSH Director 
+    <p class="note"><strong>Note</strong>: A <a href="https://bosh.io/docs/deployment-manifest.html">manifest</a> is a YAML file that defines the components and properties of a BOSH deployment.</p>
+1. A basic cloud config 
+    <p class="note"><strong>Note</strong>: A <a href="https://bosh.io/docs/cloud-config.html">cloud config</a> is a YAML file that defines IaaS-specific configuration for BOSH.</p>
+1. A set of Elastic Load Balancers (ELBs)
+    <p class="note"><strong>Note</strong>: bosh-bootloader creates the ELBs, but you must still configure DNS to point your domains to the ELBs. See the <a href="dns_prereqs.html">Setting Up DNS for Your Environment</a> topic for more information.</p>
 
 ## <a id="domain-prep"></a> Step 1: Prepare a Domain ##
 
@@ -36,7 +39,7 @@ Perform the following steps to prepare a domain for Cloud Foundry:
 
 1. From your domain registrar, delegate DNS authority for your hosted zone to your four Amazon Route 53 name servers. To do this, replace your registrar's NS records for the domain with the NS record values you created in the last step.
 <p class='note'><strong>Note</strong>: You can also find your NS record values by selecting your domain under the <strong>Hosted zones</strong> tab.</p>
-<%= image_tag("aws_images/hostedzone.png") %>
+<%= image_tag("images/hostedzone.png") %>
 
 ## <a id='downloads'></a> Step 2: Download Dependencies
 
@@ -66,6 +69,17 @@ Perform the following steps to download the required dependencies for bosh-bootl
 
 Perform the following steps to create the Identity and Access Management (IAM) user that bosh-bootloader needs to interact with AWS:
 
+1. Configure the AWS CLI with the information and credentials from your AWS account:
+    <pre class="terminal">
+    $ aws configure
+    AWS Access Key ID [None]: YOUR-AWS-ACCESS-KEY-ID
+    AWS Secret Access Key [None]: YOUR-AWS-SECRET-ACCESS-KEY
+    Default region name [None]: YOUR-AWS-REGION
+    Default output format [None]: json
+    </pre>
+    For more information about retrieving your credentials, see [Configuring the AWS CLI](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html) in the AWS documentation.
+1. Create the IAM user for bosh-bootloader with the AWS CLI:
+    <pre class="terminal">$ aws iam create-user --user-name "bbl-user"</pre>
 1. Copy the following policy text to your clipboard:
 
     ```
@@ -87,27 +101,26 @@ Perform the following steps to create the Identity and Access Management (IAM) u
         ]
     }
     ```
-
-1. Create the IAM user for bosh-bootloader with the AWS CLI:
-    <pre class="terminal">$ aws iam create-user --user-name "bbl-user"</pre>
 1. Apply the policy:
     <pre class="terminal">$ aws iam put-user-policy --user-name "bbl-user" \
     --policy-name "bbl-policy" \
     --policy-document "$(pbpaste)"</pre>
 1. Create an access key:
     <pre class="terminal">$ aws iam create-access-key --user-name "bbl-user"</pre>
-    This command outputs an `Access Key ID` and a `Secret Access Key`. Record these values and store them in a secure place. You use these in the next section.
+    This command outputs an `Access Key ID` and a `Secret Access Key`. Record these values and store them in a secure place. You use them in the next section.
 
 ## <a id="create-infra-bosh"></a> Step 4: Create the Infrastructure and the BOSH Director
 
 Run the following command to create the required infrastructure and deploy a BOSH Director:
 
-`bbl up --aws-access-key-id YOUR-ACCESS-KEY-ID --aws-secret-access-key YOUR-SECRET-ACCESS-KEY --aws-region YOUR-AWS-REGION --iaas aws`
+<pre class="terminal">
+$ bbl up --aws-access-key-id YOUR-ACCESS-KEY-ID --aws-secret-access-key YOUR-SECRET-ACCESS-KEY --aws-region YOUR-AWS-REGION --iaas aws`
+</pre>
 
-where: 
+Replace the placeholders as follows:
 
-* `YOUR-ACCESS-KEY-ID` and `YOUR-SECRET-ACCESS-KEY` are the values you recorded from the AWS CLI commands in the previous section.
-* `YOUR-AWS-REGION` is your AWS region, such as `us-west-1`.
+* `YOUR-ACCESS-KEY-ID` and `YOUR-SECRET-ACCESS-KEY`: The credentials for the `bbl-user` you created in the previous section
+* `YOUR-AWS-REGION`: Your AWS region, such as `us-west-2`
 
 The `bbl up` command takes five to eight minutes to complete. When the process finishes, it outputs a state file, `bbl-state.json`, in the present working directory.
 
@@ -121,7 +134,20 @@ https://YOUR-DIRECTOR-ADDRESS
 
 Run `bbl` to see the full list of values from the state file that you can print. You must always run `bbl` from the directory that contains `bbl-state.json`.
 
-## <a id="connect-bosh-director"></a> Step 5: Connect to the BOSH Director
+## <a id='create-lbs'></a> Step 5: Create Load Balancers
+
+To create your load balancers, run the following command:
+<pre class="terminal">
+$ bbl create-lbs --type cf --cert YOUR-CERT.crt --key YOUR-KEY.key
+</pre>
+
+Replace `YOUR-CERT.crt` and `YOUR-KEY.key` with the path to your Certificate Authority (CA) certificate and key. This enables SSL/TLS termination at your load balancer.
+
+For more information about the options for securing HTTP traffic into your Cloud Foundry (CF) deployment with SSL/TLS certificates, see the [Securing Traffic into Cloud Foundry](../../adminguide/securing-traffic.html) topic.
+
+For test and development environments, you can also generate your own CA certificate and key with a tool such as [certstrap](https://github.com/square/certstrap).
+
+## <a id="connect-bosh-director"></a> Step 6: Connect to the BOSH Director
 
 Perform the following steps to connect to the BOSH Director:
 
@@ -154,8 +180,6 @@ Perform the following steps to connect to the BOSH Director:
     Replace `YOUR-TARGET-NAME` with a target name to associate with the BOSH Director address, such as `my-bosh`. You use this target name to log in to your BOSH Director in the future.
     <br><br>
     Replace `YOUR-DIRECTOR-USERNAME` and `YOUR-DIRECTOR-PASSWORD` with the values you obtained from `bbl` in the previous step.
-
-1. Continue to the [Customizing the Cloud Foundry Deployment Manifest for AWS](cf-stub.html) topic.
 
 ## <a id="destroy-environment"></a>Destroy the BOSH Resources ##
 
