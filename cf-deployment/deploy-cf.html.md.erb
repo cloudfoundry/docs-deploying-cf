@@ -197,6 +197,8 @@ Perform the following steps to determine your required variables and prepare the
   	</pre>
   	Depending on your choices in the [Step 3: Determine Variables](#determine-vars) section, provide additional variables with `-v` or `--vars-file`.
   	<br><br>
+  	If your variables store file does not exist, BOSH will create one at the path you specify with `--vars-store`. Store your variables store file in a safe and secure place. You will need it for all subsequent deploys. 
+  	<br><br>
   	When prompted to review the deployment manifest, enter `y` to continue.
   	<br><br>
   	The deploy may take several minutes. When the command completes, run `bosh vms` to check that the Cloud Foundry VMs are running.
