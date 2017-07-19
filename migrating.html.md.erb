@@ -24,10 +24,9 @@ This topic describes how to migrate your Cloud Foundry deployment from `cf-relea
 
 1. Download your Cloud Foundry and Diego manifests from your existing `cf-release` deployment:
 	<pre class="terminal">
-	bosh download-manifest -d cf > cf.yml
-    bosh download-manifest -d cf-diego > diego.yml
+	$ bosh download-manifest -d cf > cf.yml
+    $ bosh download-manifest -d cf-diego > diego.yml
 	</pre>
-	<br><br>
 	Replace `cf` and `cf-diego` if your Cloud Foundry and Diego deployments are named differently. 
 
 ## <a id='var-store-file'></a> Step 2: Build Variables Store File 
@@ -38,11 +37,14 @@ This file contains information that provides environment-specific or sensitive c
 
 To build a variables store file from your Cloud Foundry and Diego manifests, visit the [cf-deployment-transition](https://github.com/cloudfoundry/cf-deployment-transition/blob/master/README.md) GitHub repo and use the `extract-vars-store-from-manifests.sh` script to generate `deployment-vars.yml`.
 
+**Is this tool AWS only?**
+
 ## <a id='deploy-cf'></a> Step 3: Deploy Cloud Foundry
 
-Perform the steps in the [Deploying Cloud Foundry](./cf-deployment/deploy-cf.html) topic. Keep in mind the following when deploying `cf-deployment` in [Step 5: Deploy](./cf-deployment/deploy-cf.html#deploy):
+Perform the steps in the [Deploying Cloud Foundry](./cf-deployment/deploy-cf.html) topic. Keep in mind the following when deploying Cloud Foundry in [Step 5: Deploy](./cf-deployment/deploy-cf.html#deploy):
+
 * You must apply the `cfr-to-cfd.yml` ops file. Download this ops file from the [cf-deployment-transition](https://github.com/cloudfoundry/cf-deployment-transition/blob/master/cfr-to-cfd.yml) GitHub repo.
-* The `deployment-vars.yml` file you pass in the `--vars-store` flag must be the variables store file you created in the previous step.
+* The `deployment-vars.yml` file you pass with the `--vars-store` flag must be the variables store file you created in the previous step.
 
 ## <a id='cleanup'></a> Step 4: Clean Up
 
