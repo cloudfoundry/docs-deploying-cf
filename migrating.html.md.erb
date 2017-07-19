@@ -1,0 +1,48 @@
+---
+title: Migrating from cf-release to cf-deployment
+owner: Diego
+---
+
+<strong><%= modified_date %></strong>
+
+This topic describes how to migrate your Cloud Foundry deployment from `cf-release` to `cf-deployment`.
+
+<p class="note"><strong>Note</strong>: You must have the BOSH CLI v2 installed to perform the procedures in this topic. For more information, see the <a href="https://bosh.io/docs/cli-v2.html#install">BOSH documentation</a>.</p>
+
+## <a id='download-manifest'></a> Step 1: Download Manifests 
+
+1. Set your target and log in to your BOSH Director with the BOSH CLI:
+    <pre class="terminal">
+    $ bosh alias-env YOUR-TARGET-NAME
+    $ bosh log-in
+    Username: YOUR-DIRECTOR-USERNAME
+    Password: YOUR-DIRECTOR-PASSWORD
+    </pre>
+    Replace `YOUR-TARGET-NAME` with a target name to associate with the BOSH Director address, such as `my-bosh`. You use this target name to log in to your BOSH Director in the future.
+    <br><br>
+    Replace `YOUR-DIRECTOR-USERNAME` and `YOUR-DIRECTOR-PASSWORD` with your BOSH Director username and password.
+
+1. Download your Cloud Foundry and Diego manifests from your existing `cf-release` deployment:
+	<pre class="terminal">
+	bosh download-manifest -d cf > cf.yml
+    bosh download-manifest -d cf-diego > diego.yml
+	</pre>
+	<br><br>
+	Replace `cf` and `cf-diego` if your Cloud Foundry and Diego deployments are named differently. 
+
+## <a id='var-store-file'></a> Step 2: Build Variables Store File 
+
+You must build a variables store file from your Cloud Foundry and Diego manifests.
+
+This file contains information that provides environment-specific or sensitive configuration that the BOSH CLI reads and writes to. The operator uses this file when deploying Cloud Foundry with `cf-deployment`.
+
+To build a variables store file from your Cloud Foundry and Diego manifests, visit the [cf-deployment-transition](https://github.com/cloudfoundry/cf-deployment-transition/blob/master/README.md) GitHub repo and use the `extract-vars-store-from-manifests.sh` script to generate `deployment-vars.yml`.
+
+## <a id='deploy-cf'></a> Step 3: Deploy Cloud Foundry
+
+Perform the steps in the [Deploying Cloud Foundry](./cf-deployment/deploy-cf.html) topic. Keep in mind the following when deploying `cf-deployment` in [Step 5: Deploy](./cf-deployment/deploy-cf.html#deploy):
+* You must apply the `cfr-to-cfd.yml` ops file. Download this ops file from the [cf-deployment-transition](https://github.com/cloudfoundry/cf-deployment-transition/blob/master/cfr-to-cfd.yml) GitHub repo.
+* The `deployment-vars.yml` file you pass in the `--vars-store` flag must be the variables store file you created in the previous step.
+
+## <a id='cleanup'></a> Step 4: Clean Up
+

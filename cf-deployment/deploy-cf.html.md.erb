@@ -180,7 +180,7 @@ Perform the following steps to determine your required variables and prepare the
 	  version: "3421.11"
 	```
 1. Visit the stemcells [section](https://bosh.io/stemcells) of bosh.io.
-1. Locate the Ubuntu Trusty AWS stemcell that corresponds to the version specified above and copy the URL to the stemcell. 
+1. Locate the Ubuntu Trusty stemcell that corresponds to your IaaS and to the version specified above, and copy the URL to the stemcell. 
 1. Upload the stemcell:
 	<pre class="terminal">$ bosh upload-stemcell YOUR-STEMCELL-URL</pre>
 	<p class="note"><strong>Note</strong>: If you applied the <code>windows-cell.yml</code> ops file to deploy a Windows Diego cell, you must also upload a Windows stemcell. Examine the <code>cf-deployment</code> manifest for the version number and locate the URL for the appropriate stemcell at <a href="https://bosh.io/stemcells">bosh.io</a>.</p>
