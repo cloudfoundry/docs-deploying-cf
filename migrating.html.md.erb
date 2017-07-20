@@ -11,10 +11,19 @@ The procedures in this topic are specific to Amazon Web Services (AWS).
 While transitions on other IaaSes are possible,
 they are not currently supported.
 
-<p class="note"><strong>Note</strong>:
-You must have the BOSH CLI v2 installed
-to perform the procedures in this topic.
-For more information, see the <a href="https://bosh.io/docs/cli-v2.html#install">BOSH documentation</a>.</p>
+## <a id='prerequisites'></a> Prerequisites
+The procedures in this topic have prerequisites.
+To ensure you're ready to perform this procedure,
+please first perform the following steps:
+
+* Install the BOSH CLI v2.
+For more information, see the <a href="https://bosh.io/docs/cli-v2.html#install">BOSH documentation</a>.
+* Review the migration prerequisites in the [cf-deployment-transition](https://github.com/cloudfoundry/cf-deployment-transition/blob/master/README.md#migration-prerequisites) GitHub repo,
+with particular attention to the following:
+  - You must enable all TLS features.
+  - You must be using external databases.
+  - You must be using an external blobstore.
+  - You must either create new databases or disable some optional features in `cf-deployment`.
 
 ## <a id='configure-cli'></a> Step 1: Configure the BOSH CLI v2
 
@@ -60,7 +69,6 @@ perform the following steps to provide that certificate to the BOSH CLI.
   </pre>
 
 ## <a id='var-store-file'></a> Step 2: Build Variables Store File
-
 You must build a variables store file from your Cloud Foundry and Diego manifests.
 
 This file contains information that provides environment-specific or sensitive configuration
@@ -71,16 +79,82 @@ Perform the following steps to build your variables store file:
 
 1. Download your Cloud Foundry and Diego manifests from your existing `cf-release`-based deployments:
   <pre class="terminal">
-  $ bosh download-manifest > cf.yml
-  $ bosh download-manifest -d YOUR-DIEGO-DEPLOYMENT-NAME > diego.yml
+  $ bosh download-manifest > /tmp/cf-manifest.yml
+  $ bosh download-manifest -d YOUR-DIEGO-DEPLOYMENT-NAME > /tmp/diego-manifest.yml
   </pre>
-1. Visit the [cf-deployment-transition](https://github.com/cloudfoundry/cf-deployment-transition/blob/master/README.md) GitHub repo and use the `extract-vars-store-from-manifests.sh` script to generate `deployment-vars.yml`.
+1. Visit the [cf-deployment-transition](https://github.com/cloudfoundry/cf-deployment-transition/blob/master/README.md) GitHub repo
+   and use the `extract-vars-store-from-manifests.sh` script
+   to generate `deployment-vars.yml`.
 
-## <a id='deploy-cf'></a> Step 3: Deploy Cloud Foundry
+## <a id='scale'></a> Step 3: Write Scaling Ops File
 
+To perform a successful migration, you must ensure that your `cf-deployment` manifest
+deploys components at a scale equivalent to your existing Cloud Foundry and Diego deployments.
+
+### <a id='understand-name-changes'></a> Understand Name Changes
+`cf-deployment` renames or combines some jobs in `cf-release`-based manifests.
+
+`cf-release` had a copy of each job for each Availability Zone (AZ),
+because historically,
+BOSH was unaware of AZs.
+
+`cf-deployment` no longer needs this workaround
+thanks to first-class support of AZs in BOSH.
+This means that several instance groups have been combined,
+which has implications for scaling.
+
+For instance, the `diego-cell` instance group replaces
+both the `cell_z1` and the `cell_z2` instance groups
+in your existing Diego deployment.
+If you currently have 6 instances each of `cell_z1` and `cell_z2`,
+you will need 12 instances of `diego-cell`.
+
+For a list of all job name changes from `cf-release`,
+see the `cfr-to-cfd.yml` ops file
+in the [cf-deployment-transition](https://github.com/cloudfoundry/cf-deployment-transition/blob/master/cfr-to-cfd.yml) GitHub repo.
+This file does not list name changes from the Diego deployment.
+However, only the `diego-cells` should be necessary to scale.
+
+### <a id='write-ops-file'></a> Write Ops File
+
+To scale the components in `cf-deployment`, write an ops file.
+An ops file is a YAML file that specifies operations to perform on the deployment manifest,
+which you provide to the BOSH CLI when deploying Cloud Foundry in the following section.
+
+The following example ops file scales to 12 instances of the `diego-cell`:
+
+```yaml
+---
+- type: replace
+  path: /instance_groups/name=diego-cell/instances
+  value: 12
+```
+
+## <a id='deploy-cf'></a> Step 4: Deploy Cloud Foundry
 Perform the steps in the [Deploying Cloud Foundry](./cf-deployment/deploy-cf.html) topic. Keep in mind the following when deploying Cloud Foundry in [Step 5: Deploy](./cf-deployment/deploy-cf.html#deploy):
 
-* You must apply the `cfr-to-cfd.yml` ops file. Download this ops file from the [cf-deployment-transition](https://github.com/cloudfoundry/cf-deployment-transition/blob/master/cfr-to-cfd.yml) GitHub repo.
-* The `deployment-vars.yml` file you pass with the `--vars-store` flag must be the variables store file you created in the previous step.
+* You must apply the ops file for scaling your components that you created in the previous step.
+* You must apply the `cfr-to-cfd.yml` ops file.
+  Download this ops file from the [cf-deployment-transition](https://github.com/cloudfoundry/cf-deployment-transition/blob/master/cfr-to-cfd.yml) GitHub repo.
+  If you are disabling `cf-deployment` features to simplify the transition,
+  you must also apply the appropriate ops files from the transition repo.
+* The `deployment-vars.yml` file you pass with the `--vars-store` flag must be the variables store file you created above.
 
-## <a id='cleanup'></a> Step 4: Clean Up
+## <a id='delete-diego'></a> Step 5: Delete Old Diego Deployment
+
+Delete your Diego deployment by running the following command:
+
+<pre class="terminal">
+$ bosh -d YOUR-DIEGO-DEPLOYMENT-NAME delete-deployment
+</pre>
+
+This command may take several minutes, because each Diego cell must drain its contents to the new `cf-deployment` cells.
+
+## <a id='cleanup'></a> (Optional) Step 6: Clean Up
+
+To delete any unused releases and stemcells from your BOSH Director,
+including `cf-release`, run the following command:
+
+<pre class="terminal">
+$ bosh clean-up --all
+</pre>
