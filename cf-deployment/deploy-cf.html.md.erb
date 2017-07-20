@@ -1,20 +1,24 @@
 ---
-title: Deploying Cloud Foundry 
-owner: Infrastructure
+title: Deploying Cloud Foundry
+owner: Release Integration
 ---
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to deploy Cloud Foundry using `cf-deployment`. 
-
-Before performing the procedures in this topic, ensure you have prepared your environment and deployed a BOSH Director. For more information, see the [Prepare Your Environment](index.html#prepare) section of the <em>Deploying Cloud Foundry with cf-deployment</em> topic.
+This topic describes how to deploy Cloud Foundry
+using `cf-deployment`.
+Before performing this procedure,
+ensure you have prepared your environment
+and deployed a BOSH Director.
+For more information,
+see the [Prepare Your Environment](index.html#prepare) section
+of the <em>Deploying Cloud Foundry with cf-deployment</em> topic.
 
 ## <a id='clone'></a> Step 1: Clone cf-deployment
-
 Clone the `cf-deployment` repo:
 	<pre class="terminal">$ git clone http<span>s:</span>//github.com/cloudfoundry/cf-deployment.git</pre>
 
-This repo contains the canonical manifest for deploying Cloud Foundry, along with various ops files that specify operations to perform on the Cloud Foundry deployment manifest. These operations add additional functionality to your deployment.
+This repo contains the canonical manifest for deploying Cloud Foundry, along with various ops files that specify operations to perform on the Cloud Foundry deployment manifest.
 
 ## <a id='ops-files'></a>Step 2: Select Your Ops Files
 
@@ -46,7 +50,7 @@ Consult the following table to identify the ops files required by your IaaS. If 
 
 ###<a id='optional-ops-files'></a> Identify Optional Ops Files
 
-Consult the following table to identify optional ops files. 
+Consult the following table to identify optional ops files.
 
 Some of these ops files require providing variables at deploy time. For more information about how to determine variables, see the [Step 3: Determine Variables](#determine-vars) section below.
 
@@ -159,7 +163,7 @@ There are certain variables that BOSH cannot generate. By default, this is only 
 
 Perform the following steps to determine your required variables and prepare them for the deploy:
 
-1. Review the information in the [Step 2: Select Your Ops Files](#ops-files) section and create a list of the variables required by the ops files you have selected. 
+1. Review the information in the [Step 2: Select Your Ops Files](#ops-files) section and create a list of the variables required by the ops files you have selected.
 1. Determine the values for each of the variables. For example, the `aws_region` variable required by the `use-s3-blobstore.yml` ops file may have the value of `us-west-2`.
 1. Choose one of the following methods for providing the variables when you [deploy Cloud Foundry](#deploy) below:
 	* Provide the variables in a YAML file specified with the `--vars-file` flag during the deploy. This is the recommended method for configuring external persistence services.
@@ -180,7 +184,7 @@ Perform the following steps to determine your required variables and prepare the
 	  version: "3421.11"
 	```
 1. Visit the stemcells [section](https://bosh.io/stemcells) of bosh.io.
-1. Locate the Ubuntu Trusty stemcell that corresponds to your IaaS and to the version specified above, and copy the URL to the stemcell. 
+1. Locate the Ubuntu Trusty stemcell that corresponds to your IaaS and to the version specified above, and copy the URL to the stemcell.
 1. Upload the stemcell:
 	<pre class="terminal">$ bosh upload-stemcell YOUR-STEMCELL-URL</pre>
 	<p class="note"><strong>Note</strong>: If you applied the <code>windows-cell.yml</code> ops file to deploy a Windows Diego cell, you must also upload a Windows stemcell. Examine the <code>cf-deployment</code> manifest for the version number and locate the URL for the appropriate stemcell at <a href="https://bosh.io/stemcells">bosh.io</a>.</p>
@@ -198,8 +202,8 @@ Perform the following steps to determine your required variables and prepare the
   	</pre>
   	Depending on your choices in the [Step 3: Determine Variables](#determine-vars) section, provide additional variables with `-v` or `--vars-file`.
   	<br><br>
-  	If your variables store file does not exist, BOSH will create one at the path you specify with `--vars-store`. Store your variables store file in a safe and secure place. You will need it for all subsequent deploys. 
+        If your variables store file does not exist, BOSH will create one at the path you specify with `--vars-store`. Store your variables store file in a safe and secure place. You will need it for all subsequent deploys.
   	<br><br>
   	When prompted to review the deployment manifest, enter `y` to continue.
   	<br><br>
-  	The deploy may take several minutes. When the command completes, run `bosh vms` to check that the Cloud Foundry VMs are running.
+        The deploy may take several minutes. When the command completes, run `bosh vms` to check that the Cloud Foundry VMs are running.
