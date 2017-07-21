@@ -271,8 +271,10 @@ properties:
       verification_key: JWT_VERIFICATION_KEY
       signing_key: JWT_SIGNING_KEY
     </code></pre></td>
-    <td>Generate a PEM-encoded RSA key pair, and replace <code>JWT_SIGNING_KEY</code> with the private key, and <code>JWT_VERIFICATION_KEY</code> with the corresponding public key. You can generate a key pair with the following command: <code>openssl genrsa -out jwt_signing_key 2048 && openssl rsa -pubout -in jwt_signing_key -out jwt_verification_key</code>
-    Copy and paste the full keys with correct indentation, including the <code>BEGIN</code> and <code>END</code> delimiter lines.
+    <td>Generate a PEM-encoded RSA key pair, and replace <code>JWT_SIGNING_KEY</code> with the private key, and <code>JWT_VERIFICATION_KEY</code>
+        with the corresponding public key. Generate a key pair by running the command <code>openssl genrsa -out jwt-key.pem 2048 && openssl rsa -pubout -in jwt-key.pem -out jwt-key.pem.pub</code>.
+        This command creates <code>jwt-key.pem.pub</code>, which contains your public key, and <code>jwt-key.pem</code>, which contains your private key.<br/>
+    Copy in the full keys, including the <code>BEGIN</code> and <code>END</code> delimiter lines.
     </td>
   </tr>
   <tr>
