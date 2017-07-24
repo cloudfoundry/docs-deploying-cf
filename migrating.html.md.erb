@@ -25,6 +25,30 @@ with particular attention to the following:
   - You must be using an external blobstore.
   - You must either create additional databases
     or disable some optional features in `cf-deployment`.
+* Ensure your deployed network configuration
+  is compatible with the transition process:
+  - You must have sufficient available addresses
+    in your Cloud Foundry network
+    to fit the scale of your Diego deployment.
+    Diego jobs will be deployed to your Cloud Foundry network
+    as part of the transition.
+  - You must have non-overlapping network IP address ranges
+    in your existing deployments.
+    When you deploy `cf-deployment` with your new cloud config,
+    the BOSH Director will treat the entire range
+    of any networks declared in your Diego manifest
+    as fully used.
+    This creates a problem.
+    If you previously had networks with
+    fully overlapping IP address ranges
+    that had one another's ranges as `reserved`
+    to avoid conflicts,
+    the BOSH Director will now be unable to assign IP addresses
+    in any of those networks.
+  - To resolve this,
+    redefine your networks such that they don't overlap,
+    and deploy those changes
+    prior to starting the transition process.
 
 ## <a id='configure-cli'></a> Step 1: Configure the BOSH CLI v2
 Perform the following steps:
@@ -134,14 +158,14 @@ The following example ops file scales to 12 instances of the `diego-cell`:
   value: 12
 ```
 
-## <a id='cloud-config'> Step 4: Write and Upload Cloud Config
+## <a id='cloud-config'></a> Step 4: Write and Upload Cloud Config
 `cf-deployment` requires that a [cloud config](https://bosh.io/docs/cloud-config.html)
 providing certain properties be available on the BOSH Director.
 
 You must write such a cloud config,
 drawing its values from your current CF and Diego manifests.
 
-The following properties can be used
+The following example can be used
 as the basis for your cloud config:
 
 ```yaml
@@ -214,38 +238,25 @@ vm_extensions:
     ephemeral_disk:
       size: 512000
       type: gp2
-```
-
-While the above properties are always the same,
-the properties below will need
-to be figured out from your existing manifests.
-(Note that the below continues
-immediately from where the above left off,
-so it starts in the `vm_extensions` section
-of the cloud config.)
-
-```yaml
 - name: cf-router-network-properties
   cloud_properties:
     elbs:
-    - FIGURE-THIS-OUT
-    security_groups:
-    - FIGURE-THIS-OUT
-    - FIGURE-THIS-OUT
+    - ELB-NAME-FROM-ROUTER-RESOURCE-POOL
 - name: diego-ssh-proxy-network-properties
   cloud_properties:
     elbs:
-    - FIGURE-THIS-OUT
-    security_groups:
-    - FIGURE-THIS-OUT
-    - FIGURE-THIS-OUT
+    - ELB-NAME-FROM-DIEGO-MANIFEST-ACCESS-RESOURCE-POOL
+
 azs:
 - name: z1
-  cloud_properties: {availability_zone: FIGURE-THIS-OUT}
+  cloud_properties:
+    availability_zone: AVAILABILITY-ZONE-FROM-LARGE-Z1-RESOURCE-POOL
 - name: z1
-  cloud_properties: {availability_zone: FIGURE-THIS-OUT}
+  cloud_properties:
+    availability_zone: AVAILABILITY-ZONE-FROM-LARGE-Z2-RESOURCE-POOL
 - name: z3
-  cloud_properties: {availability_zone: FIGURE-THIS-OUT}
+  cloud_properties:
+    availability_zone: AVAILABILITY-ZONE-FROM-LARGE-Z3-RESOURCE-POOL
 
 networks:
 - name: default
@@ -253,50 +264,56 @@ networks:
   - az: z1
     cloud_properties:
       security_groups:
-      - FIGURE-THIS-OUT
-      subnet: FIGURE-THIS-OUT
-    gateway: 10.0.16.1
-    range: 10.0.16.0/20
-    reserved:
-    - 10.0.16.2-10.0.16.3
-    - 10.0.31.255
+      - SECURITY-GROUP-FROM-AZ1-NETWORK
+      subnet: SUBNET-FROM-AZ1-NETWORK
+    gateway: GATEWAY-IP-FROM-AZ1-NETWORK
+    range: RANGE-FROM-AZ1-NETWORK
+    reserved: 
+    - RESERVED-IPS-FROM-AZ1-NETWORK
     static:
-    - 10.0.31.190-10.0.31.254
+    - STATIC-IPS-FROM-AZ1-NETWORK
   - az: z2
     cloud_properties:
       security_groups:
-      - FIGURE-THIS-OUT
-      subnet: FIGURE-THIS-OUT
-    gateway: 10.0.32.1
-    range: 10.0.32.0/20
+      - SECURITY-GROUP-FROM-AZ2-NETWORK
+      subnet: SUBNET-FROM-AZ2-NETWORK
+    gateway: GATEWAY-IP-FROM-AZ2-NETWORK
+    range: RANGE-FROM-AZ2-NETWORK
     reserved:
-    - 10.0.32.2-10.0.32.3
-    - 10.0.47.255
+    - RESERVED-IPS-FROM-AZ2-NETWORK
     static:
-    - 10.0.47.190-10.0.47.254
+    - STATIC-IPS-FROM-AZ2-NETWORK
   - az: z3
     cloud_properties:
       security_groups:
-      - FIGURE-THIS-OUT
-      subnet: FIGURE-THIS-OUT
-    gateway: 10.0.48.1
-    range: 10.0.48.0/20
+      - SECURITY-GROUP-FROM-AZ3-NETWORK
+      subnet: SUBNET-FROM-AZ3-NETWORK
+    gateway: GATEWAY-IP-FROM-AZ3-NETWORK
+    range: RANGE-FROM-AZ3-NETWORK
     reserved:
-    - 10.0.48.2-10.0.48.3
-    - 10.0.63.255
+    - RESERVED-IPS-FROM-AZ3-NETWORK
     static:
-    - 10.0.63.190-10.0.63.254
+    - STATIC-IPS-FROM-AZ3-NETWORK
   type: manual
 ```
 
-Here are some important takeaways from this example:
+Here are some important points about this example:
 
+* Unless otherwise noted,
+  all values come from the Cloud Foundry manifest.
 * You must include compilation configuration.
-* You must include at least the VM types.
+* You must include at least the VM types
   and extensions from the example.
 * You must have a network called `default`.
 * You must configure the Availability Zones
   `z1`, `z2`, and `z3`.
+* This example assumes that your network setup
+  allows your elbs to talk to your deployment
+  without additional security groups.
+  If not, you must add an array of `security_groups`
+  to the `cf-router-network-properties` and
+  `diego-ssh-proxy-network-properties`
+  `vm_extensions`.
 
 Once you've written a suitable cloud config,
 upload it to the BOSH Director:
