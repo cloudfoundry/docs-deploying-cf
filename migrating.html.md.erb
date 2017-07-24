@@ -135,7 +135,7 @@ The following example ops file scales to 12 instances of the `diego-cell`:
 ```
 
 ## <a id='cloud-config'> Step 4: Write and Upload Cloud Config
-`cf-deployment` requires that a [https://bosh.io/docs/cloud-config.html](https://bosh.io/docs/cloud-config.html)
+`cf-deployment` requires that a [cloud config](https://bosh.io/docs/cloud-config.html)
 providing certain properties be available on the BOSH Director.
 
 You must write such a cloud config,
@@ -266,7 +266,7 @@ networks:
     cloud_properties:
       security_groups:
       - FIGURE-THIS-OUT
-      subnet: subnet-635cd92a
+      subnet: FIGURE-THIS-OUT
     gateway: 10.0.32.1
     range: 10.0.32.0/20
     reserved:
@@ -278,7 +278,7 @@ networks:
     cloud_properties:
       security_groups:
       - FIGURE-THIS-OUT
-      subnet: subnet-57d8c40f
+      subnet: FIGURE-THIS-OUT
     gateway: 10.0.48.1
     range: 10.0.48.0/20
     reserved:
@@ -288,6 +288,15 @@ networks:
     - 10.0.63.190-10.0.63.254
   type: manual
 ```
+
+Here are some important takeaways from this example:
+
+* You must include compilation configuration.
+* You must include at least the VM types.
+  and extensions from the example.
+* You must have a network called `default`.
+* You must configure the Availability Zones
+  `z1`, `z2`, and `z3`.
 
 Once you've written a suitable cloud config,
 upload it to the BOSH Director:
