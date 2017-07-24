@@ -107,13 +107,17 @@ For instance, the `diego-cell` instance group replaces
 both the `cell_z1` and the `cell_z2` instance groups
 in your existing Diego deployment.
 If you currently have 6 instances each of `cell_z1` and `cell_z2`,
-you will need 12 instances of `diego-cell`.
+you will need 12 instances of `diego-cell`,
+which is configured to use both AZ1 and AZ2.
+The BOSH Director will automatically
+balance these instances between the AZs.
 
 For a list of all job name changes from `cf-release`,
 see the `cfr-to-cfd.yml` ops file
 in the [cf-deployment-transition](https://github.com/cloudfoundry/cf-deployment-transition/blob/master/cfr-to-cfd.yml) GitHub repo.
 This file does not list name changes from the Diego deployment.
-However, only the `diego-cells` should be necessary to scale.
+However, of the jobs from the Diego deployment,
+only the `diego-cells` should be necessary to scale.
 
 ### <a id='write-ops-file'></a> Write Ops File
 
