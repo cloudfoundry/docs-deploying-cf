@@ -2,10 +2,26 @@
 title: Deploying Cloud Foundry with cf-release
 owner: Release Integration
 ---
+<style>
+    .note.warning {
+        background-color: #fdd;
+        border-color: #fbb
+    }
+
+    .note.warning:before {
+        color: #f99;
+     }
+</style>
+
+<p class="note warning"><strong>WARNING</strong>: <code>cf-release</code> will soon be deprecated.</p>
 
 This topic describes how to deploy Cloud Foundry using `cf-release`. 
 
-`cf-release` is the older way to deploy Cloud Foundry. To deploy Cloud Foundry with the newer `cf-deployment` method, see [Deploying Cloud Foundry with cf-deployment](../cf-deployment/index.html).
+`cf-release` is the older way to deploy Cloud Foundry, and will soon be deprecated. 
+
+If you are deploying Cloud Foundry for the first time, see the [Deploying Cloud Foundry with cf-deployment](../cf-deployment/index.html) topic.
+
+If you have an existing Cloud Foundry deployment that uses `cf-release`, see the [Migrating from cf-release to cf-deployment](./migrating.html) topic.
 
 ##<a id='overview'></a> Workflow
 

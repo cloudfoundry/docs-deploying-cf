@@ -12,9 +12,8 @@ While transitions on other IaaSes are possible,
 they are not currently supported.
 
 ## <a id='prerequisites'></a> Prerequisites
-The procedures in this topic have prerequisites.
-To ensure you're ready to perform this procedure,
-please first perform the following steps:
+
+Complete the following steps before performing the procedures in this topic:
 
 * Install the BOSH CLI v2.
 For more information, see the <a href="https://bosh.io/docs/cli-v2.html#install">BOSH documentation</a>.
@@ -25,7 +24,7 @@ with particular attention to the following:
   - You must be using an external blobstore.
   - You must either create additional databases
     or disable some optional features in `cf-deployment`.
-* Ensure your deployed network configuration
+* Review the following prerequisites to ensure your deployed network configuration
   is compatible with the transition process:
   - You must have sufficient available addresses
     in your Cloud Foundry network
@@ -34,26 +33,27 @@ with particular attention to the following:
     as part of the transition.
   - You must have non-overlapping network IP address ranges
     in your existing deployments.
-    When you deploy `cf-deployment` with your new cloud config,
-    the BOSH Director will treat the entire range
+    <br><br>
+    When you deploy `cf-deployment` with your new [cloud config](https://bosh.io/docs/cloud-config.html),
+    the BOSH Director treats the entire range
     of any networks declared in your Diego manifest
     as fully used.
-    This creates a problem.
     If you previously had networks with
     fully overlapping IP address ranges
     that had one another's ranges as `reserved`
     to avoid conflicts,
-    the BOSH Director will now be unable to assign IP addresses
+    the BOSH Director cannot assign IP addresses
     in any of those networks.
-  - To resolve this,
-    redefine your networks such that they don't overlap,
+    <br><br>
+    To resolve this problem,
+    redefine your networks so that they don't overlap,
     and deploy those changes
     prior to starting the transition process.
 
 ## <a id='configure-cli'></a> Step 1: Configure the BOSH CLI v2
 Perform the following steps:
 
-1. Set your BOSH Director address, username, password as environment variables:
+1. Set your BOSH Director address, username, and password as environment variables:
   <pre class="terminal">
   $ export BOSH\_ENVIRONMENT=YOUR-DIRECTOR-ADDRESS
   $ export BOSH\_CLIENT=YOUR-DIRECTOR-USERNAME
@@ -85,7 +85,8 @@ perform the following steps to provide that certificate to the BOSH CLI.
   1. Extract the necessary certificate
   from your BOSH Director deployment manifest:
   <pre class="terminal">
-  $ bosh interpolate --path=/properties/director/ssl/cert PATH-TO-YOUR-BOSH-DIRECTOR-MANIFEST > /tmp/bosh-CA.crt
+  $ bosh interpolate \
+  --path=/properties/director/ssl/cert PATH-TO-YOUR-BOSH-DIRECTOR-MANIFEST > /tmp/bosh-CA.crt
   </pre>
   1. Configure the BOSH CLI to use the extracted certificate:
   <pre class="terminal">
@@ -140,8 +141,7 @@ For a list of all job name changes from `cf-release`,
 see the `cfr-to-cfd.yml` ops file
 in the [cf-deployment-transition](https://github.com/cloudfoundry/cf-deployment-transition/blob/master/cfr-to-cfd.yml) GitHub repo.
 This file does not list name changes from the Diego deployment.
-However, of the jobs from the Diego deployment,
-only the `diego-cells` should be necessary to scale.
+However, the only job from the Diego deployment that you must scale is `diego-cells`.
 
 ### <a id='write-ops-file'></a> Write Ops File
 
@@ -159,171 +159,165 @@ The following example ops file scales to 12 instances of the `diego-cell`:
 ```
 
 ## <a id='cloud-config'></a> Step 4: Write and Upload Cloud Config
-`cf-deployment` requires that a [cloud config](https://bosh.io/docs/cloud-config.html)
-providing certain properties be available on the BOSH Director.
 
-You must write such a cloud config,
-drawing its values from your current CF and Diego manifests.
+You must write a cloud config to provide certain properties for `cf-deployment`, and upload it to your BOSH Director.
 
-The following example can be used
-as the basis for your cloud config:
+Perform the following steps:
 
-```yaml
-compilation:
-  az: z1
-  network: private
-  reuse_compilation_vms: true
-  vm_extensions:
-  - 100GB_ephemeral_disk
-  vm_type: c3.large
-  workers: 6
+1. Write a cloud config, drawing its values from your current Cloud Foundry and Diego manifests. Use the following example as the basis for your cloud config:
 
-disk_types:
-- name: 5GB
-  cloud_properties:
-    encrypted: true
-    type: gp2
-  disk_size: 5120
-- name: 10GB
-  cloud_properties:
-    encrypted: true
-    type: gp2
-  disk_size: 10240
-- name: 100GB
-  cloud_properties:
-    encrypted: true
-    type: gp2
-  disk_size: 102400
+    ```yaml
+    compilation:
+      az: z1
+      network: private
+      reuse_compilation_vms: true
+      vm_extensions:
+      - 100GB_ephemeral_disk
+      vm_type: c3.large
+      workers: 6
 
-vm_types:
-- name: t2.small
-  cloud_properties:
-    ephemeral_disk:
-      size: 10240
-      type: gp2
-    instance_type: t2.small
-- name: c3.large
-  cloud_properties:
-    ephemeral_disk:
-      size: 10240
-      type: gp2
-    instance_type: c3.large
-- name: m3.medium
-  cloud_properties:
-    ephemeral_disk:
-      size: 10240
-      type: gp2
-    instance_type: m3.medium
-- name: m3.large
-  cloud_properties:
-    ephemeral_disk:
-      size: 10240
-      type: gp2
-    instance_type: m3.large
-- name: r3.xlarge
-  cloud_properties:
-    ephemeral_disk:
-      size: 10240
-      type: gp2
-    instance_type: r3.xlarge
+    disk_types:
+    - name: 5GB
+      cloud_properties:
+        encrypted: true
+        type: gp2
+      disk_size: 5120
+    - name: 10GB
+      cloud_properties:
+        encrypted: true
+        type: gp2
+      disk_size: 10240
+    - name: 100GB
+      cloud_properties:
+        encrypted: true
+        type: gp2
+      disk_size: 102400
 
-vm_extensions:
-- name: 50GB_ephemeral_disk
-  cloud_properties:
-    ephemeral_disk:
-      size: 102400
-      type: gp2
-- name: 100GB_ephemeral_disk
-  cloud_properties:
-    ephemeral_disk:
-      size: 512000
-      type: gp2
-- name: cf-router-network-properties
-  cloud_properties:
-    elbs:
-    - ELB-NAME-FROM-ROUTER-RESOURCE-POOL
-- name: diego-ssh-proxy-network-properties
-  cloud_properties:
-    elbs:
-    - ELB-NAME-FROM-DIEGO-MANIFEST-ACCESS-RESOURCE-POOL
+    vm_types:
+    - name: t2.small
+      cloud_properties:
+        ephemeral_disk:
+          size: 10240
+          type: gp2
+        instance_type: t2.small
+    - name: c3.large
+      cloud_properties:
+        ephemeral_disk:
+          size: 10240
+          type: gp2
+        instance_type: c3.large
+    - name: m3.medium
+      cloud_properties:
+        ephemeral_disk:
+          size: 10240
+          type: gp2
+        instance_type: m3.medium
+    - name: m3.large
+      cloud_properties:
+        ephemeral_disk:
+          size: 10240
+          type: gp2
+        instance_type: m3.large
+    - name: r3.xlarge
+      cloud_properties:
+        ephemeral_disk:
+          size: 10240
+          type: gp2
+        instance_type: r3.xlarge
 
-azs:
-- name: z1
-  cloud_properties:
-    availability_zone: AVAILABILITY-ZONE-FROM-LARGE-Z1-RESOURCE-POOL
-- name: z1
-  cloud_properties:
-    availability_zone: AVAILABILITY-ZONE-FROM-LARGE-Z2-RESOURCE-POOL
-- name: z3
-  cloud_properties:
-    availability_zone: AVAILABILITY-ZONE-FROM-LARGE-Z3-RESOURCE-POOL
+    vm_extensions:
+    - name: 50GB_ephemeral_disk
+      cloud_properties:
+        ephemeral_disk:
+          size: 102400
+          type: gp2
+    - name: 100GB_ephemeral_disk
+      cloud_properties:
+        ephemeral_disk:
+          size: 512000
+          type: gp2
+    - name: cf-router-network-properties
+      cloud_properties:
+        elbs:
+        - ELB-NAME-FROM-ROUTER-RESOURCE-POOL
+    - name: diego-ssh-proxy-network-properties
+      cloud_properties:
+        elbs:
+        - ELB-NAME-FROM-DIEGO-MANIFEST-ACCESS-RESOURCE-POOL
 
-networks:
-- name: default
-  subnets:
-  - az: z1
-    cloud_properties:
-      security_groups:
-      - SECURITY-GROUP-FROM-AZ1-NETWORK
-      subnet: SUBNET-FROM-AZ1-NETWORK
-    gateway: GATEWAY-IP-FROM-AZ1-NETWORK
-    range: RANGE-FROM-AZ1-NETWORK
-    reserved: 
-    - RESERVED-IPS-FROM-AZ1-NETWORK
-    static:
-    - STATIC-IPS-FROM-AZ1-NETWORK
-  - az: z2
-    cloud_properties:
-      security_groups:
-      - SECURITY-GROUP-FROM-AZ2-NETWORK
-      subnet: SUBNET-FROM-AZ2-NETWORK
-    gateway: GATEWAY-IP-FROM-AZ2-NETWORK
-    range: RANGE-FROM-AZ2-NETWORK
-    reserved:
-    - RESERVED-IPS-FROM-AZ2-NETWORK
-    static:
-    - STATIC-IPS-FROM-AZ2-NETWORK
-  - az: z3
-    cloud_properties:
-      security_groups:
-      - SECURITY-GROUP-FROM-AZ3-NETWORK
-      subnet: SUBNET-FROM-AZ3-NETWORK
-    gateway: GATEWAY-IP-FROM-AZ3-NETWORK
-    range: RANGE-FROM-AZ3-NETWORK
-    reserved:
-    - RESERVED-IPS-FROM-AZ3-NETWORK
-    static:
-    - STATIC-IPS-FROM-AZ3-NETWORK
-  type: manual
-```
+    azs:
+    - name: z1
+      cloud_properties:
+        availability_zone: AVAILABILITY-ZONE-FROM-LARGE-Z1-RESOURCE-POOL
+    - name: z1
+      cloud_properties:
+        availability_zone: AVAILABILITY-ZONE-FROM-LARGE-Z2-RESOURCE-POOL
+    - name: z3
+      cloud_properties:
+        availability_zone: AVAILABILITY-ZONE-FROM-LARGE-Z3-RESOURCE-POOL
 
-Here are some important points about this example:
-
-* Unless otherwise noted,
-  all values come from the Cloud Foundry manifest.
-* You must include compilation configuration.
-* You must include at least the VM types
-  and extensions from the example.
-* You must have a network called `default`.
-* You must configure the Availability Zones
-  `z1`, `z2`, and `z3`.
-* This example assumes that your network setup
-  allows your elbs to talk to your deployment
-  without additional security groups.
-  If not, you must add an array of `security_groups`
-  to the `cf-router-network-properties` and
-  `diego-ssh-proxy-network-properties`
-  `vm_extensions`.
-
-Once you've written a suitable cloud config,
-upload it to the BOSH Director:
-
-<pre class="terminal">
-$ bosh update-cloud-config PATH-TO-YOUR-CLOUD-CONFIG
-</pre>
+    networks:
+    - name: default
+      subnets:
+      - az: z1
+        cloud_properties:
+          security_groups:
+          - SECURITY-GROUP-FROM-AZ1-NETWORK
+          subnet: SUBNET-FROM-AZ1-NETWORK
+        gateway: GATEWAY-IP-FROM-AZ1-NETWORK
+        range: RANGE-FROM-AZ1-NETWORK
+        reserved: 
+        - RESERVED-IPS-FROM-AZ1-NETWORK
+        static:
+        - STATIC-IPS-FROM-AZ1-NETWORK
+      - az: z2
+        cloud_properties:
+          security_groups:
+          - SECURITY-GROUP-FROM-AZ2-NETWORK
+          subnet: SUBNET-FROM-AZ2-NETWORK
+        gateway: GATEWAY-IP-FROM-AZ2-NETWORK
+        range: RANGE-FROM-AZ2-NETWORK
+        reserved:
+        - RESERVED-IPS-FROM-AZ2-NETWORK
+        static:
+        - STATIC-IPS-FROM-AZ2-NETWORK
+      - az: z3
+        cloud_properties:
+          security_groups:
+          - SECURITY-GROUP-FROM-AZ3-NETWORK
+          subnet: SUBNET-FROM-AZ3-NETWORK
+        gateway: GATEWAY-IP-FROM-AZ3-NETWORK
+        range: RANGE-FROM-AZ3-NETWORK
+        reserved:
+        - RESERVED-IPS-FROM-AZ3-NETWORK
+        static:
+        - STATIC-IPS-FROM-AZ3-NETWORK
+      type: manual
+    ```
+  <br><br>
+  Keep in mind the following about the above example:
+  * Unless otherwise noted,
+    all values come from the Cloud Foundry manifest.
+  * You must include compilation configuration.
+  * You must include at least the VM types
+    and extensions from the example.
+  * You must have a network called `default`.
+  * You must configure AZs
+    `z1`, `z2`, and `z3`.
+  * This example assumes that your network setup
+    allows your Elastic Load Balancers (ELBs) to talk to your deployment
+    without additional security groups.
+    If not, you must add an array of `security_groups`
+    to the `cf-router-network-properties` and
+    `diego-ssh-proxy-network-properties`
+    `vm_extensions`.
+1. Upload your cloud config to the BOSH Director:
+    <pre class="terminal">
+    $ bosh update-cloud-config PATH-TO-YOUR-CLOUD-CONFIG
+    </pre>
 
 ## <a id='deploy-cf'></a> Step 5: Deploy Cloud Foundry
-Perform the steps in the [Deploying Cloud Foundry](./cf-deployment/deploy-cf.html) topic. Keep in mind the following when deploying Cloud Foundry in [Step 5: Deploy](./cf-deployment/deploy-cf.html#deploy):
+Perform all the steps in the [Deploying Cloud Foundry](./cf-deployment/deploy-cf.html) topic. Keep in mind the following when deploying Cloud Foundry in [Step 5: Deploy](./cf-deployment/deploy-cf.html#deploy):
 
 * You must apply the ops file for scaling your components that you created in the previous step.
 * You must apply the `cfr-to-cfd.yml` ops file.

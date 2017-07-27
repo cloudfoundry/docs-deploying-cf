@@ -8,11 +8,14 @@ upgraded on any cloud IaaS provider. Cloud Foundry achieves this by leveraging
 [BOSH](https://bosh.io/), an open source tool for release engineering,
 deployment, lifecycle management, and distributed systems monitoring.
 
-`cf-deployment` is the recommended way to deploy Cloud Foundry. 
-You can also deploy Cloud Foundry using the older `cf-release` method. If you deployed Cloud Foundry with `cf-release`, you can migrate your deployment to `cf-deployment`.
+`cf-deployment` is the recommended way to deploy Cloud Foundry. `cf-release` is the older way to deploy Cloud Foundry, and will soon be deprecated.
+
+If installing Cloud Foundry for the first time, [deploy](./cf-deployment/index.html) with `cf-deployment`.
+
+If you have an existing Cloud Foundry deployment that uses `cf-release`, [migrate](./migrating.html) your deployment to `cf-deployment`.
 
 Refer to the following topics for more information about how to deploy and migrate Cloud Foundry:
 
-* [Deploying Cloud Foundry with cf-deployment](./cf-deployment/index.html) (Recommended)
-* [Deploying Cloud Foundry with cf-release](./cf-release/index.html)
+* [Deploying Cloud Foundry with cf-deployment](./cf-deployment/index.html)
 * [Migrating from cf-release to cf-deployment](./migrating.html)
+* [Deploying Cloud Foundry with cf-release](./cf-release/index.html) (Soon to be deprecated)
