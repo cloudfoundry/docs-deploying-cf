@@ -20,7 +20,7 @@ additional troubleshooting information.
 
 ## <a id="api_access"></a>Can you access the OpenStack APIs for your instance of OpenStack? ##
 
-You should verify that you have your OpenStack API credentials and can make API calls, and make sure you know wich endpoint must use(v2/v3). Credentials are a combination of your user name, password, and the tenant or project your cloud is running under. Some providers also require you to set the region.
+You should verify that you have your OpenStack API credentials, can make API calls, and know which endpoint you need to use, v2 or v3. Credentials are a combination of your user name, password, and the tenant or project your cloud is running under. Some providers also require you to set the region.
 
 If your endpoint is v2:
 
@@ -37,7 +37,7 @@ Create a `~/.fog` file and copy the below content:
 
 <p class="note"><strong>Note</strong>: You need to include <code>/v2.0/tokens</code> in the auth URL above.</p>
 
-If your endpoint is v3 type:
+If your endpoint is v3:
 
 Create a `~/.fog` file and copy the below content:
 
@@ -56,7 +56,7 @@ Create a `~/.fog` file and copy the below content:
 </pre>
 
 
-<p class="note"><strong>Note</strong>: You need to include <code>/v3.0/auth/tokens</code> in the auth URL above.  Also, make sure you are using https insted of http, you can find out the correct value in the openstack horizon dashboard.</p>
+<p class="note"><strong>Note</strong>: You must include <code>/v3.0/auth/tokens</code> in the auth URL above. We also recommend that you use <code>https</code> instead of <code>http</code>. You can find the correct value in the OpenStack Horizon dashboard.</p>
 
 Install the `fog` application in your terminal, then run it in interactive mode:
 
