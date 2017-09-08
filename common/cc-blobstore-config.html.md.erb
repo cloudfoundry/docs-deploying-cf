@@ -31,8 +31,8 @@ To use Fog blobstores with AWS credentials, perform the steps below.
         blobstore_type: fog
         buildpack_directory_key: YOUR-AWS-BUILDPACK-BUCKET
         fog_connection: &fog_connection
-          aws_access_key_id: AWS_ACCESS_KEY
-          aws_secret_access_key: AWS_SECRET_ACCESS_KEY
+          aws_access_key_id: AWS-ACCESS-KEY
+          aws_secret_access_key: AWS-SECRET-ACCESS-KEY
           provider: AWS
           region: us-east-1
       droplets:
@@ -48,11 +48,11 @@ To use Fog blobstores with AWS credentials, perform the steps below.
         resource_directory_key: YOUR-AWS-RESOURCE-BUCKET
         fog_connection: *fog_connection
     ```
-1. Replace `AWS_ACCESS_KEY` and `AWS_SECRET_ACCESS_KEY` with your AWS credentials.
+1. Replace `AWS-ACCESS-KEY` and `AWS-SECRET-ACCESS-KEY` with your AWS credentials.
 
 1. Replace `YOUR-AWS-BUILDPACK-BUCKET`, `YOUR-AWS-DROPLET-BUCKET`, `YOUR-AWS-PACKAGE-BUCKET`, and `YOUR-AWS-RESOURCE-BUCKET` with the names of your AWS buckets. Do not use periods (`.`) in your AWS bucket names. In the AWS console, you must assign your credentials an IAM policy that allows all S3 actions on all of these buckets. 
 
-1. You can provide further configuration through the <code>fog_connection</code> hash, which is passed through to the Fog gem.
+1. (Optional) Provide additional configuration through the <code>fog_connection</code> hash, which is passed through to the Fog gem.
 
 ##<a id="fog-aws-sse"></a> Fog with AWS Server-Side Encryption
 
@@ -68,8 +68,8 @@ AWS S3 offers Server-Side Encryption at rest. For more information, see <a href=
           blobstore_type: fog
           buildpack_directory_key: YOUR-AWS-BUILDPACK-BUCKET
           fog_connection: &fog_connection
-            aws_access_key_id: AWS_ACCESS_KEY
-            aws_secret_access_key: AWS_SECRET_ACCESS_KEY
+            aws_access_key_id: AWS-ACCESS-KEY
+            aws_secret_access_key: AWS-SECRET-ACCESS-KEY
             provider: AWS
             region: us-east-1
           fog_aws_storage_options: &fog_aws_storage_options
@@ -113,8 +113,8 @@ AWS S3 offers Server-Side Encryption at rest. For more information, see <a href=
           blobstore_type: fog
           buildpack_directory_key: YOUR-AWS-BUILDPACK-BUCKET
           fog_connection: &fog_connection
-            aws_access_key_id: AWS_ACCESS_KEY
-            aws_secret_access_key: AWS_SECRET_ACCESS_KEY
+            aws_access_key_id: AWS-ACCESS-KEY
+            aws_secret_access_key: AWS-SECRET-ACCESS-KEY
             provider: AWS
             region: us-east-1
           fog_aws_storage_options: &fog_aws_storage_options
@@ -137,7 +137,7 @@ AWS S3 offers Server-Side Encryption at rest. For more information, see <a href=
           fog_aws_storage_options: *fog_aws_storage_options
       ```
 
-1. Replace `AWS_ACCESS_KEY` and `AWS_SECRET_ACCESS_KEY` with your AWS credentials. 
+1. Replace `AWS-ACCESS-KEY` and `AWS-SECRET-ACCESS-KEY` with your AWS credentials. 
 
 1. Replace `YOUR-AWS-BUILDPACK-BUCKET`, `YOUR-AWS-DROPLET-BUCKET`, `YOUR-AWS-PACKAGE-BUCKET`, and `YOUR-AWS-RESOURCE-BUCKET` with the names of your AWS buckets.  Do not use periods (`.`) in your AWS bucket names. In the AWS console, you must assign your credentials an IAM policy that allows all S3 actions on all of these buckets. 
 
@@ -206,7 +206,7 @@ To configure Fog blobstores to use <a href="http://docs.aws.amazon.com/IAM/lates
       }]
     }
     ```
-If you are using the AWS console, an IAM Role is automatically assigned to an IAM Instance Profile with the same name, <code>cloud-controller</code>. If you are not using the AWS console, you must create an IAM Instance Profile with a single assigned IAM Role.
+If you use the AWS console, an IAM Role is automatically assigned to an IAM Instance Profile with the same name, <code>cloud-controller</code>. If you do not use the AWS console, you must create an IAM Instance Profile with a single assigned IAM Role.
 
 1. In your Cloud Foundry deployment manifest, configure a resource pool to use the <code>cloud-controller</code> IAM Instance Profile:
 
@@ -234,8 +234,8 @@ To configure your blobstores to use Google Cloud Storage Interoperability creden
         buildpack_directory_key: YOUR-GCS-BUILDPACK-BUCKET
         fog_connection: &fog_connection
           provider: Google
-          google_storage_access_key_id: GCS_ACCESS_KEY
-          google_storage_secret_access_key: GCS_SECRET_ACCESS_KEY
+          google_storage_access_key_id: GCS-ACCESS-KEY
+          google_storage_secret_access_key: GCS-SECRET-ACCESS-KEY
       droplets:
         blobstore_type: fog
         droplet_directory_key: YOUR-GCS-DROPLET-BUCKET
@@ -249,9 +249,9 @@ To configure your blobstores to use Google Cloud Storage Interoperability creden
         resource_directory_key: YOUR-GCS-RESOURCE-BUCKET
     ```
 
-1. Create an Interoperability key using the GCP  [instructions](https://cloud.google.com/storage/docs/migrating#keys).
+1. Create an Interoperability key using the [GCP instructions](https://cloud.google.com/storage/docs/migrating#keys).
 
-1. Replace ` GCS_ACCESS_KEY` and `GCS_SECRET_ACCESS_KEY` with your Cloud Storage credentials.
+1. Replace `GCS-ACCESS-KEY` and `GCS-SECRET-ACCESS-KEY` with your Cloud Storage credentials.
 
 1. Replace `YOUR-GCS-BUILDPACK-BUCKET`, `YOUR-GCS-DROPLET-BUCKET`, `YOUR-GCS-PACKAGE-BUCKET`, and `YOUR-GCS-RESOURCE-BUCKET` with the names of your Cloud Storage buckets. Do not use periods (`.`) in your bucket names. 
 
@@ -321,29 +321,28 @@ To configure your blobstores to use an NFS-mounted directory, perform the steps 
         fog_connection: *fog_connection
     ```
 
-1. Replace `YOUR-BUILDPACK-DIRECTORY-PREFIX`, `YOUR-DROPLET-DIRECTORY-PREFIX`, `YOUR-PACKAGE-DIRECTORY-PREFIX`, and `YOUR-RESOURCE-DIRECTORY-PREFIX` with the names of the directories you will be using.
-   If these aren't specified, Cloud Foundry will supply usable default values.
+1. Replace `YOUR-BUILDPACK-DIRECTORY-PREFIX`, `YOUR-DROPLET-DIRECTORY-PREFIX`, `YOUR-PACKAGE-DIRECTORY-PREFIX`, and `YOUR-RESOURCE-DIRECTORY-PREFIX` with the names of the directories you will be using. If you do not specify these, Cloud Foundry will supply usable default values.
 
-1. You can provide further configuration through the <code>fog_connection</code> hash, which is passed through to the Fog gem.
+1. (Optional) Provide other configuration with the `fog_connection` hash, which is passed through to the Fog gem.
 
-1. The `nfs_mounter` job specifies how to mount a remote NFS server onto a local directory. You will need to configure the `nfs_mounter` job for the `cloud_controller_ng`, `cloud_controller_worker`, and `cloud_controller_clock` instance groups:
+1. Configure the `nfs_mounter` job for the `cloud_controller_ng`, `cloud_controller_worker`, and `cloud_controller_clock` instance groups. The `nfs_mounter` job specifies how to mount a remote NFS server onto a local directory.
 
     ```
     name: nfs_mounter
       properties:
         nfs_server:
-          address: NFS_ENDPOINT
-          share: REMOTE_DIR_TO_MOUNT
-          share_path: LOCAL_DIR_TO_MOUNT
+          address: NFS-ENDPOINT
+          share: REMOTE-DIR-TO-MOUNT
+          share_path: LOCAL-DIR-TO-MOUNT
           nfsv4: false
       release: capi
    ```
 
-Sample values:
+Replace the placeholder text in the example above with the values you want to use. Sample values:
 
-- `NFS_ENDPOINT`: `nfstestserver.service.cf.internal`
-- `REMOTE_DIR_TO_MOUNT`: `/var/data/exported`
-- `LOCAL_DIR_TO_MOUNT`: `/var/vcap/nfs`
+- `NFS-ENDPOINT`: `nfstestserver.service.cf.internal`
+- `REMOTE-DIR-TO-MOUNT`: `/var/data/exported`
+- `LOCAL-DIR-TO-MOUNT`: `/var/vcap/nfs`
 
 ##<a id="webdav"></a>WebDAV
 
@@ -356,26 +355,26 @@ To configure your blobstores to use the WebDAV protocol, perform the steps below
     ```
     blobstore:
       admin_users:
-      - password: WEBDAV_BASIC_AUTH_PASSWORD
-        username: WEBDAV_BASIC_AUTH_USER
+      - password: WEBDAV-BASIC-AUTH-PASSWORD
+        username: WEBDAV-BASIC-AUTH-USER
       port: 8080
       secure_link:
-        secret: WEBDAV_SECRET
+        secret: WEBDAV-SECRET
       tls:
-        cert: WEBDAV_CERT
+        cert: WEBDAV-CERT
         port: 4443
-        private_key: WEBDAV_PRIVATE_KEY
-        ca_cert: WEBDAV_CA_CERT_BUNDLE
+        private_key: WEBDAV-PRIVATE-KEY
+        ca_cert: WEBDAV-CA-CERT-BUNDLE
     cc:
       buildpacks:
         blobstore_type: webdav
         buildpack_directory_key: cc-buildpacks
         webdav_config: &webdav_config
-          public_endpoint: WEBDAV_PUBLIC_ENDPOINT
-          private_endpoint: WEBDAV_PRIVATE_ENDPOINT
-          username: WEBDAV_BASIC_AUTH_USER
-          password: WEBDAV_BASIC_AUTH_PASSWORD
-          ca_cert: WEBDAV_CA_CERT_BUNDLE
+          public_endpoint: WEBDAV-PUBLIC-ENDPOINT
+          private_endpoint: WEBDAV-PRIVATE-ENDPOINT
+          username: WEBDAV_BASIC-AUTH-USER
+          password: WEBDAV_BASIC-AUTH-PASSWORD
+          ca_cert: WEBDAV-CA-CERT-BUNDLE
       droplets:
         blobstore_type: webdav
         droplet_directory_key: cc-droplets
@@ -391,11 +390,11 @@ To configure your blobstores to use the WebDAV protocol, perform the steps below
     ```
 
 1. Configure your WebDAV blobstores by performing the following steps:
-      * Replace <code>WEBDAV\_BASIC\_AUTH\_USER</code> and <code>WEBDAV\_BASIC\_AUTH\_PASSWORD</code> with Basic AUTH credentials that Cloud Controller can use to talk your WebDAV installation.
-      * Replace <code>WEBDAV\_SECRET</code> with a secret phrase used to sign URLs.
-      * Replace <code>WEBDAV\_CERT</code>, <code>WEBDAV\_PRIVATE\_KEY</code>, and <code>WEBDAV\_CA\_CERT\_BUNDLE</code> with proper TLS configuration that are used for the internal blobstore.
-      * Replace <code>WEBDAV\_PUBLIC\_ENDPOINT</code> with the public URL that resolves to your WebDAV installation. For example, `https://blobstore.SYSTEM-DOMAIN.example.com`.
-      * Replace <code>WEBDAV\_PRIVATE\_ENDPOINT</code> with a routable URL on your internal network. If not set, this defaults to `https://blobstore.service.cf.internal:4443`.
-      * Replace <code>WEBDAV\_BASIC\_AUTH\_USER</code> and <code>WEBDAV\_BASIC\_AUTH\_PASSWORD</code> with Basic AUTH credentials that Cloud Controller can use to communicate with your WebDAV installation.
+      * Replace <code>WEBDAV-BASIC-AUTH-USER</code> and <code>WEBDAV-BASIC-AUTH-PASSWORD</code> with Basic AUTH credentials that Cloud Controller can use to communicate with your WebDAV installation.
+      * Replace <code>WEBDAV-SECRET</code> with a secret phrase used to sign URLs.
+      * Replace <code>WEBDAV-CERT</code>, <code>WEBDAV-PRIVATE-KEY</code>, and <code>WEBDAV-CA-CERT-BUNDLE</code> with proper TLS configuration that are used for the internal blobstore.
+      * Replace <code>WEBDAV-PUBLIC-ENDPOINT</code> with the public URL that resolves to your WebDAV installation. For example, `https://blobstore.SYSTEM-DOMAIN.example.com`.
+      * Replace <code>WEBDAV-PRIVATE-ENDPOINT</code> with a routable URL on your internal network. If not set, this defaults to `https://blobstore.service.cf.internal:4443`.
+      * Replace <code>WEBDAV-BASIC-AUTH-USER</code> and <code>WEBDAV-BASIC-AUTH-PASSWORD</code> with Basic AUTH credentials that Cloud Controller can use to communicate with your WebDAV installation.
 
-1. Create a <code>webdav\_config</code> hash to provide further configuration.
+1. Create a <code>webdav_config</code> hash to provide further configuration.
