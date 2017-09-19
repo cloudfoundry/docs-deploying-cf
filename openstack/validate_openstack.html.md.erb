@@ -156,7 +156,16 @@ PING 198.51.100.2 (198.51.100.2) 56(84) bytes of data.
 
 </pre>
 
-Note that you can press `Ctrl-C` to exit the ping program. If you are not able to ping one virtual machine from another, refer to the [OpenStack Networking Guide](https://docs.openstack.org/neutron/latest/admin/) for more information.
+Note that you can press `Ctrl-C` to exit the ping program. 
+
+If ping operation is not permitted you can use Netcat to test TCP or UDP connections, e.g. SSH:
+
+<pre class="terminal">
+$ nc -zvn 198.51.100.2 22
+Connection to 198.51.100.2 22 port [tcp/*] succeeded!
+</pre>
+
+If you are not able to connect to one virtual machine from another, refer to the [OpenStack Networking Guide](https://docs.openstack.org/neutron/latest/admin/) for more information.
 
 ## <a id="api_access"></a> Can you invoke large numbers of API calls? ##
 
