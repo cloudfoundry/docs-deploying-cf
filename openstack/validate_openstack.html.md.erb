@@ -71,12 +71,12 @@ The `[]` is an empty array in Ruby. You might see a long list of servers being d
 
 <p class="note"><strong>Note</strong>: It is recommended that you deploy BOSH and Cloud Foundry in a dedicated tenancy. This way, it is easier to keep track of the servers, volumes, security groups, and networks that you create. It also allows you to manage user access.</p>
 
-For more information about OpenStack APIs, see the [OpenStack API Quick Start Guide](http://docs.openstack.org/api/quick-start/content/).
+For more information about OpenStack APIs, see the [OpenStack API Quick Start Guide](https://developer.openstack.org/api-guide/quick-start/index.html).
 
 
 ## <a id="metadata_service"></a> Can you access OpenStack metadata service from a virtual machine? ##
 
-According to [the OpenStack Documentation](http://docs.openstack.org/grizzly/openstack-compute/admin/content/metadata-service.html), the Compute service uses a special metadata service to enable virtual machine instances to retrieve instance-specific data. The default stemcell for use with BOSH retrieves this metadata for each instance of a virtual machine that OpenStack manages in order to get some data injected by the BOSH director.
+According to [the OpenStack Documentation](https://docs.openstack.org/nova/latest/admin/networking-nova.html#metadata-service), the Compute service uses a special metadata service to enable virtual machine instances to retrieve instance-specific data. The default stemcell for use with BOSH retrieves this metadata for each instance of a virtual machine that OpenStack manages in order to get some data injected by the BOSH director.
 
 You must ensure that virtual machines you boot in your OpenStack environment can access the metadata service at http://169.254.169.254.
 
@@ -101,7 +101,7 @@ $ curl http://169.254.169.254
 
 If you do not see a list like this, consult the OpenStack documentation, or the documentation for your OpenStack distribution, to diagnose and resolve networking issues.
 
-If the metadata service is not enabled in your OpenStack instance, you can also try [inserting instance specific data](http://docs.openstack.org/grizzly/openstack-compute/admin/content/instance-data.html#inserting_metadata) such as injecting a file when booting a VM:
+If the metadata service is not enabled in your OpenStack instance, you can also try [inserting instance specific data](https://wiki.openstack.org/wiki/OpsGuide-User-Facing-Operations#Using_Instance-Specific_Data) such as injecting a file when booting a VM:
 
 <pre class="terminal">
 $ gem install fog
@@ -156,7 +156,7 @@ PING 198.51.100.2 (198.51.100.2) 56(84) bytes of data.
 
 </pre>
 
-Note that you can press `Ctrl-C` to exit the ping program. If you are not able to ping one virtual machine from another, refer to the [OpenStack Networking Guide](http://docs.openstack.org/admin-guide-cloud/content/ch_networking.html) for more information.
+Note that you can press `Ctrl-C` to exit the ping program. If you are not able to ping one virtual machine from another, refer to the [OpenStack Networking Guide](https://docs.openstack.org/neutron/latest/admin/) for more information.
 
 ## <a id="api_access"></a> Can you invoke large numbers of API calls? ##
 
@@ -195,7 +195,7 @@ To verify the ability to provision large volumes, perform the following steps:
 8.  Click **Create Volume**.
 9.  You should see the volume appear in the list of volumes with the status **Available**.
 
-If the volume appears with the status **Error**, you need to check that your OpenStack Cinder Service is configured correctly. See [Cinder Administrator Guide](http://docs.openstack.org/admin-guide-cloud/content/managing-volumes.html) for more information.
+If the volume appears with the status **Error**, you need to check that your OpenStack Cinder Service is configured correctly. See [Cinder Administrator Guide](https://docs.openstack.org/cinder/latest/admin/) for more information.
 
 To verify that you can attach and mount a volume to an instance, perform the following steps (**assumes you have completed the steps above**):
 
@@ -272,7 +272,7 @@ To download the image to your Glance Image Service, perform the following steps:
 2.  In the menu on the left-hand side, click **Images & Snapshots**.
 3.  You should see a list of images. Click **Create Image**.
 4.  For **Name**, enter **Ubuntu Server 64-bit**.
-5.  For **Image Location**, enter **http://cloud-images.ubuntu.com/lucid/current/lucid-server-cloudimg-amd64-disk1.img**.
+5.  For **Image Location**, enter **http://cloud-images.ubuntu.com/trusty/current/trusty-server-cloudimg-amd64-disk1.img**.
 6.  For **Format**, select **QCOW2 - QEMU Emulator**.
 7.  For **Minimum Disk**, enter 5GB.
 8.  For **Minimum Ram**, enter 1024MB.
@@ -294,7 +294,7 @@ To confirm that you can assign floating IP addresses to your virtual machines, p
 7.  You should be able to leave the menu **Port to be associated** alone, but check that it points at the VM you have selected.
 8.  Click **Associate**.
 
-If the steps above do not work for you, consult the [OpenStack Networking Guide](http://docs.openstack.org/admin-guide-cloud/content/ch_networking.html) for more information.
+If the steps above do not work for you, consult the [OpenStack Networking Guide](https://docs.openstack.org/neutron/latest/admin/) for more information.
 
 Simply assigning a floating IP address to a virtual machine does not mean that virtual networking is properly configured. You will also need to ensure that the virtual machine can be reached on its floating IP address, so that calls can be made to and from the VM once it's running the BOSH Director or Cloud Foundry. The public-facing router will forward traffic at all ports to your virtual machine, so it is up to the networking configuration of your security group to provide the added layer of security by implementing a firewall.
 
