@@ -83,7 +83,7 @@ networks:
   - name: cf1
     type: manual
     subnets:
-    - range: 10.0.16.0/24
+    - range: 10.0.16.0/20
       gateway: 10.0.16.1
       dns:
       - 168.63.129.16
@@ -112,6 +112,16 @@ properties:
   </tr>
   <tr>
     <td><pre><code>
+  app_ssh:
+    host_key_fingerprint: HOST_KEY_FINGERPRINT
+    oauth_client_id: ssh-proxy
+    </code></pre></td>
+    <td>Replace <code>HOST_KEY_FINGERPRINT</code> with the host key fingerprint. You can generate the fingerprint by runing the following commands: <pre class=terminal>$ ssh-keygen -N "" -f ssh-proxy-host-key.pem > /dev/null
+$ ssh-keygen -lf ssh-proxy-host-key.pem.pub | cut -d ' ' -f2</pre>
+    </td>
+  </tr>
+  <tr>
+    <td><pre><code>
   ssl:
     skip_cert_verify: true
     </code></pre></td>
@@ -124,14 +134,49 @@ properties:
     staging_upload_password: STAGING_UPLOAD_PASSWORD
     bulk_api_password: BULK_API_PASSWORD
     db_encryption_key: DB_ENCRYPTION_KEY
+    uaa_skip_ssl_validation: true
+    tls_port: CC_MUTUAL_TLS_PORT
+    mutual_tls:
+      ca_cert: CC_MUTUAL_TLS_CA_CERT
+      public_cert: CC_MUTUAL_TLS_PUBLIC_CERT
+      private_key: CC_MUTUAL_TLS_PRIVATE_KEY
     </code></pre></td>
     <td>
-    The Cloud Controller API endpoint requires basic authentication. Replace <code>STAGING_UPLOAD_USER</code> and <code>STAGING_UPLOAD_PASSWORD</code> with a username and password of your choosing.
-    <br /><br />
-    Replace <code>BULK_API_PASSWORD</code> with a password of your choosing. The password cannot contain characters that are not allowed for basic authentication unless you encode the characters. Health Manager uses this password to access the Cloud Controller bulk API.
-    <br /><br />
-    Replace <code>DB_ENCRYPTION_KEY</code> with a secure key that you generate to encrypt sensitive values in the Cloud Controller database.
-    You can use any random string. For example, run the following command from a command line to generate a 32-character random string: <code>LC_ALL=C tr -dc 'A-Za-z0-9' < /dev/urandom | head -c 32 ; echo</code>
+      The Cloud Controller API endpoint requires basic authentication. Replace <code>STAGING_UPLOAD_USER</code> and <code>STAGING_UPLOAD_PASSWORD</code> with a username and password of your choosing.
+      <br /><br />
+      Replace <code>BULK_API_PASSWORD</code> with a password of your choosing. The password cannot contain characters that are not allowed for basic authentication unless you encode the characters. Health Manager uses this password to access the Cloud Controller bulk API.
+      <br /><br />
+      Replace <code>DB_ENCRYPTION_KEY</code> with a secure key that you generate to encrypt sensitive values in the Cloud Controller database.
+      You can use any random string. For example, run the following command from a command line to generate a 32-character random string: <code>LC_ALL=C tr -dc 'A-Za-z0-9' < /dev/urandom | head -c 32 ; echo</code>
+      <br /><br />
+      Replace <code>CC_MUTUAL_TLS_PORT</code> with a tls port, for example: 9023
+      <br /><br />
+
+      To generate the certificates and keys for the <code>mutual_tls</code> section, you need the <a href="https://github.com/cloudfoundry/cf-release/blob/master/scripts/generate-cf-diego-certs">generate-cf-diego-certs script</a> from the <code>cf-release</code> repository. 
+      Run the <code>generate-cf-diego-certs</code> script to generate the certificates and keys for Cloud Controller.
+      <br>
+      For example, run the following in a terminal window:
+      <pre class=terminal>$ ./scripts/generate-cf-diego-certs</pre>
+      This script outputs a directory named <code>cf-diego-certs</code> that contains a set of files with the certificates and keys you need.
+
+      <table>
+        <tr>
+          <th>In the stub, replace&hellip;</th>
+          <th>with the contents of this file&hellip;</th>
+        </tr>
+        <tr>
+          <td><code>CC_MUTUAL_TLS_CA_CERT</code></td>
+          <td><code>cf-diego-ca.crt</code></td>
+        </tr>
+        <tr>
+          <td><code>CC_MUTUAL_TLS_PUBLIC_CERT</code></td>
+          <td><code>cloud_controller.crt</code></td>
+        </tr>
+        <tr>
+          <td><code>CC_MUTUAL_TLS_PRIVATE_KEY</code></td>
+          <td><code>cloud_controller.key</code></td>
+        </tr>
+      </table>
     </td>
   </tr>
   <tr>
@@ -188,6 +233,7 @@ properties:
       in the <code>cf-release</code> repository to generate self signed certs.
     </td>
   </tr>
+
   <tr>
     <td><pre><code>
   loggregator:
@@ -202,9 +248,88 @@ properties:
       trafficcontroller:
         cert: TRAFFICCONTROLLER_CERT
         key: TRAFFICCONTROLLER_KEY
+      cc_trafficcontroller:
+        cert: CCTRAFFICCONTROLLER_CERT
+        key: CCTRAFFICCONTROLLER_KEY
+      syslogdrainbinder:
+        cert: SYSLOGDRAINBINDER_CERT
+        key: SYSLOGDRAINBINDER_KEY
+      statsd_injector:
+        cert: STATSDINJECTOR_CERT
+        key: STATSDINJECTOR_KEY
     </code></pre></td>
     <td>
-       Generate SSL certs for loggregator and replace these values. You can use the <code>scripts/generate-loggregator-certs</code> script in the <code>cf-release</code> repository to generate self signed certs.
+      To generate the certificates and keys for the Loggregator components, you need the following:
+      <ul>
+        <li>The original CA certificate and key used to sign the keypairs for TLS between the Cloud Controller and the Diego BBS</li>
+        <li>The <a href="https://github.com/cloudfoundry/cf-release/blob/master/scripts/generate-loggregator-certs">generate-loggregator-certs script</a> from the <code>cf-release</code> repository</li>
+        <li>The <a href="https://github.com/cloudfoundry/cf-release/blob/master/scripts/generate-statsd-injector-certs">generate-statsd-injector-certs script</a> from the <code>cf-release</code> repository</li>
+      </ul>
+      Generate certs
+      <br>
+      For example, run the following in a terminal window:
+      <pre class=terminal>$  ./scripts/generate-loggregator-certs cf-diego-certs/cf-diego-ca.crt cf-diego-certs/cf-diego-ca.key
+$  ./scripts/generate-statsd-injector-certs loggregator-certs/loggregator-ca.crt loggregator-certs/loggregator-ca.key</pre>
+      This script outputs directories named <code>loggregator-certs</code> and <code>statsd-injector-certs</code>that contain a set of files with the certificates and keys you need for Loggregator.
+
+      <table>
+        <tr>
+          <th>In the stub, replace&hellip;</th>
+          <th>with the contents of this file&hellip;</th>
+        </tr>
+        <tr>
+          <td><code>LOGGREGATOR_CA_CERT</code></td>
+          <td><code>loggregator-ca.crt</code></td>
+        </tr>
+        <tr>
+          <td><code>DOPPLER_CERT</code></td>
+          <td><code>doppler.crt</code></td>
+        </tr>
+        <tr>
+          <td><code>DOPPLER_KEY</code></td>
+          <td><code>doppler.key</code></td>
+        </tr>
+        <tr>
+          <td><code>TRAFFICCONTROLLER_CERT</code></td>
+          <td><code>trafficcontroller.crt</code></td>
+        </tr>
+        <tr>
+          <td><code>TRAFFICCONTROLLER_KEY</code></td>
+          <td><code>trafficontroller.key</code></td>
+        </tr>
+        <tr>
+          <td><code>METRON_CERT</code></td>
+          <td><code>metron.crt</code></td>
+        </tr>
+        <tr>
+          <td><code>METRON_KEY</code></td>
+          <td><code>metron.key</code></td>
+        </tr>
+        <tr>
+          <td><code>CCTRAFFICCONTROLLER_CERT</code></td>
+          <td><code>cc_trafficcontroller.crt</code></td>
+        </tr>
+        <tr>
+          <td><code>CCTRAFFICCONTROLLER_KEY</code></td>
+          <td><code>cc_trafficcontroller.key</code></td>
+        </tr>
+        <tr>
+          <td><code>SYSLOGDRAINBINDER_CERT</code></td>
+          <td><code>syslogdrainbinder.crt</code></td>
+        </tr>
+        <tr>
+          <td><code>SYSLOGDRAINBINDER_KEY</code></td>
+          <td><code>syslogdrainbinder.key</code></td>
+        </tr>
+        <tr>
+          <td><code>STATSDINJECTOR_CERT</code></td>
+          <td><code>statsdinjector.crt</code></td>
+        </tr>
+        <tr>
+          <td><code>STATSDINJECTOR_KEY</code></td>
+          <td><code>statsdinjector.key</code></td>
+        </tr>
+      </table>
     </td>
   </tr>
   <tr>
@@ -243,6 +368,8 @@ properties:
     cc:
       client_secret: CC_CLIENT_SECRET
     clients:
+      cc_service_key_client:
+        secret: CC_SERVICE_KEY_CLIENT_SECRET
       cc_routing:
         secret: CC_ROUTING_SECRET
       cloud_controller_username_lookup:
@@ -295,10 +422,11 @@ properties:
   </tr>
   <tr>
     <td><pre><code>
+    ca_cert: UAA_CA_CERT
     sslCertificate: UAA_SERVER_CERT
     sslPrivateKey: UAA_SERVER_KEY
     </code></pre></td>
-    <td>Replace <code>UAA_SERVER_CERT</code> and <code>UAA_SERVER_KEY</code> with UAA certificates. You can use the <code>scripts/generate-uaa-certs</code> script in the <code>cf-release</code> repository to generate self-signed certificates.</td>
+    <td>Replace <code>UAA_CA_CERT</code>, <code>UAA_SERVER_CERT</code> and <code>UAA_SERVER_KEY</code> with UAA certificates. You can use the <code>scripts/generate-uaa-certs</code> script in the <code>cf-release</code> repository to generate self-signed certificates.</td>
     </td>
   </tr>
   <tr>
@@ -325,19 +453,6 @@ properties:
   </tr>
   <tr>
     <td><pre><code>
-  hm9000:
-    ca_cert: HM9000_CA_CERT
-    server_cert: HM9000_SERVER_CERT
-    server_key: HM9000_SERVER_KEY
-    agent_cert: HM9000_AGENT_CERT
-    agent_key: HM9000_AGENT_KEY
-    </code></pre></td>
-    <td>
-      Generate SSL certificates for HM9000 and replace these values. You can use the <code>scripts/generate-hm9000-certs</code> script in the <code>cf-release</code> repository to generate self-signed certificates.
-    </td>
-  </tr>
-  <tr>
-    <td><pre><code>
   login:
     saml:
       serviceProviderKey: SAML_KEY
@@ -345,7 +460,12 @@ properties:
       serviceProviderCertificate: SAML_CERT
     </code></pre></td>
     <td>
-      Generate SSL certificates for SAML and replace these values. You can use the <code>scripts/generate-certs</code> script in the <code>cf-release</code> repository to generate self-signed certificates.
+        Generate a PEM-encoded RSA key pair. You can generate a key pair by running the command
+        <code>openssl req -x509 -nodes -newkey rsa:2048 -days 365 -keyout key.pem -out cert.pem</code>
+        This command creates <code>cert.pem</code>, which contains your public key, and <code>key.pem</code>,
+        which contains your private key. Replace <code>SERVICE_PROVIDER_PRIVATE_KEY</code> with the full private key,
+        including the <code>BEGIN</code> and <code>END</code> delimiter lines, under <code>serviceProviderKey</code>.</br>
+        For RSA keys, you only need to configure the private key.
     </td>
   </tr>
   <tr>
