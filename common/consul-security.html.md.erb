@@ -5,23 +5,19 @@ owner: Release Integration
 
 <strong><%= modified_date %></strong>
 
-Cloud Foundry requires traffic to be secure between Consul agents by using
-encryption and mutual authentication. Follow the instructions below to configure
-security for Consul.
+This topic describes how to configure security for the Consul agents that run on all Cloud Foundry VMs. Consul secures traffic between VMs by using encryption and mutual authentication.
 
 ##<a id='secure'></a>Configure Security ##
 
-To configure security for Consul, you must generate SSL certificates and keys, create Gossip encryption keys, and update your stub file.
+To configure security for Consul, you must generate SSL certificates and keys, create Gossip encryption keys, and update your deployment manifest or manifest stub file by including the new keys.
 
 ###<a id='generate-certs'></a>Generate SSL Certificates and Keys ###
 
-To generate the certificates and keys that you need for Consul, we recommend using [certstrap](https://github.com/square/certstrap). 
+To generate the certificates and keys that you need for Consul, we recommend that you use the `generate-consul-certs` script in the `scripts` subdirectory of the [cf-release](https://github.com/cloudfoundry/cf-release) repository.
 
-The [cf-release](https://github.com/cloudfoundry/cf-release) repository contains a helper script, `scripts/generate-consul-certs`. This script uses certstrap to initialize a certificate authority (CA) and generate the certificates and keys for Consul.
-<br><br>
-The `generate-consul-certs` script outputs files to the `./consul-certs` directory.
-<br><br>
-If you already have a CA, you may have an existing workflow. You can modify the `generate-consul-certs` script to use your existing CA instead of creating a new one.
+The `generate-consul-certs` script uses [certstrap](https://github.com/square/certstrap) to create a certificate authority (CA) and generate the certificates and keys that Consul needs. It then saves the files to the `./consul-certs` directory.
+
+If you already have a CA that you want to use, you can modify the `generate-consul-certs` script to use your existing CA instead of creating a new one.
 
 ###<a id='encrypt-keys'></a>Create Gossip Encryption Keys ###
 
@@ -35,9 +31,13 @@ Copy the contents of the files in the `./consul-certs` directory, as well as the
 
 Perform the steps below to rotate your SSL certificates, keys, and certificate authorities.
 
-1. Append the CA certificate to the `ca_cert` field of your manifest file. Do not remove any existing CA certificates. Deploy Cloud Foundry using your updated manifest.
+1. Run `bosh deployments` to get a list of all the deployments that BOSH is running.
 
-    ```
+1. For each deployment:
+  1. Run `bosh manifest` (`bosh download manifest` for BOSH v1) to retrieve the manifest file for the deployment.
+  1. Append the CA certificate to the `ca_cert` field of your manifest file. Do not remove any existing CA certificates.
+
+        ```
     ...
     properties:
       ...
@@ -80,11 +80,14 @@ Perform the steps below to rotate your SSL certificates, keys, and certificate a
           #######           Your Old Server Key               #######
           ###########################################################
           -----END RSA PRIVATE KEY-----
-   ```
+        ```  
+    1. [Deploy Cloud Foundry](../deploying/common/deploy.html) using your updated manifest.
 
-2. Replace the old server and agent certificates and keys with the new certificates and keys. Deploy Cloud Foundry using your updated manifest.
+1. After redeploying all deployments with the new CA certificates, you can rotate all the SSL certs and keys. For each deployment:
 
-    ```
+  1. Replace the old server and agent certificates and keys with the new certificates and keys.
+
+        ```
     ...
     properties:
       ...
@@ -127,11 +130,12 @@ Perform the steps below to rotate your SSL certificates, keys, and certificate a
           #######           Your New Server Key               #######
           ###########################################################
           -----END RSA PRIVATE KEY-----
-   ```
+          ```
+  1. [Deploy Cloud Foundry](../deploying/common/deploy.html) using your updated manifest.
 
-3. Remove your old CA Certificate. Deploy Cloud Foundry using your updated manifest.
+  1. Remove your old CA Certificate.
 
-    ```
+        ```
     ...
     properties:
       ...
@@ -169,7 +173,8 @@ Perform the steps below to rotate your SSL certificates, keys, and certificate a
           #######           Your New Server Key               #######
           ###########################################################
           -----END RSA PRIVATE KEY-----
-   ```
+        ```
+    1. [Deploy Cloud Foundry](../deploying/common/deploy.html) using your updated manifest.
 
 ## <a id='rotating-encryption-key'></a>Rotate Encryption Key
 
