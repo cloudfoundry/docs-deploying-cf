@@ -50,6 +50,15 @@ Your must create several wildcard DNS records to point to your load balancer(s) 
 
 Your exact configuration will vary significantly depending on your IaaS and your load balancing configuration. Below are two example topologies: the [first](#aws) is an Amazon Web Services (AWS) deployment using Elastic Load Balancer (ELBs), and the [second](#haproxy) uses HAProxy for load balancing.
 
+The diagrams below show which particular jobs will have traffic routed to them by load balancers.
+It's worth noting that the instance groups
+-- the names that `bosh instances` shows --
+may have different names.
+For example,
+in a default [cf-deployment](https://github.com/cloudfoundry/cf-deployment),
+the `ssh_proxy` job will be deployed to an instance group called `scheduler`.
+Your load balancers will need to route traffic to that VM.
+
 ###<a id='aws'></a> AWS
 
 This topology has DNS configured to point five domains to four ELBs:
