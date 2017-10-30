@@ -9,7 +9,9 @@ This topic describes how to set up DNS for your Cloud Foundry environment.
 
 ##<a id='domains'></a> Domains
 
-Your must create several wildcard DNS records to point to your load balancer(s) or router(s). Consult the following table.
+Your must create several wildcard DNS records to point to your load balancers and routers. Consult the table below for details about these wildcard DNS records.
+
+Cloud Foundry gives each application its own hostname in your app domain. With a wildcard DNS record, every hostname in your domain resolves to the IP address of your router or load balancer, and you do not need to configure an A record for each app hostname. For example, if you create a DNS record for a system domain <code>*.example.com</code> pointing to your router, every application deployed to the <code>example.com</code> domain resolves to the IP address of your router.
 
 <table>
 <tr>
@@ -44,20 +46,17 @@ Your must create several wildcard DNS records to point to your load balancer(s) 
 </tr>
 </table>
 
-<p class="note"><strong>Note</strong>: Cloud Foundry gives each application its own hostname in your app domain. With a wildcard DNS record, every hostname in your domain resolves to the IP address of your router or load balancer, and you do not need to configure an A record for each app hostname. For example, if you create a DNS record for a system domain <code>*.example.com</code> pointing to your router, every application deployed to the <code>example.com</code> domain resolves to the IP address of your router.</p>
 
 ##<a id='examples'></a> Example Topologies
 
-Your exact configuration will vary significantly depending on your IaaS and your load balancing configuration. Below are two example topologies: the [first](#aws) is an Amazon Web Services (AWS) deployment using Elastic Load Balancer (ELBs), and the [second](#haproxy) uses HAProxy for load balancing.
+Your exact configuration may vary significantly depending on your IaaS and your load balancing configuration. Below are the following example topologies. 
 
-The diagrams below show which particular jobs will have traffic routed to them by load balancers.
-It's worth noting that the instance groups
--- the names that `bosh instances` shows --
-may have different names.
-For example,
-in a default [cf-deployment](https://github.com/cloudfoundry/cf-deployment),
-the `ssh_proxy` job will be deployed to an instance group called `scheduler`.
-Your load balancers will need to route traffic to that VM.
+- [An Amazon Web Services](#aws) (AWS) deployment using Elastic Load Balancer (ELBs)
+- A deployment that uses [HAProxy](#haproxy) for load balancing
+
+The diagrams below show which particular jobs will have traffic routed to them by load balancers. The instance groups may have different names. Run the `bosh instances` command to see the instance groups.
+
+For example, in a default [cf-deployment](https://github.com/cloudfoundry/cf-deployment), the `ssh_proxy` job is deployed to an instance group name `scheduler`. Your load balancers must route traffic to that VM.
 
 ###<a id='aws'></a> AWS
 
