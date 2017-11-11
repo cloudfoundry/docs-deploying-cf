@@ -31,12 +31,12 @@ properties:
 
 ##<a id='target'></a>Target Your BOSH Director
 
-Use the `bosh target` command with the address of your BOSH Director to
+Use the `bosh alias-env` command with the address of your BOSH Director to
 connect to the BOSH Director. Log in with the default user name and password,
 `admin` and `admin`, or use the username and password that you set when you
 installed BOSH-Lite.
 <pre class="terminal">
-$ bosh target <span>https</span>://bosh.my-domain.example.com
+$ bosh alias-env <span>https</span>://bosh.my-domain.example.com
 Target set to `bosh'
 Your username: admin
 Enter password: *****
