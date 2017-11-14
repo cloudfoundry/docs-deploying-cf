@@ -101,7 +101,7 @@ In general, we use a wildcard domain to map all apps and services running on a C
 
 The system services are made available in the same way - `api.mycf.com`, `console.mycf.com`, etc., may all be used. This can lead to some phishing opportunities, however. For example, someone could pretend to be a legitimate system service and create `change_your_password.mycf.com` or `sign_up_with_credit_card.mycf.com`. To avoid this, Cloud Foundry supports two domains, one for system applications and one for general applications. Only administrators of the system can deploy applications to the system domain.
 
-These instructions explain a deployment using a single wildcard domain for both applications and system services. It is straightforward to use separate domains if you wish, when [creating the Cloud Foundry deployment manifest](../../common/vsphere-vcloud-cf-stub.html).
+These instructions explain a deployment using a single wildcard domain for both applications and system services. It is straightforward to use separate domains if you wish, when [creating the Cloud Foundry deployment manifest](../common/vsphere-vcloud-cf-stub.html).
 
 Even when using a single wildcard domain, we recommend that you use different subdomain names for your system domain and your app domain. Doing so prevents apps from creating routes that overlap and conflict with system routes.
 
