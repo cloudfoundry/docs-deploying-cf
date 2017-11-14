@@ -27,10 +27,10 @@ The following example specifies AWS as an IaaS, and references a `cf-stub.yml` f
     <p class="note"><strong>Note</strong>: The <code>generate\_deployment\_manifest</code> script can accept multiple stub files. For example, the following command passes two stub files to the script: <br/>
 <code>./scripts/generate\_deployment\_manifest vsphere cf-stub.yml cf-consul.yml > cf-deployment.yml</code></p>
 
-1. Use the `bosh deployment` command to set your deployment to the generated manifest:
+1. Use the `bosh deploy` command to set your deployment to the generated manifest:
 
     <pre class="terminal">
-    $ bosh deployment cf-deployment.yml
+    $ bosh -e MY-ENV -d MY-DEPLOYMENT cf-deployment.yml
     </pre>
 
 You are now ready to deploy Cloud Foundry. See the [Deploying Cloud Foundry](../common/deploy.html) topic for instructions.
