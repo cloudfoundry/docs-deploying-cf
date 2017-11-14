@@ -37,7 +37,7 @@ To create a Cloud Foundry manifest, you must perform the following steps:
 
 ##<a id='bosh-uuid'></a> Step 2: Retrieve Your BOSH Director UUID
 
-<%= partial '../../common/bosh_uuid' %>
+<%= partial '../common/bosh_uuid' %>
 
 ##<a id='stub'></a> Step 3: Create Your Manifest Stub
 
@@ -219,7 +219,7 @@ $ ssh-keygen -lf ssh-proxy-host-key.pem.pub | cut -d ' ' -f2</pre>
     agent_cert: CONSUL-AGENT-CERT
     agent_key: CONSUL-AGENT-KEY
     </code></pre></td>
-    <td>See the <a href="../../common/consul-security.html">Security Configuration for Consul</a> topic. You can use the <code>scripts/generate-consul-certs</code> script in the <code>cf-release</code> repository to generate self-signed certificates.
+    <td>See the <a href="../common/consul-security.html">Security Configuration for Consul</a> topic. You can use the <code>scripts/generate-consul-certs</code> script in the <code>cf-release</code> repository to generate self-signed certificates.
     </td>
   </tr>
   <tr>
@@ -494,7 +494,7 @@ jobs:
   </tr>
 </table>
 
-<%= partial '../../common/additional_config' %>
+<%= partial '../common/additional_config' %>
 
 ##<a id='generate'></a>Step 4: Generate Your Manifest
 1. Download Azure infrastructure stub `cf-infrastructure-azure.yml` for Cloud Foundry from this [link](https://raw.githubusercontent.com/cloudfoundry-incubator/bosh-azure-cpi-release/master/docs/stubs/cf/cf-infrastructure-azure.yml). You can also set IaaS configuration by changing this file, for example changing <code>instance_type</code>.
@@ -514,4 +514,4 @@ jobs:
     $ bosh -e MY-ENV -d MY-DEPLOYMENT {WORK_DIR}/cf-deployment.yml
     </pre>
 
-You are now ready to deploy Cloud Foundry. See the [Deploying Cloud Foundry](../../common/deploy.html) topic for instructions.
+You are now ready to deploy Cloud Foundry. See the [Deploying Cloud Foundry](../common/deploy.html) topic for instructions.
