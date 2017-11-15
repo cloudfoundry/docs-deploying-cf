@@ -75,18 +75,14 @@ Run the following command to create the required infrastructure and deploy a BOS
 <pre class="terminal">
 bbl up \
   --iaas gcp \
-  --gcp-project-id YOUR-PROJECT-ID \
   --gcp-service-account-key PATH-TO/bbl-user.key.json \
-  --gcp-region YOUR-GCP-REGION \
-  --gcp-zone YOUR-GCP-ZONE
+  --gcp-region YOUR-GCP-REGION
 </pre>
 
 Replace the placeholders as follows:
 
-* `YOUR-PROJECT-ID` is your GCP project ID, retrieved in the previous section.
 * `PATH-TO` is the path to the `bbl-user.key.json` file, created in the previous section.
 * `YOUR-GCP-REGION` is your GCP region, such as `us-central1`.
-* `YOUR-GCP-ZONE` is your GCP zone, such as `us-central1-a`.
 
 The `bbl up` command takes five to eight minutes to complete. When the process finishes, it outputs a state file, `bbl-state.json`, in the present working directory.
 
@@ -167,7 +163,7 @@ Perform the following steps to connect to the BOSH Director:
 
 ## <a id="destroy-environment"></a>Destroy the BOSH Resources ##
 
-You can use <code>bbl destroy</code> to delete the BOSH Director infrastructure in your AWS environment. Use this command if `bbl up` does not complete successfully and you want to reset your environment, or if you want to destroy the resources created by bosh-bootloader for any other reason.
+You can use <code>bbl destroy</code> to delete the BOSH Director infrastructure in your GCP environment. Use this command if `bbl up` does not complete successfully and you want to reset your environment, or if you want to destroy the resources created by bosh-bootloader for any other reason.
 
 To destroy your BOSH resources, run the following command:
 <pre class="terminal">$ bbl destroy</pre>
