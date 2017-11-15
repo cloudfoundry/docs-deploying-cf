@@ -14,7 +14,7 @@ To create a Cloud Foundry manifest, you must perform the following steps:
 1. Create a manifest stub in YAML format. See the [example manifest stub](#stub) for OpenStack below, and follow the [editing instructions](#editing) to customize it for your deployment.
 1. Use a script to combine the manifest stub with other configuration files in the `cf-release` repository to [generate your deployment manifest](#generate).
 
-<p class="note"><strong>Note</strong>: OpenStack defaults to using an internal WebDAV blobstore for the Cloud Controller. For alternative blobstore configurations, see the <a href="/deploying/common/cc-blobstore-config.html">Cloud Controller Blobstore Configuration</a> and <a href="/deploying/openstack/using_swift_blobstore.html">Using OpenStack Swift as a Cloud Foundry Blobstore</a> topics.</p>
+<p class="note"><strong>Note</strong>: OpenStack defaults to using an internal WebDAV blobstore for the Cloud Controller. For alternative blobstore configurations, see the <a href="/deploying/common/cc-blobstore-config.html">Cloud Controller Blobstore Configuration</a> and <a href="./using_swift_blobstore.html">Using OpenStack Swift as a Cloud Foundry Blobstore</a> topics.</p>
 
 ##<a id='bosh-uuid'></a> Step 1: Retrieve Your BOSH Director UUID
 
@@ -181,7 +181,7 @@ properties:
     agent_cert: CONSUL_AGENT_CERT
     agent_key: CONSUL_AGENT_KEY
     </code></pre></td>
-    <td>See the <a href="../common/consul-security.html">Security Configuration for Consul</a> topic.
+    <td>See the <a href="../../common/consul-security.html">Security Configuration for Consul</a> topic.
     </td>
   </tr>
   <tr>
