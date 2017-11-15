@@ -18,7 +18,7 @@ To create a Cloud Foundry manifest, you must perform the following steps:
 
 ##<a id='bosh-uuid'></a> Step 1: Retrieve Your BOSH Director UUID
 
-<%= partial '../cf-release/common/bosh_uuid' %>
+<%= partial '../common/bosh_uuid' %>
 
 ##<a id='stub'></a> Step 2: Create Your Manifest Stub
 
@@ -39,7 +39,7 @@ Review the [example manifest stub](#example-stub) for OpenStack, and then follow
     <td><pre><code>
 director_uuid: DIRECTOR_UUID
     </code></pre></td>
-    <td>Replace <code>DIRECTOR_UUID</code> with the BOSH Director UUID. Run the BOSH CLI <code>bosh env --uuid</code> command to view the BOSH Director UUID.
+    <td>Replace <code>DIRECTOR_UUID</code> with the BOSH Director UUID. Run the BOSH CLI <code>bosh status --uuid</code> command to view the BOSH Director UUID.
     </td>
   </tr>
   <tr>
@@ -357,9 +357,13 @@ Run <code>generate-loggregator-certs CA_CERT CA_KEY</code> to generate the certi
       verification_key: JWT_VERIFICATION_KEY
       signing_key: JWT_SIGNING_KEY
     </code></pre></td>
-    <td>Generate a PEM-encoded RSA key pair, and replace <code>JWT_SIGNING_KEY</code> with the private key, and <code>JWT_VERIFICATION_KEY</code>
-        with the corresponding public key. Generate a key pair by running the command <code>openssl genrsa -out jwt-key.pem 2048 && openssl rsa -pubout -in jwt-key.pem -out jwt-key.pem.pub</code>.
-        This command creates <code>jwt-key.pem.pub</code>, which contains your public key, and <code>jwt-key.pem</code>, which contains your private key.<br/>
+    <td>Generate a PEM-encoded RSA key pair, and replace <code>JWT_SIGNING_KEY</code> with the private key, and <code>JWT_VERIFICATION_KEY</code> with the corresponding public key. You can generate a key pair by running the following command:
+
+    <p><code>openssl genrsa -des3 -out jwt-key.pem 2048 && openssl rsa -in jwt-key.pem -pubout > key.pub</code></p>
+
+    This command creates the <code>jwt-key.pem.pub</code> file, which contains your public key, and the <code>jwt-key.pem</code> file, which contains your private key. If you were prompted for a passphrase, you must strip it from the private key with the following command: 
+
+    <p><code>openssl rsa -in jwt-key.pem -out jwt-key.pem</code></p>
     Copy in the full keys, including the <code>BEGIN</code> and <code>END</code> delimiter lines.
     </td>
   </tr>
@@ -453,7 +457,7 @@ jobs:
 </table>
 
 
-<%= partial '../cf-release/common/additional_config' %>
+<%= partial '../common/additional_config' %>
 
 ##<a id='generate'></a>Step 3: Generate Your Manifest
 
