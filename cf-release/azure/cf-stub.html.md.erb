@@ -18,7 +18,7 @@ To create a Cloud Foundry manifest, you must perform the following steps:
     <pre class="terminal">
     $ mkdir workspace
     $ cd workspace
-    $ export WORK_DIR=$(pwd)
+    $ export WORK_DIR=$(pwd)    
     </pre>
 
 1. Clone the `cf-release` GitHub repository. Use `git clone` to clone the latest Cloud Foundry configuration files onto your machine.
@@ -115,7 +115,7 @@ properties:
   ssl:
     skip_cert_verify: true
     </code></pre></td>
-    <td> Set <code>skip_cert_verify</code> to <code>true</code> to skip SSL certificate verification if you do not use a real domain and certificate. If you want to use SSL certificates to secure traffic into your deployment, see the <a href="../../adminguide/securing-traffic.html">Securing Traffic into Cloud Foundry</a> topic.
+    <td> Set <code>skip_cert_verify</code> to <code>true</code> to skip SSL certificate verification if you do not use a real domain and certificate. If you want to use SSL certificates to secure traffic into your deployment, see the <a href="../../../adminguide/securing-traffic.html">Securing Traffic into Cloud Foundry</a> topic.
   </td>
   <tr>
     <td><pre><code>
@@ -166,7 +166,7 @@ properties:
     agent_cert: CONSUL_AGENT_CERT
     agent_key: CONSUL_AGENT_KEY
     </code></pre></td>
-    <td>See the <a href="../common/consul-security.html">Security Configuration for Consul</a> topic. You can use the <code>scripts/generate-consul-certs</code> script in the <code>cf-release</code> repository to generate self-signed certificates.
+    <td>See the <a href="../../common/consul-security.html">Security Configuration for Consul</a> topic. You can use the <code>scripts/generate-consul-certs</code> script in the <code>cf-release</code> repository to generate self-signed certificates.
     </td>
   </tr>
   <tr>
