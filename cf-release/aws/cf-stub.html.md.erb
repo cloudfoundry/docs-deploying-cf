@@ -1,0 +1,535 @@
+---
+title: Customizing the Cloud Foundry Deployment Manifest for AWS
+owner: Release Integration
+---
+
+<strong><%= modified_date %></strong>
+
+This topic describes how to create the Cloud Foundry deployment manifest for Amazon Web Services (AWS). Before creating a manifest, you must have already [deployed BOSH](setup_bosh_aws.html) on AWS.
+
+To create a Cloud Foundry manifest, you must perform the following steps:
+
+1. Use the BOSH CLI to [retrieve your BOSH Director UUID](#bosh-uuid), which you use to customize your manifest stub.
+1. Create a manifest stub in YAML format. See the [example manifest stub](#stub) for AWS below, and follow the [editing instructions](#editing) to customize it for your deployment.
+1. Use a script to combine the manifest stub with other configuration files in the `cf-release` repository to [generate your deployment manifest](#generate).
+
+<p class="note"><strong>Note</strong>: AWS defaults to using Fog with AWS credentials for the Cloud Controller blobstore. For alternative blobstore configurations, see the <a href="/deploying/common/cc-blobstore-config.html">Cloud Controller Blobstore Configuration</a> topic.</p>
+
+##<a id='bosh-uuid'></a> Step 1: Retrieve Your BOSH Director UUID
+
+To perform the following procedures, you must have completed the steps in the [Deploying BOSH on AWS](setup_bosh_aws.html) topic.
+
+Perform the following steps to retrieve your BOSH Director UUID:
+
+1. Log in to your BOSH Director with the username and password you [retrieved](setup_bosh_aws.html#connect-bosh-director) from `bbl`:
+  <pre class="terminal">
+  $ bosh log-in 
+  Username: YOUR-DIRECTOR-USERNAME
+  Password: YOUR-DIRECTOR-PASSWORD
+  </pre>
+1. Use the `bosh env` command to view information about your BOSH
+deployment. Record the UUID of the BOSH Director. You use the UUID when
+[customizing](#editing) the Cloud Foundry deployment manifest stub.
+  <pre class="terminal">
+  $ bosh env
+  Using environment 'example.com' as client 'admin'
+  <br>
+  Name      bosh
+  UUID      000a0f00-1111-444a-ab1a-999999999a9a
+  Version   1.3262.14.0 (00000000)
+  CPI       aws\_cpi
+  Features  compiled\_package\_cache: disabled
+              dns: enabled
+              snapshots: disabled
+  User      admin
+  <br>
+  Succeeded  
+  </pre>
+
+##<a id='stub'></a> Step 2: Create Your Manifest Stub
+
+Review the [example manifest stub](#example-stub) for AWS, and then follow the [editing instructions](#editing) to customize it for your deployment.
+
+###<a id="example-stub"></a>Cloud Foundry Deployment Manifest Stub for AWS
+
+<%= yield_for_code_snippet from: 'cloudfoundry/cf-release', at: 'cf-stub-aws' %>
+
+###<a id="editing"></a>Editing Instructions 
+
+<table border="1" class="nice">
+  <tr>
+    <th style="width:35%">Deployment Manifest Stub Contents</th>
+    <th>Editing Instructions</th>
+  </tr>
+  <tr>
+    <td><pre><code>
+meta:
+  environment: ENVIRONMENT
+    </code></pre></td>
+    <td>Replace <code>ENVIRONMENT</code> with an arbitrary name describing your environment, for example <code>aws-prod</code>.
+    </td>
+  </tr>
+  <tr>
+    <td><pre><code>
+director_uuid: DIRECTOR_UUID
+    </code></pre></td>
+    <td>Replace <code>DIRECTOR_UUID</code> with your BOSH Director UUID.</td>
+  </tr>
+  <tr>
+    <td><pre><code>
+networks:
+- name: cf1
+  subnets:
+    - range: 10.0.16.0/20
+      reserved:
+        - 10.10.16.2-10.10.16.3
+        - 10.0.31.255
+      static:
+        - 10.0.31.190-10.0.31.254
+      gateway: 10.0.16.1
+      dns:
+        - 10.10.0.2
+      cloud_properties:
+        security_groups:
+          - SECURITY_GROUP_ID_1
+        subnet: (( properties.template_only.aws.subnet_ids.cf1 ))
+- name: cf2
+  subnets:
+    - range: 10.0.32.0/20
+      reserved:
+        - 10.0.32.2-10.0.32.3
+        - 10.0.47.255
+      static:
+        - 10.0.47.190-10.0.47.254
+      gateway: 10.0.32.1
+      dns:
+        - 10.10.0.2
+      cloud_properties:
+        security_groups:
+          - SECURITY_GROUP_ID_2
+        subnet: (( properties.template_only.aws.subnet_ids.cf2 ))
+      </code></pre></td>
+    <td>Update the values for <code>range</code>, <code>reserved</code>, <code>static</code>, and <code>gateway</code> accordingly if the CIDRs for your subnets are different.
+    <br/><br/>
+    To retrieve the values for <code>SECURITY_GROUP_ID_1</code> and <code>SECURITY_GROUP_ID_2</code>, display your cloud config by logging in to your BOSH Director and running the command <code>bosh -e YOUR-ENV cloud-config</code>. 
+    </td>
+  </tr>
+  <tr>
+    <td><pre><code>
+properties:
+  template_only:
+    aws:
+      access_key_id: AWS_ACCESS_KEY
+      secret_access_key: AWS_SECRET_ACCESS_KEY
+      availability_zone: ZONE_1
+      availability_zone2: ZONE_2
+      subnet_ids:
+        cf1: SUBNET_ID_1
+        cf2: SUBNET_ID_2
+      </code></pre></td>
+    <td>Replace <code>AWS_ACCESS_KEY</code> and <code>AWS_SECRET_ACCESS_KEY</code> with AWS credentials to allow Cloud Controller to manage assets in the S3 buckets you have prepared for this deployment.
+    <br/><br/>
+    Replace <code>ZONE_1</code> and <code>ZONE_2</code> with two EC2 Availability Zones that you want to distribute your deployment across.
+    <br/><br/>
+    Replace <code>SUBNET_ID_1</code> and <code>SUBNET_ID_2</code> with the VPC subnet IDs corresponding to the subnets configured in the <code>networks</code> section above.
+    </td>
+  </tr>
+
+  <tr>
+    <td><pre><code>
+  system_domain: SYSTEM_DOMAIN
+  system_domain_organization: SYSTEM_DOMAIN_ORGANIZATION
+  app_domains:
+   - APP_DOMAIN
+      </code></pre></td>
+    <td>Replace <code>SYSTEM_DOMAIN</code> with the domain to be used for all system components. For instance, the Cloud Controller API will be reachable through <code>api.SYSTEM_DOMAIN</code>. Replace <code>APP_DOMAIN</code> with the domain you want associated with applications pushed to your Cloud Foundry installation. For instance, if you push <code>my-app</code>, it will be available through <code>my-app.APP_DOMAIN</code>.
+    <br/><br/>
+    We recommend that you provide separate values for <code>SYSTEM_DOMAIN</code> and <code>APP_DOMAIN</code>, for example  <code>sys.cloud-09.cf-app.com</code> and <code>apps.cloud-09.cf-app.com</code>. For simple deployments, you can use the same domain for both, for example <code>cloud-09.cf-app.com</code>. However, you cannot have one domain property extend the other, for example you cannot have your <code>SYSTEM_DOMAIN</code> set to <code>cloud-09.cf-app.com</code> and your <code>APP_DOMAIN</code> set to <code>apps.cloud-09.cf-app.com</code>.
+    <br/><br/>
+    Choose a name you for the <code>SYSTEM_DOMAIN_ORGANIZATION</code>. This organization will be created and configured to own the <code>SYSTEM_DOMAIN</code>.
+    </td>
+  </tr>
+  <tr>
+    <td><pre><code>
+  ssl:
+    skip_cert_verify: true
+    </code></pre></td>
+    <td> Set <code>skip_cert_verify</code> to <code>true</code> to skip SSL certificate verification. If you want to use SSL certificates to secure traffic into your deployment, see the <a href="../../adminguide/securing-traffic.html">Securing Traffic into Cloud Foundry</a> topic.
+    </td>
+  </tr>
+ <tr>
+    <td><pre><code>
+  cc:
+    staging_upload_user: STAGING_UPLOAD_USER
+    staging_upload_password: STAGING_UPLOAD_PASSWORD
+    bulk_api_password: BULK_API_PASSWORD
+    db_encryption_key: CCDB_ENCRYPTION_KEY
+    mutual_tls:
+      ca_cert: CC_MUTUAL_TLS_CA_CERT
+      public_cert: CC_MUTUAL_TLS_PUBLIC_CERT
+      private_key: CC_MUTUAL_TLS_PRIVATE_KEY
+    </code></pre></td>
+    <td>
+      The Cloud Controller API endpoint requires basic authentication. Replace <code>STAGING_UPLOAD_USER</code> and <code>STAGING_UPLOAD_PASSWORD</code> with a username and password of your choosing.
+      <br /><br />
+      Replace <code>BULK_API_PASSWORD</code> with a password of your choosing. The password cannot contain characters that are not allowed for basic authentication unless you encode the characters. Health Manager uses this password to access the Cloud Controller bulk API.
+      <br /><br />
+      Replace <code>CCDB_ENCRYPTION_KEY</code> with a secure key that you generate to encrypt sensitive values in the Cloud Controller database.
+      You can use any random string. For example, run the following command from a command line to generate a 32-character random string: <code>LC_ALL=C tr -dc 'A-Za-z0-9' < /dev/urandom | head -c 32 ; echo</code>
+      <br /><br />
+
+      To generate the certificates and keys for the <code>mutual_tls</code> section, you need the <a href="https://github.com/cloudfoundry/cf-release/blob/master/scripts/generate-cf-diego-certs">generate-cf-diego-certs script</a> from the <code>cf-release</code> repository.
+
+      Run the <code>generate-cf-diego-certs</code> script to generate the certificates and keys for Cloud Controller.
+      <br>
+      For example, run the following in a terminal window:
+      <pre class=terminal>$ ./scripts/generate-cf-diego-certs</pre>
+      This script outputs a directory named <code>cf-diego-certs</code> that contains a set of files with the certificates and keys you need.
+
+      <table>
+        <tr>
+          <th>In the stub, replace&hellip;</th>
+          <th>with the contents of this file&hellip;</th>
+        </tr>
+        <tr>
+          <td><code>CC_MUTUAL_TLS_CA_CERT</code></td>
+          <td><code>cf-diego-ca.crt</code></td>
+        </tr>
+        <tr>
+          <td><code>CC_MUTUAL_TLS_PUBLIC_CERT</code></td>
+          <td><code>cloud_controller.crt</code></td>
+        </tr>
+        <tr>
+          <td><code>CC_MUTUAL_TLS_PRIVATE_KEY</code></td>
+          <td><code>cloud_controller.key</code></td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  <tr>
+    <td><pre><code>
+  ccdb:
+    db_scheme: CCDB_SCHEME
+    roles:
+      - tag: admin
+        name: CCDB_USER_NAME
+        password: CCDB_PASSWORD
+    databases:
+      - tag: cc
+        name: ccdb
+    address: CCDB_ADDRESS
+    port: CCDB_PORT
+    </code></pre></td>
+    <td>
+      This section of the stub defines how the Cloud Controller connects to its database. The values depend on how you deployed your database.
+      <br /><br />
+      Set the <code>CCDB_*</code> values to match the configuration of the database node. If you are using PostgreSQL, your database must have the required extensions available for Cloud Foundry: <code>uuid-ossp</code>, <code>pgcrypto</code>, and <code>citext</code>. The <code>db_scheme</code> for a PostgreSQL database is <code>postgresql</code>, not <code>postgres</code>.
+      </td>
+  </tr>
+  <tr>
+    <td><pre><code>
+  consul:
+    encrypt_keys:
+      - CONSUL_ENCRYPT_KEY
+    ca_cert: CONSUL_CA_CERT
+    server_cert: CONSUL_SERVER_CERT
+    server_key: CONSUL_SERVER_KEY
+    agent_cert: CONSUL_AGENT_CERT
+    agent_key: CONSUL_AGENT_KEY
+      </code></pre></td>
+    <td>See the <a href="../common/consul-security.html">Security Configuration for Consul</a> topic.
+      </td>
+  </tr>
+  <tr>
+  <td><pre><code>
+  etcd:
+    require_ssl: true
+    ca_cert: ETCD_CA_CERT
+    client_cert: ETCD_CLIENT_CERT
+    client_key: ETCD_CLIENT_KEY
+    peer_ca_cert: ETCD_PEER_CA_CERT
+    peer_cert: ETCD_PEER_CERT
+    peer_key: ETCD_PEER_KEY
+    server_cert: ETCD_SERVER_CERT
+    server_key: ETCD_SERVER_KEY
+    </code></pre></td>
+    <td>
+      Generate SSL certs for etcd and replace these values. 
+      You can use the <code>scripts/generate-etcd-certs</code> script 
+      in the <code>cf-release</code> repository to generate self signed certs.
+    </td>
+  </tr>
+  <tr>
+    <td><pre><code>
+    login:
+      saml:
+        serviceProviderKey: SERVICE_PROVIDER_PRIVATE_KEY
+    </code></pre></td>
+    <td>Generate a PEM-encoded RSA key pair. You can generate a key pair by running 
+        the command <code>openssl req -x509 -nodes -newkey rsa:2048 -days 365 -keyout key.pem -out cert.pem</code>
+        This command creates <code>cert.pem</code>, which contains your public key, and <code>key.pem</code>,
+        which contains your private key. Replace <code>SERVICE_PROVIDER_PRIVATE_KEY</code> with the full private key, 
+        include the <code>BEGIN</code> and <code>END</code> delimiter lines, under <code>serviceProviderKey</code>.</br>
+        For RSA keys, you only need to configure the private key.
+    </td>
+  </tr>
+  <tr>
+    <td><pre><code>
+  loggregator:
+    blacklisted_syslog_ranges:
+    - end: 10.0.255.255
+      start: 10.0.0.0
+    tls:
+      ca_cert: LOGGREGATOR_CA_CERT
+      doppler:
+        cert: LOGGREGATOR_DOPPLER_CERT
+        key: LOGGREGATOR_DOPPLER_KEY
+      trafficcontroller:
+        cert: LOGGREGATOR_TRAFFICCONTROLLER_CERT
+        key: LOGGREGATOR_TRAFFICCONTROLLER_KEY
+      metron:
+        cert: LOGGREGATOR_METRON_CERT
+        key: LOGGREGATOR_METRON_KEY
+      syslogdrainbinder:
+        cert: LOGGREGATOR_SYSLOGDRAINBINDER_CERT
+        key: LOGGREGATOR_SYSLOGDRAINBINDER_KEY
+      statsd_injector:
+        cert: LOGGREGATOR_STATSDINJECTOR_CERT
+        key: LOGGREGATOR_STATSDINJECTOR_KEY
+    </code></pre></td>
+ <td>To generate the certificates and keys for the Loggregator components, you need the following:
+  <ul> 
+    <li>The original CA certificate and key used to sign the keypairs for TLS
+        between the Cloud Controller and the Diego BBS</li>
+    <li>The <a href="https://github.com/cloudfoundry/cf-release/blob/master/scripts/generate-loggregator-certs">generate-loggregator-certs script</a> from the cf-release repository</li>
+  </ul>
+    Run <code>generate-loggregator-certs CA_CERT CA_KEY</code> to generate the certificates and keys for Loggregator. Replace <code>CA_CERT</code> with the path and filename for the original CA certificate, and <code>CA_KEY</code> with the path and filename for the corresponding key.
+    <br>
+    For example, run the following in a terminal window:
+    <pre class=terminal>$ ./scripts/generate-loggregator-certs cf-ca.cert cf-ca.key</pre>
+    This script outputs a directory named <code>loggregator-certs</code> that contains a set of files with the certificates and keys you need for Loggregator.
+
+    <table>
+      <tr>
+        <th>In the stub, replace&hellip;</th>
+        <th>with the contents of this file&hellip;</th>
+      </tr>
+      <tr>
+        <td><code>LOGGREGATOR_CA_CERT</code></td>
+        <td><code>loggregator-ca.crt</code></td>
+      </tr>
+      <tr>
+        <td><code>LOGGREGATOR_DOPPLER_CERT</code></td>
+        <td><code>doppler.crt</code></td>
+      </tr>
+      <tr>
+        <td><code>LOGGREGATOR_DOPPLER_KEY</code></td>
+        <td><code>doppler.key</code></td>
+      </tr>
+      <tr>
+        <td><code>LOGGREGATOR_TRAFFICCONTROLLER_CERT</code></td>
+        <td><code>trafficcontroller.crt</code></td>
+      </tr>
+      <tr>
+        <td><code>LOGGREGATOR_TRAFFICCONTROLLER_KEY</code></td>
+        <td><code>trafficontroller.key</code></td>
+      </tr>
+      <tr>
+        <td><code>LOGGREGATOR_METRON_CERT</code></td>
+        <td><code>metron.crt</code></td>
+      </tr>
+      <tr>
+        <td><code>LOGGREGATOR_METRON_KEY</code></td>
+        <td><code>metron.key</code></td>
+      </tr>
+      <tr>
+        <td><code>LOGGREGATOR_SYSLOGDRAINBINDER_CERT</code></td>
+        <td><code>syslogdrainbinder.crt</code></td>
+      </tr>
+      <tr>
+        <td><code>LOGGREGATOR_SYSLOGDRAINBINDER_KEY</code></td>
+        <td><code>syslogdrainbinder.key</code></td>
+      </tr>
+    </table>
+    <br>
+    To obtain the values for <code>LOGGREGATOR_STATSDINJECTOR_CERT</code> and <code>LOGGREGATOR_STATSDINJECTOR_KE</code>, run the <a href="https://github.com/cloudfoundry/cf-release/blob/master/scripts/generate-statsd-injector-certs">generate-statsd-injector-certs</a> script from the cf-release repository. See the <a href="https://github.com/cloudfoundry/cf-release/blob/master/on-tls-certificates.md#last-generate-the-certs-for-statsd-injector">documentation</a> for more information.      
+    </td>
+  </tr>
+  <tr>
+    <td><pre><code>
+  loggregator_endpoint:
+    shared_secret: LOGGREGATOR_ENDPOINT_SHARED_SECRET
+    </code></pre></td>
+    <td>Generate a string secret and replace <code>LOGGREGATOR_ENDPOINT_SHARED_SECRET</code>.
+      </td>
+  </tr>
+  <tr>
+    <td><pre><code>
+  nats:
+    user: NATS_USER
+    password: NATS_PASSWORD
+      </code></pre></td>
+    <td>Replace <code>NATS_USER</code> and <code>NATS_PASSWORD</code> with a username and secure password of your choosing. Cloud Foundry components use these credentials to communicate with each other over the NATS message bus.
+      </td>
+  </tr>
+  <tr>
+    <td><pre><code>
+  router:
+    status:
+      user: ROUTER_USER
+      password: ROUTER_PASSWORD
+      </code></pre></td>
+    <td>
+      Replace <code>ROUTER_USER</code> and <code>ROUTER_PASSWORD</code> with a username and secure password of your choosing.
+      </td>
+  </tr>
+  <tr>
+    <td><pre><code>
+  uaa:
+    admin:
+      client_secret: ADMIN_SECRET
+    ca_cert: UAA_CA_CERT
+    cc:
+      client_secret: CC_CLIENT_SECRET
+    clients:
+      cc_routing:
+        secret: CC_ROUTING_SECRET
+      cloud_controller_username_lookup:
+        secret: CLOUD_CONTROLLER_USERNAME_LOOKUP_SECRET
+      doppler:
+        secret: DOPPLER_SECRET
+      gorouter:
+        secret: GOROUTER_SECRET
+      tcp_emitter:
+        secret: TCP-EMITTER-SECRET
+      tcp_router:
+        secret: TCP-ROUTER-SECRET
+      login:
+        secret: LOGIN_CLIENT_SECRET
+      notifications:
+        secret: NOTIFICATIONS_CLIENT_SECRET
+      cc-service-dashboards:
+        secret: CC_SERVICE_DASHBOARDS_SECRET
+    </code></pre></td>
+    <td>You can use the <code>scripts/generate-uaa-certs</code> script in the <code>cf-release</code> repository to generate the <code>UAA_CA_CERT</code>.
+    <br>Replace the values for all <code>secret</code> keys with secure secrets that you generate. <br><br>You can configure container-to-container networking in this section. If you want to deploy container-to-container networking, see the <i>Enable on an IaaS</i> section of the <a href="../../devguide/deploy-apps/cf-networking.html#iaas">Administering Container-to-Container Networking</a> topic, beginning with step 4.
+    </td>
+  </tr>
+  <tr>
+    <td><pre><code>
+    jwt:
+      verification_key: JWT_VERIFICATION_KEY
+      signing_key: JWT_SIGNING_KEY
+    </code></pre></td>
+    <td>Generate a PEM-encoded RSA key pair, and replace <code>JWT_SIGNING_KEY</code> with the private key, and <code>JWT_VERIFICATION_KEY</code>
+        with the corresponding public key. Generate a key pair by running the command <code>openssl rsa -in jwt-key.pem -pubout > key.pub</code>.
+        This command creates <code>jwt-key.pem.pub</code>, which contains your public key, and <code>jwt-key.pem</code>, which contains your private key.<br/>
+    Copy in the full keys, including the <code>BEGIN</code> and <code>END</code> delimiter lines.
+    </td>
+  </tr>
+  <tr>
+    <td><pre><code>
+    scim:
+      users:
+      - name: admin
+        password: ADMIN_PASSWORD
+        groups:
+        - scim.write
+        - scim.read
+        - openid
+        - cloud_controller.admin
+        - doppler.firehose
+    </code></pre></td>
+    <td>Generate a secure password and replace <code>ADMIN_PASSWORD</code> with that value to set the password for the Admin user of your Cloud Foundry installation.
+    </td>
+  <tr>
+    <td><pre><code>
+    sslCertificate: UAA_SERVER_CERT
+    sslPrivateKey: UAA_SERVER_KEY
+    </code></pre></td>
+    <td>Replace <code>UAA_SERVER_CERT</code> and <code>UAA_SERVER_KEY</code> with UAA certificates. You can use the <code>scripts/generate-uaa-certs</code> script in the <code>cf-release</code> repository to generate self-signed certificates.</td>
+    </td>
+  </tr>
+  <tr>
+    <td><pre><code>
+  uaadb:
+    db_scheme: UAADB_SCHEME
+    roles:
+      - tag: admin
+        name: UAADB_USER_NAME
+        password: UAADB_USER_PASSWORD
+    databases:
+      - tag: uaa
+        name: uaadb
+    address: UAADB_ADDRESS
+    port: UAADB_PORT
+      </code></pre></td>
+    <td>
+      This section of the stub defines how the UAA connects to its database. The values depend on how you deployed your database.
+      <br /><br />
+      Set the <code>UAADB_*</code> values to match the configuration of the database node. If you are using PostgreSQL, your database must have the required extensions available for Cloud Foundry: <code>uuid-ossp</code>, <code>pgcrypto</code>, and <code>citext</code>. The <code>db_scheme</code> for a PostgreSQL database is <code>postgresql</code>, not <code>postgres</code>.
+      </td>
+  </tr>
+  <tr>
+    <td><pre><code>
+  hm9000:
+    server_key: HM9000_SERVER_KEY
+    server_cert: HM9000_SERVER_CERT
+    client_key: HM9000_CLIENT_KEY
+    client_cert: HM9000_CLIENT_CERT
+    ca_cert: HM9000_CA_CERT
+    </code></pre></td>
+    <td>
+      Generate SSL certificates for HM9000 and replace these values. You can run the <code>scripts/generate-hm9000-certs</code> script in the <code>cf-release</code> repository to generate self-signed certificates.
+    </td>
+  </tr>
+  <tr>
+    <td><pre><code>
+  login:
+    saml:
+      serviceProviderKey: SAML_KEY
+      serviceProviderKeyPassword: ''
+      serviceProviderCertificate: SAML_CERT
+    </code></pre></td>
+    <td>
+      Generate SSL certificates for SAML and replace these values. You can use the <code>scripts/generate-certs</code> script in the <code>cf-release</code> repository to generate self-signed certificates.
+    </td>
+  </tr>
+</table>
+
+<%= partial '../common/additional_config' %>
+
+##<a id='generate'></a>Step 3: Generate Your Manifest
+
+To generate a deployment manifest, perform the following steps:
+
+1. Clone the [cf-release](https://github.com/cloudfoundry/cf-release.git) GitHub repository to copy the latest Cloud Foundry configuration files onto your computer.
+
+    <pre class="terminal">
+    $ git clone https://github.com/cloudfoundry/cf-release.git
+    </pre>
+
+1. From the `cf-release` directory, run the update script to fetch all the submodules.
+
+    <pre class="terminal">
+    $ cd cf-release
+    $ ./scripts/update
+    </pre>
+<p class="note"><strong>Note</strong>: Ensure that you have the most up-to-date version of the Cloud Foundry code and all required submodules.</p>
+
+1. Install [spiff](https://github.com/cloudfoundry-incubator/spiff), a command line tool for generating deployment manifests.
+
+1. Run `generate_deployment_manifest IAAS PATH-TO-MANIFEST-STUB > cf-deployment.yml` from the `cf-release` directory to create a deployment manifest named `cf-deployment.yml`. 
+    * Replace `IAAS` with `aws`, `openstack`, or `vsphere`. Use `vsphere` for vSphere, vCloud Air, and vCloud Director. 
+    * Replace `PATH-TO-MANIFEST-STUB` with the location of your `cf-stub.yml` file. 
+<br><br>
+The following example specifies AWS as an IaaS, and references a `cf-stub.yml` file located in the in the `cf-release` directory:
+    <pre class="terminal">
+    $ ./scripts/generate\_deployment\_manifest aws ./cf-stub.yml > cf-deployment.yml
+    </pre>
+    <p class="note"><strong>Note</strong>: The <code>generate\_deployment\_manifest</code> script can accept multiple stub files. For example, the following command passes two stub files to the script: <br/>
+<code>./scripts/generate\_deployment\_manifest vsphere cf-stub.yml cf-consul.yml > cf-deployment.yml</code></p>
+
+You are now ready to deploy Cloud Foundry. See the [Deploying Cloud Foundry on AWS](deploy-aws.html) topic for instructions.
+

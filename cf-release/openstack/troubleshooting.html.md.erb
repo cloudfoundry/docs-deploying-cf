@@ -1,0 +1,29 @@
+---
+title: Troubleshooting Cloud Foundry on OpenStack
+owner: Release Integration
+---
+
+<strong><%= modified_date %></strong>
+
+This topic describes helpful tips to deploy Cloud Foundry on OpenStack.
+
+## Self-signed SSL Certificates
+View these two topics to add your self-signed certificates to the OpenStack CPI and to the virtual machines (VMs) deployed with your BOSH Director:
+
+* The BOSH OpenStack CPI uses a [chain of trusted certificates](http://bosh.io/docs/openstack-self-signed-endpoints.html) to validate the certificate of your OpenStack endpoints with a property called <code>ca_cert</code>.
+* The BOSH Director adds [chain of trusted certificates](http://bosh.io/docs/trusted-certs.html) to all VMs deployed with that Director with a property called <code>trusted_certs</code>.
+
+## GRE Tunnels
+
+If you are using OpenStack's GRE Tunnel networking, the default MTU of 1500 does not allow machines to properly communicate. Garden and Warden use 1500 of MTU by default. You must change the default in your manifest by performing the steps below. 
+
+### Diego
+
+Modify the MTU by editing the `garden.network_mtu` property in your Diego manifest:
+
+```
+garden:
+  network_mtu: 1454
+```
+Use `bosh deploy` to push these changes and reboot your Diego cells.
+

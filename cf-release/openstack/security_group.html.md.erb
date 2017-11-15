@@ -1,0 +1,31 @@
+---
+title: Security Group for Cloud Foundry on OpenStack
+owner: Release Integration
+---
+
+<strong><%= modified_date %></strong>
+
+OpenStack offer Security Groups as a mechanism to restrict traffic to,
+from, and between servers.
+
+<p class="note"><strong>Note</strong>:
+The configuration below shows the simplest security group configuration that
+will be referenced in other places in the documentation, but it is by no means
+the most secure configuration, and is not recommended for production setups.
+</p>
+
+## cf
+
+| Direction | Ether Type | IP Protocol | Port Range | Remote           |
+|-----------|------------|-------------|------------|------------------|
+| Egress    | IPv4       | Any         | -          | 0.0.0.0/0 (CIDR) |
+| Egress    | IPv6       | Any         | -          | ::/0 (CIDR)      |
+| Ingress   | IPv4       | UDP         | 68         | 0.0.0.0/0 (CIDR) |
+| Ingress   | IPv4       | UDP         | 3457       | 0.0.0.0/0 (CIDR) |
+| Ingress   | IPv4       | ICMP        | -          | 0.0.0.0/0 (CIDR) |
+| Ingress   | IPv4       | TCP         | 22         | 0.0.0.0/0 (CIDR) |
+| Ingress   | IPv4       | TCP         | 80         | 0.0.0.0/0 (CIDR) |
+| Ingress   | IPv4       | TCP         | 443        | 0.0.0.0/0 (CIDR) |
+| Ingress   | IPv4       | TCP         | 4443       | 0.0.0.0/0 (CIDR) |
+| Ingress   | IPv4       | TCP         | -          | cf (Security Gp) |
+
