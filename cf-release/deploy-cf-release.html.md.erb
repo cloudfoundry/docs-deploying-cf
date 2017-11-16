@@ -26,11 +26,11 @@ to view the current list of publicly available BOSH stemcells.
 1. Select an Ubuntu Trusty stemcell for your IaaS and **click** the build number to 
 download it to your computer. The stemcell downloads as a gzipped tar archive. Do not unzip this file.
 
-1. In a terminal window, run `bosh upload stemcell STEMCELL-PATH` to upload your
+1. In a terminal window, run `bosh upload-stemcell STEMCELL-PATH` to upload your
 stemcell to the BOSH Director, where `STEMCELL-PATH` is the location of your 
 downloaded stemcell file.
 <pre class="terminal">
-$ bosh upload stemcell ~/downloads/light-bosh-stemcell-3202-aws-xen-hvm-ubuntu-trusty-go_agent.tgz
+$ bosh upload-stemcell ~/downloads/light-bosh-stemcell-3202-aws-xen-hvm-ubuntu-trusty-go_agent.tgz
 </pre>
 
 ##<a id="create-release"></a>Build the Cloud Foundry Release##
