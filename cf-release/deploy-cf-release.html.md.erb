@@ -35,10 +35,10 @@ $ bosh upload stemcell ~/downloads/light-bosh-stemcell-3202-aws-xen-hvm-ubuntu-t
 
 ##<a id="create-release"></a>Build the Cloud Foundry Release##
 
-Use `bosh create release` to create a Cloud Foundry release.
+Use `bosh create-release` to create a Cloud Foundry release.
 
 <pre class="terminal">
-$ bosh create release
+$ bosh create-release
 </pre>
 
 After some processing, this command prompts you for a development release name.
@@ -46,11 +46,11 @@ The release names correspond to the files in `cf-release/releases`.
 
 ##<a id="upload-release"></a>Upload the Cloud Foundry Release##
 
-Use `bosh upload release` to upload the generated release to the BOSH
+Use `bosh upload-release` to upload the generated release to the BOSH
 Director.
 
 <pre class="terminal">
-$ bosh upload release
+$ bosh upload-release
 </pre>
 
 ##<a id="deploy"></a>Deploy##
@@ -111,5 +111,5 @@ Foundry deployment with these changes.
 
 * If you make changes to the `cf-release` directory, run the following commands to update your Cloud Foundry deployment with these changes:
 <pre class="terminal">
-  $ bosh create release && bosh upload release && bosh deploy
+  $ bosh create-release && bosh upload-release && bosh deploy
 </pre>
