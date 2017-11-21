@@ -17,7 +17,7 @@ Complete the following steps before performing the procedures in this topic:
 
 * Install the BOSH CLI v2.
 For more information, see the <a href="https://bosh.io/docs/cli-v2.html#install">BOSH documentation</a>.
-* Review the migration prerequisites in the [cf-deployment-transition](https://github.com/cloudfoundry/cf-deployment-transition/blob/master/README.md#migration-prerequisites) GitHub repo,
+* Review the migration prerequisites in the [cf-deployment-transition](https://github.com/cloudfoundry/cf-deployment-transition/blob/master/README.md#migration-prerequisites) GitHub repository,
 with particular attention to the following:
   - You must enable all TLS features.
   - You must be using external databases.
@@ -46,7 +46,7 @@ with particular attention to the following:
     in any of those networks.
     <br><br>
     To resolve this problem,
-    redefine your networks so that they don't overlap,
+    redefine your networks so that they do not overlap,
     and deploy those changes
     prior to starting the transition process.
 
@@ -107,7 +107,7 @@ Perform the following steps to build your variables store file:
   $ bosh download-manifest > /tmp/cf-manifest.yml
   $ bosh download-manifest -d YOUR-DIEGO-DEPLOYMENT-NAME > /tmp/diego-manifest.yml
   </pre>
-1. Visit the [cf-deployment-transition](https://github.com/cloudfoundry/cf-deployment-transition/blob/master/README.md) GitHub repo
+1. Visit the [cf-deployment-transition](https://github.com/cloudfoundry/cf-deployment-transition/blob/master/README.md) GitHub repository
    and use the `extract-vars-store-from-manifests.sh` script
    to generate `deployment-vars.yml`.
 
@@ -139,7 +139,7 @@ balance these instances between the AZs.
 
 For a list of all job name changes from `cf-release`,
 see the `cfr-to-cfd.yml` ops file
-in the [cf-deployment-transition](https://github.com/cloudfoundry/cf-deployment-transition/blob/master/cfr-to-cfd.yml) GitHub repo.
+in the [cf-deployment-transition](https://github.com/cloudfoundry/cf-deployment-transition/blob/master/cfr-to-cfd.yml) GitHub repository.
 This file does not list name changes from the Diego deployment.
 However, the only job from the Diego deployment that you must scale is `diego-cells`.
 
@@ -321,9 +321,9 @@ Perform all the steps in the [Deploying Cloud Foundry](./cf-deployment/deploy-cf
 
 * You must apply the ops file for scaling your components that you created in the previous step.
 * You must apply the `cfr-to-cfd.yml` ops file.
-  Download this ops file from the [cf-deployment-transition](https://github.com/cloudfoundry/cf-deployment-transition/blob/master/cfr-to-cfd.yml) GitHub repo.
+  Download this ops file from the [cf-deployment-transition](https://github.com/cloudfoundry/cf-deployment-transition/blob/master/cfr-to-cfd.yml) GitHub repository.
   If you are disabling `cf-deployment` features to simplify the transition,
-  you must also apply the appropriate ops files from the transition repo.
+  you must also apply the appropriate ops files from the transition repository.
 * The `deployment-vars.yml` file you pass with the `--vars-store` flag must be the variables store file you created above.
 
 ## <a id='delete-diego'></a> Step 6: Delete Old Diego Deployment
