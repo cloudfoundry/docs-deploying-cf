@@ -15,18 +15,18 @@ see the [Prepare Your Environment](index.html#prepare) section
 of the <em>Deploying Cloud Foundry with cf-deployment</em> topic.
 
 ## <a id='clone'></a> Step 1: Clone cf-deployment
-Clone the `cf-deployment` repo:
+Clone the `cf-deployment` repository:
 	<pre class="terminal">$ git clone http<span>s:</span>//github.com/cloudfoundry/cf-deployment.git</pre>
 
-This repo contains the canonical manifest for deploying Cloud Foundry, along with various ops files that specify operations to perform on the Cloud Foundry deployment manifest.
+This repository contains the canonical manifest for deploying Cloud Foundry, along with various ops files that specify operations to perform on the Cloud Foundry deployment manifest.
 
 ## <a id='ops-files'></a>Step 2: Select Your Ops Files
 
 Every IaaS except Google Cloud Platform (GCP) requires using IaaS-specific ops files to deploy Cloud Foundry. Ops files can also add additional functionality to your deployment.
 
-All ops files are located in the [operations](https://github.com/cloudfoundry/cf-deployment/tree/master/operations) directory of the `cf-deployment` repo.
+All ops files are located in the [operations](https://github.com/cloudfoundry/cf-deployment/tree/master/operations) directory of the `cf-deployment` repository.
 
-See the [Ops Files](https://github.com/cloudfoundry/cf-deployment#ops-files) section of the `cf-deployment` repo README for a description of all available ops files.
+See the [Ops Files](https://github.com/cloudfoundry/cf-deployment#ops-files) section of the `cf-deployment` repository README for a description of all available ops files.
 
 ## <a id='determine-vars'></a>Step 3: Determine Variables
 
@@ -69,7 +69,7 @@ Perform the following steps to determine your required variables and prepare the
 1. Deploy `cf-deployment`:
 	<pre class="terminal">
 	$ bosh -e YOUR-ENV -d cf deploy cf-deployment/cf-deployment.yml \
-	--vars-store env-repo/deployment-vars.yml \
+	--vars-store env-repository/deployment-vars.yml \
   	-v system_domain=YOUR-SYSTEM-DOMAIN \
   	-o cf-deployment/operations/YOUR-OPS-FILE-1
   	-o cf-deployment/operations/YOUR-OPS-FILE-2
