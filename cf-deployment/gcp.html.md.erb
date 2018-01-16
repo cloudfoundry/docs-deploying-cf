@@ -151,6 +151,11 @@ Perform the following steps to connect to the BOSH Director:
     YOUR-DIRECTOR-PASSWORD
     </pre>
 
+1. Set up a SOCKS5 proxy to connect to your BOSH Director:
+    <pre>
+    $ eval "$(bbl print-env)"
+    </pre>
+
 1. Set your target and log in with the BOSH CLI:
     <pre class="terminal">
     $ bosh alias-env YOUR-TARGET-NAME
