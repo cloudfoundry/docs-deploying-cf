@@ -161,22 +161,31 @@ Replace the placeholders as follows:
 * `YOUR-ACCESS-KEY-ID` and `YOUR-SECRET-ACCESS-KEY`: The credentials for the `bbl-user` you created in the previous section
 * `YOUR-AWS-REGION`: Your AWS region, such as `us-west-2`
 
-The `bbl up` command takes five to eight minutes to complete. When the process finishes, it outputs a state file, `bbl-state.json`, in the present working directory.
+The `bbl up` command takes five to eight minutes to complete.
 
-<p class="note"><strong>Note</strong>: The <code>bbl-state.json</code> file contains credentials and other metadata related to your BOSH Director and infrastructure. Back up this file and store it in a safe location, and never modify it manually.</p>
+When `bbl plan` or `bbl up` is run, files in the `--state-dir` (or present working
+directory) will be created, modified, or deleted.
 
-To extract information from the `bbl-state.json` state file, use bosh-bootloader instead of opening the file. For example, to obtain your BOSH Director address, run the following command:
+<p class="note"><strong>Note</strong>: The **bbl state directory**
+contains credentials and other metadata related to your BOSH Director and
+infrastructure. Back up this directory and store it in a safe location.</p>
+
+To extract information from the bbl state, use `bbl`.
+For example, to obtain your BOSH Director address, run the following command:
 
     <pre class="terminal">
     $ bbl director-address
     https://YOUR-DIRECTOR-ADDRESS
     </pre>
 
-Run `bbl` to see the full list of values from the state file that you can print. You must always run `bbl` from the directory that contains `bbl-state.json`.
+Run `bbl` to see the full list of values from the state file that you can print.
+You must always run `bbl` from the state directory.
 
-For more information about the options for securing HTTP traffic into your Cloud Foundry (CF) deployment with SSL/TLS certificates, see the [Securing Traffic into Cloud Foundry](../../adminguide/securing-traffic.html) topic.
+For more information about the options for securing HTTP traffic into your
+Cloud Foundry (CF) deployment with SSL/TLS certificates, see the [Securing Traffic into Cloud Foundry](../../adminguide/securing-traffic.html) topic.
 
-For test and development environments, you can also generate your own CA certificate and key with a tool such as [certstrap](https://github.com/square/certstrap).
+For test and development environments, you can also generate your own
+CA certificate and key with a tool such as [certstrap](https://github.com/square/certstrap).
 
 ## <a id="connect-bosh-director"></a> Step 6: Connect to the BOSH Director
 
