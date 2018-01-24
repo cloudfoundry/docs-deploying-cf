@@ -49,7 +49,6 @@ Perform the following steps to download the required dependencies for bosh-bootl
 1. Perform one of the following procedures to download and install bosh-bootloader:
     * On Mac OS X, use Homebrew:
         <pre class="terminal">$ brew install cloudfoundry/tap/bbl</pre>
-
     * Download the latest bosh-bootloader from [GitHub](https://github.com/cloudfoundry/bosh-bootloader/releases/latest). Make the binary executable and move it to somewhere in your PATH:
         <pre class="terminal">
         $ chmod +x ~/Downloads/bbl-*
@@ -95,19 +94,17 @@ Perform the following steps to create the Identity and Access Management (IAM) s
 Run the following command to create the required infrastructure,
 deploy a bastion, deploy a BOSH director and create load balancers
 for Cloud Foundry:
-
-    <pre class="terminal">
-    $ bbl plan \
-      --iaas gcp \
-      --gcp-service-account-key PATH-TO/bbl-user.key.json \
-      --gcp-region YOUR-GCP-REGION \
-      --lb-type cf \
-      --lb-cert YOUR-CERT.crt \
-      --lb-key YOUR-KEY.key \
-      --lb-domain YOUR-SYSTEM-DOMAIN
-
-    $ bbl up
-    </pre>
+<pre class="terminal">
+$ bbl plan \
+    --iaas gcp \
+    --gcp-service-account-key PATH-TO/bbl-user.key.json \
+    --gcp-region YOUR-GCP-REGION \
+    --lb-type cf \
+    --lb-cert YOUR-CERT.crt \
+    --lb-key YOUR-KEY.key \
+    --lb-domain YOUR-SYSTEM-DOMAIN<br/>
+$ bbl up
+</pre>
 
 Replace the placeholders as follows:
 
@@ -121,17 +118,17 @@ The `bbl up` command takes five to eight minutes to complete.
 When `bbl plan` or `bbl up` is run, files in the `--state-dir` (or present working
 directory) will be created, modified, or deleted.
 
-<p class="note"><strong>Note</strong>: The **bbl state directory**
+<p class="note"><strong>Note</strong>: The <b>bbl state directory</b>
 contains credentials and other metadata related to your BOSH Director and
 infrastructure. Back up this directory and store it in a safe location.</p>
 
 To extract information from the bbl state, use `bbl`.
 For example, to obtain your BOSH Director address, run the following command:
 
-    <pre class="terminal">
-    $ bbl director-address
-    https://YOUR-DIRECTOR-ADDRESS
-    </pre>
+<pre class="terminal">
+$ bbl director-address
+https://YOUR-DIRECTOR-ADDRESS
+</pre>
 
 Run `bbl` to see the full list of values from the state file that you can print.
 You must always run `bbl` from the directory that contains `bbl-state.json`.
@@ -142,7 +139,7 @@ CA certificate and key with a tool such as [certstrap](https://github.com/square
 ## <a id='update-dns'></a> Step 5: Update DNS Records
 
 The `--lb-*` flags create an NS record in Google's CloudDNS. You can view
-this record by navigating to the [GCP Console and selecting **Networking > Cloud DNS**.
+this record by navigating to the [GCP Console](https://console.cloud.google.com/) and selecting **Networking > Cloud DNS**.
 
 The data associated with the record will have the following format:
 
@@ -162,9 +159,9 @@ After a few minutes, your system domain should resolve to your GCP load balancer
 
 Run the following to connect to the BOSH Director:
 
-    <pre class="terminal">
-    $ eval "$(bbl print-env)"
-    </pre>
+<pre class="terminal">
+$ eval "$(bbl print-env)"
+</pre>
 
 ## <a id="destroy-environment"></a>Destroy the BOSH Resources ##
 
@@ -174,14 +171,14 @@ or if you want to destroy the resources created by bosh-bootloader for any other
 
 To delete load balancers only:
 
-    <pre class="terminal">
-    $ bbl plan
-    $ bbl up
-    </pre>
+<pre class="terminal">
+$ bbl plan
+$ bbl up
+</pre>
 
 
 To delete the infrastructure, bastion, director, and load balancers:
 
-    <pre class="terminal">
-    $ bbl destroy
-    </pre>
+<pre class="terminal">
+$ bbl destroy
+</pre>
