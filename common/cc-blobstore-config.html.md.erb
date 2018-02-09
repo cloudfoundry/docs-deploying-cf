@@ -7,14 +7,17 @@ owner: CAPI
 
 This topic describes the options for configuring a blobstore for the Cloud Controller.
 
+If you are using `cf-deployment`, [ops files](https://github.com/cloudfoundry/cf-deployment/blob/master/operations/README.md) are provided with several common blobstore configurations. By default, `cf-deployment` will use the WebDAV blobstore, and no additional ops files are needed. If these options don't fit your needs, see the topics below for guidance on manually configuring your blobstore.
+
 Cloud Controller has four types of objects that need to be stored in a blobstore: <code>buildpacks</code>, <code>droplets</code>, <code>packages</code>, and <code>resource_pool</code>. By default, the blobstore configuration uses the Fog Ruby gem, but can also use the WebDAV protocol.
 
-This document describes five common blobstore configurations: 
+This document describes several common blobstore configurations:
 
 * [Fog with AWS Credentials](#fog-aws-creds)
 * [Fog with AWS Server Side Encryption](#fog-aws-sse)
 * [Fog with AWS IAM Instance Profiles](#fog-aws-iam)
 * [Fog with Google Cloud Storage](#fog-gcs)
+* [Fog with Google Cloud Storage Service Accounts](#fog-gcs-service-account)
 * [Fog with Azure Storage](#fog-azure)
 * [Fog with NFS](#fog-local-nfs)
 * [WebDAV](#webdav) internal blobstore
@@ -254,6 +257,76 @@ To configure your blobstores to use Google Cloud Storage Interoperability creden
 1. Replace `YOUR-GCS-BUILDPACK-BUCKET`, `YOUR-GCS-DROPLET-BUCKET`, `YOUR-GCS-PACKAGE-BUCKET`, and `YOUR-GCS-RESOURCE-BUCKET` with the names of your Cloud Storage buckets. Do not use periods (`.`) in your bucket names. 
 
 1. You can provide further configuration through the <code>fog_connection</code> hash, which is passed through to the Fog gem.
+
+##<a id="fog-gcs-service-account"></a>Fog with Google Cloud Storage with a Service Account
+
+To configure your blobstore to use Google Cloud Storage with a Service Account, perform the steps below.
+
+1. Grant the service account a role that has at least the following permissions by following the [GCP instructions](https://cloud.google.com/iam/docs/granting-roles-to-service-accounts#granting_access_to_a_service_account_for_a_resource):
+
+    ```
+    storage.buckets.create
+    storage.buckets.get
+    storage.objects.create
+    storage.objects.delete
+    storage.objects.get
+    storage.objects.list
+    ```
+
+1. Create a service account key for your new service account by following the [GCP instructions](https://cloud.google.com/iam/docs/creating-managing-service-account-keys). You will need the service key JSON to configure your blobstores.
+
+1. Insert the following configuration into your manifest under `properties.cc` for the `cloud_controller_ng` job:
+
+    ```
+    cc:
+      buildpacks:
+        blobstore_type: fog
+        buildpack_directory_key: YOUR-GCS-BUILDPACK-BUCKET
+        fog_connection: &fog_connection
+          provider: Google
+          google_project: YOUR-GCS-PROJECT
+          google_client_email: YOUR-GCS-SERVICE-ACCOUNT-EMAIL
+          google_json_key_string: >
+            {
+              "type": "service_account",
+              "project_id": "YOUR-GCS-PROJECT",
+              ...
+            }
+      droplets:
+        blobstore_type: fog
+        droplet_directory_key: YOUR-GCS-DROPLET-BUCKET
+        fog_connection: *fog_connection
+      packages:
+        blobstore_type: fog
+        app_package_directory_key: YOUR-GCS-PACKAGE-BUCKET
+        fog_connection: *fog_connection
+      resource_pool:
+        blobstore_type: fog
+        fog_connection: *fog_connection
+        resource_directory_key: YOUR-GCS-RESOURCE-BUCKET
+    ```
+
+1. Insert the following configuration into your manifest under `properties.cc` for both the `cloud_controller_worker` and `cloud_controller_clock` jobs:
+
+    ```
+    cc:
+      buildpacks:
+        value: *buildpacks
+      droplets:
+        value: *droplets
+      packages:
+        value: *packages
+      resource_pool:
+        *resourcepool
+    ```
+
+1. Replace `YOUR-GCS-PROJECT` with the name of your Google Cloud Platform project.
+
+1. Replace `YOUR-GCS-SERVICE-ACCOUNT-EMAIL` with the email of your Google Cloud Platform service account.
+
+1. Fill in the `google_json_key_string` value with your Cloud Storage credentials. Note that the indentation must be spaces and not tabs for the JSON value.
+
+1. Replace `YOUR-GCS-BUILDPACK-BUCKET`, `YOUR-GCS-DROPLET-BUCKET`, `YOUR-GCS-PACKAGE-BUCKET`, and `YOUR-GCS-RESOURCE-BUCKET` with the names of your Cloud Storage buckets. Do not use periods (`.`) in your bucket names.
 
 ##<a id="fog-azure"></a>Fog with Azure Storage
 
