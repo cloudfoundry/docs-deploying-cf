@@ -136,7 +136,7 @@ You must always run `bbl` from the directory that contains `bbl-state.json`.
 For test and development environments, you can also generate your own
 CA certificate and key with a tool such as [certstrap](https://github.com/square/certstrap).
 
-## <a id='update-dns'></a> Step 5: Update DNS Records
+## <a id='update-dns'></a> Step 4: Update DNS Records
 
 The `--lb-*` flags create an NS record in Google's CloudDNS. You can view
 this record by navigating to the [GCP Console](https://console.cloud.google.com/) and selecting **Networking > Cloud DNS**.
@@ -155,7 +155,7 @@ the domain with the NS record values listed in CloudDNS.
 
 After a few minutes, your system domain should resolve to your GCP load balancer.
 
-## <a id="connect-bosh-director"></a> Step 6: Connect to the BOSH Director
+## <a id="connect-bosh-director"></a> Step 5: Connect to the BOSH Director
 
 Run the following to connect to the BOSH Director:
 
