@@ -277,12 +277,12 @@ To configure your blobstore to use Google Cloud Storage with a service account, 
     storage.objects.list
     ```
 
-    To create the custom role, follow the GCP instructions in [Creating and Managing Custom Roles](https://cloud.google.com/iam/docs/creating-custom-roles). This role will be used for blobstore permissions.
+    To create the custom role, follow the [Creating and Managing Custom Roles](https://cloud.google.com/iam/docs/creating-custom-roles) instructions in the GCP documentation. This role will be used for blobstore permissions.
 
-1. Create a service account by following the GCP instructions in [Creating and Managing Service Accounts](https://cloud.google.com/iam/docs/creating-managing-service-accounts) and grant this service account the role you created in Step 1.
+1. Create a service account by following the [Creating and Managing Service Accounts](https://cloud.google.com/iam/docs/creating-managing-service-accounts) instructions in the GCP documentation and grant this service account the role you created in Step 1.
 For additional information about granting roles to an existing service account, see [Granting Roles to a Service Account for Specific Resources](https://cloud.google.com/iam/docs/granting-roles-to-service-accounts#granting_access_to_a_service_account_for_a_resource) in the GCP documentation.
 
-1. Create a service account JSON key for your service account by following the GCP instructions in [Creating and Managing Service Account Keys](https://cloud.google.com/iam/docs/creating-managing-service-account-keys).
+1. Create a service account JSON key for your service account by following the [Creating and Managing Service Account Keys](https://cloud.google.com/iam/docs/creating-managing-service-account-keys) instructions in the GCP documentation.
 You need this key to configure your blobstore.
 
 1. Insert the following configuration in your manifest under `properties.cc` for the `cloud_controller_ng` job:
