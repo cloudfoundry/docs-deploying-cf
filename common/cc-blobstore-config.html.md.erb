@@ -5,13 +5,17 @@ owner: CAPI
 
 <strong><%= modified_date %></strong>
 
-This topic describes the options for configuring a blobstore for the Cloud Controller.
+This topic explains how to configure a blobstore for the Cloud Controller.
 
-If you are using `cf-deployment`, [ops files](https://github.com/cloudfoundry/cf-deployment/blob/master/operations/README.md) are provided with several common blobstore configurations. By default, `cf-deployment` will use the WebDAV blobstore, and no additional ops files are needed. If these options don't fit your needs, see the topics below for guidance on manually configuring your blobstore.
+##<a id="overview"></a> Overview
 
-Cloud Controller has four types of objects that need to be stored in a blobstore: <code>buildpacks</code>, <code>droplets</code>, <code>packages</code>, and <code>resource_pool</code>. By default, the blobstore configuration uses the Fog Ruby gem, but can also use the WebDAV protocol.
+The [`cf-deployment`](https://github.com/cloudfoundry/cf-deployment/blob/master/operations/README.md) GitHub repository provides ops files with several common blobstore configurations.
+By default, `cf-deployment` uses the WebDAV blobstore, and no additional ops files are needed.
+If you want to configure your blobstore manually, see the topics below for guidance.
 
-This document describes several common blobstore configurations:
+The Cloud Controller has four types of objects that need to be stored in a blobstore: <code>buildpacks</code>, <code>droplets</code>, <code>packages</code>, and <code>resource_pool</code>. By default, the blobstore configuration uses the Fog Ruby gem, but can also use the WebDAV protocol.
+
+This document describes the following common blobstore configurations:
 
 * [Fog with AWS Credentials](#fog-aws-creds)
 * [Fog with AWS Server Side Encryption](#fog-aws-sse)
@@ -24,7 +28,7 @@ This document describes several common blobstore configurations:
 
 ##<a id="fog-aws-creds"></a> Fog with AWS Credentials
 
-To use Fog blobstores with AWS credentials, perform the steps below.
+To use Fog blobstores with AWS credentials, perform the steps below:
 
 1. Insert the following configuration into your manifest under `properties.cc`:
 
@@ -154,7 +158,7 @@ AWS S3 offers Server-Side Encryption at rest. For more information, see <a href=
 
 ##<a id="fog-aws-iam"></a> Fog with AWS IAM Instance Profiles
 
-To configure Fog blobstores to use <a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html">AWS IAM Instance Profiles</a>, perform the steps below.
+To configure Fog blobstores to use <a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html">AWS IAM Instance Profiles</a>, perform the steps below:
 
 1. Insert the following configuration into your manifest under `properties.cc`:
 
@@ -224,7 +228,7 @@ If you use the AWS console, an IAM Role is automatically assigned to an IAM Inst
 
 ##<a id="fog-gcs"></a>Fog with Google Cloud Storage
 
-To configure your blobstores to use Google Cloud Storage Interoperability credentials, perform the steps below.
+To configure your blobstores to use Google Cloud Storage Interoperability credentials, perform the steps below:
 
 1. Insert the following configuration into your manifest under `properties.cc`:
 
@@ -258,11 +262,11 @@ To configure your blobstores to use Google Cloud Storage Interoperability creden
 
 1. You can provide further configuration through the <code>fog_connection</code> hash, which is passed through to the Fog gem.
 
-##<a id="fog-gcs-service-account"></a>Fog with Google Cloud Storage with a Service Account
+##<a id="fog-gcs-service-account"></a>Fog with Google Cloud Storage Service Accounts
 
-To configure your blobstore to use Google Cloud Storage with a Service Account, perform the steps below.
+To configure your blobstore to use Google Cloud Storage with a service account, perform the steps below:
 
-1. Create a custom role that will be used for blobstore permissions by following the [GCP instructions](https://cloud.google.com/iam/docs/creating-custom-roles). Assign the following permissions:
+1. Create a custom Cloud IAM role with the following permissions:
 
     ```
     storage.buckets.create
@@ -273,11 +277,15 @@ To configure your blobstore to use Google Cloud Storage with a Service Account, 
     storage.objects.list
     ```
 
-1. Create a service account by following the [GCP instructions](https://cloud.google.com/iam/docs/creating-managing-service-accounts) and grant the service account the role you created previously (it will be under the "Custom" section). Additional information on granting roles to an existing service account can be found by following these [GCP instructions](https://cloud.google.com/iam/docs/granting-roles-to-service-accounts#granting_access_to_a_service_account_for_a_resource).
+    To create the custom role, follow the [Creating and Managing Custom Roles](https://cloud.google.com/iam/docs/creating-custom-roles) instructions in the GCP documentation. This role will be used for blobstore permissions.
 
-1. Create a service account JSON key for your new service account by following the [GCP instructions](https://cloud.google.com/iam/docs/creating-managing-service-account-keys). You will need the service key JSON to configure your blobstores.
+1. Create a service account by following the [Creating and Managing Service Accounts](https://cloud.google.com/iam/docs/creating-managing-service-accounts) instructions in the GCP documentation and grant this service account the role you created in Step 1.
+For additional information about granting roles to an existing service account, see [Granting Roles to a Service Account for Specific Resources](https://cloud.google.com/iam/docs/granting-roles-to-service-accounts#granting_access_to_a_service_account_for_a_resource) in the GCP documentation.
 
-1. Update the following configuration in your manifest under `properties.cc` for the `cloud_controller_ng` job:
+1. Create a service account JSON key for your service account by following the [Creating and Managing Service Account Keys](https://cloud.google.com/iam/docs/creating-managing-service-account-keys) instructions in the GCP documentation.
+You need this key to configure your blobstore.
+
+1. Insert the following configuration in your manifest under `properties.cc` for the `cloud_controller_ng` job:
 
     ```
     cc:
@@ -308,7 +316,15 @@ To configure your blobstore to use Google Cloud Storage with a Service Account, 
         resource_directory_key: YOUR-GCS-RESOURCE-BUCKET
     ```
 
-1. The `cloud_controller_worker` and `cloud_controller_clock` jobs need to be updated with the same blobstore configuration. Update the following for both jobs under `properties.cc`:
+    Replace the placeholders as follows:
+    * `YOUR-GCS-PROJECT` is the name of your GCP project.
+    * `YOUR-GCS-SERVICE-ACCOUNT-EMAIL` is the email of your GCP service account.
+    * `YOUR-GCS-BUILDPACK-BUCKET`, `YOUR-GCS-DROPLET-BUCKET`, `YOUR-GCS-PACKAGE-BUCKET`, and `YOUR-GCS-RESOURCE-BUCKET` are the names of your Cloud Storage buckets.
+    Do not use periods in the bucket names.
+
+    In `google_json_key_string`, provide your Cloud Storage credentials. Use spaces, not tabs, for indentation.
+
+1. To update the `cloud_controller_worker` and `cloud_controller_clock` jobs with the same blobstore configuration, insert the following for both jobs under `properties.cc`:
 
     ```
     cc:
@@ -319,17 +335,9 @@ To configure your blobstore to use Google Cloud Storage with a Service Account, 
       resource_pool: *resource_pool
     ```
 
-1. Replace `YOUR-GCS-PROJECT` with the name of your Google Cloud Platform project.
-
-1. Replace `YOUR-GCS-SERVICE-ACCOUNT-EMAIL` with the email of your Google Cloud Platform service account.
-
-1. Fill in the `google_json_key_string` value with your Cloud Storage credentials. Note that the indentation must be spaces and not tabs for the JSON value.
-
-1. Replace `YOUR-GCS-BUILDPACK-BUCKET`, `YOUR-GCS-DROPLET-BUCKET`, `YOUR-GCS-PACKAGE-BUCKET`, and `YOUR-GCS-RESOURCE-BUCKET` with the names of your Cloud Storage buckets. Do not use periods (`.`) in your bucket names.
-
 ##<a id="fog-azure"></a>Fog with Azure Storage
 
-To configure your blobstores to use Azure Storage credentials, perform the steps below.
+To configure your blobstores to use Azure Storage credentials, perform the steps below:
 
 1. Insert the following configuration into your manifest under `properties.cc`:
 
@@ -365,7 +373,7 @@ To configure your blobstores to use Azure Storage credentials, perform the steps
 
 ##<a id="fog-local-nfs"></a>Fog with NFS
 
-To configure your blobstores to use an NFS-mounted directory, perform the steps below.
+To configure your blobstores to use an NFS-mounted directory, perform the steps below:
 
 1. Insert the following configuration into your manifest under `properties.cc`:
 
@@ -416,7 +424,7 @@ Replace the placeholder text in the example above with the values you want to us
 
 ##<a id="webdav"></a>WebDAV
 
-To configure your blobstores to use the WebDAV protocol, perform the steps below.
+To configure your blobstores to use the WebDAV protocol, perform the steps below:
 
 1. Ensure your deployment manifest has a single instance of the blobstore job. For a working example, see the [example bosh-lite manifest](https://github.com/cloudfoundry/cf-release/blob/49a94e2/spec/fixtures/bosh-lite/cf-manifest.yml#L297-L329).
 
