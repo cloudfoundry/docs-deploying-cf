@@ -14,44 +14,9 @@ they are not currently supported.
 <p class="note warning"><strong>IMPORTANT</strong>: <code>cf-release</code> has been replaced by <code>cf-deployment</code> and moved to the <a href="https://github.com/cloudfoundry-attic/cf-release">Cloud Foundry attic</a>.
 For more information, see <a href="./cf-release-eol.html">cf-release End of Life</a>.</p>
 
-## <a id='prerequisites'></a> Prerequisites
+## <a id='prerequisites'></a> Migration Prerequisites
 
-Complete the following steps before performing the procedures in this topic:
-
-* Install the BOSH CLI v2.
-For more information, see the <a href="https://bosh.io/docs/cli-v2.html#install">BOSH documentation</a>.
-* Review the migration prerequisites in the [cf-deployment-transition](https://github.com/cloudfoundry/cf-deployment-transition/blob/master/README.md#migration-prerequisites) GitHub repository,
-with particular attention to the following:
-  - You must enable all TLS features.
-  - You must be using external databases.
-  - You must be using an external blobstore.
-  - You must either create additional databases
-    or disable some optional features in `cf-deployment`.
-* Review the following prerequisites to ensure your deployed network configuration
-  is compatible with the transition process:
-  - You must have sufficient available addresses
-    in your Cloud Foundry network
-    to fit the scale of your Diego deployment.
-    Diego jobs will be deployed to your Cloud Foundry network
-    as part of the transition.
-  - You must have non-overlapping network IP address ranges
-    in your existing deployments.
-    <br><br>
-    When you deploy `cf-deployment` with your new [cloud config](https://bosh.io/docs/cloud-config.html),
-    the BOSH Director treats the entire range
-    of any networks declared in your Diego manifest
-    as fully used.
-    If you previously had networks with
-    fully overlapping IP address ranges
-    that had one another's ranges as `reserved`
-    to avoid conflicts,
-    the BOSH Director cannot assign IP addresses
-    in any of those networks.
-    <br><br>
-    To resolve this problem,
-    redefine your networks so that they do not overlap,
-    and deploy those changes
-    prior to starting the transition process.
+For a list of the current prerequisites, see [Migration Prerequisites](https://github.com/cloudfoundry/cf-deployment-transition/blob/master/README.md#prerequisites) in GitHub.
 
 ## <a id='configure-cli'></a> Step 1: Configure the BOSH CLI v2
 Perform the following steps:
@@ -338,7 +303,7 @@ $ bosh -d YOUR-DIEGO-DEPLOYMENT-NAME delete-deployment
 
 This command may take several minutes, because each Diego cell must drain its contents to the new `cf-deployment` cells.
 
-## <a id='cleanup'></a> (Optional) Step 7: Clean Up
+## <a id='cleanup'></a> Step 7: (Optional) Clean Up
 To delete any unused releases and stemcells from your BOSH Director,
 including `cf-release`, run the following command:
 
