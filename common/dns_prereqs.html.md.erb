@@ -9,7 +9,7 @@ This topic describes how to set up DNS for your Cloud Foundry environment.
 
 ##<a id='domains'></a> Domains
 
-Your must create several wildcard DNS records to point to your load balancers and routers. Consult the table below for details about these wildcard DNS records.
+You must create several wildcard DNS records to point to your load balancers and routers. Consult the table below for details about these wildcard DNS records.
 
 Cloud Foundry gives each application its own hostname in your app domain. With a wildcard DNS record, every hostname in your domain resolves to the IP address of your router or load balancer, and you do not need to configure an A record for each app hostname. For example, if you create a DNS record for a system domain <code>*.example.com</code> pointing to your router, every application deployed to the <code>example.com</code> domain resolves to the IP address of your router.
 
