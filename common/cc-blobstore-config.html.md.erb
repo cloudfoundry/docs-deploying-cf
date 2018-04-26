@@ -160,7 +160,63 @@ AWS S3 offers Server-Side Encryption at rest. For more information, see <a href=
 
 To configure Fog blobstores to use <a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html">AWS IAM Instance Profiles</a>, perform the steps below:
 
-1. Insert the following configuration into your manifest under `properties.cc`:
+1. Configure an additional <code>cloud-controller</code> IAM role with the following policy to give access to the S3 buckets you plan to use:
+
+    ```
+    {
+      "Version": "2012-10-17",
+      "Statement": [{
+        "Effect": "Allow",
+        "Action": [ "s3:*" ],
+        "Resource": [
+          "arn:aws:s3:::YOUR-AWS-BUILDPACK-BUCKET",
+          "arn:aws:s3:::YOUR-AWS-BUILDPACK-BUCKET/*",
+          "arn:aws:s3:::YOUR-AWS-DROPLET-BUCKET",
+          "arn:aws:s3:::YOUR-AWS-DROPLET-BUCKET/*",
+          "arn:aws:s3:::YOUR-AWS-PACKAGE-BUCKET",
+          "arn:aws:s3:::YOUR-AWS-PACKAGE-BUCKET/*",
+          "arn:aws:s3:::YOUR-AWS-RESOURCE-BUCKET",
+          "arn:aws:s3:::YOUR-AWS-RESOURCE-BUCKET/*",
+        ]
+      }]
+    }
+    ```
+
+    Replace `YOUR-AWS-BUILDPACK-BUCKET`, `YOUR-AWS-DROPLET-BUCKET`, `YOUR-AWS-PACKAGE-BUCKET`, and `YOUR-AWS-RESOURCE-BUCKET` with the names of your AWS buckets. Do not use periods (`.`) in your AWS bucket names.
+
+    If you use the AWS console, an IAM Role is automatically assigned to an IAM Instance Profile with the same name, <code>cloud-controller</code>. If you do not use the AWS console, you must create an IAM Instance Profile with a single assigned IAM Role (instructions [here](https://docs.aws.amazon.com/codedeploy/latest/userguide/getting-started-create-iam-instance-profile.html)).
+
+1. In your [bosh cloud config](https://bosh.io/docs/cloud-config/), create a [vm_extension](https://bosh.io/docs/cloud-config/#vm-extensions) to add the IAM Instance Profile you created to vms using the extension.
+
+    ```
+    vm_extensions:
+    - cloud_properties:
+        iam_instance_profile: cloud-controller
+      name: cloud-controller-iam
+    ```
+
+1. In your Cloud Foundry deployment manifest use the `cloud-controller-iam` vm_extension you created for the instance groups containing cloud_controller, cloud_controller_worker, and cloud_controller_clock (for example in cf_deployment: api, cc-clock, and scheduler instance groups).
+
+    ```
+    instance_groups:
+    ...
+    - name: api
+      ...
+      vm_extensions:
+      - cloud-controller-iam
+    ...
+    - name: cc-worker
+      ...
+      vm_extensions:
+      - cloud-controller-iam
+    ...
+    - name: scheduler
+      ...
+      vm_extensions:
+      - cloud-controller-iam
+    ```
+
+1. Insert the following configuration into your deployment manifest under `properties.cc`:
 
     ```
     cc:
@@ -184,47 +240,10 @@ To configure Fog blobstores to use <a href="http://docs.aws.amazon.com/IAM/lates
         resource_directory_key: YOUR-AWS-RESOURCE-BUCKET
         fog_connection: *fog_connection
     ```
-1. Replace `YOUR-AWS-BUILDPACK-BUCKET`, `YOUR-AWS-DROPLET-BUCKET`, `YOUR-AWS-PACKAGE-BUCKET`, and `YOUR-AWS-RESOURCE-BUCKET` with the names of your AWS buckets. Do not use periods (`.`) in your AWS bucket names. 
 
-1. To provide further configuration, create a <code>fog_connection</code> hash to pass through to the Fog gem.
+    Replace `YOUR-AWS-BUILDPACK-BUCKET`, `YOUR-AWS-DROPLET-BUCKET`, `YOUR-AWS-PACKAGE-BUCKET`, and `YOUR-AWS-RESOURCE-BUCKET` with the names of your AWS buckets. Do not use periods (`.`) in your AWS bucket names.
 
-1. Complete the steps documented in the <a href="http://bosh.io/docs/aws-iam-instance-profiles.html#director-with-s3-blobstore">AWS CPI and Director configured with an S3 blobstore instructions</a> section of the BOSH documentation.
-
-1. In the AWS console, configure an additional <code>cloud-controller</code> IAM role that gives access to both the BOSH S3 buckets and the Cloud Controller S3 buckets specified in your manifest:
-
-    ```
-    {
-      "Version": "2012-10-17",
-      "Statement": [{
-        "Effect": "Allow",
-        "Action": [ "s3:*" ],
-        "Resource": [
-          "arn:aws:s3:::YOUR-AWS-BUILDPACK-BUCKET",
-          "arn:aws:s3:::YOUR-AWS-BUILDPACK-BUCKET/*",
-          "arn:aws:s3:::YOUR-AWS-DROPLET-BUCKET",
-          "arn:aws:s3:::YOUR-AWS-DROPLET-BUCKET/*",
-          "arn:aws:s3:::YOUR-AWS-PACKAGE-BUCKET",
-          "arn:aws:s3:::YOUR-AWS-PACKAGE-BUCKET/*",
-          "arn:aws:s3:::YOUR-AWS-RESOURCE-BUCKET",
-          "arn:aws:s3:::YOUR-AWS-RESOURCE-BUCKET/*",
-        ]
-      }]
-    }
-    ```
-If you use the AWS console, an IAM Role is automatically assigned to an IAM Instance Profile with the same name, <code>cloud-controller</code>. If you do not use the AWS console, you must create an IAM Instance Profile with a single assigned IAM Role.
-
-1. In your Cloud Foundry deployment manifest, configure a resource pool to use the <code>cloud-controller</code> IAM Instance Profile:
-
-    ```
-    resource_pools:
-    - name: cloud-controller-resource-pool
-      network: default
-      stemcell: { ... }
-      cloud_properties:
-        instance_type: c3.large
-        iam_instance_profile: cloud-controller
-    ```
-1. Assign all Cloud Controller jobs, identified by <code>api\_z\*</code>, and Cloud Controller Worker jobs, identified by <code>api\_worker\_z\*</code>, to the <code>cloud-controller-resource-pool</code>.
+1. (Optional) Provide other configuration with the `fog_connection` hash, which is passed through to the Fog gem.
 
 ##<a id="fog-gcs"></a>Fog with Google Cloud Storage
 
