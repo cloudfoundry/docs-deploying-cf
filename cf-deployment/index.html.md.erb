@@ -25,17 +25,18 @@ Select the topic specific to your IaaS:
 
 * [Deploying BOSH on AWS](../common/aws.html)
 * [Deploying BOSH on GCP](gcp.html)
+* [Deploying BOSH on Azure](azure.html)
 
 <p class="note"><strong>Note</strong>: The topics for preparing your environment 
 use the <code>bosh-bootloader</code> tool. <code>bosh-bootloader</code> is 
-currently compatible with GCP and AWS.</p>
+currently compatible with GCP, AWS, and Microsoft Azure.</p>
 
 ##<a id='deploy'></a> Deploy Cloud Foundry
 
 After preparing your environment and deploying a BOSH Director, continue to the 
 [Deploying Cloud Foundry](deploy-cf.html) topic.
 
-##<a id='deploy'></a> Other IaaS Support
+##<a id='other'></a> Other IaaS Support
 
 You can deploy Cloud Foundry using `cf-deployment` to an IaaS not listed above. 
 The Cloud Foundry community tested and found Cloud Foundry compatible with the 
@@ -53,4 +54,3 @@ following:
 <p class="note"><strong>Note</strong>: Any IaaS not listed have not been tested 
 with Cloud Foundry. Attempts to deploy Cloud Foundry on an untested IaaS may 
 fail.</p>
-
