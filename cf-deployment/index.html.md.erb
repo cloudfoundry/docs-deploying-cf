@@ -11,25 +11,26 @@ GitHub.
 `cf-deployment` relies on individual component releases and prioritizes the 
 following:
 
-* Readability for a human operator: `cf-deployment` includes only necessary configuration
+* Readability for a human operator: `cf-deployment` includes only necessary
+configuration
 * Security and production-readiness by default
-* Native use of [Diego](../../concepts/diego/diego-architecture.html) and lack of support for [Droplet Execution Agents](../../concepts/architecture/execution-agent.html)
+* Native use of [Diego](../../concepts/diego/diego-architecture.html) and lack
+of support for [Droplet Execution Agents](../../concepts/architecture/execution-agent.html)
 
 ##<a id='prepare'></a> Prepare Your Environment
 
 Before deploying Cloud Foundry with `cf-deployment`, you must prepare your 
-environment and deploy a BOSH Director. The procedures to do this vary depending 
-on your IaaS.
+environment and deploy a BOSH Director. The procedures to do this vary
+depending on your IaaS.
 
 Select the topic specific to your IaaS:
 
 * [Deploying BOSH on AWS](../common/aws.html)
-* [Deploying BOSH on GCP](gcp.html)
-* [Deploying BOSH on Azure](azure.html)
+* [Deploying BOSH on GCP](./gcp.html)
+* [Deploying BOSH on Azure](./azure.html)
 
-<p class="note"><strong>Note</strong>: The topics for preparing your environment 
-use the <code>bosh-bootloader</code> tool. <code>bosh-bootloader</code> is 
-currently compatible with GCP, AWS, and Microsoft Azure.</p>
+<p class="note"><strong>Note</strong>: The topics for preparing your 
+environment use the <code>bosh-bootloader</code> tool. <code>bosh-bootloader</code> is currently compatible with GCP, AWS, and Microsoft Azure.</p>
 
 ##<a id='deploy'></a> Deploy Cloud Foundry
 
@@ -43,7 +44,6 @@ The Cloud Foundry community tested and found Cloud Foundry compatible with the
 following:
 
 * [AWS](../common/aws.html) 
-* [Azure](https://bosh.io/docs/init-azure/)
 * [BOSH-Lite](https://github.com/cloudfoundry/cf-deployment/tree/master/iaas-support/bosh-lite)
 * [GCP](./gcp.html)
 * [OpenStack](https://github.com/cloudfoundry/cf-deployment/tree/master/iaas-support/openstack)
