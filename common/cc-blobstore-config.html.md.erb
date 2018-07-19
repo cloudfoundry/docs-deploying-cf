@@ -403,7 +403,7 @@ To configure your blobstores to use an NFS-mounted directory, do the following:
         buildpack_directory_key: YOUR-BUILDPACK-DIRECTORY-PREFIX
         fog_connection: &fog_connection
           provider: Local
-          local_root: LOCAL_DIR_TO_MOUNT
+          local_root: '/var/vcap/data/nfs'
       droplets:
         blobstore_type: fog
         droplet_directory_key: YOUR-DROPLET-DIRECTORY-PREFIX
@@ -418,7 +418,7 @@ To configure your blobstores to use an NFS-mounted directory, do the following:
         fog_connection: *fog_connection
     ```
 
-1. Replace `YOUR-BUILDPACK-DIRECTORY-PREFIX`, `YOUR-DROPLET-DIRECTORY-PREFIX`, `YOUR-PACKAGE-DIRECTORY-PREFIX`, and `YOUR-RESOURCE-DIRECTORY-PREFIX` with the names of the directories you will be using. If you do not specify these, Cloud Foundry will supply usable default values.
+1. Replace `YOUR-BUILDPACK-DIRECTORY-PREFIX`, `YOUR-DROPLET-DIRECTORY-PREFIX`, `YOUR-PACKAGE-DIRECTORY-PREFIX`, and `YOUR-RESOURCE-DIRECTORY-PREFIX` with the names of the directories you will be using. If you do not specify these, Cloud Foundry will supply usable default values. It is important that `local_root` be set to `/var/vcap/data/nfs` because the Cloud Controller jobs expect the NFS volume to be mounted at that path.
 
 1. (Optional) Provide other configuration with the `fog_connection` hash, which is passed through to the Fog gem.
 
@@ -430,7 +430,7 @@ To configure your blobstores to use an NFS-mounted directory, do the following:
         nfs_server:
           address: NFS-ENDPOINT
           share: REMOTE-DIR-TO-MOUNT
-          share_path: LOCAL-DIR-TO-MOUNT
+          share_path: '/var/vcap/data/nfs'
           nfsv4: false
       release: capi
    ```
@@ -439,7 +439,6 @@ Replace the placeholder text in the example above with the values you want to us
 
 - `NFS-ENDPOINT`: `nfstestserver.service.cf.internal`
 - `REMOTE-DIR-TO-MOUNT`: `/var/data/exported`
-- `LOCAL-DIR-TO-MOUNT`: `/var/vcap/nfs`
 
 ##<a id="webdav"></a>WebDAV
 
