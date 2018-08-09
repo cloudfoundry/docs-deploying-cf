@@ -386,7 +386,12 @@ To configure your blobstores to use Azure Storage credentials, do the following:
 
 1. Replace `YOUR-AZURE-STORAGE-ACCOUNT-NAME` and `YOUR-AZURE-STORAGE-ACCESS-KEY` with your Azure Storage credentials.
 
-1. Replace `YOUR-AZURE-BUILDPACK-CONTAINER`, `YOUR-AZURE-DROPLET-CONTAINER`, `YOUR-AZURE-PACKAGE-CONTAINER`, and `YOUR-AZURE-RESOURCE-CONTAINER` with the names of your Cloud Storage containers. 
+1. Replace `YOUR-AZURE-BUILDPACK-CONTAINER`, `YOUR-AZURE-DROPLET-CONTAINER`,
+   `YOUR-AZURE-PACKAGE-CONTAINER`, and `YOUR-AZURE-RESOURCE-CONTAINER`
+   with the names of your Cloud Storage containers.
+   Azure container names must consist of
+   only lowercase alphanumeric characters and hyphens.
+   See [Azure's storage name restrictions][azure-name-restrictions].
 
 1. You can provide further configuration through the `fog_connection` hash, which is passed through to the Fog gem.
 
@@ -494,3 +499,6 @@ To configure your blobstores to use the WebDAV protocol, perform the steps below
       * Replace <code>WEBDAV-BASIC-AUTH-USER</code> and <code>WEBDAV-BASIC-AUTH-PASSWORD</code> with Basic AUTH credentials that Cloud Controller can use to communicate with your WebDAV installation.
 
 1. Create a <code>webdav_config</code> hash to provide further configuration.
+
+
+[azure-name-restrictions]: https://docs.microsoft.com/en-us/azure/architecture/best-practices/naming-conventions#storage
