@@ -23,6 +23,7 @@ This document describes the following common blobstore configurations:
 * [Fog with Google Cloud Storage](#fog-gcs)
 * [Fog with Google Cloud Storage Service Accounts](#fog-gcs-service-account)
 * [Fog with Azure Storage](#fog-azure)
+* [Fog with Other S3 Compatible Stores](#fog-s3-other)
 * [Fog with NFS](#fog-local-nfs)
 * [WebDAV](#webdav) internal blobstore
 
@@ -389,6 +390,46 @@ To configure your blobstores to use Azure Storage credentials, do the following:
 1. Replace `YOUR-AZURE-BUILDPACK-CONTAINER`, `YOUR-AZURE-DROPLET-CONTAINER`, `YOUR-AZURE-PACKAGE-CONTAINER`, and `YOUR-AZURE-RESOURCE-CONTAINER` with the names of your Cloud Storage containers. 
 
 1. You can provide further configuration through the `fog_connection` hash, which is passed through to the Fog gem.
+
+##<a id="fog-s3-other"></a> Fog with Other S3 Compatible Stores
+
+Using Fog blobstores with other S3 compatible stores, such as Minio or EMC Elastic Cloud Storage is similar to AWS, and uses the same Fog adapter, but requires slightly different configuration:
+
+1. Insert the following configuration into your manifest under `properties.cc`:
+
+    ```
+    cc:
+      buildpacks:
+        blobstore_type: fog
+        buildpack_directory_key: YOUR-S3-BUILDPACK-BUCKET
+        fog_connection: &fog_connection
+          provider: AWS
+          endpoint: S3-ENDPOINT
+          aws_access_key_id: S3-ACCESS-KEY
+          aws_secret_access_key: S3-SECRET-ACCESS-KEY
+          aws_signature_version: '2'
+          region: "''"
+          path_style: true
+      droplets:
+        blobstore_type: fog
+        droplet_directory_key: YOUR-S3-DROPLET-BUCKET
+        fog_connection: *fog_connection
+      packages:
+        blobstore_type: fog
+        app_package_directory_key: YOUR-S3-PACKAGE-BUCKET
+        fog_connection: *fog_connection
+      resource_pool:
+        blobstore_type: fog
+        resource_directory_key: YOUR-S3-RESOURCE-BUCKET
+        fog_connection: *fog_connection
+    ```
+1. Replace `S3-ENDPOINT` with the URL used to access your S3 API.  This will typically look something like `http://S3-NAMESPACE.HOST:9020` but may vary for your server or network.
+
+1. Replace `S3-ACCESS-KEY` and `S3-SECRET-ACCESS-KEY` with your S3 credentials.  This key must have access to all S3 activities on the buckets you will specify below.
+
+1. Replace `YOUR-S3-BUILDPACK-BUCKET`, `YOUR-S3-DROPLET-BUCKET`, `YOUR-S3-PACKAGE-BUCKET`, and `YOUR-S3-RESOURCE-BUCKET` with the names of your S3 buckets. Do not use periods (`.`) in your S3 bucket names.
+
+1. (Optional) Provide additional configuration through the `fog_connection` hash, which is passed through to the Fog gem.
 
 ##<a id="fog-local-nfs"></a>Fog with NFS
 
