@@ -23,9 +23,21 @@ This repository contains the canonical manifest for deploying Cloud Foundry, alo
 
 ## <a id='ops-files'></a>Step 2: Select Your Ops Files
 
-Every IaaS except Google Cloud Platform (GCP) requires using IaaS-specific ops files to deploy Cloud Foundry. Ops files can also add additional functionality to your deployment.
+Use ops files to specify IaaS-specific configuration and to add custom
+functionality to your Cloud Foundry deployment. Before deploying, BOSH reads the
+ops files from the `operations` folder and applies the operations to your manifest.
 
 All ops files are located in the [operations](https://github.com/cloudfoundry/cf-deployment/tree/master/operations) directory of the `cf-deployment` repository.
+
+The following configurations require ops files:
+
+- Deploying Cloud Foundry to any IaaS except Google Cloud Platform (GCP)
+- Deploying Windows Diego cells to Cloud Foundry
+
+To determine which ops files your IaaS requires, see the [IaaS-required Ops-files](https://github.com/cloudfoundry/cf-deployment/tree/master/operations#iaas-required-ops-files) table in the `cf-deployment`
+repository.
+
+To deploy Windows Diego cells, use the [windows2016-cell.yml](https://github.com/cloudfoundry/cf-deployment/blob/master/operations/windows2016-cell.yml) ops file.
 
 See the [Ops Files](https://github.com/cloudfoundry/cf-deployment#ops-files) section of the `cf-deployment` repository README for a description of all available ops files.
 
@@ -51,19 +63,27 @@ Perform the following steps to determine your required variables and prepare the
 
 1. Ensure you are logged in to your BOSH Director:
 	<pre class="terminal">$ bosh -e YOUR-ENV log-in</pre>
-1. Open the Cloud Foundry deployment manifest, `cf-deployment.yml`. In the final lines of the deployment manifest, locate the top-level property `stemcells` and retrieve the values for `os` and `version`. The following example specifies an Ubuntu Trusty 3312.12 stemcell.
+1. Open the Cloud Foundry deployment manifest, `cf-deployment.yml`. In the final lines of the deployment manifest, locate the top-level property `stemcells` and retrieve the values for `os` and `version`. The following example specifies an Ubuntu Trusty 3421.11 stemcell:
 
-	```
-	stemcells:
-	- alias: default
-	  os: ubuntu-trusty
-	  version: "3421.11"
-	```
-1. Visit the stemcells [section](https://bosh.io/stemcells) of bosh.io.
-1. Locate the Ubuntu Trusty stemcell that corresponds to your IaaS and to the version specified above, and copy the URL to the stemcell.
+    ```yaml
+    stemcells:
+    - alias: default
+      os: ubuntu-trusty
+      version: "3421.11"
+    ```
+    The following example specifies a Windows Server, version 1709 stemcell:
+
+    ```yaml
+    stemcells:
+    - alias: windows2016
+      os: windows2016
+      version: "1709.13"
+    ```
+
+1. Visit [Stemcells](https://bosh.io/stemcells) on bosh.io.
+1. Locate the stemcell that corresponds to your IaaS and to the version specified above, and copy the URL to the stemcell.
 1. Upload the stemcell:
 	<pre class="terminal">$ bosh upload-stemcell YOUR-STEMCELL-URL</pre>
-	<p class="note"><strong>Note</strong>: If you applied the <code>windows-cell.yml</code> ops file to deploy a Windows Diego cell, you must also upload a Windows stemcell. Examine the <code>cf-deployment</code> manifest for the version number and locate the URL for the appropriate stemcell at <a href="https://bosh.io/stemcells">bosh.io</a>.</p>
 
 ## <a id='deploy'></a>Step 5: Deploy
 
