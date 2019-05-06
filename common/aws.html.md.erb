@@ -142,7 +142,7 @@ Replace the placeholders as follows:
 
 The `bbl up` command takes five to eight minutes to complete.
 
-After `bbl` deploys the BOSH Director, you must point the parent domain at the BOSH Director's name servers. Do the following:
+After `bbl` deploys the BOSH Director, you must point `YOUR-SYSTEM-DOMAIN` at the BOSH Director's name servers. For example, if you are using AWS Route53 to manage `YOUR-SYSTEM-DOMAIN` then do the following:
 
 1. Run `--lb-domain YOUR-ENV-NAME.YOUR-SYSTEM-DOMAIN`.
 
@@ -150,7 +150,7 @@ After `bbl` deploys the BOSH Director, you must point the parent domain at the B
 
 1. Log in to the AWS Route 53 dashboard and go to **Registered Domains**.
 
-1. Choose the name of your parent domain.
+1. Choose `YOUR-SYSTEM-DOMAIN`.
 
 1. Click **Add/Edit Name Servers**.
 
