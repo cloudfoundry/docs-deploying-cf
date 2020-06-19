@@ -1,5 +1,5 @@
 ---
-title: Log Drain Blacklist Configuration
+title: Log Drain Denylist Configuration
 owner: Logging and Metrics
 ---
 
@@ -13,11 +13,11 @@ Developers can drain logs for their application instances and for requests made 
 
 To drain logs, developers use the Doppler component of the Loggregator system, which aggregates and streams logs and metrics from all user applications and system components in a Cloud Foundry deployment. For more information about the Doppler component and the Loggregator system, see the [Overview of the Loggregator System](../../loggregator/architecture.html) topic.
 
-## <a id='blacklist'></a>Blacklist IP Addresses from Log Draining
+## <a id='deny'></a>Deny IP Addresses from Log Draining
 
-Operators can blacklist IP addresses to prevent developers from draining logs from certain components. Operators may want to take this step because if the  developer attempts to bind a drain to an internal Cloud Foundry component, performance of the deployment can suffer.
+Operators can add IP addresses to a denylist to prevent developers from draining logs from certain components. Operators may want to take this step because if the  developer attempts to bind a drain to an internal Cloud Foundry component, performance of the deployment can suffer.
 
-To blacklist an IP address range, add the `doppler.blacklisted_syslog_ranges`
+To add an IP address range to the denylist, add the `doppler.blacklisted_syslog_ranges`
 property to your existing manifest stub, or create an additional stub. Specify starting and ending IP addresses for each IP address range.
 
 See the example stub below for reference:
