@@ -56,7 +56,7 @@ Perform the following steps to determine your required variables and prepare the
 1. Choose one of the following methods for providing the variables when you [deploy Cloud Foundry](#deploy) below:
 	* Provide the variables in a YAML file specified with the `--vars-file` flag during the deploy. This is the recommended method for configuring external persistence services.
 	* Provide the variables by passing individual `-v` arguments for each variable. The syntax is `-v VAR-NAME=VAR-VALUE`.
-		<p class="note"><strong>Note</strong>: Variables passed with either <code>-v</code> or <code>--vars-file</code> will override those already in the var store, but will not be stored there.</p>
+		<p class="note">Variables passed with either <code>-v</code> or <code>--vars-file</code> will override those already in the var store, but will not be stored there.</p>
 	* Insert the variables directly in the variables store file alongside BOSH-managed variables.
 
 ## <a id='upload-stemcell'></a>Step 4: Upload Stemcell

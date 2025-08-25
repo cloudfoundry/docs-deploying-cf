@@ -9,7 +9,7 @@ This topic describes how to migrate your Cloud Foundry deployment
 from `cf-release` to `cf-deployment` on AWS.
 The procedures in this topic are specific to Amazon Web Services (AWS).
 
-<p class="note warning"><strong>IMPORTANT</strong>: <code>cf-release</code> has been replaced by <code>cf-deployment</code> and moved to the <a href="https://github.com/cloudfoundry-attic/cf-release">Cloud Foundry attic</a>.
+<p class="note warning"><code>cf-release</code> has been replaced by <code>cf-deployment</code> and moved to the <a href="https://github.com/cloudfoundry-attic/cf-release">Cloud Foundry attic</a>.
 For more information, see <a href="./cf-release-eol.html">cf-release End of Life</a>.</p>
 
 ## <a id='prerequisites'></a> Migration Prerequisites
@@ -232,7 +232,7 @@ Perform the following steps:
           subnet: SUBNET-FROM-AZ1-NETWORK
         gateway: GATEWAY-IP-FROM-AZ1-NETWORK
         range: RANGE-FROM-AZ1-NETWORK
-        reserved: 
+        reserved:
         - RESERVED-IPS-FROM-AZ1-NETWORK
         static:
         - STATIC-IPS-FROM-AZ1-NETWORK
