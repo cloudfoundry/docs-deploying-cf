@@ -23,6 +23,7 @@ This document describes the following common blobstore configurations:
 * [Fog with Google Cloud Storage](#fog-gcs)
 * [Fog with Google Cloud Storage Service Accounts](#fog-gcs-service-account)
 * [Fog with Azure Storage](#fog-azure)
+* [Storage CLI with AliCloud Storage](#storage-cli-alicloud)
 * [Fog with Other S3 Compatible Stores](#fog-s3-other)
 * [Fog with NFS](#fog-local-nfs)
 * [WebDAV](#webdav) internal blobstore
@@ -396,6 +397,62 @@ To configure your blobstores to use Azure Storage credentials, do the following:
 
 1. You can provide further configuration through the `fog_connection` hash, which is passed through to the Fog gem.
 
+##<a id="storage-cli-alicloud"></a>Storage CLI with AliCloud Object Storage Service (OSS)
+
+To configure an AliCloud OSS blobstore using the storage-cli implementation, do the following:
+
+1. Insert this configuration into your manifest under `properties.cc`:
+
+    ```
+    cc:
+      buildpacks:
+        blobstore_provider: aliyun
+        blobstore_type: storage-cli
+        buildpack_directory_key: YOUR-ALICLOUD-BUILDPACK-CONTAINER
+        connection_config:
+          aliyun_accesskey_id: YOUR-ALICLOUD-ACCESSKEY-ID
+          aliyun_accesskey_secret: YOUR-ALICLOUD-ACCESSKEY-SECRET
+          aliyun_oss_bucket: YOUR-ALICLOUD-BUILDPACK-CONTAINER
+          aliyun_oss_endpoint: YOUR-ALICLOUD-OSS-ENDPOINT
+          aliyun_region_id: YOUR-ALICLOUD-REGION-ID
+      droplets:
+        blobstore_provider: aliyun
+        blobstore_type: storage-cli
+        buildpack_directory_key: YOUR-ALICLOUD-DROPLET-CONTAINER
+        connection_config:
+          aliyun_accesskey_id: YOUR-ALICLOUD-ACCESSKEY-ID
+          aliyun_accesskey_secret: YOUR-ALICLOUD-ACCESSKEY-SECRET
+          aliyun_oss_bucket: YOUR-ALICLOUD-DROPLET-CONTAINER
+          aliyun_oss_endpoint: YOUR-ALICLOUD-OSS-ENDPOINT
+          aliyun_region_id: YOUR-ALICLOUD-REGION-ID
+      packages:
+        blobstore_provider: aliyun
+        blobstore_type: storage-cli
+        buildpack_directory_key: YOUR-ALICLOUD-PACKAGE-CONTAINER
+        connection_config:
+          aliyun_accesskey_id: YOUR-ALICLOUD-ACCESSKEY-ID
+          aliyun_accesskey_secret: YOUR-ALICLOUD-ACCESSKEY-SECRET
+          aliyun_oss_bucket: YOUR-ALICLOUD-PACKAGE-CONTAINER
+          aliyun_oss_endpoint: YOUR-ALICLOUD-OSS-ENDPOINT
+          aliyun_region_id: YOUR-ALICLOUD-REGION-ID
+      resource_pool:
+        blobstore_provider: aliyun
+        blobstore_type: storage-cli
+        buildpack_directory_key: YOUR-ALICLOUD-RESOURCE-CONTAINER
+        connection_config:
+          aliyun_accesskey_id: YOUR-ALICLOUD-ACCESSKEY-ID
+          aliyun_accesskey_secret: YOUR-ALICLOUD-ACCESSKEY-SECRET
+          aliyun_oss_bucket: YOUR-ALICLOUD-RESOURCE-CONTAINER
+          aliyun_oss_endpoint: YOUR-ALICLOUD-OSS-ENDPOINT
+          aliyun_region_id: YOUR-ALICLOUD-REGION-ID
+    ```
+
+1. Replace `YOUR-ALICLOUD-ACCESSKEY-ID` and `YOUR-ALICLOUD-ACCESSKEY-SECRET` with your AliCloud OSS credentials.
+
+1. Replace `YOUR-ALICLOUD-BUILDPACK-CONTAINER`, `YOUR-ALICLOUD-DROPLET-CONTAINER`, `YOUR-ALICLOUD-PACKAGE-CONTAINER`, and `YOUR-ALICLOUD-RESOURCE-CONTAINER` with the names of your AliCloud OSS buckets. For the bucket naming restrictions, see [Bucket naming conventions][alicloud-name-restrictions].
+
+1. Replace `YOUR-ALICLOUD-OSS-ENDPOINT` and `YOUR-ALICLOUD-REGION-ID` with the endpoint and region of your AliCloud OSS buckets. For more information, see [Regions and endpoints][alicloud-regions-and-endpoints] in the AliCloud documentation.
+
 ##<a id="fog-s3-other"></a> Fog with Other S3 Compatible Stores
 
 Using Fog blobstores with other S3 compatible stores, such as Minio or EMC Elastic Cloud Storage is similar to AWS, and uses the same Fog adapter, but requires slightly different configuration:
@@ -543,3 +600,5 @@ To configure your blobstores to use the WebDAV protocol, perform the steps below
 
 
 [azure-name-restrictions]: https://docs.microsoft.com/en-us/azure/architecture/best-practices/naming-conventions#storage
+[alicloud-name-restrictions]: https://www.alibabacloud.com/help/en/oss/user-guide/bucket-naming-conventions
+[alicloud-regions-and-endpoints]: https://www.alibabacloud.com/help/en/oss/user-guide/regions-and-endpoints
