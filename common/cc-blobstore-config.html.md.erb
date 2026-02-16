@@ -13,7 +13,7 @@ The [`cf-deployment`](https://github.com/cloudfoundry/cf-deployment/blob/master/
 By default, `cf-deployment` uses the WebDAV blobstore, and no additional ops files are needed.
 If you want to configure your blobstore manually, see the topics below for guidance.
 
-The Cloud Controller has four types of objects that need to be stored in a blobstore: <code>buildpacks</code>, <code>droplets</code>, <code>packages</code>, and <code>resource_pool</code>. By default, the blobstore configuration uses the Fog Ruby gem, but can also use the WebDAV protocol. Note that the Ruby Fog implementation is deprecated and will be gradually replaced with the new [`Storage CLI`](https://github.com/cloudfoundry/storage-cli) implementations.
+The Cloud Controller has four types of objects that need to be stored in a blobstore: <code>buildpacks</code>, <code>droplets</code>, <code>packages</code>, and <code>resource_pool</code>. By default, the blobstore configuration uses the Ruby Fog gem, but can also use the WebDAV protocol. Note that the Ruby Fog implementation is deprecated and will be gradually replaced with the new [`Storage CLI`](https://github.com/cloudfoundry/storage-cli) implementations.
 
 This document describes the following common blobstore configurations:
 
