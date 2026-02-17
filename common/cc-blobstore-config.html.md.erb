@@ -13,7 +13,11 @@ The [`cf-deployment`](https://github.com/cloudfoundry/cf-deployment/blob/master/
 By default, `cf-deployment` uses the WebDAV blobstore, and no additional ops files are needed.
 If you want to configure your blobstore manually, see the topics below for guidance.
 
-The Cloud Controller has four types of objects that need to be stored in a blobstore: <code>buildpacks</code>, <code>droplets</code>, <code>packages</code>, and <code>resource_pool</code>. By default, the blobstore configuration uses the Fog Ruby gem, but can also use the WebDAV protocol.
+The Cloud Controller has four types of objects that need to be stored in a blobstore: <code>buildpacks</code>, <code>droplets</code>, <code>packages</code>, and <code>resource_pool</code>.
+
+For accessing an external hyperscaler blobstore, there are two supported blobstore providers: the Ruby Fog gem and the [`Storage CLI`](https://github.com/cloudfoundry/storage-cli) solution. The new Storage CLI solution is currently being rolled out across major hyperscalers (for example, AliCloud and Azure). The goal is to replace the deprecated Ruby Fog implementation. Until the rollout is complete, Ruby Fog remains the default for some providers.
+
+WebDAV is also supported for an internal blobstore, and blobstores on NFS-mounted directories are supported through the Fog gem.
 
 This document describes the following common blobstore configurations:
 
@@ -22,7 +26,7 @@ This document describes the following common blobstore configurations:
 * [Fog with AWS IAM Instance Profiles](#fog-aws-iam)
 * [Fog with Google Cloud Storage](#fog-gcs)
 * [Fog with Google Cloud Storage Service Accounts](#fog-gcs-service-account)
-* [Fog with Azure Storage](#fog-azure)
+* [Storage CLI with Azure Storage](#storage-cli-azure)
 * [Fog with Other S3 Compatible Stores](#fog-s3-other)
 * [Fog with NFS](#fog-local-nfs)
 * [WebDAV](#webdav) internal blobstore
@@ -355,7 +359,7 @@ You need this key to configure your blobstore.
       resource_pool: *resource_pool
     ```
 
-##<a id="fog-azure"></a>Fog with Azure Storage
+##<a id="storage-cli-azure"></a>Storage CLI with Azure Storage
 
 To configure your blobstores to use Azure Storage credentials, do the following:
 
@@ -364,25 +368,41 @@ To configure your blobstores to use Azure Storage credentials, do the following:
     ```
     cc:
       buildpacks:
-        blobstore_type: fog
+        blobstore_provider: AzureRM
+        blobstore_type: storage-cli
         buildpack_directory_key: YOUR-AZURE-BUILDPACK-CONTAINER
-        fog_connection: &fog_connection
-          provider: AzureRM
-          environment: AzureCloud
-          azure_storage_account_name: YOUR-AZURE-STORAGE-ACCOUNT-NAME
+        connection_config:
           azure_storage_access_key: YOUR-AZURE-STORAGE-ACCESS-KEY
+          azure_storage_account_name: YOUR-AZURE-STORAGE-ACCOUNT-NAME
+          container_name: YOUR-AZURE-BUILDPACK-CONTAINER
+          environment: AzureCloud
       droplets:
-        blobstore_type: fog
+        blobstore_provider: AzureRM
+        blobstore_type: storage-cli
         droplet_directory_key: YOUR-AZURE-DROPLET-CONTAINER
-        fog_connection: *fog_connection
+        connection_config:
+          azure_storage_access_key: YOUR-AZURE-STORAGE-ACCESS-KEY
+          azure_storage_account_name: YOUR-AZURE-STORAGE-ACCOUNT-NAME
+          container_name: YOUR-AZURE-DROPLET-CONTAINER
+          environment: AzureCloud
       packages:
-        blobstore_type: fog
+        blobstore_provider: AzureRM
+        blobstore_type: storage-cli
         app_package_directory_key: YOUR-AZURE-PACKAGE-CONTAINER
-        fog_connection: *fog_connection
+        connection_config:
+          azure_storage_access_key: YOUR-AZURE-STORAGE-ACCESS-KEY
+          azure_storage_account_name: YOUR-AZURE-STORAGE-ACCOUNT-NAME
+          container_name: YOUR-AZURE-PACKAGE-CONTAINER
+          environment: AzureCloud
       resource_pool:
-        blobstore_type: fog
+        blobstore_provider: AzureRM
+        blobstore_type: storage-cli
         resource_directory_key: YOUR-AZURE-RESOURCE-CONTAINER
-        fog_connection: *fog_connection
+        connection_config:
+          azure_storage_access_key: YOUR-AZURE-STORAGE-ACCESS-KEY
+          azure_storage_account_name: YOUR-AZURE-STORAGE-ACCOUNT-NAME
+          container_name: YOUR-AZURE-RESOURCE-CONTAINER
+          environment: AzureCloud
     ```
 
 1. Replace `YOUR-AZURE-STORAGE-ACCOUNT-NAME` and `YOUR-AZURE-STORAGE-ACCESS-KEY` with your Azure Storage credentials.
@@ -394,7 +414,7 @@ To configure your blobstores to use Azure Storage credentials, do the following:
    only lowercase alphanumeric characters and hyphens.
    See [Azure's storage name restrictions][azure-name-restrictions].
 
-1. You can provide further configuration through the `fog_connection` hash, which is passed through to the Fog gem.
+1. You can provide further configuration through the `connection_config` hash, which is passed through to the [`Storage CLI`](https://github.com/cloudfoundry/storage-cli) implementation.
 
 ##<a id="fog-s3-other"></a> Fog with Other S3 Compatible Stores
 
