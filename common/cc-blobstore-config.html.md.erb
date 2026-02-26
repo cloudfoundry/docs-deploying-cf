@@ -258,24 +258,34 @@ To configure your blobstores to use Google Cloud Storage Interoperability creden
 
     ```
     cc:
-      buildpacks:
-        blobstore_type: fog
+     buildpacks:
+        blobstore_type: storage-cli
+        blobstore_provider: Google
         buildpack_directory_key: YOUR-GCS-BUILDPACK-BUCKET
-        fog_connection: &fog_connection
-          provider: Google
-          google_storage_access_key_id: GCS-ACCESS-KEY
-          google_storage_secret_access_key: GCS-SECRET-ACCESS-KEY
+        connection_config:
+          bucket_name: YOUR-GCS-BUILDPACK-BUCKET
+          google_json_key_string: YOUR-GCS-SERVICE-ACCOUNT-JSON-KEY
       droplets:
-        blobstore_type: fog
+        blobstore_type: storage-cli
+        blobstore_provider: Google
         droplet_directory_key: YOUR-GCS-DROPLET-BUCKET
-        fog_connection: *fog_connection
+        connection_config:
+          bucket_name: YOUR-GCS-DROPLET-BUCKET
+          google_json_key_string: YOUR-GCS-SERVICE-ACCOUNT-JSON-KEY
       packages:
-        blobstore_type: fog
+        blobstore_type: storage-cli
+        blobstore_provider: Google
         app_package_directory_key: YOUR-GCS-PACKAGE-BUCKET
-        fog_connection: *fog_connection
+        connection_config:
+          bucket_name: YOUR-GCS-PACKAGE-BUCKET
+          google_json_key_string: YOUR-GCS-SERVICE-ACCOUNT-JSON-KEY
       resource_pool:
-        blobstore_type: fog
+        blobstore_type: storage-cli
+        blobstore_provider: Google
         resource_directory_key: YOUR-GCS-RESOURCE-BUCKET
+        connection_config:
+          bucket_name: YOUR-GCS-RESOURCE-BUCKET
+          google_json_key_string: YOUR-GCS-SERVICE-ACCOUNT-JSON-KEY
     ```
 
 1. Create an Interoperability key using the [GCP instructions](https://cloud.google.com/storage/docs/migrating#keys).
