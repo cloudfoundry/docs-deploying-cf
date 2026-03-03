@@ -258,34 +258,24 @@ To configure your blobstores to use Google Cloud Storage Interoperability creden
 
     ```
     cc:
-     buildpacks:
-        blobstore_type: storage-cli
-        blobstore_provider: Google
+      buildpacks:
+        blobstore_type: fog
         buildpack_directory_key: YOUR-GCS-BUILDPACK-BUCKET
-        connection_config:
-          bucket_name: YOUR-GCS-BUILDPACK-BUCKET
-          google_json_key_string: YOUR-GCS-SERVICE-ACCOUNT-JSON-KEY
+        fog_connection: &fog_connection
+          provider: Google
+          google_storage_access_key_id: GCS-ACCESS-KEY
+          google_storage_secret_access_key: GCS-SECRET-ACCESS-KEY
       droplets:
-        blobstore_type: storage-cli
-        blobstore_provider: Google
+        blobstore_type: fog
         droplet_directory_key: YOUR-GCS-DROPLET-BUCKET
-        connection_config:
-          bucket_name: YOUR-GCS-DROPLET-BUCKET
-          google_json_key_string: YOUR-GCS-SERVICE-ACCOUNT-JSON-KEY
+        fog_connection: *fog_connection
       packages:
-        blobstore_type: storage-cli
-        blobstore_provider: Google
+        blobstore_type: fog
         app_package_directory_key: YOUR-GCS-PACKAGE-BUCKET
-        connection_config:
-          bucket_name: YOUR-GCS-PACKAGE-BUCKET
-          google_json_key_string: YOUR-GCS-SERVICE-ACCOUNT-JSON-KEY
+        fog_connection: *fog_connection
       resource_pool:
-        blobstore_type: storage-cli
-        blobstore_provider: Google
+        blobstore_type: fog
         resource_directory_key: YOUR-GCS-RESOURCE-BUCKET
-        connection_config:
-          bucket_name: YOUR-GCS-RESOURCE-BUCKET
-          google_json_key_string: YOUR-GCS-SERVICE-ACCOUNT-JSON-KEY
     ```
 
 1. Create an Interoperability key using the [GCP instructions](https://cloud.google.com/storage/docs/migrating#keys).
@@ -296,7 +286,7 @@ To configure your blobstores to use Google Cloud Storage Interoperability creden
 
 1. You can provide further configuration through the <code>fog_connection</code> hash, which is passed through to the Fog gem.
 
-##<a id="fog-gcs-service-account"></a>Fog with Google Cloud Storage Service Accounts
+##<a id="storage-cli-gcs-service-account"></a>Storage-cli with Google Cloud Storage Service Accounts
 
 To configure your blobstore to use Google Cloud Storage with a service account, do the following:
 
@@ -324,12 +314,11 @@ You need this key to configure your blobstore.
     ```
     cc:
       buildpacks: &buildpacks
-        blobstore_type: fog
+        blobstore_type: storage-cli
+        blobstore_provider: Google
         buildpack_directory_key: YOUR-GCS-BUILDPACK-BUCKET
-        fog_connection: &fog_connection
-          provider: Google
-          google_project: YOUR-GCS-PROJECT
-          google_client_email: YOUR-GCS-SERVICE-ACCOUNT-EMAIL
+        connection_config:
+          bucket_name: YOUR-GCS-BUILDPACK-BUCKET
           google_json_key_string: >
             {
               "type": "service_account",
@@ -337,17 +326,41 @@ You need this key to configure your blobstore.
               ...
             }
       droplets: &droplets
-        blobstore_type: fog
+        blobstore_type: storage-cli
+        blobstore_provider: Google
         droplet_directory_key: YOUR-GCS-DROPLET-BUCKET
-        fog_connection: *fog_connection
+        connection_config:
+          bucket_name: YOUR-GCS-DROPLET-BUCKET
+          google_json_key_string: >
+            {
+              "type": "service_account",
+              "project_id": "YOUR-GCS-PROJECT",
+              ...
+            }
       packages: &packages
-        blobstore_type: fog
+        blobstore_type: storage-cli
+        blobstore_provider: Google
         app_package_directory_key: YOUR-GCS-PACKAGE-BUCKET
-        fog_connection: *fog_connection
+        connection_config:
+          bucket_name: YOUR-GCS-PACKAGE-BUCKET
+          google_json_key_string: >
+            {
+              "type": "service_account",
+              "project_id": "YOUR-GCS-PROJECT",
+              ...
+            }
       resource_pool: &resource_pool
-        blobstore_type: fog
-        fog_connection: *fog_connection
+        blobstore_type: storage-cli
+        blobstore_provider: Google
         resource_directory_key: YOUR-GCS-RESOURCE-BUCKET
+        connection_config:
+          bucket_name: YOUR-GCS-RESOURCE-BUCKET
+          google_json_key_string: >
+            {
+              "type": "service_account",
+              "project_id": "YOUR-GCS-PROJECT",
+              ...
+            }
     ```
 
     Replace the placeholders as follows:
