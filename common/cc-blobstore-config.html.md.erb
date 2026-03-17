@@ -316,7 +316,7 @@ You need this key to configure your blobstore.
     cc:
       buildpacks: &buildpacks
         blobstore_type: storage-cli
-        blobstore_provider: Google
+        blobstore_provider: gcs
         buildpack_directory_key: YOUR-GCS-BUILDPACK-BUCKET
         connection_config:
           bucket_name: YOUR-GCS-BUILDPACK-BUCKET
@@ -328,7 +328,7 @@ You need this key to configure your blobstore.
             }
       droplets: &droplets
         blobstore_type: storage-cli
-        blobstore_provider: Google
+        blobstore_provider: gcs
         droplet_directory_key: YOUR-GCS-DROPLET-BUCKET
         connection_config:
           bucket_name: YOUR-GCS-DROPLET-BUCKET
@@ -340,7 +340,7 @@ You need this key to configure your blobstore.
             }
       packages: &packages
         blobstore_type: storage-cli
-        blobstore_provider: Google
+        blobstore_provider: gcs
         app_package_directory_key: YOUR-GCS-PACKAGE-BUCKET
         connection_config:
           bucket_name: YOUR-GCS-PACKAGE-BUCKET
@@ -352,7 +352,7 @@ You need this key to configure your blobstore.
             }
       resource_pool: &resource_pool
         blobstore_type: storage-cli
-        blobstore_provider: Google
+        blobstore_provider: gcs
         resource_directory_key: YOUR-GCS-RESOURCE-BUCKET
         connection_config:
           bucket_name: YOUR-GCS-RESOURCE-BUCKET
@@ -392,7 +392,7 @@ To configure your blobstores to use Azure Storage credentials, do the following:
     ```
     cc:
       buildpacks:
-        blobstore_provider: AzureRM
+        blobstore_provider: azurebs
         blobstore_type: storage-cli
         buildpack_directory_key: YOUR-AZURE-BUILDPACK-CONTAINER
         connection_config:
@@ -401,7 +401,7 @@ To configure your blobstores to use Azure Storage credentials, do the following:
           container_name: YOUR-AZURE-BUILDPACK-CONTAINER
           environment: AzureCloud
       droplets:
-        blobstore_provider: AzureRM
+        blobstore_provider: azurebs
         blobstore_type: storage-cli
         droplet_directory_key: YOUR-AZURE-DROPLET-CONTAINER
         connection_config:
@@ -410,7 +410,7 @@ To configure your blobstores to use Azure Storage credentials, do the following:
           container_name: YOUR-AZURE-DROPLET-CONTAINER
           environment: AzureCloud
       packages:
-        blobstore_provider: AzureRM
+        blobstore_provider: azurebs
         blobstore_type: storage-cli
         app_package_directory_key: YOUR-AZURE-PACKAGE-CONTAINER
         connection_config:
@@ -419,7 +419,7 @@ To configure your blobstores to use Azure Storage credentials, do the following:
           container_name: YOUR-AZURE-PACKAGE-CONTAINER
           environment: AzureCloud
       resource_pool:
-        blobstore_provider: AzureRM
+        blobstore_provider: azurebs
         blobstore_type: storage-cli
         resource_directory_key: YOUR-AZURE-RESOURCE-CONTAINER
         connection_config:
@@ -449,7 +449,7 @@ To configure an AliCloud OSS blobstore using the storage-cli implementation, do 
     ```
     cc:
       buildpacks:
-        blobstore_provider: aliyun
+        blobstore_provider: alioss
         blobstore_type: storage-cli
         buildpack_directory_key: YOUR-ALICLOUD-BUILDPACK-CONTAINER
         connection_config:
@@ -459,9 +459,9 @@ To configure an AliCloud OSS blobstore using the storage-cli implementation, do 
           aliyun_oss_endpoint: YOUR-ALICLOUD-OSS-ENDPOINT
           aliyun_region_id: YOUR-ALICLOUD-REGION-ID
       droplets:
-        blobstore_provider: aliyun
+        blobstore_provider: alioss
         blobstore_type: storage-cli
-        buildpack_directory_key: YOUR-ALICLOUD-DROPLET-CONTAINER
+        droplet_directory_key: YOUR-ALICLOUD-DROPLET-CONTAINER
         connection_config:
           aliyun_accesskey_id: YOUR-ALICLOUD-ACCESSKEY-ID
           aliyun_accesskey_secret: YOUR-ALICLOUD-ACCESSKEY-SECRET
@@ -469,9 +469,9 @@ To configure an AliCloud OSS blobstore using the storage-cli implementation, do 
           aliyun_oss_endpoint: YOUR-ALICLOUD-OSS-ENDPOINT
           aliyun_region_id: YOUR-ALICLOUD-REGION-ID
       packages:
-        blobstore_provider: aliyun
+        blobstore_provider: alioss
         blobstore_type: storage-cli
-        buildpack_directory_key: YOUR-ALICLOUD-PACKAGE-CONTAINER
+        app_package_directory_key: YOUR-ALICLOUD-PACKAGE-CONTAINER
         connection_config:
           aliyun_accesskey_id: YOUR-ALICLOUD-ACCESSKEY-ID
           aliyun_accesskey_secret: YOUR-ALICLOUD-ACCESSKEY-SECRET
@@ -479,9 +479,9 @@ To configure an AliCloud OSS blobstore using the storage-cli implementation, do 
           aliyun_oss_endpoint: YOUR-ALICLOUD-OSS-ENDPOINT
           aliyun_region_id: YOUR-ALICLOUD-REGION-ID
       resource_pool:
-        blobstore_provider: aliyun
+        blobstore_provider: alioss
         blobstore_type: storage-cli
-        buildpack_directory_key: YOUR-ALICLOUD-RESOURCE-CONTAINER
+        resource_directory_key: YOUR-ALICLOUD-RESOURCE-CONTAINER
         connection_config:
           aliyun_accesskey_id: YOUR-ALICLOUD-ACCESSKEY-ID
           aliyun_accesskey_secret: YOUR-ALICLOUD-ACCESSKEY-SECRET
