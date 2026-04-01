@@ -41,7 +41,7 @@ To use the Storage CLI blobstore interface with AWS credentials, do the followin
     ```
     cc:
       buildpacks:
-        blobstore_provider: AWS
+        blobstore_provider: s3
         blobstore_type: storage-cli
         buildpack_directory_key: YOUR-AWS-BUILDPACK-BUCKET
         connection_config:
@@ -50,7 +50,7 @@ To use the Storage CLI blobstore interface with AWS credentials, do the followin
           region: AWS-REGION
           bucket_name: YOUR-AWS-BUILDPACK-BUCKET
       droplets:
-        blobstore_provider: AWS
+        blobstore_provider: s3
         blobstore_type: storage-cli
         droplet_directory_key: YOUR-AWS-DROPLET-BUCKET
         connection_config:
@@ -59,7 +59,7 @@ To use the Storage CLI blobstore interface with AWS credentials, do the followin
           region: AWS-REGION
           bucket_name: YOUR-AWS-DROPLET-BUCKET
       packages:
-        blobstore_provider: AWS
+        blobstore_provider: s3
         blobstore_type: storage-cli
         app_package_directory_key: YOUR-AWS-PACKAGE-BUCKET
         connection_config:
@@ -68,7 +68,7 @@ To use the Storage CLI blobstore interface with AWS credentials, do the followin
           region: AWS-REGION
           bucket_name: YOUR-AWS-PACKAGE-BUCKET
       resource_pool:
-        blobstore_provider: AWS
+        blobstore_provider: s3
         blobstore_type: storage-cli
         resource_directory_key: YOUR-AWS-RESOURCE-BUCKET
         connection_config:
@@ -94,7 +94,7 @@ AWS S3 offers Server-Side Encryption at rest. For more information, see <a href=
     ```
     cc:
       buildpacks:
-        blobstore_provider: AWS
+        blobstore_provider: s3
         blobstore_type: storage-cli
         buildpack_directory_key: YOUR-AWS-BUILDPACK-BUCKET
         connection_config:
@@ -104,7 +104,7 @@ AWS S3 offers Server-Side Encryption at rest. For more information, see <a href=
           bucket_name: YOUR-AWS-BUILDPACK-BUCKET
           server_side_encryption: AES256
       droplets:
-        blobstore_provider: AWS
+        blobstore_provider: s3
         blobstore_type: storage-cli
         droplet_directory_key: YOUR-AWS-DROPLET-BUCKET
         connection_config:
@@ -114,7 +114,7 @@ AWS S3 offers Server-Side Encryption at rest. For more information, see <a href=
           bucket_name: YOUR-AWS-DROPLET-BUCKET
           server_side_encryption: AES256
       packages:
-        blobstore_provider: AWS
+        blobstore_provider: s3
         blobstore_type: storage-cli
         app_package_directory_key: YOUR-AWS-PACKAGE-BUCKET
         connection_config:
@@ -124,7 +124,7 @@ AWS S3 offers Server-Side Encryption at rest. For more information, see <a href=
           bucket_name: YOUR-AWS-PACKAGE-BUCKET
           server_side_encryption: AES256
       resource_pool:
-        blobstore_provider: AWS
+        blobstore_provider: s3
         blobstore_type: storage-cli
         resource_directory_key: YOUR-AWS-RESOURCE-BUCKET
         connection_config:
@@ -152,7 +152,7 @@ AWS S3 offers Server-Side Encryption at rest. For more information, see <a href=
     ```
     cc:
       buildpacks:
-        blobstore_provider: AWS
+        blobstore_provider: s3
         blobstore_type: storage-cli
         buildpack_directory_key: YOUR-AWS-BUILDPACK-BUCKET
         connection_config:
@@ -163,7 +163,7 @@ AWS S3 offers Server-Side Encryption at rest. For more information, see <a href=
           server_side_encryption: "aws:kms"
           x-amz-server-side-encryption-aws-kms-key-id: YOUR-AWS-KMS-KEY-ID
       droplets:
-        blobstore_provider: AWS
+        blobstore_provider: s3
         blobstore_type: storage-cli
         droplet_directory_key: YOUR-AWS-DROPLET-BUCKET
         connection_config:
@@ -174,7 +174,7 @@ AWS S3 offers Server-Side Encryption at rest. For more information, see <a href=
           server_side_encryption: "aws:kms"
           x-amz-server-side-encryption-aws-kms-key-id: YOUR-AWS-KMS-KEY-ID
       packages:
-        blobstore_provider: AWS
+        blobstore_provider: s3
         blobstore_type: storage-cli
         app_package_directory_key: YOUR-AWS-PACKAGE-BUCKET
         connection_config:
@@ -185,7 +185,7 @@ AWS S3 offers Server-Side Encryption at rest. For more information, see <a href=
           server_side_encryption: "aws:kms"
           x-amz-server-side-encryption-aws-kms-key-id: YOUR-AWS-KMS-KEY-ID
       resource_pool:
-        blobstore_provider: AWS
+        blobstore_provider: s3
         blobstore_type: storage-cli
         resource_directory_key: YOUR-AWS-RESOURCE-BUCKET
         connection_config:
@@ -270,7 +270,7 @@ To configure the Storage CLI to use <a href="http://docs.aws.amazon.com/IAM/late
     ```
     cc:
       buildpacks:
-        blobstore_provider: AWS
+        blobstore_provider: s3
         blobstore_type: storage-cli
         buildpack_directory_key: YOUR-AWS-BUILDPACK-BUCKET
         connection_config:
@@ -278,7 +278,7 @@ To configure the Storage CLI to use <a href="http://docs.aws.amazon.com/IAM/late
           bucket_name: YOUR-AWS-BUILDPACK-BUCKET
           use_iam_profile: true
       droplets:
-        blobstore_provider: AWS
+        blobstore_provider: s3
         blobstore_type: storage-cli
         droplet_directory_key: YOUR-AWS-DROPLET-BUCKET
         connection_config:
@@ -286,7 +286,7 @@ To configure the Storage CLI to use <a href="http://docs.aws.amazon.com/IAM/late
           bucket_name: YOUR-AWS-DROPLET-BUCKET
           use_iam_profile: true
       packages:
-        blobstore_provider: AWS
+        blobstore_provider: s3
         blobstore_type: storage-cli
         app_package_directory_key: YOUR-AWS-PACKAGE-BUCKET
         connection_config:
@@ -294,7 +294,7 @@ To configure the Storage CLI to use <a href="http://docs.aws.amazon.com/IAM/late
           bucket_name: YOUR-AWS-PACKAGE-BUCKET
           use_iam_profile: true
       resource_pool:
-        blobstore_provider: AWS
+        blobstore_provider: s3
         blobstore_type: storage-cli
         resource_directory_key: YOUR-AWS-RESOURCE-BUCKET
         connection_config:
