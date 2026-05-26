@@ -1,15 +1,27 @@
 # Deploying Cloud Foundry
 
-This is a guide for operators on deploying Cloud Foundry
-on various IaaS using BOSH.
+This is a guide for operators on deploying Cloud Foundry on various IaaS using BOSH.
 
-This repository is one of several content repositories that go into a complete documentation set.
+This is a content repository in the [Cloud Foundry documentation set](https://github.com/cloudfoundry/docs-book-cloudfoundry).
 
-The contents here are structured as a topic repository intended to be
-compiled into a larger document with
-[Bookbinder](http://github.com/pivotal-cf/docs-bookbinder). Follow the documentation contained in the docs-bookbinder to build the book locally before you request a pull request. For example, run `bookbinder bind local` to check for any broken links. If you have added subnav changes to the docs, you can also run `bookbinder bind local --require-valid-subnav-links` to make sure there is no duplicate subnav links.
+## Published location
 
-See the [docs-book-cloudfoundry](http://github.com/cloudfoundry/docs-book-cloudfoundry)
-repo for the complete list of open source documentation repositories, as well as
-information about the publishing process.
+This content is published at https://docs.cloudfoundry.org/deploying/.
 
+## Branch
+
+This repository uses only the `master` branch for the Cloud Foundry OSS documentation.
+
+## Template variables
+
+Template variables for this content are defined in the `docs-book-cloudfoundry` repository at [`config/template_variables.yml`](https://github.com/cloudfoundry/docs-book-cloudfoundry/blob/master/config/template_variables.yml). Update that file to change variables that appear across this content.
+
+## Contributing
+
+1. Fork this repository.
+2. Create a branch from `master`, make your changes, and submit a pull request to `master`.
+
+Only the CFF Docs WG lead can merge pull requests, build to staging, and publish the documentation.
+
+* **Staging site:** https://docs-staging.cloudfoundry.org/
+* **Published site:** https://docs.cloudfoundry.org/
