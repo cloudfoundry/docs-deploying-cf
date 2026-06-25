@@ -15,21 +15,17 @@ If you want to configure your blobstore manually, see the topics below for guida
 
 The Cloud Controller has four types of objects that need to be stored in a blobstore: <code>buildpacks</code>, <code>droplets</code>, <code>packages</code>, and <code>resource_pool</code>.
 
-For accessing an external hyperscaler blobstore, there are two supported blobstore providers: the Ruby Fog gem and the [Storage CLI](https://github.com/cloudfoundry/storage-cli) solution. The new Storage CLI solution is currently being rolled out across major hyperscalers (for example, AliCloud and Azure). The goal is to replace the deprecated Ruby Fog implementation. Until the rollout is complete, Ruby Fog remains the default for some providers.
-
-WebDAV is also supported for an internal blobstore, and blobstores on NFS-mounted directories are supported through the Fog gem.
+The cloud controller supports the [Storage CLI](https://github.com/cloudfoundry/storage-cli) for accessing external hyperscaler blobstores on AWS, GCP, AliCloud and Azure. WebDAV is also supported. The Ruby Fog implementation is deprecated and has been removed.
 
 This document describes the following common blobstore configurations:
 
 * [Storage CLI with AWS Credentials](#storage-cli-aws)
 * [Storage CLI with AWS Server Side Encryption](#storage-cli-aws-sse)
 * [Storage CLI with AWS IAM Instance Profiles](#storage-cli-aws-iam)
-* [Fog with Google Cloud Storage](#fog-gcs)
-* [Storage-cli with Google Cloud Storage Service Accounts](#storage-cli-gcs-service-account)
+* [Storage CLI with Google Cloud Storage Service Accounts](#storage-cli-gcs-service-account)
 * [Storage CLI with AliCloud Storage](#storage-cli-alicloud)
+* [Storage CLI with Other S3 Compatible Stores](#storage-cli-s3-other)
 * [Storage CLI with Azure Storage](#storage-cli-azure)
-* [Fog with Other S3 Compatible Stores](#fog-s3-other)
-* [Fog with NFS](#fog-local-nfs)
 * [WebDAV](#webdav) internal blobstore
 
 ##<a id="storage-cli-aws"></a> Storage CLI with AWS Credentials
@@ -309,43 +305,7 @@ To configure the Storage CLI to use <a href="http://docs.aws.amazon.com/IAM/late
 
 1. (Optional) Provide additional configuration through the `connection_config` hash, which is passed through to the Storage CLI. For more information about configuration options, see the [S3-Specific Configuration][storage-cli-s3-options].
 
-##<a id="fog-gcs"></a>Fog with Google Cloud Storage
-
-To configure your blobstores to use Google Cloud Storage Interoperability credentials, do the following:
-
-1. Insert the following configuration into your manifest under `properties.cc`:
-
-    ```
-    cc:
-      buildpacks:
-        blobstore_type: fog
-        buildpack_directory_key: YOUR-GCS-BUILDPACK-BUCKET
-        fog_connection: &fog_connection
-          provider: Google
-          google_storage_access_key_id: GCS-ACCESS-KEY
-          google_storage_secret_access_key: GCS-SECRET-ACCESS-KEY
-      droplets:
-        blobstore_type: fog
-        droplet_directory_key: YOUR-GCS-DROPLET-BUCKET
-        fog_connection: *fog_connection
-      packages:
-        blobstore_type: fog
-        app_package_directory_key: YOUR-GCS-PACKAGE-BUCKET
-        fog_connection: *fog_connection
-      resource_pool:
-        blobstore_type: fog
-        resource_directory_key: YOUR-GCS-RESOURCE-BUCKET
-    ```
-
-1. Create an Interoperability key using the [GCP instructions](https://cloud.google.com/storage/docs/migrating#keys).
-
-1. Replace `GCS-ACCESS-KEY` and `GCS-SECRET-ACCESS-KEY` with your Cloud Storage credentials.
-
-1. Replace `YOUR-GCS-BUILDPACK-BUCKET`, `YOUR-GCS-DROPLET-BUCKET`, `YOUR-GCS-PACKAGE-BUCKET`, and `YOUR-GCS-RESOURCE-BUCKET` with the names of your Cloud Storage buckets. Do not use periods (`.`) in your bucket names. 
-
-1. You can provide further configuration through the <code>fog_connection</code> hash, which is passed through to the Fog gem.
-
-##<a id="storage-cli-gcs-service-account"></a>Storage-cli with Google Cloud Storage Service Accounts
+##<a id="storage-cli-gcs-service-account"></a> Storage CLI with Google Cloud Storage Service Accounts
 
 To configure your blobstore to use Google Cloud Storage with a service account, do the following:
 
@@ -424,7 +384,6 @@ You need this key to configure your blobstore.
 
     Replace the placeholders as follows:
     * `YOUR-GCS-PROJECT` is the name of your GCP project.
-    * `YOUR-GCS-SERVICE-ACCOUNT-EMAIL` is the email of your GCP service account.
     * `YOUR-GCS-BUILDPACK-BUCKET`, `YOUR-GCS-DROPLET-BUCKET`,<br>`YOUR-GCS-PACKAGE-BUCKET`, and `YOUR-GCS-RESOURCE-BUCKET` are the names of your Cloud Storage buckets.
     Do not use periods in the bucket names.
 
@@ -441,7 +400,7 @@ You need this key to configure your blobstore.
       resource_pool: *resource_pool
     ```
 
-##<a id="storage-cli-azure"></a>Storage CLI with Azure Storage
+##<a id="storage-cli-azure"></a> Storage CLI with Azure Storage
 
 To configure your blobstores to use Azure Storage credentials, do the following:
 
@@ -498,7 +457,7 @@ To configure your blobstores to use Azure Storage credentials, do the following:
 
 1. You can provide further configuration through the `connection_config` hash, which is passed through to the [`Storage CLI`](https://github.com/cloudfoundry/storage-cli) implementation.
 
-##<a id="storage-cli-alicloud"></a>Storage CLI with AliCloud Object Storage Service (OSS)
+##<a id="storage-cli-alicloud"></a> Storage CLI with AliCloud Object Storage Service (OSS)
 
 To configure an AliCloud OSS blobstore using the storage-cli implementation, do the following:
 
@@ -554,37 +513,58 @@ To configure an AliCloud OSS blobstore using the storage-cli implementation, do 
 
 1. Replace `YOUR-ALICLOUD-OSS-ENDPOINT` and `YOUR-ALICLOUD-REGION-ID` with the endpoint and region of your AliCloud OSS buckets. For more information, see [Regions and endpoints][alicloud-regions-and-endpoints] in the AliCloud documentation.
 
-##<a id="fog-s3-other"></a> Fog with Other S3 Compatible Stores
+##<a id="storage-cli-s3-other"></a> Storage CLI with Other S3 Compatible Stores
 
-Using Fog blobstores with other S3 compatible stores, such as Minio or EMC Elastic Cloud Storage is similar to AWS, and uses the same Fog adapter, but requires slightly different configuration:
+Using Storage CLI with other S3 compatible stores, such as Minio or EMC Elastic Cloud Storage is similar to AWS, but requires slightly different configuration:
 
 1. Insert the following configuration into your manifest under `properties.cc`:
 
     ```
     cc:
       buildpacks:
-        blobstore_type: fog
+        blobstore_provider: s3
+        blobstore_type: storage-cli
         buildpack_directory_key: YOUR-S3-BUILDPACK-BUCKET
-        fog_connection: &fog_connection
-          provider: AWS
+        connection_config:
           endpoint: S3-ENDPOINT
           aws_access_key_id: S3-ACCESS-KEY
           aws_secret_access_key: S3-SECRET-ACCESS-KEY
-          aws_signature_version: '2'
           region: "''"
-          path_style: true
+          host_style: false
+          bucket_name: YOUR-S3-BUILDPACK-BUCKET
       droplets:
-        blobstore_type: fog
+        blobstore_provider: s3
+        blobstore_type: storage-cli
         droplet_directory_key: YOUR-S3-DROPLET-BUCKET
-        fog_connection: *fog_connection
+        connection_config:
+          endpoint: S3-ENDPOINT
+          aws_access_key_id: S3-ACCESS-KEY
+          aws_secret_access_key: S3-SECRET-ACCESS-KEY
+          region: "''"
+          host_style: false
+          bucket_name: YOUR-S3-DROPLET-BUCKET
       packages:
-        blobstore_type: fog
+        blobstore_provider: s3
+        blobstore_type: storage-cli
         app_package_directory_key: YOUR-S3-PACKAGE-BUCKET
-        fog_connection: *fog_connection
+        connection_config:
+          endpoint: S3-ENDPOINT
+          aws_access_key_id: S3-ACCESS-KEY
+          aws_secret_access_key: S3-SECRET-ACCESS-KEY
+          region: "''"
+          host_style: false
+          bucket_name: YOUR-S3-PACKAGE-BUCKET
       resource_pool:
-        blobstore_type: fog
+        blobstore_provider: s3
+        blobstore_type: storage-cli
         resource_directory_key: YOUR-S3-RESOURCE-BUCKET
-        fog_connection: *fog_connection
+        connection_config:
+          endpoint: S3-ENDPOINT
+          aws_access_key_id: S3-ACCESS-KEY
+          aws_secret_access_key: S3-SECRET-ACCESS-KEY
+          region: "''"
+          host_style: false
+          bucket_name: YOUR-S3-RESOURCE-BUCKET
     ```
 1. Replace `S3-ENDPOINT` with the URL used to access your S3 API.  This will typically look something like `http://S3-NAMESPACE.HOST:9020` but may vary for your server or network.
 
@@ -592,59 +572,9 @@ Using Fog blobstores with other S3 compatible stores, such as Minio or EMC Elast
 
 1. Replace `YOUR-S3-BUILDPACK-BUCKET`, `YOUR-S3-DROPLET-BUCKET`, `YOUR-S3-PACKAGE-BUCKET`, and `YOUR-S3-RESOURCE-BUCKET` with the names of your S3 buckets. Do not use periods (`.`) in your S3 bucket names.
 
-1. (Optional) Provide additional configuration through the `fog_connection` hash, which is passed through to the Fog gem.
+1. (Optional) Provide additional configuration through the `connection_config` hash, which is passed through to the Storage CLI. For more information about configuration options, see the [S3-Specific Configuration][storage-cli-s3-options].
 
-##<a id="fog-local-nfs"></a>Fog with NFS
-
-To configure your blobstores to use an NFS-mounted directory, do the following:
-
-1. Insert the following configuration into your manifest under `properties.cc`:
-
-    ```
-    cc:
-      buildpacks:
-        blobstore_type: fog
-        buildpack_directory_key: YOUR-BUILDPACK-DIRECTORY-PREFIX
-        fog_connection: &fog_connection
-          provider: Local
-          local_root: '/var/vcap/data/nfs'
-      droplets:
-        blobstore_type: fog
-        droplet_directory_key: YOUR-DROPLET-DIRECTORY-PREFIX
-        fog_connection: *fog_connection
-      packages:
-        blobstore_type: fog
-        app_package_directory_key: YOUR-PACKAGE-DIRECTORY-PREFIX
-        fog_connection: *fog_connection
-      resource_pool:
-        blobstore_type: fog
-        resource_directory_key: YOUR-RESOURCE-DIRECTORY-PREFIX
-        fog_connection: *fog_connection
-    ```
-
-1. Replace `YOUR-BUILDPACK-DIRECTORY-PREFIX`, `YOUR-DROPLET-DIRECTORY-PREFIX`, `YOUR-PACKAGE-DIRECTORY-PREFIX`, and `YOUR-RESOURCE-DIRECTORY-PREFIX` with the names of the directories you will be using. If you do not specify these, Cloud Foundry will supply usable default values. It is important that `local_root` be set to `/var/vcap/data/nfs` because the Cloud Controller jobs expect the NFS volume to be mounted at that path.
-
-1. (Optional) Provide other configuration with the `fog_connection` hash, which is passed through to the Fog gem.
-
-1. Configure the `nfs_mounter` job for the `cloud_controller_ng`, `cloud_controller_worker`, and `cloud_controller_clock` instance groups. The `nfs_mounter` job specifies how to mount a remote NFS server onto a local directory.
-
-    ```
-    name: nfs_mounter
-      properties:
-        nfs_server:
-          address: NFS-ENDPOINT
-          share: REMOTE-DIR-TO-MOUNT
-          share_path: '/var/vcap/data/nfs'
-          nfsv4: false
-      release: capi
-   ```
-
-Replace the placeholder text in the example above with the values you want to use. Sample values:
-
-- `NFS-ENDPOINT`: `nfstestserver.service.cf.internal`
-- `REMOTE-DIR-TO-MOUNT`: `/var/data/exported`
-
-##<a id="webdav"></a>WebDAV
+##<a id="webdav"></a> WebDAV
 
 To configure your blobstores to use the WebDAV protocol, perform the steps below:
 
@@ -666,27 +596,19 @@ To configure your blobstores to use the WebDAV protocol, perform the steps below
         private_key: WEBDAV-PRIVATE-KEY
         ca_cert: WEBDAV-CA-CERT-BUNDLE
     cc:
-      buildpacks:
-        blobstore_type: webdav
-        buildpack_directory_key: cc-buildpacks
-        webdav_config: &webdav_config
-          public_endpoint: WEBDAV-PUBLIC-ENDPOINT
-          private_endpoint: WEBDAV-PRIVATE-ENDPOINT
-          username: WEBDAV_BASIC-AUTH-USER
-          password: WEBDAV_BASIC-AUTH-PASSWORD
+      buildpacks: &blobstore-properties
+        blobstore_type: storage-cli
+        blobstore_provider: dav
+        connection_config:
+          username: WEBDAV-BASIC-AUTH-USER
+          password: WEBDAV-BASIC-AUTH-PASSWORD
+          private_endpoint: https://blobstore.service.cf.internal:4443
+          public_endpoint: https://blobstore.SYSTEM_DOMAIN
+          secret: WEBDAV-SECRET
           ca_cert: WEBDAV-CA-CERT-BUNDLE
-      droplets:
-        blobstore_type: webdav
-        droplet_directory_key: cc-droplets
-        webdav_config: *webdav_config
-      packages:
-        blobstore_type: webdav
-        app_package_directory_key: cc-packages
-        webdav_config: *webdav_config
-      resource_pool:
-        blobstore_type: webdav
-        resource_directory_key: cc-resources
-        webdav_config: *webdav_config
+      resource_pool: *blobstore-properties
+      packages: *blobstore-properties
+      droplets: *blobstore-properties
     ```
 
 1. Configure your WebDAV blobstores by doing the following:
@@ -697,10 +619,11 @@ To configure your blobstores to use the WebDAV protocol, perform the steps below
       * Replace <code>WEBDAV-PRIVATE-ENDPOINT</code> with a routable URL on your internal network. If not set, this defaults to `https://blobstore.service.cf.internal:4443`.
       * Replace <code>WEBDAV-BASIC-AUTH-USER</code> and <code>WEBDAV-BASIC-AUTH-PASSWORD</code> with Basic AUTH credentials that Cloud Controller can use to communicate with your WebDAV installation.
 
-1. Create a <code>webdav_config</code> hash to provide further configuration.
+1. (Optional) Provide additional configuration through the `connection_config` hash, which is passed through to the Storage CLI. For more information about configuration options, see the [DAV-Specific Configuration][storage-cli-dav-options].
 
 
 [azure-name-restrictions]: https://docs.microsoft.com/en-us/azure/architecture/best-practices/naming-conventions#storage
 [alicloud-name-restrictions]: https://www.alibabacloud.com/help/en/oss/user-guide/bucket-naming-conventions
 [alicloud-regions-and-endpoints]: https://www.alibabacloud.com/help/en/oss/user-guide/regions-and-endpoints
 [storage-cli-s3-options]: https://github.com/cloudfoundry/storage-cli/tree/main/s3
+[storage-cli-dav-options]: https://github.com/cloudfoundry/storage-cli/tree/main/dav
