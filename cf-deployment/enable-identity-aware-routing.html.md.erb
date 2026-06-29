@@ -13,31 +13,18 @@ For an overview of how identity-aware routing works, see
 <p class="note">After you deploy, you must register the identity-aware domain in
 <%= vars.app_runtime_abbr %> with <code>cf create-shared-domain &hellip; --enforce-route-policies</code>
 (see <a href="#register-domain">Register the domain</a>). Developers then map routes
-on that domain and manage <a href="../../devguide/deploy-apps/identity-aware-routing.html">route policies</a>.</p>
-
-## <a id='overview'></a> Overview
+on that domain and manage <a href="../../devguide/deploy-apps/identity-aware-routing.html">route policies</a>.
+</p>
 
 Identity-aware routing lets the Gorouter require and verify a caller's
 client certificate on a designated domain, so that app-to-app HTTP traffic is
-authenticated with mutual TLS. On a `cf-deployment` foundation you enable it by
+authenticated with mutual TLS. On a `cf-deployment` foundation, you enable it by
 applying a single ops file, which configures the Gorouter, generates the required
 certificates, and establishes trust between the Gorouter and app containers.
 
-This topic includes the following sections:
-
-* [Prerequisites](#prerequisites)
-* [Apply the ops file](#apply)
-* [What the ops file configures](#what-it-configures)
-* [Certificates and certificate authorities](#certificates)
-* [The router.domains BOSH property](#router-domains)
-* [Trusting the CA in cflinuxfs5](#cflinuxfs5)
-* [Use an operator-provided domain](#custom-domain)
-* [Register the domain](#register-domain)
-* [Related reading](#related-reading)
-
 ## <a id='prerequisites'></a> Prerequisites
 
-Before you enable identity-aware routing, ensure the following:
+Before you enable identity-aware routing, ensure that:
 
 * You have a working `cf-deployment` foundation deployed with BOSH. See
 <a href="deploy-cf.html">Deploying Cloud Foundry</a>.
@@ -157,7 +144,8 @@ because `apps_identity_ca` is in its container trust store.
 
 <p class="note">The ops file generates <code>apps_identity_ca</code> and
 <code>apps_identity_router_tls</code> into the vars-store on deploy. Back up the
-vars-store as you would for any other generated credential.</p>
+vars-store as you would for any other generated credential.
+</p>
 
 ## <a id='router-domains'></a> The router.domains BOSH property
 
@@ -201,7 +189,8 @@ certificate (~1.5&nbsp;KB); <code>envoy</code> is the compact
 
 <p class="note">A domain listed in <code>router.domains</code> always requires a valid
 client certificate signed by the domain's configured CA, regardless of the global
-<code>router.client_cert_validation</code> setting.</p>
+<code>router.client_cert_validation</code> setting.
+</p>
 
 For `*.apps.identity`, the ops file sets `forwarded_client_cert: sanitize_set` and
 `xfcc_format: envoy`. Operators who add their own mTLS domains set these fields
@@ -225,9 +214,10 @@ $ bosh -e YOUR-ENV -d cf deploy cf-deployment/cf-deployment.yml \
   --vars-store deployment-vars.yml
 </pre>
 
-<p class="note warning">This ops file requires <code>add-cflinuxfs5.yml</code> to be
+<p class="note caution">This ops file requires <code>add-cflinuxfs5.yml</code> to be
 applied first. Applying it on a foundation without the cflinuxfs5 stack fails the
-deploy by design, signaling that the stack ops file is missing.</p>
+deploy by design, signaling that the stack ops file is missing.
+</p>
 
 You can view the ops file in the `cf-deployment` repository:
 [enable-identity-aware-routing-cflinuxfs5.yml](https://github.com/cloudfoundry/cf-deployment/blob/master/operations/enable-identity-aware-routing-cflinuxfs5.yml).
@@ -270,7 +260,7 @@ the domain and is immutable once set. You can optionally add `--scope (any|org|s
 to narrow who may be named as a policy source; `--scope` is valid only together with
 `--enforce-route-policies`.
 
-Once the domain exists, developers map routes on it and manage route policies. See
+After the domain exists, developers map routes on it and manage route policies. See
 <a href="../../devguide/deploy-apps/identity-aware-routing.html">Configuring identity-aware routing</a>.
 
 ## <a id='related-reading'></a> Related reading
