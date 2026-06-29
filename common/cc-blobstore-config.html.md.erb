@@ -10,7 +10,7 @@ This topic explains how to configure a blobstore for the Cloud Controller.
 ##<a id="overview"></a> Overview
 
 The [`cf-deployment`](https://github.com/cloudfoundry/cf-deployment/blob/master/operations/README.md) GitHub repository provides ops files with several common blobstore configurations.
-By default, `cf-deployment` uses the WebDAV blobstore, and no additional ops files are needed.
+By default, `cf-deployment` uses the WebDAV blobstore, and no additional ops files are needed. Note that for a productive Cloud Foundry deployment, you should use an external blobstore that guarantees high availability.
 If you want to configure your blobstore manually, see the topics below for guidance.
 
 The Cloud Controller has four types of objects that need to be stored in a blobstore: <code>buildpacks</code>, <code>droplets</code>, <code>packages</code>, and <code>resource_pool</code>.
