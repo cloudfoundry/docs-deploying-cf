@@ -1,0 +1,289 @@
+---
+title: Enabling identity-aware routing
+owner: CF for VMs Networking
+---
+
+This topic describes how an operator enables identity-aware routing&mdash;per-domain
+mutual TLS (mTLS) for the Gorouter&mdash;on a `cf-deployment`-based foundation by
+applying the `enable-identity-aware-routing.yml` ops file.
+
+For an overview of how identity-aware routing works, see
+<a href="../../concepts/identity-aware-routing.html">Identity-aware routing</a>.
+
+<p class="note">After you deploy, you must register the identity-aware domain in
+<%= vars.app_runtime_abbr %> with <code>cf create-shared-domain &hellip; --enforce-route-policies</code>
+(see <a href="#register-domain">Register the domain</a>). Developers then map routes
+on that domain and manage <a href="../../devguide/deploy-apps/identity-aware-routing.html">route policies</a>.
+</p>
+
+Identity-aware routing lets the Gorouter require and verify a caller's
+client certificate on a designated domain, so that app-to-app HTTP traffic is
+authenticated with mutual TLS. On a `cf-deployment` foundation, you enable it by
+applying a single ops file, which configures the Gorouter, generates the required
+certificates, and establishes trust between the Gorouter and app containers.
+
+## <a id='prerequisites'></a> Prerequisites
+
+Before you enable identity-aware routing, ensure that:
+
+* You have a working `cf-deployment` foundation deployed with BOSH. See
+<a href="deploy-cf.html">Deploying Cloud Foundry</a>.
+
+* Diego instance identity is enabled. This is the default in `cf-deployment`. The
+ops file reuses the existing `diego_instance_identity_ca` to validate caller
+certificates.
+
+* BOSH DNS is in use. This is the default in `cf-deployment`. The ops file adds a
+BOSH DNS alias for the identity-aware domain.
+
+* You have admin access to register the domain in <%= vars.app_runtime_abbr %>
+after deploying.
+
+<p class="note">Apps reach the Gorouter on port 443 when making requests on the
+identity-aware domain. The default <code>public_networks</code> ASG in
+<code>cf-deployment</code> covers public IP ranges but excludes private ranges such as
+<code>10.0.0.0/8</code>, <code>172.16.0.0&ndash;172.31.255.255</code>, and
+<code>192.168.0.0/16</code>. If your Gorouter instances are deployed on addresses in
+those ranges, create and bind a running security group that allows TCP to your Gorouter
+IPs on port 443. For more information, see
+<a href="../../concepts/asg.html">Application Security Groups</a>.</p>
+
+## <a id='apply'></a> Apply the ops file
+
+Apply `enable-identity-aware-routing.yml` during your `bosh deploy`, the same way
+as any other `cf-deployment` ops file:
+
+<pre class="terminal">
+$ bosh -e YOUR-ENV -d cf deploy cf-deployment/cf-deployment.yml \
+  -o cf-deployment/operations/enable-identity-aware-routing.yml \
+  --vars-store deployment-vars.yml \
+  -v system_domain=YOUR-SYSTEM-DOMAIN
+</pre>
+
+The ops file generates new credentials into your vars-store on deploy, so no manual
+certificate creation is required for the default `*.apps.identity` domain. For more
+information, see [Certificates and certificate authorities](#certificates).
+
+Two companion ops files extend this configuration:
+
+* To trust the generated CA on the cflinuxfs5 stack, see
+[Trusting the CA in cflinuxfs5](#cflinuxfs5).
+
+* To use a domain other than `*.apps.identity`, see
+[Use an operator-provided domain](#custom-domain).
+
+You can view the ops file in the `cf-deployment` repository:
+[enable-identity-aware-routing.yml](https://github.com/cloudfoundry/cf-deployment/blob/master/operations/enable-identity-aware-routing.yml).
+
+## <a id='what-it-configures'></a> What the ops file configures
+
+The ops file applies the following changes to your deployment manifest:
+
+<table>
+<tr>
+<th>Configures</th>
+<th>Details</th>
+</tr>
+<tr>
+<td>BOSH DNS alias</td>
+<td>Resolves the <code>*.apps.identity</code> wildcard to the Gorouter instances
+(alias label <code>_.apps.identity</code>, the BOSH DNS wildcard form).</td>
+</tr>
+<tr>
+<td>Gorouter <code>router.domains</code></td>
+<td>Adds <code>*.apps.identity</code> as an mTLS domain that validates caller
+certificates against <code>diego_instance_identity_ca</code>, with forwarding mode
+<code>sanitize_set</code> and XFCC format <code>envoy</code>.</td>
+</tr>
+<tr>
+<td>Gorouter server (SNI) certificate</td>
+<td>Appends a <code>*.apps.identity</code> server certificate to
+<code>router.tls_pem</code> (variable <code>apps_identity_router_tls</code>), served
+through SNI.</td>
+</tr>
+<tr>
+<td>CA trust</td>
+<td>Injects <code>apps_identity_ca</code> into the cflinuxfs4 rootfs trust store and
+the Diego <code>rep</code>, so app containers trust the Gorouter's server certificate
+on the domain.</td>
+</tr>
+</table>
+
+The certificate and CA relationships are explained in
+[Certificates and certificate authorities](#certificates), and the per-domain
+property fields in [The router.domains BOSH property](#router-domains).
+
+## <a id='certificates'></a> Certificates and certificate authorities
+
+Identity-aware routing uses two certificate authorities: one to authenticate the
+caller to the Gorouter, and one to authenticate the Gorouter back to the caller.
+
+<table>
+<tr>
+<th>Certificate / CA</th>
+<th>Role</th>
+</tr>
+<tr>
+<td><code>diego_instance_identity_ca</code> (existing)</td>
+<td>Validates the caller's client certificate at the Gorouter. The ops file sets it
+as the domain's <code>ca_certs</code>. This CA already exists in <%= vars.app_runtime_abbr %>;
+the ops file does not generate it.</td>
+</tr>
+<tr>
+<td><code>apps_identity_ca</code> (generated)</td>
+<td>Signs the Gorouter's server certificate for <code>*.apps.identity</code>. It is
+trusted inside app containers and the Diego <code>rep</code>.</td>
+</tr>
+<tr>
+<td><code>apps_identity_router_tls</code> (generated)</td>
+<td>The Gorouter's server (SNI) certificate and key for <code>*.apps.identity</code>,
+signed by <code>apps_identity_ca</code> and appended to <code>router.tls_pem</code>.</td>
+</tr>
+</table>
+
+Together these establish mutual authentication in both directions:
+
+1. **Caller to Gorouter (client authentication):** the calling app presents its Diego
+instance identity certificate, and the Gorouter validates it against
+`diego_instance_identity_ca`.
+
+1. **Gorouter to caller (server authentication):** the Gorouter presents the
+`apps_identity_router_tls` server certificate, and the calling app validates it
+because `apps_identity_ca` is in its container trust store.
+
+<p class="note">The ops file generates <code>apps_identity_ca</code> and
+<code>apps_identity_router_tls</code> into the vars-store on deploy. Back up the
+vars-store as you would for any other generated credential.
+</p>
+
+## <a id='router-domains'></a> The router.domains BOSH property
+
+`router.domains` is the Gorouter BOSH property that the ops file populates. Each entry
+in the array designates a domain that requires mutual TLS and configures how the
+Gorouter handles the caller's certificate.
+
+<table>
+<tr>
+<th>Field</th>
+<th>Description</th>
+<th>Values (default)</th>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>The domain to require mTLS on. The wildcard must be the leftmost label
+(for example, <code>*.apps.identity</code>) and matches any single label; a
+non-wildcard domain must match the request host exactly.</td>
+<td>Domain string</td>
+</tr>
+<tr>
+<td><code>ca_certs</code></td>
+<td>PEM CA bundle used to validate caller (client) certificates on the domain.</td>
+<td>PEM</td>
+</tr>
+<tr>
+<td><code>forwarded_client_cert</code></td>
+<td>How the Gorouter forwards the client certificate in the
+<code>X-Forwarded-Client-Cert</code> (XFCC) header.</td>
+<td><code>always_forward</code> (default), <code>forward</code>,
+<code>sanitize_set</code></td>
+</tr>
+<tr>
+<td><code>xfcc_format</code></td>
+<td>Format of the XFCC header: <code>raw</code> is the full base64-encoded
+certificate (~1.5&nbsp;KB); <code>envoy</code> is the compact
+<code>Hash=&lt;sha256&gt;;Subject="&lt;DN&gt;"</code> format (~300&nbsp;bytes).</td>
+<td><code>raw</code> (default), <code>envoy</code></td>
+</tr>
+</table>
+
+<p class="note">A domain listed in <code>router.domains</code> always requires a valid
+client certificate signed by the domain's configured CA, regardless of the global
+<code>router.client_cert_validation</code> setting.
+</p>
+
+For `*.apps.identity`, the ops file sets `forwarded_client_cert: sanitize_set` and
+`xfcc_format: envoy`. Operators who add their own mTLS domains set these fields
+directly.
+
+## <a id='cflinuxfs5'></a> Trusting the CA in cflinuxfs5
+
+If your foundation uses the cflinuxfs5 stack, also apply
+`enable-identity-aware-routing-cflinuxfs5.yml` so that apps on cflinuxfs5 trust the
+Gorouter's `*.apps.identity` server certificate. This companion ops file injects
+`apps_identity_ca` into the cflinuxfs5 rootfs trust store.
+
+Apply it after both the cflinuxfs5 stack ops file and the base
+`enable-identity-aware-routing.yml`:
+
+<pre class="terminal">
+$ bosh -e YOUR-ENV -d cf deploy cf-deployment/cf-deployment.yml \
+  -o cf-deployment/operations/experimental/add-cflinuxfs5.yml \
+  -o cf-deployment/operations/enable-identity-aware-routing.yml \
+  -o cf-deployment/operations/enable-identity-aware-routing-cflinuxfs5.yml \
+  --vars-store deployment-vars.yml
+</pre>
+
+<p class="note caution">This ops file requires <code>add-cflinuxfs5.yml</code> to be
+applied first. Applying it on a foundation without the cflinuxfs5 stack fails the
+deploy by design, signaling that the stack ops file is missing.
+</p>
+
+You can view the ops file in the `cf-deployment` repository:
+[enable-identity-aware-routing-cflinuxfs5.yml](https://github.com/cloudfoundry/cf-deployment/blob/master/operations/enable-identity-aware-routing-cflinuxfs5.yml).
+
+## <a id='custom-domain'></a> Use an operator-provided domain
+
+`*.apps.identity` is a convention, not a hard requirement. To use a different domain,
+also apply `use-operator-provided-identity-routing-domain.yml` and supply the
+`identity_routing_domain` variable:
+
+<pre class="terminal">
+$ bosh -e YOUR-ENV -d cf deploy cf-deployment/cf-deployment.yml \
+  -o cf-deployment/operations/enable-identity-aware-routing.yml \
+  -o cf-deployment/operations/use-operator-provided-identity-routing-domain.yml \
+  -v identity_routing_domain=apps.example.com \
+  --vars-store deployment-vars.yml
+</pre>
+
+This override applies to the BOSH DNS alias, the Gorouter domain name, and the
+generated server certificate's common name and subject alternative name. The
+`cf-deployment` repository ships an example vars file you can adapt:
+`cf-deployment/operations/example-vars-files/vars-use-operator-provided-identity-routing-domain.yml`.
+
+Whatever domain you choose, you register that same domain in
+<%= vars.app_runtime_abbr %> in the next section.
+
+## <a id='register-domain'></a> Register the domain in <%= vars.app_runtime_abbr %>
+
+After the deploy succeeds, register the identity-aware domain in
+<%= vars.app_runtime_abbr %> so that developers can map routes and add policies on it.
+The domain name must match the one configured in the ops file (`apps.identity` by
+default):
+
+<pre class="terminal">
+$ cf create-shared-domain apps.identity --enforce-route-policies
+</pre>
+
+The `--enforce-route-policies` flag turns on default-deny route-policy enforcement for
+the domain and is immutable once set. You can optionally add `--scope (any|org|space)`
+to narrow who may be named as a policy source; `--scope` is valid only together with
+`--enforce-route-policies`.
+
+After the domain exists, developers map routes on it and manage route policies. See
+<a href="../../devguide/deploy-apps/identity-aware-routing.html">Configuring identity-aware routing</a>.
+
+## <a id='related-reading'></a> Related reading
+
+* <a href="../../concepts/identity-aware-routing.html">Identity-aware routing</a>&mdash;how
+identity-aware routing works.
+
+* <a href="../../devguide/deploy-apps/identity-aware-routing.html">Configuring identity-aware routing</a>&mdash;the
+developer how-to for mapping routes and managing route policies.
+
+* <a href="deploy-cf.html">Deploying Cloud Foundry</a>.
+
+* The `cf-deployment` ops files:
+[operations](https://github.com/cloudfoundry/cf-deployment/tree/master/operations).
+
+* RFC-0055:
+[Identity-Aware Routing for Gorouter](https://github.com/cloudfoundry/community/blob/main/toc/rfc/rfc-0055-identity-aware-routing-for-gorouter.md).
