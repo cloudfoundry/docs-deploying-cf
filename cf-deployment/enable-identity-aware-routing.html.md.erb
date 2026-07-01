@@ -39,6 +39,8 @@ BOSH DNS alias for the identity-aware domain.
 * You have admin access to register the domain in <%= vars.app_runtime_abbr %>
 after deploying.
 
+## <a id='apply'></a> Apply the ops file
+
 <p class="note">Apps reach the Gorouter on port 443 when making requests on the
 identity-aware domain. The default <code>public_networks</code> ASG in
 <code>cf-deployment</code> covers public IP ranges but excludes private ranges such as
@@ -47,8 +49,6 @@ identity-aware domain. The default <code>public_networks</code> ASG in
 those ranges, create and bind a running security group that allows TCP to your Gorouter
 IPs on port 443. For more information, see
 <a href="../../concepts/asg.html">Application Security Groups</a>.</p>
-
-## <a id='apply'></a> Apply the ops file
 
 Apply `enable-identity-aware-routing.yml` during your `bosh deploy`, the same way
 as any other `cf-deployment` ops file:
