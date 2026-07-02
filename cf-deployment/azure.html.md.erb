@@ -135,14 +135,16 @@ To create the required infrastructure, deploy a BOSH Director, and create an app
     * `YOUR-CLIENT-SECRET` is the **password** field of your service principal credential.
     * `YOUR-AZURE-REGION` is the region where your resource is to be created, such as `eastus`. For more information, see [Azure Regions](https://azure.microsoft.com/en-us/global-infrastructure/regions/) in the Microsoft Azure documentatio.
     * `YOUR-CERTIFICATE.crt` and `YOUR-KEY.key` are the path to your Certificate Authority (CA) certificate and key. This enables SSL/TLS termination at your app gateway. For instructions on creating them, see [Getting Started: Microsoft Azure](https://github.com/cloudfoundry/bosh-bootloader/blob/master/docs/getting-started-azure.md) in the bosh-bootloader documentation.
-      <p class="note">For test and development environments, you can generate your own CA certificate and key with a tool such as For more information about certstrap, see the <a href="https://github.com/square/certstrap">certstrap</a> repository on GitHub.</p>
+      <p class="note">For test and development environments, you can generate your own CA certificate and key with a tool such as For more information about certstrap, see the <a href="https://github.com/square/certstrap">certstrap</a> repository on GitHub.
+</p>
     * `YOUR-SYSTEM-DOMAIN` is the DNS domain name for your <%= vars.platform_name %> instance. <%= vars.platform_name %> uses this domain name when deploying apps. For example, if you select the name `cloud.example.com`, <%= vars.platform_name %> deploys each of your apps as `APP-NAME.cloud.example.com`.
 
 The `bbl up` command takes twenty to thirty minutes to complete.
 
 When you run `bbl plan` or `bbl up`, bosh-bootloader creates, modifies, or deletes files in the `--state-dir` or present working directory.
 
-<p class="note">The <strong>bbl state directory</strong> contains credentials and other metadata related to your BOSH Director and infrastructure. Copy this directory to a secure location.</p>
+<p class="note">The <strong>bbl state directory</strong> contains credentials and other metadata related to your BOSH Director and infrastructure. Copy this directory to a secure location.
+</p>
 
 ### <a id='view-list'></a> View List of Values from the State File
 
