@@ -10,7 +10,9 @@ applying the `enable-identity-aware-routing.yml` ops file.
 For an overview of how identity-aware routing works, see
 <a href="../../concepts/identity-aware-routing.html">Identity-aware routing</a>.
 
-<p class="note">After you deploy, you must register the identity-aware domain in
+<p class="note">
+<span class="note__title"><strong>Note</strong></span>
+After you deploy, you must register the identity-aware domain in
 <%= vars.app_runtime_abbr %> with <code>cf create-shared-domain &hellip; --enforce-route-policies</code>
 (see <a href="#register-domain">Register the domain</a>). Developers then map routes
 on that domain and manage <a href="../../devguide/deploy-apps/identity-aware-routing.html">route policies</a>.
@@ -39,7 +41,9 @@ BOSH DNS alias for the identity-aware domain.
 * You have admin access to register the domain in <%= vars.app_runtime_abbr %>
 after deploying.
 
-<p class="note">Apps reach the Gorouter on port 443 when making requests on the
+<p class="note">
+<span class="note__title"><strong>Note</strong></span>
+Apps reach the Gorouter on port 443 when making requests on the
 identity-aware domain. The default <code>public_networks</code> ASG in
 <code>cf-deployment</code> covers public IP ranges but excludes private ranges such as
 <code>10.0.0.0/8</code>, <code>172.16.0.0&ndash;172.31.255.255</code>, and
@@ -152,7 +156,9 @@ instance identity certificate, and the Gorouter validates it against
 `apps_identity_router_tls` server certificate, and the calling app validates it
 because `apps_identity_ca` is in its container trust store.
 
-<p class="note">The ops file generates <code>apps_identity_ca</code> and
+<p class="note">
+<span class="note__title"><strong>Note</strong></span>
+The ops file generates <code>apps_identity_ca</code> and
 <code>apps_identity_router_tls</code> into the vars-store on deploy. Back up the
 vars-store as you would for any other generated credential.
 </p>
@@ -197,7 +203,9 @@ certificate (~1.5&nbsp;KB); <code>envoy</code> is the compact
 </tr>
 </table>
 
-<p class="note">A domain listed in <code>router.domains</code> always requires a valid
+<p class="note">
+<span class="note__title"><strong>Note</strong></span>
+A domain listed in <code>router.domains</code> always requires a valid
 client certificate signed by the domain's configured CA, regardless of the global
 <code>router.client_cert_validation</code> setting.
 </p>
@@ -224,7 +232,9 @@ $ bosh -e YOUR-ENV -d cf deploy cf-deployment/cf-deployment.yml \
   --vars-store deployment-vars.yml
 </pre>
 
-<p class="note caution">This ops file requires <code>add-cflinuxfs5.yml</code> to be
+<p class="note caution">
+<span class="note__title"><strong>Caution</strong></span>
+This ops file requires <code>add-cflinuxfs5.yml</code> to be
 applied first. Applying it on a foundation without the cflinuxfs5 stack fails the
 deploy by design, signaling that the stack ops file is missing.
 </p>
